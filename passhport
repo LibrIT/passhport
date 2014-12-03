@@ -133,6 +133,72 @@ Options:
         #TODO 
         print(arg)
 
+    @docopt_cmd
+    def do_target(self, arg):
+        """
+Usage:
+    target list
+    target search <pattern>
+    target (show|create|edit|del) <targetname>
+    target editcommand <targetname> <command>  
+    target (adduser|rmuser) <username>
+    target (addusergroup|rmusergroup) <groupname>
+
+Arguments:
+    pattern         SQL search pattern
+    username        Often the login
+    targetname      Often a hostname
+    groupname       A passhport group name 
+    command         A unix command that will be triggered instead of classical ssh connexion
+    
+Options
+    list            List all targets
+    search          Search a target name following the SQL pattern given
+    show            Show all the data of a target
+    create          Launch the interractive target creation
+    edit            Launch the interractive target modification
+    del             Delete permantely the target entry
+    editcommand     Edit the command line launched instead of a classical ssh connexion.
+    adduser         Add a user rights on target
+    rmuser          Remove a user rights from target
+    addusergroup    Add rights to a group of users on this target
+    rmusergroup     Remove rights from a group of users on this target
+    """
+
+    @docopt_cmd
+    def do_targetgroup(self, arg):
+        """
+Usage:
+    targetgroup list
+    targetgroup search <pattern>
+    targetgroup (show|create|edit|del) <targetgroupname>
+    targetgroup (addtarget|rmtarget) <targetname>
+    targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
+    targetgroup (adduser|rmuser) <username>
+    targetgroup (addusergroup|rmusergroup) <groupname>
+
+Arguments:
+    pattern         SQL search pattern
+    username        Often the login
+    targetname      Often a hostname
+    targetgroupname A group of targets already existing
+    groupname       A passhport group name 
+    
+Options
+    list            List all targetgroups
+    search          Search a targetgroup name following the SQL pattern given
+    show            Show all the data of a targetgroup
+    create          Launch the interractive targetgroup creation
+    edit            Launch the interractive targetgroup modification
+    del             Delete permantely the targetgroup entry
+    adduser         Add a user rights on targetgroup (including all the targets in it)
+    rmuser          Remove a user rights from targetgroup
+    addusergroup    Add rights to a group of users on this targetgroup
+    rmusergroup     Remove rights from a group of users on this targetgroup
+    addtargetgroup  Add a group of targets on this group
+    rmtargetgroup   Remove a group of target from this group
+    """    
+    
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
 
