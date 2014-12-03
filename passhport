@@ -1,0 +1,213 @@
+#!/usr/bin/env python
+"""
+Usage:
+    passhport (-i | --interactive)
+    passhport user list
+    passhport user search <pattern>
+    passhport user (show|create|edit|del) <username>
+    passhport usergroup list
+    passhport usergroup search <pattern>
+    passhport usergroup (show|create|edit|del) <groupname>
+    passhport usergroup (adduser|rmuser) <username> <groupname>
+    passhport usergroup (addtarget|rmtarget) <target> <groupname>
+    passhport usergroup (addgroup|rmgroup) <subgroup> <groupname>
+    passhport usergroup (addtargetgroup|rmtargetgroup) <targetgroup> <groupname>
+    passhport (-h | --version)
+
+Arguments:
+    pattern         SQL search pattern
+    username        Often the login
+    target          A target is a combinaison of a server and a port
+    groupname       A group is a combinason of users and targets. A user in a group can access all the targets in it
+    subgroup        Any group can be added to another group (take care to the cycles)
+    targetgroup     A group of targets
+    subtargetgroup  A group of targets can be added to any group of targets
+    
+Options:
+    user                manage users data
+    usergroup           manage group of users
+    -i, --interactive   Interactive Mode
+    -h, --help          Show this screen and exit.
+"""
+
+import sys
+import cmd
+from docopt import docopt, DocoptExit
+
+
+def docopt_cmd(func):
+    """
+    This decorator is used to simplify the try/except block and pass the result
+    of the docopt parsing to the called action.
+    """
+    def fn(self, arg):
+        try:
+            opt = docopt(fn.__doc__, arg)
+
+        except DocoptExit as e:
+            # The DocoptExit is thrown when the args do not match.
+            # We print a message to the user and the usage block.
+            print('Invalid Command!')
+            print(e)
+            return
+
+        except SystemExit:
+            # The SystemExit exception prints the usage for --help
+            # We do not need to do the print here.
+            return
+
+        return func(self, opt)
+
+    fn.__name__ = func.__name__
+    fn.__doc__ = func.__doc__
+    fn.__dict__.update(func.__dict__)
+    return fn
+
+
+class MyInteractive (cmd.Cmd):
+    intro = 'Welcome to interactive program!' \
+        + ' (type help for a list of commands.)'
+    prompt = '(passhport) '
+    file = None
+
+    @docopt_cmd
+    def do_user(self, arg):
+        """
+Usage: 
+    user list
+    user search <pattern>
+    user (show|create|edit|del) <username>
+    
+Arguments:
+    pattern         SQL search pattern
+    username        Often the login
+
+Options:
+    list            List all users (use with care on huge installations)
+    search          Search a user following the SQL pattern given
+    show            Show all the data of a user
+    create          Launch the interractive user creation
+    edit            Launch the interractive user modification
+    del             Delete permantely the user entry"""
+
+        #TODO
+        print(arg)
+
+    @docopt_cmd
+    def do_usergroup(self, arg):
+        """
+Usage: 
+    usergroup list
+    usergroup search <pattern>
+    usergroup (show|create|edit|del) <groupname>
+    usergroup (adduser|rmuser) <username> <groupname>
+    usergroup (addtarget|rmtarget) <target> <groupname>
+    usergroup (addgroup|rmgroup) <subgroup> <groupname>
+    usergroup (addtargetgroup|rmtargetgroup) <targetgroup> <groupname>
+
+Arguments:
+    pattern         SQL search pattern
+    username        Often the login
+    target          A target is a combinaison of a server and a port
+    groupname       A group is a combinason of users and targets. A user in a group can access all the targets in it
+    subgroup        Any group can be added to another group (take care to the cycles)
+    targetgroup     A group of targets
+    subtargetgroup  A group of targets can be added to any group of targets
+
+Options:
+    list            List all groups
+    search          Search a group name following the SQL pattern given
+    show            Show all the data of a group, including the users/target in it
+    create          Launch the interractive group creation
+    edit            Launch the interractive group modification
+    del             Delete permantely the group entry
+    adduser         Add a user in a group
+    rmuser          Remove a user from a group
+    addtarget       Add a target in a group
+    rmtarget        Remove a target from a group
+    addgroup        Add a group of users/targets to another group
+    rmgroup         Remove a group of user target from another group
+    addtargetgroup  Add a group of targets to another group
+    urmtargetgroup  Remove a group of targets to another group
+    """
+        #TODO 
+        print(arg)
+
+    @docopt_cmd
+    def do_target(self, arg):
+        """
+Usage:
+    target list
+    target search <pattern>
+    target (show|create|edit|del) <targetname>
+    target editcommand <targetname> <command>  
+    target (adduser|rmuser) <username>
+    target (addusergroup|rmusergroup) <groupname>
+
+Arguments:
+    pattern         SQL search pattern
+    username        Often the login
+    targetname      Often a hostname
+    groupname       A passhport group name 
+    command         A unix command that will be triggered instead of classical ssh connexion
+    
+Options
+    list            List all targets
+    search          Search a target name following the SQL pattern given
+    show            Show all the data of a target
+    create          Launch the interractive target creation
+    edit            Launch the interractive target modification
+    del             Delete permantely the target entry
+    editcommand     Edit the command line launched instead of a classical ssh connexion.
+    adduser         Add a user rights on target
+    rmuser          Remove a user rights from target
+    addusergroup    Add rights to a group of users on this target
+    rmusergroup     Remove rights from a group of users on this target
+    """
+
+    @docopt_cmd
+    def do_targetgroup(self, arg):
+        """
+Usage:
+    targetgroup list
+    targetgroup search <pattern>
+    targetgroup (show|create|edit|del) <targetgroupname>
+    targetgroup (addtarget|rmtarget) <targetname>
+    targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
+    targetgroup (adduser|rmuser) <username>
+    targetgroup (addusergroup|rmusergroup) <groupname>
+
+Arguments:
+    pattern         SQL search pattern
+    username        Often the login
+    targetname      Often a hostname
+    targetgroupname A group of targets already existing
+    groupname       A passhport group name 
+    
+Options
+    list            List all targetgroups
+    search          Search a targetgroup name following the SQL pattern given
+    show            Show all the data of a targetgroup
+    create          Launch the interractive targetgroup creation
+    edit            Launch the interractive targetgroup modification
+    del             Delete permantely the targetgroup entry
+    adduser         Add a user rights on targetgroup (including all the targets in it)
+    rmuser          Remove a user rights from targetgroup
+    addusergroup    Add rights to a group of users on this targetgroup
+    rmusergroup     Remove rights from a group of users on this targetgroup
+    addtargetgroup  Add a group of targets on this group
+    rmtargetgroup   Remove a group of target from this group
+    """    
+    
+    def do_quit(self, arg):
+        """Quits out of Interactive Mode."""
+
+        print('Good Bye!')
+        exit()
+
+opt = docopt(__doc__, sys.argv[1:])
+
+if opt['--interactive']:
+    MyInteractive().cmdloop()
+
+print(opt)
