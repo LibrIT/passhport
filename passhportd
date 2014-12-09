@@ -1,0 +1,157 @@
+#!/usr/bin/env python
+""" 
+Passhport server side
+Handle databases and ssh configuration
+Supposed to be restful
+Not secure for the moment: no login needed
+"""
+
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def imalive():
+    return """Passhport is running, gratz!"""
+
+###############################################################################
+# USER MANIPULATIONS - USER
+@app.route('/v0/user/list')
+def user_list():
+    #todo   
+    return """titi\ntoto\ntutu"""
+
+@app.route('/v0/user/search/<pattern>')
+def user_search(pattern):
+    #TODO
+    return """pattern"""
+
+@app.route('/v0/user/show/<username>')
+def user_show(username):
+    #TODO
+    return """pattern"""
+
+@app.route('/v0/user/create/', methods=['POST'])
+def user_create():
+    #TODO
+    print  request.args.get('username')
+    print  request.args.get('anotherarg0')
+    print  request.args.get('anotherarg1')
+    print  request.args.get('anotherarg2')
+    return """create"""
+
+@app.route('/v0/user/edit/', methods=['POST'])
+def user_edit():
+    #TODO
+    print  request.args.get('username')
+    print  request.args.get('anotherarg0')
+    print  request.args.get('anotherarg1')
+    print  request.args.get('anotherarg2')
+    return """edit"""
+
+@app.route('/v0/user/del/<username>')
+def user_edit(username):
+    #TODO
+    return """delete"""
+
+###############################################################################
+# USERGROUP MANIPULATIONS - USERGROUP
+@app.route('/v0/usergroup/list')
+def usergroup_list():
+    #todo   
+    return """gtiti\ngtoto\ngtutu"""
+
+@app.route('/v0/usergroup/search/<pattern>')
+def usergroup_search(pattern):
+    #TODO
+    return """pattern"""
+
+@app.route('/v0/usergroup/show/<usergroupname>')
+def usergroup_show(usergroupname):
+    #TODO
+    return """pattern"""
+
+@app.route('/v0/usergroup/create/', methods=['POST'])
+def usergroup_create():
+    #TODO
+    print  request.args.get('usergroupname')
+    print  request.args.get('anotherarg0')
+    print  request.args.get('anotherarg1')
+    print  request.args.get('anotherarg2')
+    return """create"""
+
+@app.route('/v0/usergroup/edit/', methods=['POST'])
+def usergroup_edit():
+    #TODO
+    print  request.args.get('usergroupname')
+    print  request.args.get('anotherarg0')
+    print  request.args.get('anotherarg1')
+    print  request.args.get('anotherarg2')
+    return """edit"""
+
+@app.route('/v0/usergroup/del/<usergroupname>')
+def usergroup_edit(usergroupname):
+    #TODO
+    return """delete"""
+
+@app.route('/v0/usergroup/adduser/', methods=['GET'])
+def usergroup_adduser():
+    #TODO
+    print  request.args.get('username')
+    print  request.args.get('groupname')
+    return """adduser"""
+
+@app.route('/v0/usergroup/rmuser/', methods=['GET'])
+def usergroup_rmuser():
+    #TODO
+    print  request.args.get('username')
+    print  request.args.get('groupname')
+    return """rmuser"""
+
+@app.route('/v0/usergroup/addtarget', methods=['GET'])
+def usergroup_addtarget():
+    #TODO
+    print  request.args.get('targetname')
+    print  request.args.get('groupname')
+    return """addtarget"""
+
+@app.route('/v0/usergroup/rmtarget', methods=['GET'])
+def usergroup_rmtarget():
+    #TODO
+    print  request.args.get('targetname')
+    print  request.args.get('groupname')
+    return """rmtarget"""
+
+@app.route('/v0/usergroup/addgroup', methods=['GET'])
+def usergroup_addgroup():
+    #TODO
+    print  request.args.get('subgroup')
+    print  request.args.get('groupname')
+    return """addgroup"""
+
+@app.route('/v0/usergroup/rmgroup', methods=['GET'])
+def usergroup_rmgroup():
+    #TODO
+    print  request.args.get('subgroup')
+    print  request.args.get('groupname')
+    return """rmgroup"""
+
+@app.route('/v0/usergroup/addtargetgroup', methods=['GET'])
+def usergroup_addtargetgroup():
+    #TODO
+    print  request.args.get('targetgroupname')
+    print  request.args.get('groupname')
+    return """addtargetgroup"""
+
+@app.route('/v0/usergroup/rmtargetgroup', methods=['GET'])
+def usergroup_rmtargetgroup():
+    #TODO
+    print  request.args.get('targetgroupname')
+    print  request.args.get('groupname')
+    return """rmtargetgroup"""
+
+
+
+
+if __name__ == '__main__':
+    app.debug = True
+    app.run(host='127.0.0.1')
