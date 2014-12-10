@@ -19,11 +19,14 @@ Goals:
 
 Done so far: 
 -------------
- * none
+ * Server API Caneva (REST urls ready to answer with Flask)
+ * Client interface with interactive console
 
 Used technologies:
 ------------------
  * OpenSSH
  * Python
+ * Flask
+ * Docopt
 
 
