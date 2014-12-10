@@ -140,9 +140,9 @@ Usage:
     target list
     target search <pattern>
     target (show|create|edit|del) <targetname>
-    target editcommand <targetname> <command>  
-    target (adduser|rmuser) <username>
-    target (addusergroup|rmusergroup) <groupname>
+    target editcommand <command> <targetname>
+    target (adduser|rmuser) <username> <targetname>
+    target (addusergroup|rmusergroup) <groupname> <targetname>
 
 Arguments:
     pattern         SQL search pattern
@@ -172,10 +172,10 @@ Usage:
     targetgroup list
     targetgroup search <pattern>
     targetgroup (show|create|edit|del) <targetgroupname>
-    targetgroup (addtarget|rmtarget) <targetname>
+    targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
     targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
-    targetgroup (adduser|rmuser) <username>
-    targetgroup (addusergroup|rmusergroup) <groupname>
+    targetgroup (adduser|rmuser) <username>  <targetgroupname>
+    targetgroup (addusergroup|rmusergroup) <groupname>  <targetgroupname>
 
 Arguments:
     pattern         SQL search pattern

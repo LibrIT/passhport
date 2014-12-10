@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+"""
+   Server side using flask
+"""
+from app import app
+app.run(debug=True)

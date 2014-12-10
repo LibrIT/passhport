@@ -19,11 +19,17 @@ Goals:
 
 Done so far: 
 -------------
- * none
+ * Server API Caneva (REST urls ready to answer with Flask)
+ * Server database initialization (no data)
+ * Client interface with interactive console
 
 Used technologies:
 ------------------
  * OpenSSH
  * Python
-
+ * Docopt
+ * Flask
+ * Alchemy
+ * Flask-Alchemy
+ * Alchemy-migration
 
