@@ -37,7 +37,7 @@ def usergroup_edit():
     return """edit"""
 
 @usergroup.route('/usergroup/del/<usergroupname>')
-def usergroup_edit(usergroupname):
+def usergroup_del(usergroupname):
     #TODO
     return """delete"""
 

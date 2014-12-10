@@ -37,7 +37,7 @@ def user_edit():
     return """edit"""
 
 @user.route('/user/del/<username>')
-def user_edit(username):
+def user_del(username):
     #TODO
     return """delete"""
 

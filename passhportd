@@ -1,28 +1,6 @@
 #!/usr/bin/env python
-""" 
-Passhport server side
-Handle databases and ssh configuration
-Supposed to be restful
-Not secure for the moment: no login needed
 """
-
-from flask import Flask
-from API.user import user
-from API.target import target
-from API.usergroup import usergroup
-from API.targetgroup import targetgroup
-
-app = Flask(__name__)
-#Define the objects APIs
-app.register_blueprint(user)
-app.register_blueprint(target)
-app.register_blueprint(usergroup)
-app.register_blueprint(targetgroup)
-
-@app.route('/')
-def imalive():
-    return """Passhport is running, gratz!"""
-
-if __name__ == '__main__':
-    app.debug = True
-    app.run(host='127.0.0.1')
+   Server side using flask
+"""
+from app import app
+app.run(debug=True)

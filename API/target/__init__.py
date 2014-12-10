@@ -37,7 +37,7 @@ def target_edit():
     return """edit"""
 
 @target.route('/target/del/<username>')
-def target_edit(username):
+def target_del(username):
     #TODO
     return """delete"""
 
@@ -50,13 +50,6 @@ def target_editcommand():
 
 @target.route('/target/adduser/',methods=['POST'])
 def target_adduser():
-    #TODO
-    print request.args.get('username')
-    print request.args.get('target')
-    return """adduser"""
-
-@target.route('/target/rmuser/',methods=['POST'])
-def target_rmuser():
     #TODO
     print request.args.get('username')
     print request.args.get('target')
