@@ -97,4 +97,3 @@ def usergroup_rmtargetgroup():
     print  request.args.get('groupname')
     return """rmtargetgroup"""
 
-
