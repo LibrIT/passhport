@@ -1,9 +1,14 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
-from API.user import user
-from API.target import target
-from API.usergroup import usergroup
-from API.targetgroup import targetgroup
+from app.views_mod.user import user
+from app.views_mod.target import target
+from app.views_mod.usergroup import usergroup
+from app.views_mod.targetgroup import targetgroup
+
+#, target, usergroup, targetgroup
+#from API.target import target
+#from API.usergroup import usergroup
+#from API.targetgroup import targetgroup
 
 #Initialize Flask application
 app = Flask(__name__)
@@ -18,3 +23,4 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 
 from app import views, models
+from app.models_mod import user, target, usergroup, targetgroup
