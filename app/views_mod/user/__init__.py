@@ -1,33 +1,66 @@
-#!/usr/bin/env python
+from flask          import request
+from sqlalchemy     import exc
+from app            import app, db
+from app.models_mod import user
 
-from flask import Blueprint
-user = Blueprint('user', __name__)
-
-@user.route('/user/list')
+@app.route('/user/list')
 def user_list():
-    #todo   
+    #TODO  
     return """titi\ntoto\ntutu"""
 
-@user.route('/user/search/<pattern>')
+@app.route('/user/search/<pattern>')
 def user_search(pattern):
     #TODO
     return """pattern"""
 
-@user.route('/user/show/<username>')
+@app.route('/user/show/<username>')
 def user_show(username):
     #TODO
     return """pattern"""
 
-@user.route('/user/create/', methods=['POST'])
+@app.route('/user/create', methods=['POST'])
 def user_create():
-    #TODO
-    print  request.args.get('username')
-    print  request.args.get('anotherarg0')
-    print  request.args.get('anotherarg1')
-    print  request.args.get('anotherarg2')
-    return """create"""
+    """
+    Test to check
+        Empty fields,
+        Already existing field,
+        The access is well a POST
+        The database add / commit has been successful
+        #TODO Check if username / email / sshkey already exist
+    """
 
-@user.route('/user/edit/', methods=['POST'])
+    if request.method == 'POST':
+        username= request.form['username']
+        email   = request.form['email']
+        sshkey  = request.form['sshkey']
+        comment = request.form['comment']
+
+        # Setting the default output
+        output = """OK: """ + request.form['username'] + """\n"""
+        
+        # Check for mandatory fields
+        if len(username) == 0 | len(sshkey) == 0:
+            output = """ERROR:username and sshkey are mandatory"""
+        else:
+            u = user.User(
+                    username= username,
+                    email   = email,
+                    sshkey  = sshkey,
+                    comment = comment)
+            db.session.add(u)
+
+            # Try to add the user on the databse
+            try:
+                db.session.commit()
+            except exc.SQLAlchemyError:
+                output = """ERROR:""" + exc
+
+    else:
+         output = """ERROR:MUST BE POST"""
+            
+    return output 
+
+@app.route('/user/edit/', methods=['POST','GET'])
 def user_edit():
     #TODO
     print  request.args.get('username')
@@ -36,7 +69,7 @@ def user_edit():
     print  request.args.get('anotherarg2')
     return """edit"""
 
-@user.route('/user/del/<username>')
+@app.route('/user/del/<username>')
 def user_del(username):
     #TODO
     return """delete"""

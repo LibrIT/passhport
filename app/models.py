@@ -1,5 +1,5 @@
 from app import db
-from app.models_mod import user, target, usergroup, targetgroup
+from .models_mod import user, target, usergroup, targetgroup
 
 ###############################################################################
 # Relations tables
