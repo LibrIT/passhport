@@ -14,5 +14,18 @@ class User(db.Model):
     comment = db.Column(db.String(500), index=True)
 
     def __repr__(self):
-        return '<User %r>' % (self.name)
+        # This is represented by all data in it
+        output="""Username: %s\n""" % (self.username.encode('utf8'))
+        # Return email only if it exist
+        if isinstance(self.email, basestring):
+            output = output + """Email: %s\n""" % (self.email.encode('utf8'))
+
+        output = output + """Sshkey: %s\n""" %(self.sshkey.encode('utf8'))
+
+        # Return comment only if it exist
+        if isinstance(self.comment, basestring):
+            output = output + """Comment: %s\n""" \
+                    % (self.comment.encode('utf8'))
+
+        return output
 

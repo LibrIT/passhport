@@ -1,0 +1,18 @@
+# Create a user
+curl -X POST -F "username=elegall" -F "email=erwan@librit.fr" -F "comment=Utilisateur de test" -F "sshkey=$(cat /home/elegall/.ssh/id_rsa.pub)"   http://127.0.0.1:5000/user/create
+
+# Search a user
+curl http://127.0.0.1:5000/user/search/elegall
+
+# List users
+curl http://127.0.0.1:5000/user/list
+
+# Show a user
+curl http://127.0.0.1:5000/user/show/elegall
+
+# Modify a user
+curl -X POST -F "username=elegall" -F "newusername=elegall2" -F "email=erwan@librit.fr2" -F "comment=Utilisateur de test2" -F "sshkey=$(cat /home/elegall/.ssh/id_rsa.pub)2"   http://127.0.0.1:5000/user/edit
+
+# Delete a user
+curl http://127.0.0.1:5000/user/del/elegall
+
