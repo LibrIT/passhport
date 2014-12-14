@@ -61,7 +61,7 @@ def user_create():
     if request.method != 'POST':
         return """POST Method is mandatory\n"""
 
-    # Simplification for the read
+    # Simplification for the reading
     username= request.form['username']
     email   = request.form['email']
     sshkey  = request.form['sshkey']
@@ -93,22 +93,19 @@ def user_edit():
     if request.method != 'POST':
         return """POST Method is mandatory\n"""
 
-    # Simplification for the read
+    # Simplification for the reading
     username    = request.form['username']
     newusername = request.form['newusername']
     email       = request.form['email']
     sshkey      = request.form['sshkey']
     comment     = request.form['comment']
     
-    print "WALLLLEZ" + username
-    print username in locals()
-    print len(username)
-
     # Old username is mandatory to modify the right user
     if len(username) != 0:
         toupdate = db.session.query(user.User).filter_by(username=username)
     else:
         return """ERROR: username is mandatory\n"""
+
     # Let's modify only revelent fields
     try:
         if len(newusername) != 0:
