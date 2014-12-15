@@ -5,95 +5,81 @@ from .models_mod import user, target, usergroup, targetgroup
 # Relations tables
 ###############################################################################
 """
-    User_Target authorized access between users and targets (not including
+    TargetUser authorized access between users and targets (not including
                 groups).
 """
-class User_Target(db.Model):
-
-    id          = db.Column(db.Integer, primary_key=True)
-    user_id     = db.Column(db.Integer, db.ForeignKey('user.id'))
-    target_id   = db.Column(db.Integer, db.ForeignKey('target.id'))
-    
-    def __repr__(self):
-        return '<User_Target %r>' % (self.id)
+class Target_User(db.Model):
+    __tablename__ = 'target_user'
+    target_id   = db.Column(db.Integer, db.ForeignKey('target.id'), 
+                            primary_key=True)
+    user_id     = db.Column(db.Integer, db.ForeignKey('user.id'), 
+                            primary_key=True)
 
 
 """
-    User_Group users in groups
+    Groupuser users in groups
 """
-class User_Group(db.Model):
-
-    id          = db.Column(db.Integer, primary_key=True)
-    user_id     = db.Column(db.Integer, db.ForeignKey('user.id'))
-    group_id    = db.Column(db.Integer, db.ForeignKey('group.id'))
-    
-    def __repr__(self):
-        return '<User_Group %r>' % (self.id)
+class Group_User(db.Model):
+    __tablename__ = 'group_user'
+    group_id    = db.Column(db.Integer, db.ForeignKey('usergroup.id'), 
+                            primary_key=True)
+    user_id     = db.Column(db.Integer, db.ForeignKey('user.id'), 
+                            primary_key=True)
 
 
 """
-    Target_Group Targets a group can access
+    TargetGroup Targets a group can access
 """
 class Target_Group(db.Model):
-
-    id          = db.Column(db.Integer, primary_key=True)
-    target_id   = db.Column(db.Integer, db.ForeignKey('target.id'))
-    group_id    = db.Column(db.Integer, db.ForeignKey('group.id'))
-
-    def __repr__(self):
-        return '<Target_Group %r>' % (self.id)
+    __tablename__ = 'target_group'
+    target_id   = db.Column(db.Integer, db.ForeignKey('target.id'), 
+                            primary_key=True)
+    group_id    = db.Column(db.Integer, db.ForeignKey('usergroup.id'), 
+                            primary_key=True)
 
 
 """
-    Target_Tgroup Targets in targetgroups
+    TgroupTarget Targets in targetgroups
 """
-class Target_TGroup(db.Model):
-
-    id          = db.Column(db.Integer, primary_key=True)
-    target_id   = db.Column(db.Integer, db.ForeignKey('target.id'))
-    tgroup_id   = db.Column(db.Integer, db.ForeignKey('targetgroup.id'))
-
-    def __repr__(self):
-        return '<Target_TGroup %r>' % (self.id)
+class TGroup_Target(db.Model):
+    __tablename__ = 'tgroup_target'
+    tgroup_id   = db.Column(db.Integer, db.ForeignKey('targetgroup.id'), 
+                            primary_key=True)
+    target_id   = db.Column(db.Integer, db.ForeignKey('target.id'), 
+                            primary_key=True)
 
 
 """
-    Group_Group Group in group (a group can contain multiple subgroups)
+    GroupGroup Group in group (a group can contain multiple subgroups)
 """
 class Group_Group(db.Model):
-
-    id                  = db.Column(db.Integer, primary_key=True)
-    group_id            = db.Column(db.Integer, db.ForeignKey('group.id'))
-    containergroup_id   = db.Column(db.Integer, db.ForeignKey('group.id'))
-
-    def __repr__(self):
-        return '<Group_Group %r>' % (self.id)
+    __tablename__ = 'group_group'
+    containergroup_id   = db.Column(db.Integer, db.ForeignKey('usergroup.id'), 
+                                    primary_key=True)
+    group_id            = db.Column(db.Integer, db.ForeignKey('usergroup.id'), 
+                                    primary_key=True)
 
 
 """
-    Tgroup_Tgroup Targets a group can access
+    TgroupTgroup Targets a group can access
 """
-class Tgroup_Tgroup(db.Model):
-
-    id                      = db.Column(db.Integer, primary_key=True)
+class TGroup_TGroup(db.Model):
+    __tablename__ = 'tgroup_tgroup'
     targetgroup_id          = db.Column(db.Integer, 
-                                        db.ForeignKey('targetgroup.id'))
+                                        db.ForeignKey('targetgroup.id'), 
+                                        primary_key=True)
     containertargetgroup_id = db.Column(db.Integer, 
-                                        db.ForeignKey('targetgroup.id'))
-
-    def __repr__(self):
-        return '<Tgroup_Tgroup %r>' % (self.id)
+                                        db.ForeignKey('targetgroup.id'), 
+                                        primary_key=True)
 
 
 """
-    Tgroup_Group Targets in target group a group can access
+    TgroupGroup Targets in target group a group can access
 """
 class Tgroup_Group(db.Model):
-
-    id              = db.Column(db.Integer, primary_key=True)
-    targetgroup_id  = db.Column(db.Integer, db.ForeignKey('targetgroup.id'))
-    group_id        = db.Column(db.Integer, db.ForeignKey('group.id'))
-
-    def __repr__(self):
-        return '<Tgroup_Group %r>' % (self.id)
+    __tablename__ = 'tgroup_group'
+    targetgroup_id  = db.Column(db.Integer, db.ForeignKey('targetgroup.id'), 
+                                primary_key=True)
+    group_id        = db.Column(db.Integer, db.ForeignKey('usergroup.id'), 
+                                primary_key=True)
 

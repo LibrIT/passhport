@@ -4,6 +4,8 @@ from sqlalchemy     import exc
 from sqlalchemy.orm import sessionmaker
 from app            import app, db
 from app.models_mod import target
+from app.models_mod import user
+from app.models_mod import usergroup
 
 
 @app.route("/target/list")
@@ -18,6 +20,7 @@ def target_list():
     return result
 
     return "list of accounts"
+
 
 @app.route('/target/search/<pattern>')
 def target_search(pattern):
@@ -35,6 +38,7 @@ def target_search(pattern):
     for row in query.all():
         result = result + str(row[0]).encode('utf8')+"""\n"""
     return result
+
 
 @app.route('/target/show/<targetname>')
 def target_show(targetname):
@@ -74,7 +78,7 @@ def target_create():
     comment     = request.form['comment']
     
     # Check for mandatory fields
-    if len(targetname) == 0 | len(hostname) == 0:
+    if len(targetname) <= 0 | len(hostname) <= 0:
         return """ERROR: targetname and hostname are mandatory\n"""
 
     if len( port ) == 0:
@@ -115,11 +119,11 @@ def target_edit():
     comment     = request.form['comment']
     
     # Old targetname is mandatory to modify the right user
-    if len(targetname) != 0:
+    if len(targetname) > 0:
         toupdate = db.session.query(target.Target). \
                 filter_by(targetname=targetname)
     else:
-        return """ERROR: username is mandatory\n"""
+        return """ERROR: targetname is mandatory\n"""
 
     # Let's modify only revelent fields
     try:
@@ -149,6 +153,7 @@ def target_edit():
 
     return """OK: """ + targetname + """\n"""
 
+
 @app.route('/target/del/<targetname>')
 def target_del(targetname):
     """
@@ -156,8 +161,12 @@ def target_del(targetname):
         Target exist
         Delete is ok
     """
-    db.session.query(target.Target). \
+    if len(targetname) > 0:
+        db.session.query(target.Target). \
             filter(target.Target.targetname == targetname).delete()
+    else:
+        return """ERROR: targetname is mandatory\n"""
+
     try:
         db.session.commit()
     except exc.SQLAlchemyError:
@@ -165,19 +174,86 @@ def target_del(targetname):
 
     return """deleted\n"""
 
-@app.route('/target/adduser/',methods=['POST'])
-def target_adduser():
-    #TODO
-    print request.args.get('username')
-    print request.args.get('target')
-    return """adduser"""
 
-@app.route('/target/rmuser/',methods=['POST'])
+@app.route('/target/adduser',methods=['POST'])
+def target_adduser():
+    # Only POST data are handled
+    if request.method != 'POST':
+        return """POST Method is mandatory\n"""
+
+    # Simplification for the reading
+    targetname  = request.form['targetname']
+    username    = request.form['username']
+   
+    # We check if both user and target  were sent
+    if len(targetname) > 0 and len(username) > 0 :
+        t = db.session.query(target.Target).filter(
+                target.Target.targetname == targetname).all()
+        u = db.session.query(user.User).filter(
+                user.User.username == username).all()
+    else:
+        return """ERROR: targetname and username are mandatory\n"""
+
+    # Target and user have to exist in database
+    if len(t) > 0:
+        t = t[0] # if there is a bug, we take the first targetname occurence
+    else:
+        return """Error: target does not exist\n"""
+    
+    if len(u) > 0:
+        u = u[0]
+    else:
+        return """Error: user does not exist\n"""
+
+    # Now we can add the user
+    t.adduser(u)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError:
+        return """ERROR: """ + exc
+
+    return username + """ added to """ + targetname + """\n"""
+
+
+@app.route('/target/rmuser',methods=['POST'])
 def target_rmuser():
-    #TODO
-    print request.args.get('username')
-    print request.args.get('target')
-    return """rmuser"""
+    # Only POST data are handled
+    if request.method != 'POST':
+        return """POST Method is mandatory\n"""
+
+    # Simplification for the reading
+    targetname  = request.form['targetname']
+    username    = request.form['username']
+
+    # We check if both user and target  were sent
+    if len(targetname) > 0 and len(username) > 0 :
+        t = db.session.query(target.Target).filter(
+                target.Target.targetname == targetname).all()
+        u = db.session.query(user.User).filter(
+                user.User.username == username).all()
+    else:
+        return """ERROR: targetname and username are mandatory\n"""
+
+    # Target and user have to exist in database
+    if len(t) > 0:
+        t = t[0] # if there is a bug, we take the first targetname occurence
+    else:
+        return """Error: target does not exist\n"""
+    
+    if len(u) > 0:
+        u = u[0]
+    else:
+        return """Error: user does not exist\n"""
+
+    # We can remove the user from this target
+    t.rmuser(u)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError:
+        return """ERROR: """ + exc
+
+    return username + """ removed from """ + targetname + """\n"""
+
 
 @app.route('/target/addusergroup/',methods=['POST'])
 def target_addusergroup():
