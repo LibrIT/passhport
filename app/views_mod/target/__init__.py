@@ -105,20 +105,22 @@ def target_create():
 
 @app.route('/target/edit/', methods=['POST'])
 def target_edit():
+    """ Certainly this should be handled by the ORM... YOLO """
     # Only POST data are handled
     if request.method != 'POST':
         return """POST Method is mandatory\n"""
 
     # Simplification for the reading
-    targetname  = request.form['targetname']
-    hostname    = request.form['hostname']
-    port        = request.form['port']
-    sshoptions  = request.form['sshoptions']
-    servertype  = request.form['servertype']
-    autocommand = request.form['autocommand']
-    comment     = request.form['comment']
+    targetname      = request.form['targetname']
+    newtargetname   = request.form['newtargetname']
+    hostname        = request.form['hostname']
+    port            = request.form['port']
+    sshoptions      = request.form['sshoptions']
+    servertype      = request.form['servertype']
+    autocommand     = request.form['autocommand']
+    comment         = request.form['comment']
     
-    # Old targetname is mandatory to modify the right user
+    # Old targetname is mandatory to modify the right target
     if len(targetname) > 0:
         toupdate = db.session.query(target.Target). \
                 filter_by(targetname=targetname)
@@ -126,28 +128,22 @@ def target_edit():
         return """ERROR: targetname is mandatory\n"""
 
     # Let's modify only revelent fields
+    if len(newtargetname) > 0:
+        toupdate.update({"targetname": str(newtargetname).encode('utf8')})
+    if len(hostname) > 0:
+        toupdate.update({"hostname": str(hostname).encode('utf8')})
+    if len(str(port)) > 0:
+        toupdate.update({"port": port})
+    if len(sshoptions) > 0:
+        toupdate.update({"sshoptions": str(sshoptions).encode('utf8')})
+    if len(severtype) > 0:
+        toupdate.update({"servertype": str(servertype).encode('utf8')})
+    if len(autocommand) > 0:
+        toupdate.update({"autocommand": str(autocommand).encode('utf8')})
+    if len(comment) > 0:
+        toupdate.update({"comment": str(comment).encode('utf8')})
     try:
-        if len(newtargetname) != 0:
-            toupdate.update({"targetname": str(newtargetname).encode('utf8')})
-            db.session.commit()
-        if len(hostname) != 0:
-            toupdate.update({"hostname": str(hostname).encode('utf8')})
-            db.session.commit()
-        if len(str(port)) != 0:
-            toupdate.update({"port": port})
-            db.session.commit()
-        if len(sshoptions) != 0:
-            toupdate.update({"sshoptions": str(sshoptions).encode('utf8')})
-            db.session.commit()
-        if len(severtype) != 0:
-            toupdate.update({"servertype": str(servertype).encode('utf8')})
-            db.session.commit()
-        if len(autocommand) != 0:
-            toupdate.update({"autocommand": str(autocommand).encode('utf8')})
-            db.session.commit()
-        if len(comment) != 0:
-            toupdate.update({"comment": str(comment).encode('utf8')})
-            db.session.commit()
+        db.session.commit()
     except exc.SQLAlchemyError:
         return """ERROR: """ + exc
 
@@ -172,7 +168,7 @@ def target_del(targetname):
     except exc.SQLAlchemyError:
         return """ERROR: """ + exc
 
-    return """deleted\n"""
+    return """Deleted\n"""
 
 
 @app.route('/target/adduser',methods=['POST'])
@@ -185,24 +181,16 @@ def target_adduser():
     targetname  = request.form['targetname']
     username    = request.form['username']
    
-    # We check if both user and target  were sent
-    if len(targetname) > 0 and len(username) > 0 :
-        t = db.session.query(target.Target).filter(
-                target.Target.targetname == targetname).all()
-        u = db.session.query(user.User).filter(
-                user.User.username == username).all()
-    else:
+    if len(targetname) <= 0 or len(username) <= 0 :
         return """ERROR: targetname and username are mandatory\n"""
 
     # Target and user have to exist in database
-    if len(t) > 0:
-        t = t[0] # if there is a bug, we take the first targetname occurence
-    else:
+    t = get_target(targetname)
+    if t == False:
         return """Error: target does not exist\n"""
-    
-    if len(u) > 0:
-        u = u[0]
-    else:
+
+    u = get_user(username)
+    if u == False:
         return """Error: user does not exist\n"""
 
     # Now we can add the user
@@ -225,24 +213,16 @@ def target_rmuser():
     targetname  = request.form['targetname']
     username    = request.form['username']
 
-    # We check if both user and target  were sent
-    if len(targetname) > 0 and len(username) > 0 :
-        t = db.session.query(target.Target).filter(
-                target.Target.targetname == targetname).all()
-        u = db.session.query(user.User).filter(
-                user.User.username == username).all()
-    else:
+    if len(targetname) <= 0 or len(username) <= 0 :
         return """ERROR: targetname and username are mandatory\n"""
 
     # Target and user have to exist in database
-    if len(t) > 0:
-        t = t[0] # if there is a bug, we take the first targetname occurence
-    else:
+    t = get_target(targetname)
+    if t == False:
         return """Error: target does not exist\n"""
-    
-    if len(u) > 0:
-        u = u[0]
-    else:
+
+    u = get_user(username)
+    if u == False:
         return """Error: user does not exist\n"""
 
     # We can remove the user from this target
@@ -257,15 +237,100 @@ def target_rmuser():
 
 @app.route('/target/addusergroup/',methods=['POST'])
 def target_addusergroup():
-    #TODO
-    print request.args.get('groupname')
-    print request.args.get('target')
-    return """addusergroup"""
+    """ Has to be tested """
+    # Only POST data are handled
+    if request.method != 'POST':
+        return """POST Method is mandatory\n"""
+
+    # Simplification for the reading
+    targetname      = request.form['targetname']
+    usergroupname   = request.form['usergroupname']
+   
+    if len(targetname) <= 0 or len(usergroupname) <= 0 :
+        return """ERROR: targetname and usergroupname are mandatory\n"""
+
+    # Target and user have to exist in database
+    t = get_target(targetname)
+    if t == False:
+        return """Error: target does not exist\n"""
+
+    g = get_ugroup(usergroupname)
+    if g == False:
+        return """Error: usergroup does not exist\n"""
+
+    # Now we can add the user
+    t.addusergroup(g)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError:
+        return """ERROR: """ + exc
+
+    return usergroupname + """ added to """ + targetname + """\n"""
+
 
 @app.route('/target/rmusergroup/',methods=['POST'])
 def target_rmusergroup():
-    #TODO
-    print request.args.get('groupname')
-    print request.args.get('target')
-    return """rmusergroup"""
+    """ Has to be tested """
+    # Only POST data are handled
+    if request.method != 'POST':
+        return """POST Method is mandatory\n"""
+
+    # Simplification for the reading
+    targetname      = request.form['targetname']
+    usergroupname   = request.form['usergroupname']
+   
+    if len(targetname) <= 0 or len(usergroupname) <= 0 :
+        return """ERROR: targetname and usergroupname are mandatory\n"""
+
+    # Target and user have to exist in database
+    t = get_target(targetname)
+    if t == False:
+        return """Error: target does not exist\n"""
+
+    g = get_ugroup(usergroupname)
+    if g == False:
+        return """Error: usergroup does not exist\n"""
+
+    # Now we can add the user
+    t.rmusergroup(g)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError:
+        return """ERROR: """ + exc
+
+    return usergroupname + """ added to """ + targetname + """\n"""
+
+
+
+# Utils
+""" Return a Target object from the target name"""
+def get_target(targetname):
+    t = db.session.query(target.Target).filter(
+            target.Target.targetname == targetname).all()
+    # Target must exist in database
+    if len(t) > 0:
+        return t[0]
+    else:
+        return False
+
+""" Return a User object from the user name"""
+def get_user(username):
+    u = db.session.query(user.User).filter(
+             user.User.username == username).all()
+    # User must exist in database
+    if len(u) > 0:
+        return u[0]
+    else:
+        return False
+    
+""" Return a Usergroup object from the usergroup name"""
+def get_user(usergroupname):
+    g = db.session.query(usergroup.Usergroup).filter(
+             usergroup.Usergroup.usergroupname == usergroupname).all()
+    # Usergroup must exist in database
+    if len(g) > 0:
+        return g[0]
+    else:
+        return False
+    
 

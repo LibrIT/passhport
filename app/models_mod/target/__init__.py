@@ -5,7 +5,6 @@ from app import db
 """
 class Target(db.Model):
     __tablename__ = 'target'
-    # 
     id          = db.Column(db.Integer,     primary_key=True)
     targetname  = db.Column(db.String(256), index=True,     unique=True)
     hostname    = db.Column(db.String(120), index=True,     nullable=False)
@@ -17,18 +16,23 @@ class Target(db.Model):
     # Relations
     members     = db.relationship('User', 
                         secondary='target_user')
+    gmembers    = db.relationship('Usergroup', 
+                        secondary='target_group')
 
     def __repr__(self):
         # This is represented by all data in it
-        output ="""Targetname: %s\n""" % (str(self.targetname).encode('utf8'))
-        output = output + """Hostname: %s\n""" % (str(self.hostname).encode('utf8'))
-        output = output + """Port: %s\n""" % (str(self.port).encode('utf8'))
+        output ="""Targetname: %s\n""" \
+                    % (str(self.targetname).encode('utf8'))
+        output = output + """Hostname: %s\n""" \
+                    % (str(self.hostname).encode('utf8'))
+        output = output + """Port: %s\n""" \
+                    % (str(self.port).encode('utf8'))
         output = output + """Sshoptions: %s\n""" \
-                %(str(self.sshoptions).encode('utf8'))
+                    %(str(self.sshoptions).encode('utf8'))
         output = output + """Servertype: %s\n""" \
-                %(str(self.servertype).encode('utf8'))
+                    %(str(self.servertype).encode('utf8'))
         output = output + """Autocommand: %s\n""" \
-                %(str(self.autocommand).encode('utf8'))
+                    %(str(self.autocommand).encode('utf8'))
 
         # Return comment only if it exist
         if isinstance(self.comment, basestring):
@@ -37,6 +41,7 @@ class Target(db.Model):
 
         return output
 
+    """ User management """
     def adduser(self, user):
         # Add a user to the relation table
         if not self.is_member(user):
@@ -51,3 +56,18 @@ class Target(db.Model):
 
     def is_member(self, user):
         return user in self.members
+
+    """ Usergroup management """
+    def addgroup(self, usergroup):
+        if not self.is_gmember(usergroup):
+            self.gmembers.append(usergroup)
+        return self
+
+    def rmgroup(self, usergroup):
+        if self.is_gmember(usergroup):
+            self.gmembers(usergroup)
+        return self
+
+    def is_gmember(self, usergroup):
+        return usergroup in self.members
+
