@@ -81,8 +81,8 @@ def user_create():
     # Try to add the user on the databse
     try:
         db.session.commit()
-    except exc.SQLAlchemyError:
-        return """ERROR: """ + exc + """\n"""
+    except exc.SQLAlchemyError, e:
+        return """ERROR: """ + e.message + """\n"""
 
     return """OK: """ + username + """\n"""
 

@@ -12,6 +12,7 @@ class User(db.Model):
     sshkey  = db.Column(db.String(500), index=False,    unique=True,
                                                         nullable=False)
     comment = db.Column(db.String(500), index=True)
+
     # Relations
     targets = db.relationship('Target',
                     secondary='target_user')
