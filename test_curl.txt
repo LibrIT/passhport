@@ -1,6 +1,6 @@
 ############## USERS ##################
 # Create a user
-curl -X POST -F "username=elegall" -F "email=erwan@librit.fr" -F "comment=Utilisateur de test" -F "sshkey=$(cat /home/elegall/.ssh/id_rsa.pub)"   http://127.0.0.1:5000/user/create
+curl -X POST -F "username=elegall" -F "email=wonderfulmail@onemail.org" -F "comment=Utilisateur de test" -F "sshkey=this_is_a_wonderful_private_key_example"   http://127.0.0.1:5000/user/create
 
 # Search a user
 curl http://127.0.0.1:5000/user/search/elegall
