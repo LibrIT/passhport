@@ -4,7 +4,7 @@ from app import db
     User defines informations for every adminsys using passhport
 """
 class User(db.Model):
-    
+    __tablename__ = 'user'
     id      = db.Column(db.Integer,     primary_key=True)
     username= db.Column(db.String(256), index=True,     unique=True,
                                                         nullable=False)
@@ -13,6 +13,10 @@ class User(db.Model):
                                                         nullable=False)
     comment = db.Column(db.String(500), index=True)
 
+    # Relations
+    targets = db.relationship('Target',
+                    secondary='target_user')
+
     def __repr__(self):
         # This is represented by all data in it
         output="""Username: %s\n""" % (self.username.encode('utf8'))
@@ -20,7 +24,7 @@ class User(db.Model):
         if isinstance(self.email, basestring):
             output = output + """Email: %s\n""" % (self.email.encode('utf8'))
 
-        output = output + """Sshkey: %s\n""" %(self.sshkey.encode('utf8'))
+        output = output + """Sshkey: %s\n""" % (str(self.sshkey).encode('utf8'))
 
         # Return comment only if it exist
         if isinstance(self.comment, basestring):
