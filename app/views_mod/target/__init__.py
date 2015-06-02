@@ -324,7 +324,7 @@ def get_user(username):
         return False
     
 """ Return a Usergroup object from the usergroup name"""
-def get_user(usergroupname):
+def get_usergroup(usergroupname):
     g = db.session.query(usergroup.Usergroup).filter(
              usergroup.Usergroup.usergroupname == usergroupname).all()
     # Usergroup must exist in database
