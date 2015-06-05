@@ -66,14 +66,14 @@ def docopt_cmd(func):
 
 class MyInteractive (cmd.Cmd):
     intro = 'Welcome to interactive program!' \
-        + ' (type help for a list of commands.)'
+        + ' (type help for a list of commands)'
     prompt = '(passhport) '
     file = None
 
     @docopt_cmd
     def do_user(self, arg):
         """
-Usage: 
+Usage:
     user list
     user search <pattern>
     user (show|create|edit|del) <username>
@@ -109,7 +109,7 @@ Arguments:
     pattern         SQL search pattern
     username        Often the login
     target          A target is a combinaison of a server and a port
-    groupname       A group is a combinason of users and targets. A user in a group can access all the targets in it
+    groupname       A group is a combinaison of users and targets. A user in a group can access all the targets in it
     subgroup        Any group can be added to another group (take care to the cycles)
     targetgroup     A group of targets
     subtargetgroup  A group of targets can be added to any group of targets
@@ -118,9 +118,9 @@ Options:
     list            List all groups
     search          Search a group name following the SQL pattern given
     show            Show all the data of a group, including the users/target in it
-    create          Launch the interractive group creation
-    edit            Launch the interractive group modification
-    del             Delete permantely the group entry
+    create          Launch the interactive group creation
+    edit            Launch the interactive group modification
+    del             Delete permanently the group entry
     adduser         Add a user in a group
     rmuser          Remove a user from a group
     addtarget       Add a target in a group
@@ -155,9 +155,9 @@ Options
     list            List all targets
     search          Search a target name following the SQL pattern given
     show            Show all the data of a target
-    create          Launch the interractive target creation
-    edit            Launch the interractive target modification
-    del             Delete permantely the target entry
+    create          Launch the interactive target creation
+    edit            Launch the interactive target modification
+    del             Delete permanently the target entry
     editcommand     Edit the command line launched instead of a classical ssh connexion.
     adduser         Add a user rights on target
     rmuser          Remove a user rights from target
@@ -188,9 +188,9 @@ Options
     list            List all targetgroups
     search          Search a targetgroup name following the SQL pattern given
     show            Show all the data of a targetgroup
-    create          Launch the interractive targetgroup creation
-    edit            Launch the interractive targetgroup modification
-    del             Delete permantely the targetgroup entry
+    create          Launch the interactive targetgroup creation
+    edit            Launch the interactive targetgroup modification
+    del             Delete permanently the targetgroup entry
     adduser         Add a user rights on targetgroup (including all the targets in it)
     rmuser          Remove a user rights from targetgroup
     addusergroup    Add rights to a group of users on this targetgroup
