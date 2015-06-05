@@ -21,23 +21,16 @@ class Target(db.Model):
 
     def __repr__(self):
         # This is represented by all data in it
-        output ="""Targetname: %s\n""" \
-                    % (str(self.targetname).encode('utf8'))
-        output = output + """Hostname: %s\n""" \
-                    % (str(self.hostname).encode('utf8'))
-        output = output + """Port: %s\n""" \
-                    % (str(self.port).encode('utf8'))
-        output = output + """Sshoptions: %s\n""" \
-                    %(str(self.sshoptions).encode('utf8'))
-        output = output + """Servertype: %s\n""" \
-                    %(str(self.servertype).encode('utf8'))
-        output = output + """Autocommand: %s\n""" \
-                    %(str(self.autocommand).encode('utf8'))
+        output ="Targetname: {}\n".format(str(self.targetname).encode('utf8'))
+        output = output + "Hostname: {}\n".format(str(self.hostname).encode('utf8'))
+        output = output + "Port: {}\n".format(str(self.port).encode('utf8'))
+        output = output + "Sshoptions: {}\n".format(str(self.sshoptions).encode('utf8'))
+        output = output + "Servertype: {}\n".format(str(self.servertype).encode('utf8'))
+        output = output + "Autocommand: {}\n".format(str(self.autocommand).encode('utf8'))
 
         # Return comment only if it exist
         if isinstance(self.comment, basestring):
-            output = output + """Comment: %s\n""" \
-                    % (self.comment.encode('utf8'))
+            output = output + "Comment: {}\n".format(self.comment.encode('utf8'))
 
         return output
 

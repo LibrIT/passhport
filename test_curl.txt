@@ -1,6 +1,6 @@
 ############## USERS ##################
 # Create a user
-curl -X POST -F "username=elegall" -F "email=wonderfulmail@onemail.org" -F "comment=Utilisateur de test" -F "sshkey=this_is_a_wonderful_private_key_example"   http://127.0.0.1:5000/user/create
+curl -X POST -F "username=elegall" -F "email=wonderfulmail@onemail.org" -F "comment=Test user" -F "sshkey=this_is_a_wonderful_private_key_example"   http://127.0.0.1:5000/user/create
 
 # Search a user
 curl http://127.0.0.1:5000/user/search/elegall
@@ -12,7 +12,7 @@ curl http://127.0.0.1:5000/user/list
 curl http://127.0.0.1:5000/user/show/elegall
 
 # Modify a user
-curl -X POST -F "username=elegall" -F "newusername=elegall2" -F "email=erwan@librit.fr2" -F "comment=Utilisateur de test2" -F "sshkey=$(cat /home/elegall/.ssh/id_rsa.pub)2"   http://127.0.0.1:5000/user/edit
+curl -X POST -F "username=elegall" -F "newusername=elegall2" -F "email=erwan@librit.fr2" -F "comment=Test user 2" -F "sshkey=$(cat /home/elegall/.ssh/id_rsa.pub)2"   http://127.0.0.1:5000/user/edit
 
 # Delete a user
 curl http://127.0.0.1:5000/user/del/elegall
@@ -20,7 +20,7 @@ curl http://127.0.0.1:5000/user/del/elegall
 #########################################
 ############### TARGET ##################
 # Create Target
-curl -X POST -F "targetname=firstserverevermade" -F "hostname=127.0.01" -F "comment=Server de test" -F "sshoptions=-z" -F "port=22" -F "servertype=Debian" -F "autocommand=this is a bash command"  http://127.0.0.1:5000/target/create
+curl -X POST -F "targetname=firstserverevermade" -F "hostname=127.0.01" -F "comment=Test server" -F "sshoptions=-z" -F "port=22" -F "servertype=Debian" -F "autocommand=this is a bash command"  http://127.0.0.1:5000/target/create
 
 #List Targets
 curl http://127.0.0.1:5000/target/list

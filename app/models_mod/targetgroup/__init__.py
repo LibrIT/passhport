@@ -10,5 +10,5 @@ class Targetgroup(db.Model):
     comment = db.Column(db.String(500), index=True,     unique=False)
 
     def __repr__(self):
-        return '<Targetgroup %r>' % (self.name)
+        return '<Targetgroup {}>'.format(self.name)
 
