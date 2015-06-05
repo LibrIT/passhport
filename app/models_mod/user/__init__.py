@@ -19,17 +19,16 @@ class User(db.Model):
 
     def __repr__(self):
         # This is represented by all data in it
-        output="""Username: %s\n""" % (self.username.encode('utf8'))
+        output="Username: {}\n".format(self.username.encode('utf8'))
         # Return email only if it exist
         if isinstance(self.email, basestring):
-            output = output + """Email: %s\n""" % (self.email.encode('utf8'))
+            output = output + "Email: {}\n".format(self.email.encode('utf8'))
 
-        output = output + """Sshkey: %s\n""" % (str(self.sshkey).encode('utf8'))
+        output = output + "Sshkey: {}\n".format(str(self.sshkey).encode('utf8'))
 
         # Return comment only if it exist
         if isinstance(self.comment, basestring):
-            output = output + """Comment: %s\n""" \
-                    % (self.comment.encode('utf8'))
+            output = output + "Comment: {}\n".format(self.comment.encode('utf8'))
 
         return output
 

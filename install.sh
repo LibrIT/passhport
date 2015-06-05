@@ -15,6 +15,9 @@
 DISTRIBUTIONS="Debian GNU/Linux 7 Debian GNU/Linux 8"
 #Python includes needed for the work
 DEPENDENCIES=( 'from docopt import docopt' 'from flask import Flask' 'from flask.ext.sqlalchemy import SQLAlchemy' 'from migrate.versioning import api' )
+USERNAME="passhport"
+HOMEDIR="/home/${USERNAME}"
+DATABASE="${HOMEDIR}/app.db"
 
 ###################
 # Distribution type
@@ -54,9 +57,34 @@ done
 #################
 # Old application
 #################
+# Testing the user existence
+getent passwd | grep "^${USERNAME}:"
+if [ $? = 0 ]
+then
+    echo "Error: The user ${USERNAME} already exist..."
+    exit 126
+fi
+        
 # Testing Authorized keys file
+if [ -f ${HOMEDIR}/.ssh/authorized_keys2 ]
+then
+    echo "The file ${HOMEDIR}/.ssh/authorized_keys2 already exist. Please create a new user or delete the file."
+    exit 126
+fi
+
 # Testing database (standard one...)
+if [ -f ${DATABASE} ]
+then
+    echo "The database ${DATABASE} already exist. Please delete the file."
+    exit 126
+fi
+
+#################
+# Create the user
+#################
+
 
 #####################
 # Initialize database
 #####################
+

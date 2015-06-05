@@ -16,7 +16,7 @@ def target_list():
     result = ""
     for row in db.session.query( target.Target.targetname )\
             .order_by( target.Target.targetname ):
-        result = result + str(row[0]).encode('utf8')+"""\n"""
+        result = result + str(row[0]).encode('utf8')+"\n"
     return result
 
     return "list of accounts"
@@ -36,7 +36,7 @@ def target_search(pattern):
             .filter(target.Target.targetname.like('%'+pattern+'%'))
 
     for row in query.all():
-        result = result + str(row[0]).encode('utf8')+"""\n"""
+        result = result + str(row[0]).encode('utf8')+"\n"
     return result
 
 
@@ -66,7 +66,7 @@ def target_create():
     """
     # Only POST data are handled
     if request.method != 'POST':
-        return """POST Method is mandatory\n"""
+        return "POST Method is mandatory\n"
 
     # Simplification for the reading
     targetname  = request.form['targetname']
@@ -79,7 +79,7 @@ def target_create():
     
     # Check for mandatory fields
     if len(targetname) <= 0 | len(hostname) <= 0:
-        return """ERROR: targetname and hostname are mandatory\n"""
+        return "ERROR: targetname and hostname are mandatory\n"
 
     if len( port ) == 0:
         port = 22
@@ -97,10 +97,10 @@ def target_create():
     # Try to add the target on the databse
     try:
         db.session.commit()
-    except exc.SQLAlchemyError:
-        return """ERROR: """ + exc + """\n"""
+    except exc.SQLAlchemyError, e:
+        return "ERROR: " + e.message + "\n"
 
-    return """OK: """ + targetname + """\n"""
+    return "OK: " + targetname + "\n"
 
 
 @app.route('/target/edit/', methods=['POST'])
@@ -108,7 +108,7 @@ def target_edit():
     """ Certainly this should be handled by the ORM... YOLO """
     # Only POST data are handled
     if request.method != 'POST':
-        return """POST Method is mandatory\n"""
+        return "POST Method is mandatory\n"
 
     # Simplification for the reading
     targetname      = request.form['targetname']
@@ -125,7 +125,7 @@ def target_edit():
         toupdate = db.session.query(target.Target). \
                 filter_by(targetname=targetname)
     else:
-        return """ERROR: targetname is mandatory\n"""
+        return "ERROR: targetname is mandatory\n"
 
     # Let's modify only revelent fields
     if len(newtargetname) > 0:
@@ -145,9 +145,9 @@ def target_edit():
     try:
         db.session.commit()
     except exc.SQLAlchemyError:
-        return """ERROR: """ + exc
+        return "ERROR: " + exc
 
-    return """OK: """ + targetname + """\n"""
+    return "OK: " + targetname + "\n"
 
 
 @app.route('/target/del/<targetname>')
@@ -161,111 +161,111 @@ def target_del(targetname):
         db.session.query(target.Target). \
             filter(target.Target.targetname == targetname).delete()
     else:
-        return """ERROR: targetname is mandatory\n"""
+        return "ERROR: targetname is mandatory\n"
 
     try:
         db.session.commit()
     except exc.SQLAlchemyError:
-        return """ERROR: """ + exc
+        return "ERROR: " + exc
 
-    return """Deleted\n"""
+    return "Deleted\n"
 
 
 @app.route('/target/adduser',methods=['POST'])
 def target_adduser():
     # Only POST data are handled
     if request.method != 'POST':
-        return """POST Method is mandatory\n"""
+        return "POST Method is mandatory\n"
 
     # Simplification for the reading
     targetname  = request.form['targetname']
     username    = request.form['username']
    
     if len(targetname) <= 0 or len(username) <= 0 :
-        return """ERROR: targetname and username are mandatory\n"""
+        return "ERROR: targetname and username are mandatory\n"
 
     # Target and user have to exist in database
     t = get_target(targetname)
     if t == False:
-        return """Error: target does not exist\n"""
+        return "Error: target does not exist\n"
 
     u = get_user(username)
     if u == False:
-        return """Error: user does not exist\n"""
+        return "Error: user does not exist\n"
 
     # Now we can add the user
     t.adduser(u)
     try:
         db.session.commit()
     except exc.SQLAlchemyError:
-        return """ERROR: """ + exc
+        return "ERROR: " + exc
 
-    return username + """ added to """ + targetname + """\n"""
+    return username + " added to " + targetname + "\n"
 
 
 @app.route('/target/rmuser',methods=['POST'])
 def target_rmuser():
     # Only POST data are handled
     if request.method != 'POST':
-        return """POST Method is mandatory\n"""
+        return "POST Method is mandatory\n"
 
     # Simplification for the reading
     targetname  = request.form['targetname']
     username    = request.form['username']
 
     if len(targetname) <= 0 or len(username) <= 0 :
-        return """ERROR: targetname and username are mandatory\n"""
+        return "ERROR: targetname and username are mandatory\n"
 
     # Target and user have to exist in database
     t = get_target(targetname)
     if t == False:
-        return """Error: target does not exist\n"""
+        return "Error: target does not exist\n"
 
     u = get_user(username)
     if u == False:
-        return """Error: user does not exist\n"""
+        return "Error: user does not exist\n"
 
     # We can remove the user from this target
     t.rmuser(u)
     try:
         db.session.commit()
     except exc.SQLAlchemyError:
-        return """ERROR: """ + exc
+        return "ERROR: " + exc
 
-    return username + """ removed from """ + targetname + """\n"""
+    return username + " removed from " + targetname + "\n"
 
 
 @app.route('/target/addusergroup/',methods=['POST'])
 def target_addusergroup():
-    """ Has to be tested """
+    " Has to be tested "
     # Only POST data are handled
     if request.method != 'POST':
-        return """POST Method is mandatory\n"""
+        return "POST Method is mandatory\n"
 
     # Simplification for the reading
     targetname      = request.form['targetname']
     usergroupname   = request.form['usergroupname']
    
     if len(targetname) <= 0 or len(usergroupname) <= 0 :
-        return """ERROR: targetname and usergroupname are mandatory\n"""
+        return "ERROR: targetname and usergroupname are mandatory\n"
 
     # Target and user have to exist in database
     t = get_target(targetname)
     if t == False:
-        return """Error: target does not exist\n"""
+        return "Error: target does not exist\n"
 
     g = get_ugroup(usergroupname)
     if g == False:
-        return """Error: usergroup does not exist\n"""
+        return "Error: usergroup does not exist\n"
 
     # Now we can add the user
     t.addusergroup(g)
     try:
         db.session.commit()
     except exc.SQLAlchemyError:
-        return """ERROR: """ + exc
+        return "ERROR: " + exc
 
-    return usergroupname + """ added to """ + targetname + """\n"""
+    return usergroupname + " added to " + targetname + "\n"
 
 
 @app.route('/target/rmusergroup/',methods=['POST'])
@@ -273,37 +273,37 @@ def target_rmusergroup():
     """ Has to be tested """
     # Only POST data are handled
     if request.method != 'POST':
-        return """POST Method is mandatory\n"""
+        return "POST Method is mandatory\n"
 
     # Simplification for the reading
     targetname      = request.form['targetname']
     usergroupname   = request.form['usergroupname']
    
     if len(targetname) <= 0 or len(usergroupname) <= 0 :
-        return """ERROR: targetname and usergroupname are mandatory\n"""
+        return "ERROR: targetname and usergroupname are mandatory\n"
 
     # Target and user have to exist in database
     t = get_target(targetname)
     if t == False:
-        return """Error: target does not exist\n"""
+        return "Error: target does not exist\n"
 
     g = get_ugroup(usergroupname)
     if g == False:
-        return """Error: usergroup does not exist\n"""
+        return "Error: usergroup does not exist\n"
 
     # Now we can add the user
     t.rmusergroup(g)
     try:
         db.session.commit()
     except exc.SQLAlchemyError:
-        return """ERROR: """ + exc
+        return "ERROR: " + exc
 
-    return usergroupname + """ added to """ + targetname + """\n"""
+    return usergroupname + " added to " + targetname + "\n"
 
 
 
 # Utils
-""" Return a Target object from the target name"""
+" Return a Target object from the target name"
 def get_target(targetname):
     t = db.session.query(target.Target).filter(
             target.Target.targetname == targetname).all()
