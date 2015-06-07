@@ -8,6 +8,14 @@
 # Create the first admin
 
 
+# First of all: must be launched as root
+if [ $EUID -ne 0 ]; then
+    echo "This script must be run as root" 1>&2
+    exit 1
+fi
+
+
+
 ############
 # Variables
 ############ 
@@ -18,6 +26,8 @@ DEPENDENCIES=( 'from docopt import docopt' 'from flask import Flask' 'from flask
 USERNAME="passhport"
 HOMEDIR="/home/${USERNAME}"
 DATABASE="${HOMEDIR}/app.db"
+PASSWORD="$(openssl passwd -crypt $( < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8))" #crypted
+DIRNAME="$(dirname $0)"
 
 ###################
 # Distribution type
@@ -82,9 +92,25 @@ fi
 #################
 # Create the user
 #################
-
+echo "Creating the ${USERNAME} user on the system"
+useradd -U -p ${PASSWORD} ${USERNAME}
+chown -R ${USERNAME}: ${BASEDIR}
 
 #####################
 # Initialize database
 #####################
+echo "Initialize database"
+curdir=${pwd}
+su ${USERNAME}
+cd ${curdir}
+cd ${DIRNAME}
+./db_create.py
+
+#######################
+# Create the first user
+#######################
+#TODO
+
+echo "All actions done."
+
 
