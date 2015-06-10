@@ -58,6 +58,7 @@ def docopt_cmd(func):
 
         return func(self, opt)
 
+
     fn.__name__ = func.__name__
     fn.__doc__ = func.__doc__
     fn.__dict__.update(func.__dict__)
