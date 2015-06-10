@@ -82,8 +82,8 @@ def user_create():
     try:
         db.session.commit()
     except exc.SQLAlchemyError, e:
-        return "ERROR: " + e.message + "\n", 409, {'Content-Type': 'text/plain'}
-
+        return "ERROR: user " + username + "-> " + e.message + "\n", 409, {'Content-Type': 'text/plain'}
+    
     return "OK: Created user: " + username + "\n", 200, {'Content-Type': 'text/plain'}
 
 
