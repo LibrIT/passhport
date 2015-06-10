@@ -12,9 +12,10 @@ def create_user():
     print("Creating_user…")
 
     user_data = {'username': 'efrit', 'email': 'awesome_mail@onemail.org', 'comment': 'Utilisateur de test', 'sshkey': 'this_is_an_awesome_private_key_example'}
+    url_create = url_passhport + "user/create"
 
     try:
-        r = requests.post(url_passhport + 'user/create', data = user_data)
+        r = requests.post(url_create, data = user_data)
     except ConnectionError, e:
         print("ERROR:" + e.message)
     except HTTPError, e:
@@ -24,64 +25,118 @@ def create_user():
     except TooManyRedirects, e:
         print("ERROR:" + e.message)
 
-    print(r.content)
+    print(r.text)
 
     if r.status_code == requests.codes.ok:
         return 0
 
     return 1
-def search_user(user):
-	print("Searching user {user}…".format({user} = user))
 
-	url_search = url + "/search" + user
+def search_user():
+    """Search a user"""
 
-	r = requests.get(url_search)
+    print("Searching user…")
 
-	if r.status_code == requests.codes.ok:
-		print("Done.")
-		print("Return message: {message}".format({message} = r.text))
-	else:
-		print("Error {error} while searching a user.".format({error} = r.status_code))
+    username = "efrit"
+    url_search = url_passhport + "user/search/" + username
+
+    try:
+        r = requests.get(url_search)
+    except ConnectionError, e:
+        print("ERROR:" + e.message)
+    except HTTPError, e:
+        print("ERROR:" + e.message)
+    except Timeout, e:
+        print("ERROR:" + e.message)
+    except TooManyRedirects, e:
+        print("ERROR:" + e.message)
+
+    print(r.text)
+
+    if r.status_code == requests.codes.ok:
+        return 0
+
+    return 1
 
 def list_users():
-	print("Listing user…")
+    """List users"""
 
-	url_list = url + "/list"
+    print("Listing users…")
 
-	r = requests.get(url_list)
+    url_list = url_passhport + "user/list"
 
-	if r.status_code == requests.codes.ok:
-		print("Done.")
-		print("Return message: {message}".format({message} = r.text))
-	else:
-		print("Error {error} while listing users.".format({error} = r.status_code))
+    try:
+        r = requests.get(url_list)
+    except ConnectionError, e:
+        print("ERROR:" + e.message)
+    except HTTPError, e:
+        print("ERROR:" + e.message)
+    except Timeout, e:
+        print("ERROR:" + e.message)
+    except TooManyRedirects, e:
+        print("ERROR:" + e.message)
 
-def show_user(user):
-	print("Showing user…")
+    print(r.text)
 
-	url_show = url + "/show" + user
+    if r.status_code == requests.codes.ok:
+        return 0
 
-	r = requests.get(url_show)
+    return 1
 
-	if r.status_code == requests.codes.ok:
-		print("Done.")
-		print("Return message: {message}".format({message} = r.text))
-	else:
-		print("Error {error} while showing user.".format({error} = r.status_code))
+def show_user():
+    """Show a user"""
 
-def modify_user(user):
-	print("Modifying user…")
+    print("Showing user…")
 
-	url_modify = url + "/edit"
+    username = "efrit"
+    url_show = url_passhport + "user/show/" + username
 
-	user_data = {'username': user, 'newusername': 'newefrit', 'email': 'somerandom@email.org', 'comment': 'acomment', 'sshkey': 'a_random_key'}
+    try:
+        r = requests.get(url_show)
+    except ConnectionError, e:
+        print("ERROR:" + e.message)
+    except HTTPError, e:
+        print("ERROR:" + e.message)
+    except Timeout, e:
+        print("ERROR:" + e.message)
+    except TooManyRedirects, e:
+        print("ERROR:" + e.message)
 
-	r = requests.post(url_modify, data = user_data)
+    print(r.text)
 
-	if r.status_code == requests.codes.ok:
-		print("Done.")
-		print("Return message: {message}".format({message} = r.text))
-	else:
-		print("Error {error} while modifying user.".format({error} = r.status_code))
+    if r.status_code == requests.codes.ok:
+        return 0
 
-sys.exit(create_user())
+    return 1
+
+def modify_user():
+    """Modify a user"""
+
+    print("Modifying user…")
+
+    url_modify = url_passhport + "user/edit"
+    user_data = {'username': 'efrit', 'newusername': 'newefrit', 'email': 'somerandom@email.org', 'comment': 'acomment', 'sshkey': 'a_random_key'}
+
+    try:
+        r = requests.post(url_modify, data = user_data)
+    except ConnectionError, e:
+        print("ERROR:" + e.message)
+    except HTTPError, e:
+        print("ERROR:" + e.message)
+    except Timeout, e:
+        print("ERROR:" + e.message)
+    except TooManyRedirects, e:
+        print("ERROR:" + e.message)
+
+    print(r.text)
+
+    if r.status_code == requests.codes.ok:
+        return 0
+
+    return 1
+
+create_user()
+search_user()
+list_users()
+show_user()
+modify_user()

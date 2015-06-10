@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*-coding:Utf-8 -*-
+
 """
 Usage:
     passhport-admin (-i | --interactive)
@@ -32,6 +34,7 @@ Options:
 
 import sys
 import cmd
+import manage_user as mu
 from docopt import docopt, DocoptExit
 
 
@@ -198,8 +201,8 @@ Options
     rmusergroup     Remove rights from a group of users on this targetgroup
     addtargetgroup  Add a group of targets on this group
     rmtargetgroup   Remove a group of target from this group
-    """    
-    
+    """
+
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
 
@@ -208,7 +211,24 @@ Options
 
 opt = docopt(__doc__, sys.argv[1:])
 
-if opt['--interactive']:
-    MyInteractive().cmdloop()
+def prompt_user_create():
+    """Ask arguments for user creation"""
+
+    # 2.7 compatibility
+    try: input = raw_input
+    except NameError: pass
+
+    email = input("Email: ")
+    comment = input("Comment: ")
+    sshkey = input("SSHKey: ")
+
+    return mu.requests_user_create(opt['<username>'], email, comment, sshkey)
+
+if __name__ == '__main__':
+    if opt['--interactive']:
+        MyInteractive().cmdloop()
+    elif opt['user']:
+        if opt['create']:
+            prompt_user_create()
 
 print(opt)
