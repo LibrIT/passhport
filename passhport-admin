@@ -32,6 +32,7 @@ Options:
 
 import sys
 import cmd
+import user_requests as ur
 from docopt import docopt, DocoptExit
 
 
@@ -198,7 +199,7 @@ Options
     addtargetgroup  Add a group of targets on this group
     rmtargetgroup   Remove a group of target from this group
     """    
-    
+
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
 
@@ -207,7 +208,19 @@ Options
 
 opt = docopt(__doc__, sys.argv[1:])
 
-if opt['--interactive']:
-    MyInteractive().cmdloop()
+def prompt_user_create():
+    username = input("Username? ")
+    email = input("Email? ")
+    comment = input("Comment? ")
+    sshkey = input("SSHKey? ")
+
+    return ur.create_user(username, email, comment, sshkey)
+
+if __name__ == '__main__':
+    if opt['--interactive']:
+        MyInteractive().cmdloop()
+    elif opt['user']:
+        if opt['create']:
+            prompt_user_create()
 
 print(opt)
