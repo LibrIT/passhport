@@ -14,13 +14,11 @@ class Usergroup(db.Model):
 
     def __repr__(self):
         # This is represented by all data in it
-        output ="""Groupname: %s\n""" \
-                    % (str(self.groupname).encode('utf8'))
+        output ="Groupname: {}\n".format(str(self.groupname).encode('utf8'))
 
         # Return comment only if it exist
         if isinstance(self.comment, basestring):
-            output = output + """Comment: %s\n""" \
-                    % (self.comment.encode('utf8'))
+            output = output + "Comment: {}\n".format(self.comment.encode('utf8'))
 
         return output
 

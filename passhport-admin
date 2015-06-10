@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 """
 Usage:
-    passhport (-i | --interactive)
-    passhport user list
-    passhport user search <pattern>
-    passhport user (show|create|edit|del) <username>
-    passhport usergroup list
-    passhport usergroup search <pattern>
-    passhport usergroup (show|create|edit|del) <groupname>
-    passhport usergroup (adduser|rmuser) <username> <groupname>
-    passhport usergroup (addtarget|rmtarget) <target> <groupname>
-    passhport usergroup (addgroup|rmgroup) <subgroup> <groupname>
-    passhport usergroup (addtargetgroup|rmtargetgroup) <targetgroup> <groupname>
-    passhport (-h | --version)
+    passhport-admin (-i | --interactive)
+    passhport-admin user list
+    passhport-admin user search <pattern>
+    passhport-admin user (show|create|edit|del) <username>
+    passhport-admin usergroup list
+    passhport-admin usergroup search <pattern>
+    passhport-admin usergroup (show|create|edit|del) <groupname>
+    passhport-admin usergroup (adduser|rmuser) <username> <groupname>
+    passhport-admin usergroup (addtarget|rmtarget) <target> <groupname>
+    passhport-admin usergroup (addgroup|rmgroup) <subgroup> <groupname>
+    passhport-admin usergroup (addtargetgroup|rmtargetgroup) <targetgroup> <groupname>
+    passhport-admin (-h | --version)
 
 Arguments:
     pattern         SQL search pattern
