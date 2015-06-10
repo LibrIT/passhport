@@ -221,6 +221,7 @@ def prompt_user_create():
     email = input("Email: ")
     comment = input("Comment: ")
     sshkey = input("SSHKey: ")
+    print(sshkey)
 
     return mu.requests_user_create(opt['<username>'], email, comment, sshkey)
 

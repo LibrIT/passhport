@@ -66,10 +66,21 @@ def user_create():
     email   = request.form['email']
     sshkey  = request.form['sshkey']
     comment = request.form['comment']
-    
+ 
     # Check for mandatory fields
     if (len(username) == 0) or (len(sshkey) == 0):
         return "ERROR: username and sshkey are mandatory\n", 417, {'Content-Type': 'text/plain'}
+
+    # Check unicity for username
+    # Check unicity for email
+    if email != "":
+        result = ""
+        query = db.session.query(user.User.email)\
+            .filter(user.User.email.like('%' + email + '%'))
+
+        for row in query.all():
+            result = result + str(row[0]).encode('utf8') + "\n"
+    # Check unicity for sshkey
 
     u = user.User(
             username= username,
