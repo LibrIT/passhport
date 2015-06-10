@@ -68,7 +68,7 @@ def user_create():
     comment = request.form['comment']
     
     # Check for mandatory fields
-    if len(username) == 0 | len(sshkey) == 0:
+    if (len(username) == 0) or (len(sshkey) == 0):
         return "ERROR: username and sshkey are mandatory\n", 417, {'Content-Type': 'text/plain'}
 
     u = user.User(
