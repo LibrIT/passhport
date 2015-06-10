@@ -12,7 +12,7 @@ def user_list():
     result = ""
     for row in db.session.query(user.User.username).order_by(user.User.username):
         result = result + str(row[0]).encode('utf8')+"\n"
-    return result
+    return result, 200, {'Content-Type': 'text/plain'}
 
 
 @app.route('/user/search/<pattern>')
@@ -30,7 +30,7 @@ def user_search(pattern):
 
     for row in query.all():
         result = result + str(row[0]).encode('utf8')+"\n"
-    return result
+    return result, 200, {'Content-Type': 'text/plain'}
 
 
 @app.route('/user/show/<username>')
@@ -44,7 +44,7 @@ def user_show(username):
     """
     u = user.User.query.filter_by(username=username).first()
     userdata=str(u)
-    return userdata
+    return userdata, 200, {'Content-Type': 'text/plain'}
 
 
 @app.route('/user/create', methods=['POST'])
@@ -69,7 +69,7 @@ def user_create():
     
     # Check for mandatory fields
     if len(username) == 0 | len(sshkey) == 0:
-        return "ERROR: username and sshkey are mandatory\n"
+        return "ERROR: username and sshkey are mandatory\n", 417, {'Content-Type': 'text/plain'}
 
     u = user.User(
             username= username,
@@ -82,16 +82,16 @@ def user_create():
     try:
         db.session.commit()
     except exc.SQLAlchemyError, e:
-        return "ERROR: " + e.message + "\n"
+        return "ERROR: " + e.message + "\n", 409, {'Content-Type': 'text/plain'}
 
-    return "OK: " + username + "\n"
+    return "OK: Created user: " + username + "\n", 200, {'Content-Type': 'text/plain'}
 
 
 @app.route('/user/edit', methods=['POST'])
 def user_edit():
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n"
+        return "POST Method is mandatory\n", 417, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
     username    = request.form['username']
@@ -104,7 +104,7 @@ def user_edit():
     if len(username) != 0:
         toupdate = db.session.query(user.User).filter_by(username=username)
     else:
-        return "ERROR: username is mandatory\n"
+        return "ERROR: username is mandatory\n", 417, {'Content-Type': 'text/plain'}
 
     # Let's modify only revelent fields
     try:
@@ -121,9 +121,10 @@ def user_edit():
             toupdate.update({"comment": str(comment).encode('utf8')})
             db.session.commit()
     except exc.SQLAlchemyError:
-        return "ERROR: " + exc
+        return "ERROR: " + exc, 417, {'Content-Type': 'text/plain'}
+    
+    return "OK: User modified: " + username + "\n", 200, {'Content-Type': 'text/plain'}
 
-    return "OK: " + username + "\n"
 
 @app.route('/user/del/<username>')
 def user_del(username):
@@ -134,5 +135,5 @@ def user_del(username):
     """
     db.session.query(user.User).filter(user.User.username == username).delete()
     db.session.commit()
-    return "deleted\n"
+    return "Deleted: " + username + "\n", 200, {'Content-Type': 'text/plain'}
 
