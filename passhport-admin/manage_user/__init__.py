@@ -6,10 +6,10 @@ import requests
 
 url_passhport = "http://127.0.0.1:5000/"
 
-def requests_user_create(username, email, comment, sshkey):
+def requests_user_create(email, comment, sshkey):
     """User creation on passhportd via API"""
 
-    user_data = {'username': username, 'email': email, 'comment': comment, 'sshkey': sshkey}
+    user_data = {'email': email, 'comment': comment, 'sshkey': sshkey}
     url_create = url_passhport + "user/create"
 
     try:

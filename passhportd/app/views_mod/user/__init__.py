@@ -14,7 +14,6 @@ def user_list():
         result = result + str(row[0]).encode('utf8')+"\n"
     return result, 200, {'Content-Type': 'text/plain'}
 
-
 @app.route('/user/search/<pattern>')
 def user_search(pattern):
     """
@@ -55,24 +54,40 @@ def user_create():
         Already existing field,
         The access is well a POST
         The database add / commit has been successful
-        #TODO Check if username / email / sshkey already exist
+        #TODO Check if / email / sshkey already exist
     """
     # Only POST data are handled
     if request.method != 'POST':
         return "POST Method is mandatory\n"
 
     # Simplification for the reading
-    username= request.form['username']
     email   = request.form['email']
     sshkey  = request.form['sshkey']
     comment = request.form['comment']
-    
+
     # Check for mandatory fields
-    if (len(username) == 0) or (len(sshkey) == 0):
-        return "ERROR: username and sshkey are mandatory\n", 417, {'Content-Type': 'text/plain'}
+    if (len(email) == 0) or (len(sshkey) == 0):
+        return "ERROR: Email and SSHKey are mandatory\n", 417, {'Content-Type': 'text/plain'}
+
+    # Check unicity for email
+    result = ""
+    query = db.session.query(user.User.email)\
+        .filter(user.User.email.like('%' + email + '%'))
+
+    for row in query.all():
+        if str(row[0]) == email:
+            return "ERROR: the email " + email + " is already used by another user.\n"
+
+    # Check unicity for sshkey
+    result = ""
+    query = db.session.query(user.User.sshkey)\
+        .filter(user.User.sshkey.like('%' + sshkey + '%'))
+
+    for row in query.all():
+        if str(row[0]) == sshkey:
+            return "ERROR: the SSHkey " + sshkey + " is already used by another user."
 
     u = user.User(
-            username= username,
             email   = email,
             sshkey  = sshkey,
             comment = comment)
@@ -82,10 +97,9 @@ def user_create():
     try:
         db.session.commit()
     except exc.SQLAlchemyError, e:
-        return "ERROR: " + username + " -> " + e.message + "\n", 409, {'Content-Type': 'text/plain'}
-    
-    return "OK: " + username + " -> Created" + "\n", 200, {'Content-Type': 'text/plain'}
+        return "ERROR: " + email + " -> " + e.message + "\n", 409, {'Content-Type': 'text/plain'}
 
+    return "OK: " + email + " -> Created" + "\n", 200, {'Content-Type': 'text/plain'}
 
 @app.route('/user/edit', methods=['POST'])
 def user_edit():
@@ -99,7 +113,7 @@ def user_edit():
     email       = request.form['email']
     sshkey      = request.form['sshkey']
     comment     = request.form['comment']
-    
+
     # Old username is mandatory to modify the right user
     if len(username) != 0:
         toupdate = db.session.query(user.User).filter_by(username=username)
@@ -122,7 +136,7 @@ def user_edit():
             db.session.commit()
     except exc.SQLAlchemyError:
         return "ERROR: " + exc, 417, {'Content-Type': 'text/plain'}
-    
+
     return "OK: User modified: " + username + "\n", 200, {'Content-Type': 'text/plain'}
 
 
@@ -136,4 +150,3 @@ def user_del(username):
     db.session.query(user.User).filter(user.User.username == username).delete()
     db.session.commit()
     return "Deleted: " + username + "\n", 200, {'Content-Type': 'text/plain'}
-
