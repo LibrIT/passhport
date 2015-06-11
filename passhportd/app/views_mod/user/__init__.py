@@ -80,6 +80,7 @@ def user_create():
     query = db.session.query(user.User.email)\
         .filter(user.User.email.like(email))
 
+    # normally only one row
     for row in query.all():
         if str(row[0]) == email:
             return "ERROR: the email " + email + " is already used by another user.\n"
