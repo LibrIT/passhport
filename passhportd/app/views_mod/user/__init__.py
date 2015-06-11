@@ -10,7 +10,7 @@ def user_list():
     Return the users list from database query
     """
     result = ""
-    for row in db.session.query(user.User.username).order_by(user.User.username):
+    for row in db.session.query(user.User.email).order_by(user.User.email):
         result = result + str(row[0]).encode('utf8')+"\n"
     return result, 200, {'Content-Type': 'text/plain'}
 
@@ -32,8 +32,8 @@ def user_search(pattern):
     return result, 200, {'Content-Type': 'text/plain'}
 
 
-@app.route('/user/show/<username>')
-def user_show(username):
+@app.route('/user/show/<email>')
+def user_show(email):
     """
     To check
         Empty pattern
@@ -41,10 +41,15 @@ def user_show(username):
         Specific characters
         upper and lowercases
     """
-    u = user.User.query.filter_by(username=username).first()
-    userdata=str(u)
-    return userdata, 200, {'Content-Type': 'text/plain'}
 
+    # check if email is empty
+    if (len(email) == 0):
+        return "ERROR: Email cannot be empty\n", 418, {'Content-Type': 'text/plain'}
+
+    u = user.User.query.filter_by(email = email).first()
+    userdata = str(u)
+
+    return userdata, 200, {'Content-Type': 'text/plain'}
 
 @app.route('/user/create', methods=['POST'])
 def user_create():
@@ -56,6 +61,7 @@ def user_create():
         The database add / commit has been successful
         #TODO Check if / email / sshkey already exist
     """
+
     # Only POST data are handled
     if request.method != 'POST':
         return "POST Method is mandatory\n"
@@ -72,8 +78,9 @@ def user_create():
     # Check unicity for email
     result = ""
     query = db.session.query(user.User.email)\
-        .filter(user.User.email.like('%' + email + '%'))
+        .filter(user.User.email.like(email))
 
+    # normally only one row
     for row in query.all():
         if str(row[0]) == email:
             return "ERROR: the email " + email + " is already used by another user.\n"
@@ -81,7 +88,7 @@ def user_create():
     # Check unicity for sshkey
     result = ""
     query = db.session.query(user.User.sshkey)\
-        .filter(user.User.sshkey.like('%' + sshkey + '%'))
+        .filter(user.User.sshkey.like(sshkey))
 
     for row in query.all():
         if str(row[0]) == sshkey:

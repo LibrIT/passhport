@@ -33,7 +33,8 @@ Options:
 
 import sys
 import cmd
-import manage_user as mu
+import manage_user.prompt_functions as usr_prompt
+import manage_user.requests_functions as usr_req
 from docopt import docopt, DocoptExit
 
 
@@ -159,7 +160,8 @@ Options
     show            Show all the data of a target
     create          Launch the interactive target creation
     edit            Launch the interactive target modification
-    del             Delete permanently the target entry
+    del             Deif __name__ == '__main__':
+lete permanently the target entry
     editcommand     Edit the command line launched instead of a classical ssh connexion.
     adduser         Add a user rights on target
     rmuser          Remove a user rights from target
@@ -209,25 +211,13 @@ Options
 
 opt = docopt(__doc__, sys.argv[1:])
 
-def prompt_user_create():
-    """Ask arguments for user creation"""
-
-    # 2.7 compatibility
-    try: input = raw_input
-    except NameError: pass
-
-    email = input("Email: ")
-    comment = input("Comment: ")
-    sshkey = input("SSHKey: ")
-    print(sshkey)
-
-    return mu.requests_user_create(email, comment, sshkey)
-
 if __name__ == '__main__':
     if opt['--interactive']:
         MyInteractive().cmdloop()
     elif opt['user']:
         if opt['create']:
-            prompt_user_create()
+            usr_prompt.prompt_user_create()
+        elif opt['show']:
+            usr_prompt.prompt_user_show()
 
 print(opt)
