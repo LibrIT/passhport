@@ -29,3 +29,8 @@ def prompt_user_show():
     print("")
 
     return req.requests_user_show(email)
+
+def prompt_user_list():
+    """List all the users in the database"""
+
+    return req.requests_user_list()

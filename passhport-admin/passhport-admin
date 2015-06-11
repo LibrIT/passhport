@@ -217,6 +217,8 @@ if __name__ == '__main__':
     if opt['--interactive']:
         MyInteractive().cmdloop()
     elif opt['user']:
+        if opt['list']:
+            usr_prompt.prompt_user_list()
         if opt['create']:
             if opt['<email>']:
                 if opt['<comment>']:

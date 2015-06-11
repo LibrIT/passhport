@@ -9,9 +9,13 @@ def user_list():
     """
     Return the users list from database query
     """
+
     result = ""
-    for row in db.session.query(user.User.email).order_by(user.User.email):
-        result = result + str(row[0]).encode('utf8')+"\n"
+    query = db.session.query(user.User.email).order_by(user.User.email)
+
+    for row in query.all():
+        result = result + str(row[0]).encode('utf8') + "\n"
+
     return result, 200, {'Content-Type': 'text/plain'}
 
 @app.route('/user/search/<pattern>')
