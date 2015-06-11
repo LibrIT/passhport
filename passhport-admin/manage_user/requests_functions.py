@@ -16,10 +16,7 @@ def requests_user_list():
     except requests.RequestException, e:
         print("ERROR: " + str(e.message))
     else:
-        if r.text == "":
-            print("No user in database.\n")
-        else:
-            print(r.text)
+        print(r.text)
 
         if r.status_code == requests.codes.ok:
             return 0
@@ -36,10 +33,7 @@ def requests_user_search(pattern):
     except requests.RequestException, e:
         print("ERROR: " + str(e.message))
     else:
-        if r.text == "":
-            print("No user found with this pattern.\n")
-        else:
-            print(r.text)
+        print(r.text)
 
         if r.status_code == requests.codes.ok:
             return 0
@@ -78,7 +72,6 @@ def requests_user_show(email):
 
         if r.status_code == requests.codes.ok:
             return 0
-# -*-coding:Utf-8 -*-
 
     return 1
 

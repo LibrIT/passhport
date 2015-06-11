@@ -8,15 +8,16 @@ from app.models_mod import user
 
 @app.route('/user/list')
 def user_list():
-    """
-    Return the users list from database query
-    """
+    """Return the users list from database query"""
 
     result = ""
     query = db.session.query(user.User.email).order_by(user.User.email)
 
     for row in query.all():
         result = result + str(row[0]).encode('utf8') + "\n"
+
+    if result == "":
+        return "No user in database.\n", 200, {'Content-Type': 'text/plain'}
 
     return result, 200, {'Content-Type': 'text/plain'}
 
@@ -37,6 +38,9 @@ def user_search(pattern):
     for row in query.all():
         result = result + str(row[0]).encode('utf8') + "\n"
 
+    if result == "":
+        return "ERROR: no user matching the pattern " + pattern + " found.\n", 404, {'Content-Type': 'text/plain'}
+
     return result, 200, {'Content-Type': 'text/plain'}
 
 @app.route('/user/show/<email>')
@@ -55,6 +59,9 @@ def user_show(email):
 
     u = user.User.query.filter_by(email = email).first()
     userdata = str(u)
+
+    if userdata == "None":
+        return "ERROR: No user with email " + email + " in the database.\n", 404, {'Content-Type': 'text/plain'}
 
     return userdata, 200, {'Content-Type': 'text/plain'}
 
