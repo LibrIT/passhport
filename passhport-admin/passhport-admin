@@ -6,7 +6,7 @@ Usage:
     passhport-admin (-i | --interactive)
     passhport-admin user list
     passhport-admin user search <pattern>
-    passhport-admin user (show|create|edit|del) <username>
+    passhport-admin user (show|create|edit|del)
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
     passhport-admin usergroup (show|create|edit|del) <groupname>
@@ -18,13 +18,12 @@ Usage:
 
 Arguments:
     pattern         SQL search pattern
-    username        Often the login
     target          A target is a combinaison of a server and a port
     groupname       A group is a combinason of users and targets. A user in a group can access all the targets in it
     subgroup        Any group can be added to another group (take care to the cycles)
     targetgroup     A group of targets
     subtargetgroup  A group of targets can be added to any group of targets
-    
+
 Options:
     user                manage users data
     usergroup           manage group of users
@@ -80,19 +79,18 @@ class MyInteractive (cmd.Cmd):
 Usage:
     user list
     user search <pattern>
-    user (show|create|edit|del) <username>
-    
+    user (show|create|edit|del)
+
 Arguments:
     pattern         SQL search pattern
-    username        Often the login
 
 Options:
     list            List all users (use with care on huge installations)
     search          Search a user following the SQL pattern given
     show            Show all the data of a user
-    create          Launch the interractive user creation
-    edit            Launch the interractive user modification
-    del             Delete permantely the user entry"""
+    create          Launch the interactive user creation
+    edit            Launch the interactive user modification
+    del             Delete permanently the user entry"""
 
         #TODO
         print(arg)
@@ -100,7 +98,7 @@ Options:
     @docopt_cmd
     def do_usergroup(self, arg):
         """
-Usage: 
+Usage:
     usergroup list
     usergroup search <pattern>
     usergroup (show|create|edit|del) <groupname>
@@ -134,7 +132,7 @@ Options:
     addtargetgroup  Add a group of targets to another group
     urmtargetgroup  Remove a group of targets to another group
     """
-        #TODO 
+        #TODO
         print(arg)
 
     @docopt_cmd
@@ -152,9 +150,9 @@ Arguments:
     pattern         SQL search pattern
     username        Often the login
     targetname      Often a hostname
-    groupname       A passhport group name 
+    groupname       A passhport group name
     command         A unix command that will be triggered instead of classical ssh connexion
-    
+
 Options
     list            List all targets
     search          Search a target name following the SQL pattern given
@@ -186,8 +184,8 @@ Arguments:
     username        Often the login
     targetname      Often a hostname
     targetgroupname A group of targets already existing
-    groupname       A passhport group name 
-    
+    groupname       A passhport group name
+
 Options
     list            List all targetgroups
     search          Search a targetgroup name following the SQL pattern given
@@ -223,7 +221,7 @@ def prompt_user_create():
     sshkey = input("SSHKey: ")
     print(sshkey)
 
-    return mu.requests_user_create(opt['<username>'], email, comment, sshkey)
+    return mu.requests_user_create(email, comment, sshkey)
 
 if __name__ == '__main__':
     if opt['--interactive']:
