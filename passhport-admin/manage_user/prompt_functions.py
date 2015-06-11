@@ -4,6 +4,16 @@
 
 import requests_functions as req
 
+def prompt_user_list():
+    """List all users in the database"""
+
+    return req.requests_user_list()
+
+def prompt_user_search(pattern):
+    """Search a user according to the pattern"""
+
+    return req.requests_user_search(pattern)
+
 def prompt_user_create():
     """Ask arguments for user creation"""
 
@@ -29,8 +39,3 @@ def prompt_user_show():
     print("")
 
     return req.requests_user_show(email)
-
-def prompt_user_list():
-    """List all the users in the database"""
-
-    return req.requests_user_list()

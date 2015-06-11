@@ -219,7 +219,9 @@ if __name__ == '__main__':
     elif opt['user']:
         if opt['list']:
             usr_prompt.prompt_user_list()
-        if opt['create']:
+        elif opt['search']:
+            usr_prompt.prompt_user_search(opt['<pattern>'])
+        elif opt['create']:
             if opt['<email>']:
                 if opt['<comment>']:
                     if opt['<sshkey>']:

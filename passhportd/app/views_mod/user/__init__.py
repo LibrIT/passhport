@@ -27,14 +27,15 @@ def user_search(pattern):
         Specific characters
         upper and lowercases
     """
+
     result = ""
-    query = db.session.query( user.User.username )\
-            .filter(user.User.username.like('%'+pattern+'%'))
+    query = db.session.query(user.User.email)\
+            .filter(user.User.email.like('%' + pattern + '%'))
 
     for row in query.all():
-        result = result + str(row[0]).encode('utf8')+"\n"
-    return result, 200, {'Content-Type': 'text/plain'}
+        result = result + str(row[0]).encode('utf8') + "\n"
 
+    return result, 200, {'Content-Type': 'text/plain'}
 
 @app.route('/user/show/<email>')
 def user_show(email):
