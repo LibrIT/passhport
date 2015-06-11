@@ -14,6 +14,7 @@ def prompt_user_create():
     email = input("Email: ")
     comment = input("Comment: ")
     sshkey = input("SSHKey: ")
+    print("")
 
     return req.requests_user_create(email, comment, sshkey)
 
@@ -25,5 +26,6 @@ def prompt_user_show():
     except NameError: pass
 
     email = input("Email: ")
+    print("")
 
     return req.requests_user_show(email)

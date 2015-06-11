@@ -222,12 +222,7 @@ if __name__ == '__main__':
                 if opt['<comment>']:
                     if opt['<sshkey>']:
                         usr_req.requests_user_create(opt['<email>'], opt['<comment>'], opt['<sshkey>'])
-
             else:
                 usr_prompt.prompt_user_create()
         elif opt['show']:
             usr_prompt.prompt_user_show()
-
-
-
-
