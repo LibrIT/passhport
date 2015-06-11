@@ -44,7 +44,7 @@ def user_show(email):
 
     # check if email is empty
     if (len(email) == 0):
-        return "ERROR: Email cannot be empty\n", 418, {'Content-Type': 'text/plain'}
+        return "ERROR: Email cannot be empty ", 417, {'Content-Type': 'text/plain'}
 
     u = user.User.query.filter_by(email = email).first()
     userdata = str(u)
@@ -64,7 +64,7 @@ def user_create():
 
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n"
+        return "POST Method is mandatory\n", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
     email   = request.form['email']
@@ -83,7 +83,7 @@ def user_create():
     # normally only one row
     for row in query.all():
         if str(row[0]) == email:
-            return "ERROR: the email " + email + " is already used by another user.\n"
+            return "ERROR: the email " + email + " is already used by another user.\n", 417, {'Content-Type': 'text/plain'}
 
     # Check unicity for sshkey
     result = ""
@@ -92,7 +92,7 @@ def user_create():
 
     for row in query.all():
         if str(row[0]) == sshkey:
-            return "ERROR: the SSHkey " + sshkey + " is already used by another user."
+            return "ERROR: the SSHkey " + sshkey + " is already used by another user.\n", 417, {'Content-Type': 'text/plain'}
 
     u = user.User(
             email   = email,
