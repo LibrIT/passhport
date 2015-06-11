@@ -92,3 +92,20 @@ def requests_user_edit(email, new_email, new_comment, new_sshkey):
             return 0
 
     return 1
+
+def requests_user_del(email):
+    """User deletion on passhportd via API"""
+
+    url_del = url_passhport + "user/del/" + email
+
+    try:
+        r = requests.get(url_del)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1

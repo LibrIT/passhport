@@ -54,3 +54,15 @@ def prompt_user_edit():
     print("")
 
     return req.requests_user_edit(email, new_email, new_comment, new_sshkey)
+
+def prompt_user_del():
+    """Ask arguments for deleting an existing user"""
+
+    # 2.7 compatibility
+    try: input = raw_input
+    except NameError: pass
+
+    email = input("Email: ")
+    print("")
+
+    return req.requests_user_del(email)

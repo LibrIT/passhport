@@ -90,7 +90,6 @@ def user_create():
         return "ERROR: Email and SSHKey are mandatory\n", 417, {'Content-Type': 'text/plain'}
 
     # Check unicity for email
-    result = ""
     query = db.session.query(user.User.email)\
         .filter(user.User.email.like(email))
 
@@ -100,7 +99,6 @@ def user_create():
             return "ERROR: the email " + email + " is already used by another user.\n", 417, {'Content-Type': 'text/plain'}
 
     # Check unicity for sshkey
-    result = ""
     query = db.session.query(user.User.sshkey)\
         .filter(user.User.sshkey.like(sshkey))
 
@@ -142,6 +140,14 @@ def user_edit():
     else:
         return "ERROR: email is mandatory\n", 417, {'Content-Type': 'text/plain'}
 
+    # check if the given email exists in the database
+    query = db.session.query(user.User.email)\
+        .filter(user.User.email.like(email))
+
+    for row in query.all():
+        if str(row[0]) != email:
+            return "ERROR: the email " + email + " doesn’t exist in the database\n", 404, {'Content-Type': 'text/plain'}
+
     # Let’s modify only revelent fields
     try:
         if len(new_email) != 0:
@@ -158,13 +164,27 @@ def user_edit():
 
     return "OK: User modified: " + email + "\n", 200, {'Content-Type': 'text/plain'}
 
-@app.route('/user/del/<username>')
-def user_del(username):
+@app.route('/user/del/<email>')
+def user_del(email):
     """
     To check
         User exist
         Delete is ok
     """
-    db.session.query(user.User).filter(user.User.username == username).delete()
-    db.session.commit()
-    return "Deleted: " + username + "\n", 200, {'Content-Type': 'text/plain'}
+
+    if (len(email) == 0):
+        return "ERROR: Email is mandatory\n", 417, {'Content-Type': 'text/plain'}
+
+    # check if the email exists
+    query = db.session.query(user.User.email)\
+        .filter(user.User.email.like(email))
+
+    # normally only one row
+    for row in query.all():
+        if str(row[0]) == email:
+            db.session.query(user.User).filter(user.User.email == email).delete()
+            db.session.commit()
+
+            return "Deleted: " + email + "\n", 200, {'Content-Type': 'text/plain'}
+
+    return "ERROR: no user with email " + email + " found in the database\n", 404, {'Content-Type': 'text/plain'}
