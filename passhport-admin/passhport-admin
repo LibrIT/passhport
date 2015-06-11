@@ -7,6 +7,7 @@ Usage:
     passhport-admin user list
     passhport-admin user search <pattern>
     passhport-admin user (show|create|edit|del)
+    passhport-admin user create <email> <comment> <sshkey>
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
     passhport-admin usergroup (show|create|edit|del) <groupname>
@@ -81,6 +82,7 @@ Usage:
     user list
     user search <pattern>
     user (show|create|edit|del)
+    user create <email> <comment> <sshkey>
 
 Arguments:
     pattern         SQL search pattern
@@ -216,8 +218,16 @@ if __name__ == '__main__':
         MyInteractive().cmdloop()
     elif opt['user']:
         if opt['create']:
-            usr_prompt.prompt_user_create()
+            if opt['<email>']:
+                if opt['<comment>']:
+                    if opt['<sshkey>']:
+                        usr_req.requests_user_create(opt['<email>'], opt['<comment>'], opt['<sshkey>'])
+
+            else:
+                usr_prompt.prompt_user_create()
         elif opt['show']:
             usr_prompt.prompt_user_show()
 
-print(opt)
+
+
+
