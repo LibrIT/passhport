@@ -1,3 +1,5 @@
+# -*-coding:Utf-8 -*-
+
 from flask          import request
 from sqlalchemy     import exc
 from sqlalchemy.orm import sessionmaker
@@ -115,42 +117,39 @@ def user_create():
 
 @app.route('/user/edit', methods=['POST'])
 def user_edit():
+    """Edit a user in the database"""
+
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n", 417, {'Content-Type': 'text/plain'}
+        return "POST Method is mandatory\n", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
-    username    = request.form['username']
-    newusername = request.form['newusername']
     email       = request.form['email']
-    sshkey      = request.form['sshkey']
-    comment     = request.form['comment']
+    new_email   = request.form['new_email']
+    new_comment = request.form['new_comment']
+    new_sshkey  = request.form['new_sshkey']
 
     # Old username is mandatory to modify the right user
-    if len(username) != 0:
-        toupdate = db.session.query(user.User).filter_by(username=username)
+    if len(email) != 0:
+        toupdate = db.session.query(user.User).filter_by(email = email)
     else:
-        return "ERROR: username is mandatory\n", 417, {'Content-Type': 'text/plain'}
+        return "ERROR: email is mandatory\n", 417, {'Content-Type': 'text/plain'}
 
-    # Let's modify only revelent fields
+    # Let’s modify only revelent fields
     try:
-        if len(newusername) != 0:
-            toupdate.update({"username": str(newusername).encode('utf8')})
+        if len(new_email) != 0:
+            toupdate.update({"email": str(new_email).encode('utf8')})
             db.session.commit()
-        if len(email) != 0:
-            toupdate.update({"email": str(email).encode('utf8')})
+        if len(new_comment) != 0:
+            toupdate.update({"comment": str(new_comment).encode('utf8')})
             db.session.commit()
-        if len(sshkey) != 0:
-            toupdate.update({"sshkey": str(sshkey).encode('utf8')})
+        if len(new_sshkey) != 0:
+            toupdate.update({"sshkey": str(new_sshkey).encode('utf8')})
             db.session.commit()
-        if len(comment) != 0:
-            toupdate.update({"comment": str(comment).encode('utf8')})
-            db.session.commit()
-    except exc.SQLAlchemyError:
-        return "ERROR: " + exc, 417, {'Content-Type': 'text/plain'}
+    except exc.SQLAlchemyError, e:
+        return "ERROR: " + email + " -> " + e.message + "\n", 409, {'Content-Type': 'text/plain'}
 
-    return "OK: User modified: " + username + "\n", 200, {'Content-Type': 'text/plain'}
-
+    return "OK: User modified: " + email + "\n", 200, {'Content-Type': 'text/plain'}
 
 @app.route('/user/del/<username>')
 def user_del(username):

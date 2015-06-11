@@ -78,5 +78,24 @@ def requests_user_show(email):
 
         if r.status_code == requests.codes.ok:
             return 0
+# -*-coding:Utf-8 -*-
+
+    return 1
+
+def requests_user_edit(email, new_email, new_comment, new_sshkey):
+    """User modification on passhportd via API"""
+
+    user_data = {'email': email, 'new_email': new_email, 'new_comment': new_comment, 'new_sshkey': new_sshkey}
+    url_edit = url_passhport + "user/edit"
+
+    try:
+        r = requests.post(url_edit, data = user_data)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
 
     return 1

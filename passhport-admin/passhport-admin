@@ -230,3 +230,5 @@ if __name__ == '__main__':
                 usr_prompt.prompt_user_create()
         elif opt['show']:
             usr_prompt.prompt_user_show()
+        elif opt['edit']:
+            usr_prompt.prompt_user_edit()

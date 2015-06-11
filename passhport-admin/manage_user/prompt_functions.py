@@ -39,3 +39,18 @@ def prompt_user_show():
     print("")
 
     return req.requests_user_show(email)
+
+def prompt_user_edit():
+    """Ask arguments for editing an existing user"""
+
+    # 2.7 compatibility
+    try: input = raw_input
+    except NameError: pass
+
+    email = input("Email of the user you want to modify: ")
+    new_email = input("New email: ")
+    new_comment = input("New comment: ")
+    new_sshkey = input("New SSH key: ")
+    print("")
+
+    return req.requests_user_edit(email, new_email, new_comment, new_sshkey)
