@@ -48,12 +48,14 @@ def prompt_user_edit():
     except NameError: pass
 
     email = input("Email of the user you want to modify: ")
-    new_email = input("New email: ")
-    new_comment = input("New comment: ")
-    new_sshkey = input("New SSH key: ")
-    print("")
 
-    return req.requests_user_edit(email, new_email, new_comment, new_sshkey)
+    if req.requests_user_show(email) == 0:
+        new_email = input("New email: ")
+        new_comment = input("New comment: ")
+        new_sshkey = input("New SSH key: ")
+        print("")
+
+        return req.requests_user_edit(email, new_email, new_comment, new_sshkey)
 
 def prompt_user_del():
     """Ask arguments for deleting an existing user"""

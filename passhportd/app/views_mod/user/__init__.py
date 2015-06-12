@@ -134,31 +134,24 @@ def user_edit():
     new_comment = request.form['new_comment']
     new_sshkey  = request.form['new_sshkey']
 
-    # Old username is mandatory to modify the right user
-    if len(email) != 0:
-        toupdate = db.session.query(user.User).filter_by(email = email)
-    else:
-        return "ERROR: email is mandatory\n", 417, {'Content-Type': 'text/plain'}
+    print(email)
+    print(new_email)
+    print(new_sshkey)
+    print(new_comment)
 
-    # check if the given email exists in the database
-    query = db.session.query(user.User.email)\
-        .filter(user.User.email.like(email))
+    toupdate = db.session.query(user.User).filter_by(email = email)
 
-    for row in query.all():
-        if str(row[0]) != email:
-            return "ERROR: the email " + email + " doesn’t exist in the database\n", 404, {'Content-Type': 'text/plain'}
+    toupdate.update({"comment": str(new_comment).encode('utf8')})
 
-    # Let’s modify only revelent fields
+
+    # Let’s modify only relevent fields
+    if new_sshkey:
+        toupdate.update({"sshkey": str(new_sshkey).encode('utf8')})
+    if new_email:
+        toupdate.update({"email": str(new_email).encode('utf8')})
+
     try:
-        if len(new_email) != 0:
-            toupdate.update({"email": str(new_email).encode('utf8')})
-            db.session.commit()
-        if len(new_comment) != 0:
-            toupdate.update({"comment": str(new_comment).encode('utf8')})
-            db.session.commit()
-        if len(new_sshkey) != 0:
-            toupdate.update({"sshkey": str(new_sshkey).encode('utf8')})
-            db.session.commit()
+        db.session.commit()
     except exc.SQLAlchemyError, e:
         return "ERROR: " + email + " -> " + e.message + "\n", 409, {'Content-Type': 'text/plain'}
 
