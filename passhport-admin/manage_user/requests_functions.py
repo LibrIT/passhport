@@ -215,3 +215,21 @@ def requests_target_del(targetname):
             return 0
 
     return 1
+
+def requests_target_adduser(email, targetname):
+    """Adding a user in a target via API"""
+
+    target_user_data = {'targetname': targetname, 'email': email}
+    url_adduser = url_passhport + "target/adduser"
+
+    try:
+        r = requests.post(url_adduser, data = target_user_data)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1

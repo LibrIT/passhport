@@ -146,3 +146,8 @@ def prompt_target_del():
     print("")
 
     return req.requests_target_del(targetname)
+
+def prompt_target_adduser(email, targetname):
+    """Add a user to a target"""
+
+    return req.requests_target_adduser(email, targetname)

@@ -18,15 +18,20 @@ Usage:
     passhport-admin target list
     passhport-admin target search <pattern>
     passhport-admin target (show|create|edit|del)
+    passhport-admin target (adduser|rmuser) <email> <targetname>
     passhport-admin (-h | --version)
 
 Arguments:
     pattern         SQL search pattern
+    email           An email to identify a user
+    comment         A comment
+    sshkey          A SSH key to authenticate a user
     target          A target is a combinaison of a server and a port
     groupname       A group is a combinason of users and targets. A user in a group can access all the targets in it
     subgroup        Any group can be added to another group (take care to the cycles)
     targetgroup     A group of targets
     subtargetgroup  A group of targets can be added to any group of targets
+    targetname      The name of a target
 
 Options:
     user                manage users data
@@ -149,12 +154,12 @@ Usage:
     target search <pattern>
     target (show|create|edit|del)
     target editcommand <command> <targetname>
-    target (adduser|rmuser) <username> <targetname>
+    target (adduser|rmuser) <email> <targetname>
     target (addusergroup|rmusergroup) <groupname> <targetname>
 
 Arguments:
     pattern         SQL search pattern
-    username        Often the login
+    email           The email of a user
     targetname      Often a hostname
     groupname       A passhport group name
     command         A unix command that will be triggered instead of classical ssh connexion
@@ -250,3 +255,5 @@ if __name__ == '__main__':
             usr_prompt.prompt_target_edit()
         elif opt['del']:
             usr_prompt.prompt_target_del()
+        elif opt['adduser']:
+            usr_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
