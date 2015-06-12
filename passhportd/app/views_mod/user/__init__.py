@@ -136,9 +136,9 @@ def user_edit():
 
     toupdate = db.session.query(user.User).filter_by(email = email)
 
-    toupdate.update({"comment": str(new_comment).encode('utf8')})
-
     # Let’s modify only relevent fields
+    if new_comment:
+        toupdate.update({"comment": str(new_comment).encode('utf8')})
     if new_sshkey:
         toupdate.update({"sshkey": str(new_sshkey).encode('utf8')})
     if new_email:
