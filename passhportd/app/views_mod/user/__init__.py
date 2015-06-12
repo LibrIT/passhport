@@ -134,15 +134,9 @@ def user_edit():
     new_comment = request.form['new_comment']
     new_sshkey  = request.form['new_sshkey']
 
-    print(email)
-    print(new_email)
-    print(new_sshkey)
-    print(new_comment)
-
     toupdate = db.session.query(user.User).filter_by(email = email)
 
     toupdate.update({"comment": str(new_comment).encode('utf8')})
-
 
     # Let’s modify only relevent fields
     if new_sshkey:

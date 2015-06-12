@@ -2,7 +2,6 @@
 # -*-coding:Utf-8 -*-
 
 import requests
-import sys
 
 url_passhport = "http://127.0.0.1:5000/"
 
@@ -135,8 +134,24 @@ def modify_user():
 
     return 1
 
-create_user()
-search_user()
-list_users()
-show_user()
-modify_user()
+def create_target():
+    """Create a target"""
+
+    print("Creating target…")
+
+    target_data = {'targetname': 'dat_server', 'hostname': '127.0.01', 'comment': 'test target', 'sshoptions': '-z', 'port': '22', 'servertype': 'Debian', 'autocommand': 'dat_bash_command'}
+    url_create = url_passhport + "target/create"
+
+    try:
+        r = requests.post(url_create, data = target_data)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1
+
+create_target()
