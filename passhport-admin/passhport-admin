@@ -42,8 +42,12 @@ Options:
 
 import sys
 import cmd
+
 import manage_user.prompt_functions as usr_prompt
 import manage_user.requests_functions as usr_req
+import manage_target.prompt_functions as tar_prompt
+import manage_target.requests_functions as tar_req
+
 from docopt import docopt, DocoptExit
 
 
@@ -244,16 +248,16 @@ if __name__ == '__main__':
             usr_prompt.prompt_user_del()
     elif opt['target']:
         if opt['list']:
-            usr_prompt.prompt_target_list()
+            tar_prompt.prompt_target_list()
         elif opt['search']:
-            usr_prompt.prompt_target_search(opt['<pattern>'])
+            tar_prompt.prompt_target_search(opt['<pattern>'])
         elif opt['create']:
-            usr_prompt.prompt_target_create()
+            tar_prompt.prompt_target_create()
         elif opt['show']:
-            usr_prompt.prompt_target_show()
+            tar_prompt.prompt_target_show()
         elif opt['edit']:
-            usr_prompt.prompt_target_edit()
+            tar_prompt.prompt_target_edit()
         elif opt['del']:
-            usr_prompt.prompt_target_del()
+            tar_prompt.prompt_target_del()
         elif opt['adduser']:
-            usr_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
+            tar_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
