@@ -1,10 +1,9 @@
 # -*-coding:Utf-8 -*-
 
-"""Contains functions that interpret commmands from the CLI and call request functions for user’s management"""
+"""Contains functions that interpret commmands from the CLI and call request functions for user's management"""
 
 import requests_functions as req
 
-##### User #####
 def prompt_user_list():
     """List all users in the database"""
 

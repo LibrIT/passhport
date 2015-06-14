@@ -1,6 +1,6 @@
 # -*-coding:Utf-8 -*-
 
-"""Contains functions that interpret commmands from the CLI and call request functions for target’s management"""
+"""Contains functions that interpret commmands from the CLI and call request functions for target's management"""
 
 import requests_functions as req
 

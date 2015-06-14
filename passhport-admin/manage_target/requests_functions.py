@@ -1,12 +1,11 @@
 # -*-coding:Utf-8 -*-
 
-"""Contains functions which make requests to the server for target’s management"""
+"""Contains functions which make requests to the server for target's management"""
 
 import requests
 
 url_passhport = "http://127.0.0.1:5000/"
 
-##### Target #####
 def requests_target_list():
     """Get the list of all targets"""
 

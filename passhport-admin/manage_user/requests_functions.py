@@ -1,12 +1,11 @@
 # -*-coding:Utf-8 -*-
 
-"""Contains functions which make requests to the server for user’s management"""
+"""Contains functions which make requests to the server for user's management"""
 
 import requests
 
 url_passhport = "http://127.0.0.1:5000/"
 
-##### User #####
 def requests_user_list():
     """Get the list of all users"""
 
