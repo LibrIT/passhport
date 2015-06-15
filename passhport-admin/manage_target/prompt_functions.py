@@ -2,6 +2,7 @@
 
 """Contains functions that interpret commmands from the CLI and call request functions for target's management"""
 
+import python_compat as pyt_compat
 import requests_functions as req
 
 def prompt_target_list():
@@ -17,17 +18,13 @@ def prompt_target_search(pattern):
 def prompt_target_create():
     """Ask arguments for target creation"""
 
-    # 2.7 compatibility
-    try: input = raw_input
-    except NameError: pass
-
-    targetname  = input("Targetname: ")
-    hostname    = input("Hostname: ")
-    comment     = input("Comment: ")
-    sshoptions  = input("SSH options: ")
-    port        = input("Port: ")
-    servertype  = input("Server’s type: ")
-    autocommand = input("Autocommand: ")
+    targetname  = pyt_compat.input_compat("Targetname: ")
+    hostname    = pyt_compat.input_compat("Hostname: ")
+    comment     = pyt_compat.input_compat("Comment: ")
+    sshoptions  = pyt_compat.input_compat("SSH options: ")
+    port        = pyt_compat.input_compat("Port: ")
+    servertype  = pyt_compat.input_compat("Server’s type: ")
+    autocommand = pyt_compat.input_compat("Autocommand: ")
     print("")
 
     return req.requests_target_create(targetname, hostname, comment, sshoptions, port, servertype, autocommand)
@@ -35,11 +32,7 @@ def prompt_target_create():
 def prompt_target_show():
     """Ask arguments for showing target"""
 
-    # 2.7 compatibility
-    try: input = raw_input
-    except NameError: pass
-
-    targetname = input("Targetname: ")
+    targetname = pyt_compat.input_compat("Targetname: ")
     print("")
 
     return req.requests_target_show(targetname)
@@ -47,20 +40,16 @@ def prompt_target_show():
 def prompt_target_edit():
     """Ask arguments for editing an existing target"""
 
-    # 2.7 compatibility
-    try: input = raw_input
-    except NameError: pass
-
-    targetname = input("Name of the target you want to modify: ")
+    targetname = pyt_compat.input_compat("Name of the target you want to modify: ")
 
     if req.requests_target_show(targetname) == 0:
-        new_targetname  = input("New targetname: ")
-        new_hostname    = input("New hostname: ")
-        new_comment     = input("New comment: ")
-        new_sshoptions  = input("New SSH options: ")
-        new_port        = input("New port: ")
-        new_servertype  = input("New server’s type: ")
-        new_autocommand = input("New autocommand: ")
+        new_targetname  = pyt_compat.input_compat("New targetname: ")
+        new_hostname    = pyt_compat.input_compat("New hostname: ")
+        new_comment     = pyt_compat.input_compat("New comment: ")
+        new_sshoptions  = pyt_compat.input_compat("New SSH options: ")
+        new_port        = pyt_compat.input_compat("New port: ")
+        new_servertype  = pyt_compat.input_compat("New server’s type: ")
+        new_autocommand = pyt_compat.input_compat("New autocommand: ")
         print("")
 
         return req.requests_target_edit(targetname, new_targetname, new_hostname, new_comment, new_sshoptions, new_port, new_servertype, new_autocommand)
@@ -70,11 +59,7 @@ def prompt_target_edit():
 def prompt_target_del():
     """Ask arguments for deleting an existing target"""
 
-    # 2.7 compatibility
-    try: input = raw_input
-    except NameError: pass
-
-    targetname = input("Targetname: ")
+    targetname = pyt_compat.input_compat("Targetname: ")
     print("")
 
     return req.requests_target_del(targetname)
