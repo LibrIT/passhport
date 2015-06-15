@@ -9,75 +9,70 @@ from app.models_mod import target
 from app.models_mod import user
 from app.models_mod import usergroup
 
-
 @app.route("/target/list")
 def target_list():
-    """Return the targets list from database query"""
+    """Return the target list of database"""
 
-    result = ""
-    for row in db.session.query(target.Target.targetname)\
-            .order_by(target.Target.targetname):
-        result = result + str(row[0]).encode('utf8') + "\n"
+    result = []
+    query  = db.session.query(target.Target.targetname).order_by(target.Target.targetname)
 
-    return result
+
+    for row in query.all():
+        result.append(str(row[0]).encode('utf8'))
+
+    if not result:
+        return "No target in database.\n", 200, {'Content-Type': 'text/plain'}
+
+    return '\n'.join(result), 200, {'Content-Type': 'text/plain'}
 
 @app.route('/target/search/<pattern>')
 def target_search(pattern):
+    """Return a list of targets that match the given pattern"""
+
     """
     To check
-        Empty pattern
         pattern not in db
         Specific characters
         upper and lowercases
     """
 
-    result = ""
-    query = db.session.query(target.Target.targetname)\
+    result = []
+    query  = db.session.query(target.Target.targetname)\
             .filter(target.Target.targetname.like('%' + pattern + '%'))
 
     for row in query.all():
-        result = result + str(row[0]).encode('utf8') + "\n"
+        result.append(str(row[0]).encode('utf8'))
 
     if not result:
-        return "ERROR: no target matching the pattern " + pattern + " found.\n", 404, {'Content-Type': 'text/plain'}
+        return 'No target matching the pattern "' + pattern + '" found.\n', 200, {'Content-Type': 'text/plain'}
 
-    return result
+    return '\n'.join(result), 200, {'Content-Type': 'text/plain'}
 
 @app.route('/target/show/<targetname>')
 def target_show(targetname):
+    """Return all data about a user"""
+
     """
     To check
-        Empty pattern
         pattern not in db
         Specific characters
         upper and lowercases
     """
 
-    if not targetname:
-        return "ERROR: Targetname cannot be empty ", 417, {'Content-Type': 'text/plain'}
+    target_data = target.Target.query.filter_by(targetname = targetname).first()
 
-    t = target.Target.query.filter_by(targetname = targetname).first()
-    targetdata = str(t)
+    if targetdata is None:
+        return 'ERROR: No target with the name "' + targetname + '" in the database.\n', 404, {'Content-Type': 'text/plain'}
 
-    if targetdata == "None":
-        return "ERROR: No target with targetname " + targetname + " in the database.\n", 404, {'Content-Type': 'text/plain'}
-
-    return targetdata, 200, {'Content-Type': 'text/plain'}
+    return str(target_data), 200, {'Content-Type': 'text/plain'}
 
 @app.route('/target/create', methods = ['POST'])
 def target_create():
-    """
-    To check
-        Empty fields,
-        Already existing field,
-        The access is well a POST
-        The database add / commit has been successful
-        #TODO Check if targetname already exist
-    """
+    """Add a target in the database"""
 
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n", 405, {'Content-Type': 'text/plain'}
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
     targetname  = request.form['targetname']
@@ -90,10 +85,10 @@ def target_create():
 
     # Check for mandatory fields
     if not targetname or not hostname:
-        return "ERROR: targetname and hostname are mandatory\n", 417, {'Content-Type': 'text/plain'}
+        return "ERROR: The targetname and hostname are required ", 417, {'Content-Type': 'text/plain'}
 
     if not port:
-        port = 22
+        port = "22"
 
     # Check unicity for targetname
     query = db.session.query(target.Target.targetname)\
@@ -102,7 +97,7 @@ def target_create():
     # normally only one row
     for row in query.all():
         if str(row[0]) == targetname:
-            return "ERROR: the targetname " + targetname + " is already used by another target.\n", 417, {'Content-Type': 'text/plain'}
+            return 'ERROR: The targetname "' + targetname + '" is already used by another target ', 417, {'Content-Type': 'text/plain'}
 
     t = target.Target(
             targetname  = targetname,
@@ -118,10 +113,9 @@ def target_create():
     try:
         db.session.commit()
     except exc.SQLAlchemyError, e:
-        return "ERROR: " + e.message + "\n", 409, {'Content-Type': 'text/plain'}
+        return 'ERROR: "' + targetname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return "OK: " + targetname + "\n", 200, {'Content-Type': 'text/plain'}
-
+    return 'OK: "' + targetname + '" -> created' + '\n', 200, {'Content-Type': 'text/plain'}
 
 @app.route('/target/edit/', methods = ['POST'])
 def target_edit():
@@ -129,7 +123,7 @@ def target_edit():
 
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n", 405, {'Content-Type': 'text/plain'}
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
     targetname          = request.form['targetname']
@@ -162,20 +156,16 @@ def target_edit():
     try:
         db.session.commit()
     except exc.SQLAlchemyError, e:
-        return "ERROR: " + targetname + " -> " + e.message + "\n", 409, {'Content-Type': 'text/plain'}
+        return 'ERROR: "' + targetname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return "OK: Target modified: " + targetname + "\n", 200, {'Content-Type': 'text/plain'}
+    return 'OK: "' + targetname + '" -> edited' + '\n', 200, {'Content-Type': 'text/plain'}
 
 @app.route('/target/del/<targetname>')
 def target_del(targetname):
-    """
-    To check
-        Target exist
-        Delete is ok
-    """
+    """Delete a target in the database"""
 
     if not targetname:
-        return "ERROR: Targetname is mandatory\n", 417, {'Content-Type': 'text/plain'}
+        return "ERROR: The targetname is required ", 417, {'Content-Type': 'text/plain'}
 
     # Check if the targetname exists
     query = db.session.query(target.Target.targetname)\
@@ -189,11 +179,11 @@ def target_del(targetname):
             try:
                 db.session.commit()
             except exc.SQLAlchemyError:
-                return "ERROR: " + targetname + " -> " + e.message + "\n", 409, {'Content-Type': 'text/plain'}
+                return 'ERROR: "' + targetname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-            return "Deleted: " + targetname + "\n", 200, {'Content-Type': 'text/plain'}
+            return 'OK: "' + targetname + '" -> deleted' + '\n', 200, {'Content-Type': 'text/plain'}
 
-    return "ERROR: no target with name " + targetname + " found in the database\n", 404, {'Content-Type': 'text/plain'}
+    return 'ERROR: No target with the targetname "' + targetname + '" in the database.\n', 404, {'Content-Type': 'text/plain'}
 
 @app.route('/target/adduser', methods = ['POST'])
 def target_adduser():
@@ -201,7 +191,7 @@ def target_adduser():
 
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n", 405, {'Content-Type': 'text/plain'}
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
     targetname  = request.form['targetname']
@@ -209,25 +199,25 @@ def target_adduser():
 
     # Check for mandatory fields
     if not targetname or not email:
-        return "ERROR: targetname and email are mandatory\n", 417, {'Content-Type': 'text/plain'}
+        return "ERROR: The targetname and email are required ", 417, {'Content-Type': 'text/plain'}
 
     # Target and user have to exist in database
     t = get_target(targetname)
     if not t:
-        return "Error: target does not exist\n", 404, {'Content-Type': 'text/plain'}
+        return 'ERROR: no target "' + targetname + '" in the database ', 404, {'Content-Type': 'text/plain'}
 
     u = get_user(email)
     if not u:
-        return "Error: user does not exist\n", 404, {'Content-Type': 'text/plain'}
+        return 'ERROR: no user "' + email + '" in the database ', 404, {'Content-Type': 'text/plain'}
 
     # Now we can add the user
     t.adduser(u)
     try:
         db.session.commit()
     except exc.SQLAlchemyError, e:
-        return "ERROR: " + targetname + " -> " + e.message + "\n", 409, {'Content-Type': 'text/plain'}
+        return 'ERROR: "' + targetname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return email + " added to " + targetname + "\n", 200, {'Content-Type': 'text/plain'}
+    return '"' + email + '" added to "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
 
 @app.route('/target/rmuser',methods=['POST'])
 def target_rmuser():
@@ -331,30 +321,37 @@ def target_rmusergroup():
 # Utils
 " Return a Target object from the target name"
 def get_target(targetname):
+    """Return the target with the given targetname"""
+
     t = db.session.query(target.Target).filter(
             target.Target.targetname == targetname).all()
+
     # Target must exist in database
-    if len(t) > 0:
+    if t:
         return t[0]
     else:
         return False
 
-""" Return a User object from the user name"""
 def get_user(email):
+    """Return the user with the given email"""
+
     u = db.session.query(user.User).filter(
              user.User.email == email).all()
+
     # User must exist in database
-    if len(u) > 0:
+    if u:
         return u[0]
     else:
         return False
 
-""" Return a Usergroup object from the usergroup name"""
 def get_usergroup(usergroupname):
+    """Return the usergroup with the given usergroupname"""
+
     g = db.session.query(usergroup.Usergroup).filter(
              usergroup.Usergroup.usergroupname == usergroupname).all()
+
     # Usergroup must exist in database
-    if len(g) > 0:
+    if g:
         return g[0]
     else:
         return False
