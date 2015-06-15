@@ -62,7 +62,7 @@ def target_show(targetname):
     target_data = target.Target.query.filter_by(targetname = targetname).first()
 
     if target_data is None:
-        return 'ERROR: No target with the name "' + targetname + '" in the database.\n', 404, {'Content-Type': 'text/plain'}
+        return 'ERROR: No target with the name "' + targetname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
 
     return str(target_data), 200, {'Content-Type': 'text/plain'}
 
@@ -183,7 +183,7 @@ def target_del(targetname):
 
             return 'OK: "' + targetname + '" -> deleted' + '\n', 200, {'Content-Type': 'text/plain'}
 
-    return 'ERROR: No target with the targetname "' + targetname + '" in the database.\n', 404, {'Content-Type': 'text/plain'}
+    return 'ERROR: No target with the targetname "' + targetname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
 
 @app.route('/target/adduser', methods = ['POST'])
 def target_adduser():
@@ -204,11 +204,11 @@ def target_adduser():
     # Target and user have to exist in database
     t = get_target(targetname)
     if not t:
-        return 'ERROR: no target "' + targetname + '" in the database ', 404, {'Content-Type': 'text/plain'}
+        return 'ERROR: no target "' + targetname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
     u = get_user(email)
     if not u:
-        return 'ERROR: no user "' + email + '" in the database ', 404, {'Content-Type': 'text/plain'}
+        return 'ERROR: no user "' + email + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
     # Now we can add the user
     t.adduser(u)

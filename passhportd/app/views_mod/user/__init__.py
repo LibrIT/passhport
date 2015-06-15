@@ -58,7 +58,7 @@ def user_show(email):
     user_data = user.User.query.filter_by(email = email).first()
 
     if user_data is None:
-        return 'ERROR: No user with the email "' + email + '" in the database.\n', 404, {'Content-Type': 'text/plain'}
+        return 'ERROR: No user with the email "' + email + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
 
     return str(user_data), 200, {'Content-Type': 'text/plain'}
 
@@ -166,4 +166,4 @@ def user_del(email):
 
             return 'OK: "' + email + '" -> deleted' + '\n', 200, {'Content-Type': 'text/plain'}
 
-    return 'ERROR: No user with the email "' + email + '" in the database.\n', 404, {'Content-Type': 'text/plain'}
+    return 'ERROR: No user with the email "' + email + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
