@@ -43,10 +43,10 @@ Options:
 import sys
 import cmd
 
-import manage_user.prompt_functions as usr_prompt
-import manage_user.requests_functions as usr_req
-import manage_target.prompt_functions as tar_prompt
-import manage_target.requests_functions as tar_req
+import manage_user.prompt_functions as user_prompt
+import manage_user.requests_functions as user_req
+import manage_target.prompt_functions as target_prompt
+import manage_target.requests_functions as target_req
 
 from docopt import docopt, DocoptExit
 
@@ -230,34 +230,34 @@ if __name__ == '__main__':
         MyInteractive().cmdloop()
     elif opt['user']:
         if opt['list']:
-            usr_prompt.prompt_user_list()
+            user_prompt.prompt_user_list()
         elif opt['search']:
-            usr_prompt.prompt_user_search(opt['<pattern>'])
+            user_prompt.prompt_user_search(opt['<pattern>'])
         elif opt['create']:
             if opt['<email>']:
                 if opt['<comment>']:
                     if opt['<sshkey>']:
-                        usr_req.requests_user_create(opt['<email>'], opt['<comment>'], opt['<sshkey>'])
+                        user_req.requests_user_create(opt['<email>'], opt['<comment>'], opt['<sshkey>'])
             else:
-                usr_prompt.prompt_user_create()
+                user_prompt.prompt_user_create()
         elif opt['show']:
-            usr_prompt.prompt_user_show()
+            user_prompt.prompt_user_show()
         elif opt['edit']:
-            usr_prompt.prompt_user_edit()
+            user_prompt.prompt_user_edit()
         elif opt['del']:
-            usr_prompt.prompt_user_del()
+            user_prompt.prompt_user_del()
     elif opt['target']:
         if opt['list']:
-            tar_prompt.prompt_target_list()
+            target_prompt.prompt_target_list()
         elif opt['search']:
-            tar_prompt.prompt_target_search(opt['<pattern>'])
+            target_prompt.prompt_target_search(opt['<pattern>'])
         elif opt['create']:
-            tar_prompt.prompt_target_create()
+            target_prompt.prompt_target_create()
         elif opt['show']:
-            tar_prompt.prompt_target_show()
+            target_prompt.prompt_target_show()
         elif opt['edit']:
-            tar_prompt.prompt_target_edit()
+            target_prompt.prompt_target_edit()
         elif opt['del']:
-            tar_prompt.prompt_target_del()
+            target_prompt.prompt_target_del()
         elif opt['adduser']:
-            tar_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
+            target_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])

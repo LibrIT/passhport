@@ -61,7 +61,7 @@ def target_show(targetname):
 
     target_data = target.Target.query.filter_by(targetname = targetname).first()
 
-    if targetdata is None:
+    if target_data is None:
         return 'ERROR: No target with the name "' + targetname + '" in the database.\n', 404, {'Content-Type': 'text/plain'}
 
     return str(target_data), 200, {'Content-Type': 'text/plain'}
