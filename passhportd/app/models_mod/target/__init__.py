@@ -1,3 +1,5 @@
+# -*-coding:Utf-8 -*-
+
 from app import db
 
 """
@@ -14,9 +16,9 @@ class Target(db.Model):
     autocommand = db.Column(db.String(128), index=True)
     comment     = db.Column(db.String(500), index=True)
     # Relations
-    members     = db.relationship('User', 
+    members     = db.relationship('User',
                         secondary='target_user')
-    gmembers    = db.relationship('Usergroup', 
+    gmembers    = db.relationship('Usergroup',
                         secondary='target_group')
 
     def __repr__(self):
@@ -63,4 +65,3 @@ class Target(db.Model):
 
     def is_gmember(self, usergroup):
         return usergroup in self.members
-
