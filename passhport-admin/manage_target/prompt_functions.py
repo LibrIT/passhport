@@ -7,17 +7,14 @@ import requests_functions as req
 
 def prompt_target_list():
     """List all targets in the database"""
-
     return req.requests_target_list()
 
 def prompt_target_search(pattern):
     """Search a target according to the pattern"""
-
     return req.requests_target_search(pattern)
 
 def prompt_target_create():
     """Ask arguments for target creation"""
-
     targetname  = pyt_compat.input_compat("Targetname: ")
     hostname    = pyt_compat.input_compat("Hostname: ")
     comment     = pyt_compat.input_compat("Comment: ")
@@ -31,7 +28,6 @@ def prompt_target_create():
 
 def prompt_target_show():
     """Ask arguments for showing target"""
-
     targetname = pyt_compat.input_compat("Targetname: ")
     print("")
 
@@ -39,7 +35,6 @@ def prompt_target_show():
 
 def prompt_target_edit():
     """Ask arguments for editing an existing target"""
-
     targetname = pyt_compat.input_compat("Name of the target you want to modify: ")
 
     if req.requests_target_show(targetname) == 0:
@@ -58,7 +53,6 @@ def prompt_target_edit():
 
 def prompt_target_del():
     """Ask arguments for deleting an existing target"""
-
     targetname = pyt_compat.input_compat("Targetname: ")
     print("")
 
@@ -66,5 +60,4 @@ def prompt_target_del():
 
 def prompt_target_adduser(email, targetname):
     """Add a user to a target"""
-
     return req.requests_target_adduser(email, targetname)

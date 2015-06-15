@@ -12,10 +12,8 @@ from app.models_mod import usergroup
 @app.route("/target/list")
 def target_list():
     """Return the target list of database"""
-
     result = []
     query  = db.session.query(target.Target.targetname).order_by(target.Target.targetname)
-
 
     for row in query.all():
         result.append(str(row[0]).encode('utf8'))
@@ -28,7 +26,6 @@ def target_list():
 @app.route('/target/search/<pattern>')
 def target_search(pattern):
     """Return a list of targets that match the given pattern"""
-
     """
     To check
         pattern not in db
@@ -51,7 +48,6 @@ def target_search(pattern):
 @app.route('/target/show/<targetname>')
 def target_show(targetname):
     """Return all data about a user"""
-
     """
     To check
         pattern not in db
@@ -69,7 +65,6 @@ def target_show(targetname):
 @app.route('/target/create', methods = ['POST'])
 def target_create():
     """Add a target in the database"""
-
     # Only POST data are handled
     if request.method != 'POST':
         return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
@@ -120,7 +115,6 @@ def target_create():
 @app.route('/target/edit/', methods = ['POST'])
 def target_edit():
     """Edit a target in the database"""
-
     # Only POST data are handled
     if request.method != 'POST':
         return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
@@ -163,7 +157,6 @@ def target_edit():
 @app.route('/target/del/<targetname>')
 def target_del(targetname):
     """Delete a target in the database"""
-
     if not targetname:
         return "ERROR: The targetname is required ", 417, {'Content-Type': 'text/plain'}
 
@@ -188,7 +181,6 @@ def target_del(targetname):
 @app.route('/target/adduser', methods = ['POST'])
 def target_adduser():
     """Add a user in the target in the database"""
-
     # Only POST data are handled
     if request.method != 'POST':
         return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
@@ -319,10 +311,8 @@ def target_rmusergroup():
 
 
 # Utils
-" Return a Target object from the target name"
 def get_target(targetname):
     """Return the target with the given targetname"""
-
     t = db.session.query(target.Target).filter(
             target.Target.targetname == targetname).all()
 
@@ -334,7 +324,6 @@ def get_target(targetname):
 
 def get_user(email):
     """Return the user with the given email"""
-
     u = db.session.query(user.User).filter(
              user.User.email == email).all()
 
@@ -346,7 +335,6 @@ def get_user(email):
 
 def get_usergroup(usergroupname):
     """Return the usergroup with the given usergroupname"""
-
     g = db.session.query(usergroup.Usergroup).filter(
              usergroup.Usergroup.usergroupname == usergroupname).all()
 

@@ -7,17 +7,14 @@ import requests_functions as req
 
 def prompt_user_list():
     """List all users in the database"""
-
     return req.requests_user_list()
 
 def prompt_user_search(pattern):
     """Search a user according to the pattern"""
-
     return req.requests_user_search(pattern)
 
 def prompt_user_create():
     """Ask arguments for user creation"""
-
     email   = pyt_compat.input_compat("Email: ")
     comment = pyt_compat.input_compat("Comment: ")
     sshkey  = pyt_compat.input_compat("SSHKey: ")
@@ -27,7 +24,6 @@ def prompt_user_create():
 
 def prompt_user_show():
     """Ask arguments for showing user"""
-
     email = pyt_compat.input_compat("Email: ")
     print("")
 
@@ -35,7 +31,6 @@ def prompt_user_show():
 
 def prompt_user_edit():
     """Ask arguments for editing an existing user"""
-
     email = pyt_compat.input_compat("Email of the user you want to modify: ")
 
     if req.requests_user_show(email) == 0:
@@ -48,7 +43,6 @@ def prompt_user_edit():
 
 def prompt_user_del():
     """Ask arguments for deleting an existing user"""
-
     email = pyt_compat.input_compat("Email: ")
     print("")
 

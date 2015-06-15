@@ -8,7 +8,6 @@ url_passhport = "http://127.0.0.1:5000/"
 
 def requests_target_list():
     """Get the list of all targets"""
-
     url_list = url_passhport + "target/list"
 
     try:
@@ -25,7 +24,6 @@ def requests_target_list():
 
 def requests_target_search(pattern):
     """Get the list of targets that match the pattern"""
-
     url_search = url_passhport + "target/search/" + pattern
 
     try:
@@ -42,7 +40,6 @@ def requests_target_search(pattern):
 
 def requests_target_create(targetname, hostname, comment, sshoptions, port, servertype, autocommand):
     """Target creation on passhportd via API"""
-
     target_data = {'targetname': targetname, 'hostname': hostname, 'comment': comment, 'sshoptions': sshoptions, 'port': port, 'servertype': servertype, 'autocommand': autocommand}
     url_create = url_passhport + "target/create"
 
@@ -60,7 +57,6 @@ def requests_target_create(targetname, hostname, comment, sshoptions, port, serv
 
 def requests_target_show(targetname):
     """Get data about a target"""
-
     url_show = url_passhport + "target/show/" + targetname
 
     try:
@@ -77,7 +73,6 @@ def requests_target_show(targetname):
 
 def requests_target_edit(targetname, new_targetname, new_hostname, new_comment, new_sshoptions, new_port, new_servertype, new_autocommand):
     """Target modification on passhportd via API"""
-
     target_data = {'targetname': targetname, 'new_targetname': new_targetname, 'new_hostname': new_hostname, 'new_comment': new_comment, 'new_sshoptions': new_sshoptions, 'new_port': new_port, 'new_servertype': new_servertype, 'new_autocommand': new_autocommand}
     url_edit = url_passhport + "target/edit/"
 
@@ -95,7 +90,6 @@ def requests_target_edit(targetname, new_targetname, new_hostname, new_comment, 
 
 def requests_target_del(targetname):
     """Target deletion on passhportd via API"""
-
     url_del = url_passhport + "target/del/" + targetname
 
     try:
@@ -112,7 +106,6 @@ def requests_target_del(targetname):
 
 def requests_target_adduser(email, targetname):
     """Adding a user in a target via API"""
-
     target_user_data = {'targetname': targetname, 'email': email}
     url_adduser = url_passhport + "target/adduser"
 
