@@ -211,36 +211,38 @@ def target_adduser():
 
     return '"' + email + '" added to "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/target/rmuser',methods=['POST'])
+@app.route('/target/rmuser', methods = ['POST'])
 def target_rmuser():
+    """Remove a user from the target in the database"""
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n"
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
-    targetname  = request.form['targetname']
-    username    = request.form['username']
+    targetname = request.form['targetname']
+    email      = request.form['email']
 
-    if len(targetname) <= 0 or len(username) <= 0 :
-        return "ERROR: targetname and username are mandatory\n"
+    # Check for mandatory fields
+    if not targetname or not email:
+        return "ERROR: The targetname and email are required ", 417, {'Content-Type': 'text/plain'}
 
     # Target and user have to exist in database
     t = get_target(targetname)
-    if t == False:
-        return "Error: target does not exist\n"
+    if not t:
+        return 'ERROR: no target "' + targetname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    u = get_user(username)
-    if u == False:
-        return "Error: user does not exist\n"
+    u = get_user(email)
+    if not u:
+        return 'ERROR: no user "' + email + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    # We can remove the user from this target
+    # Now we can remove the user
     t.rmuser(u)
     try:
         db.session.commit()
-    except exc.SQLAlchemyError:
-        return "ERROR: " + exc
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + targetname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return username + " removed from " + targetname + "\n"
+    return '"' + email + '" removed from "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
 
 
 @app.route('/target/addusergroup/',methods=['POST'])

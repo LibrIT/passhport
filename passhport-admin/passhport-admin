@@ -261,3 +261,5 @@ if __name__ == '__main__':
             target_prompt.prompt_target_del()
         elif opt['adduser']:
             target_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
+        elif opt['rmuser']:
+        	target_prompt.prompt_target_rmuser(opt['<email>'], opt['<targetname>'])
