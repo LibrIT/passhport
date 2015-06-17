@@ -263,3 +263,18 @@ if __name__ == '__main__':
             target_prompt.prompt_target_del()
         elif opt['adduser']:
             target_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
+        elif opt['rmuser']:
+        	target_prompt.prompt_target_rmuser(opt['<email>'], opt['<targetname>'])
+    elif opt['usergroup']:
+    	if opt['list']:
+    		usergroup_prompt.prompt_usergroup_list()
+        elif opt['search']:
+            usergroup_prompt.prompt_usergroup_search(opt['<pattern>'])
+        elif opt['create']:
+            usergroup_prompt.prompt_usergroup_create()
+        elif opt['show']:
+            usergroup_prompt.prompt_usergroup_show()
+        elif opt['edit']:
+            usergroup_prompt.prompt_usergroup_edit()
+        elif opt['del']:
+            usergroup_prompt.prompt_usergroup_del()
