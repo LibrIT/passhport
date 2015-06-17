@@ -71,10 +71,26 @@ def requests_target_show(targetname):
 
     return 1
 
+def requests_target_show_users(targetname):
+    """Get data about a target and its user list"""
+    url_show_users = url_passhport + "target/show_users/" + targetname
+
+    try:
+        r = requests.get(url_show_users)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1
+
 def requests_target_edit(targetname, new_targetname, new_hostname, new_comment, new_sshoptions, new_port, new_servertype, new_autocommand):
     """Target modification on passhportd via API"""
     target_data = {'targetname': targetname, 'new_targetname': new_targetname, 'new_hostname': new_hostname, 'new_comment': new_comment, 'new_sshoptions': new_sshoptions, 'new_port': new_port, 'new_servertype': new_servertype, 'new_autocommand': new_autocommand}
-    url_edit = url_passhport + "target/edit/"
+    url_edit = url_passhport + "target/edit"
 
     try:
         r = requests.post(url_edit, data = target_data)

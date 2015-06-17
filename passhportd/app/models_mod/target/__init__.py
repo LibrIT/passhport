@@ -36,6 +36,16 @@ class Target(db.Model):
 
         return output
 
+    def show_users(self):
+        """Show user list of the target"""
+        output = []
+        output.append(self.__repr__())
+
+        output.append("User List:\n")
+        output.append(str(self.members).encode("utf8"))
+
+        return "\n".join(output)
+
     """ User management """
     def adduser(self, user):
         # Add a user to the relation table

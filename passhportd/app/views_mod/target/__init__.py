@@ -62,6 +62,21 @@ def target_show(targetname):
 
     return str(target_data), 200, {'Content-Type': 'text/plain'}
 
+@app.route('/target/show_users/<targetname>')
+def target_show_users(targetname):
+    """Return user list of the given target"""
+    # Check for required fields
+    if not targetname:
+        return "ERROR: The targetname is required ", 417, {'Content-Type': 'text/plain'}
+
+    target_data = target.Target.query.filter_by(targetname = targetname).first().show_users()
+
+    # Check if the given target exists in the database
+    if target_data is None:
+        return 'ERROR: No target with the name "' + targetname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
+
+    return str(target_data), 200, {'Content-Type': 'text/plain'}
+
 @app.route('/target/create', methods = ['POST'])
 def target_create():
     """Add a target in the database"""
@@ -112,7 +127,7 @@ def target_create():
 
     return 'OK: "' + targetname + '" -> created' + '\n', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/target/edit/', methods = ['POST'])
+@app.route('/target/edit', methods = ['POST'])
 def target_edit():
     """Edit a target in the database"""
     # Only POST data are handled
@@ -209,7 +224,7 @@ def target_adduser():
     except exc.SQLAlchemyError, e:
         return 'ERROR: "' + targetname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return '"' + email + '" added to "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
+    return 'OK: "' + email + '" added to "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
 
 @app.route('/target/rmuser',methods=['POST'])
 def target_rmuser():
