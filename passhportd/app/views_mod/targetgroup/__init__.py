@@ -8,7 +8,7 @@ from app.models_mod import targetgroup
 def targetgroup_list():
     """Return the targetgroup list of database"""
     result = []
-    query  = db.session.query(targetgroup.Targetgroup.name).order_by(targetgroup. Targetgroup.name)
+    query  = db.session.query(targetgroup.Targetgroup.targetgroupname).order_by(targetgroup.Targetgroup.targetgroupname)
 
     for row in query.all():
         result.append(str(row[0].encode('utf8')))
@@ -22,8 +22,8 @@ def targetgroup_list():
 def targetgroup_search(pattern):
     """Return a list of targetgroups that match the given pattern"""
     result = []
-    query  = db.session.query(targetgroup.Targetgroup.name)\
-            .filter(targetgroup.Targetgroup.name.like('%' + pattern + '%'))
+    query  = db.session.query(targetgroup.Targetgroup.targetgroupname)\
+            .filter(targetgroup.Targetgroup.targetgroupname.like('%' + pattern + '%'))
 
     for row in query.all():
         result.append(str(row[0]).encode('utf8'))
@@ -98,7 +98,7 @@ def targetgroup_edit():
     if new_comment:
         toupdate.update({'comment': str(new_comment).encode('utf8')})
     if new_targetgroupname:
-        toupdate.update({'name': str(new_targetgroupname).encode('utf8')})
+        toupdate.update({'targetgroupname': str(new_targetgroupname).encode('utf8')})
 
     try:
         db.session.commit()
@@ -114,13 +114,13 @@ def targetgroup_del(targetgroupname):
         return "ERROR: The targetgroupname is required ", 417, {'Content-Type': 'text/plain'}
 
     # Check if the targetname exists
-    query = db.session.query(targetgroup.Targetgroup.name)\
-            .filter(targetgroup.Targetgroup.name.like(targetgroupname))
+    query = db.session.query(targetgroup.Targetgroup.targetgroupname)\
+            .filter(targetgroup.Targetgroup.targetgroupname.like(targetgroupname))
 
     # Normally only one row
     for row in query.all():
         if str(row[0]) == targetgroupname:
-            db.session.query(targetgroup.Targetgroup).filter(targetgroup.Targetgroup.name == targetgroupname).delete()
+            db.session.query(targetgroup.Targetgroup).filter(targetgroup.Targetgroup.targetgroupname == targetgroupname).delete()
 
             try:
                 db.session.commit()

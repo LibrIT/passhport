@@ -13,7 +13,7 @@ class Targetgroup(db.Model):
         """Return main data of the targetgroup as a string"""
         output = []
 
-        output.append("Targetgroupname: {}".format(self.name.encode('utf8')))
+        output.append("Targetgroupname: {}".format(self.targetgroupname.encode('utf8')))
 
         if self.comment:
             output.append("Comment: {}".format(self.comment.encode('utf8')))
