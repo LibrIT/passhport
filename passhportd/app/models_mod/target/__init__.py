@@ -72,14 +72,22 @@ class Target(db.Model):
 
     def rmuser(self, user):
         """Remove a user from the relation table"""
-        if not self.is_member(user):
-            self.members.append(user)
+        if self.is_member(user):
+            self.members.remove(user)
 
         return self
 
     def is_member(self, user):
         """Return true if the given user is a member of the target, false otherwise"""
         return user in self.members
+
+    def email_member(self, email):
+        """Return true if the given email belong to a member of the target"""
+        for user in self.members:
+            if user.show_email() == email:
+                return True
+
+        return False
 
     # Usergroup management
     def addgroup(self, usergroup):
