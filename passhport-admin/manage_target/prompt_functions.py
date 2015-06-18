@@ -79,3 +79,7 @@ def prompt_target_adduser(email, targetname):
 def prompt_target_rmuser(email, targetname):
     """Remove a user from a target"""
     return req.requests_target_rmuser(email, targetname)
+
+def prompt_target_addusergroup(usergroupname, targetname):
+    """Add a usergroup to a target"""
+    return req.requests_target_addusergroup(usergroupname, targetname)

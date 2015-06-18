@@ -281,6 +281,8 @@ if __name__ == '__main__':
             target_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
         elif opt['rmuser']:
         	target_prompt.prompt_target_rmuser(opt['<email>'], opt['<targetname>'])
+        elif opt['addusergroup']:
+            target_prompt.prompt_target_addusergroup(opt['<groupname>'], opt['<targetname>'])
     elif opt['usergroup']:
     	if opt['list']:
     		usergroup_prompt.prompt_usergroup_list()

@@ -13,7 +13,7 @@ from app.models_mod import usergroup
 def usergroup_list():
     """Return the usergroup list of database"""
     result = []
-    query  = db.session.query(usergroup.Usergroup.groupname).order_by(usergroup.Usergroup.groupname)
+    query  = db.session.query(usergroup.Usergroup.usergroupname).order_by(usergroup.Usergroup.usergroupname)
 
     for row in query.all():
         result.append(str(row[0]).encode('utf8'))
