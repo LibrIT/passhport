@@ -7,7 +7,10 @@ Usage:
     passhport-admin user list
     passhport-admin user search <pattern>
     passhport-admin user (show|create|edit|del)
+    passhport-admin user show <email>
     passhport-admin user create <email> <comment> <sshkey>
+    passhport-admin user edit <email> <new_email> <comment> <sshkey>
+    passhport-admin user del <email>
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
     passhport-admin usergroup (show|create|edit|del)
@@ -60,8 +63,8 @@ import manage_target.prompt_functions as target_prompt
 import manage_target.requests_functions as target_req
 import manage_usergroup.prompt_functions as usergroup_prompt
 import manage_usergroup.requests_functions as usergroup_req
-import manage_targetgroup.prompt_functions as targetgroup_prompt
-import manage_targetgroup.requests_functions as targetgroup_req
+#import manage_targetgroup.prompt_functions as targetgroup_prompt
+#import manage_targetgroup.requests_functions as targetgroup_req
 
 from docopt import docopt, DocoptExit
 
@@ -109,7 +112,10 @@ Usage:
     user list
     user search <pattern>
     user (show|create|edit|del)
+    user show <email>
     user create <email> <comment> <sshkey>
+    user edit <email> <new_email> <comment> <sshkey>
+    user del <email>
 
 Arguments:
     pattern         SQL search pattern
@@ -249,18 +255,25 @@ if __name__ == '__main__':
         elif opt['search']:
             user_prompt.prompt_user_search(opt['<pattern>'])
         elif opt['create']:
-            if opt['<email>']:
-                if opt['<comment>']:
-                    if opt['<sshkey>']:
-                        user_req.requests_user_create(opt['<email>'], opt['<comment>'], opt['<sshkey>'])
+            if opt['<email>'] and opt['<comment>'] and opt['<sshkey>']:
+                user_req.requests_user_create(opt['<email>'], opt['<comment>'], opt['<sshkey>'])
             else:
                 user_prompt.prompt_user_create()
         elif opt['show']:
-            user_prompt.prompt_user_show()
+            if opt['<email>']:
+                user_req.requests_user_show(opt['<email>'])
+            else:
+                user_prompt.prompt_user_show()
         elif opt['edit']:
-            user_prompt.prompt_user_edit()
+            if opt['<email>'] and opt['<new_email>'] and opt['<comment>'] and opt['<sshkey>']:
+                user_req.requests_user_edit(opt['<email>'], opt['<new_email>'], opt['<comment>'], opt['<sshkey>'])
+            else:
+                user_prompt.prompt_user_edit()
         elif opt['del']:
-            user_prompt.prompt_user_del()
+            if opt['<email>']:
+                user_req.requests_user_del(opt['<email>'])
+            else:
+                user_prompt.prompt_user_del()
     elif opt['target']:
         if opt['list']:
             target_prompt.prompt_target_list()
