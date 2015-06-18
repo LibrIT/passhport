@@ -19,7 +19,20 @@ def prompt_target_create():
     hostname    = pyt_compat.input_compat("Hostname: ")
     comment     = pyt_compat.input_compat("Comment: ")
     sshoptions  = pyt_compat.input_compat("SSH options: ")
-    port        = pyt_compat.input_compat("Port: ")
+
+    while True: # Loop to key in port number correctly
+        port = pyt_compat.input_compat("Port: ")
+        input_error = False
+
+        try:
+            port = int(port)
+        except ValueError:
+            print("You didn’t key in a port number. Please try again.")
+            input_error = True
+
+        if not input_error:
+            break
+
     servertype  = pyt_compat.input_compat("Server’s type: ")
     autocommand = pyt_compat.input_compat("Autocommand: ")
     print("")
@@ -56,7 +69,20 @@ def prompt_target_edit():
         new_hostname    = pyt_compat.input_compat("New hostname: ")
         new_comment     = pyt_compat.input_compat("New comment: ")
         new_sshoptions  = pyt_compat.input_compat("New SSH options: ")
-        new_port        = pyt_compat.input_compat("New port: ")
+
+        while True: # Loop to key in new port number correctly
+            new_port = pyt_compat.input_compat("Port: ")
+            input_error = False
+
+            try:
+                new_port = int(new_port)
+            except ValueError:
+                print("You didn’t key in a port number. Please try again.")
+                input_error = True
+
+            if not input_error:
+                break
+
         new_servertype  = pyt_compat.input_compat("New server’s type: ")
         new_autocommand = pyt_compat.input_compat("New autocommand: ")
         print("")

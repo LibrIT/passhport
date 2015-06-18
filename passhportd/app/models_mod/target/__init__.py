@@ -24,7 +24,7 @@ class Target(db.Model):
 
         output.append("Targetname: {}".format(self.targetname.encode("utf8")))
         output.append("Hostname: {}".format(self.hostname.encode("utf8")))
-        output.append("Port: {}".format(str(self.port.encode("utf8"))))
+        output.append("Port: {}".format(str(self.port).encode("utf8")))
 
         if self.sshoptions:
             output.append("SSH options: {}".format(self.sshoptions.encode("utf8")))
