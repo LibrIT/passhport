@@ -2,39 +2,43 @@
 
 from app import db
 
-"""
-    Target defines informations for every servers accessible through passhport
-"""
+"""Target defines information for every server accessible through passhport"""
 class Target(db.Model):
-    __tablename__ = 'target'
-    id          = db.Column(db.Integer,     primary_key=True)
-    targetname  = db.Column(db.String(256), index=True,     unique=True)
-    hostname    = db.Column(db.String(120), index=True,     nullable=False)
-    port        = db.Column(db.Integer,     index=False)
-    sshoptions  = db.Column(db.String(500), index=True)
-    servertype  = db.Column(db.String(64),  index=True)
-    autocommand = db.Column(db.String(128), index=True)
-    comment     = db.Column(db.String(500), index=True)
+    __tablename__ = "target"
+    id            = db.Column(db.Integer,     primary_key = True)
+    targetname    = db.Column(db.String(256), index = True, unique   = True)
+    hostname      = db.Column(db.String(120), index = True, nullable = False)
+    port          = db.Column(db.Integer,     index = False)
+    sshoptions    = db.Column(db.String(500), index = True)
+    servertype    = db.Column(db.String(64),  index = True)
+    autocommand   = db.Column(db.String(128), index = True)
+    comment       = db.Column(db.String(500), index = True)
+
     # Relations
-    members     = db.relationship('User',
-                        secondary='target_user')
-    gmembers    = db.relationship('Usergroup',
-                        secondary='target_group')
+    members  = db.relationship("User",      secondary = "target_user")
+    gmembers = db.relationship("Usergroup", secondary = "target_group")
 
     def __repr__(self):
-        # This is represented by all data in it
-        output ="Targetname: {}\n".format(str(self.targetname).encode('utf8'))
-        output = output + "Hostname: {}\n".format(str(self.hostname).encode('utf8'))
-        output = output + "Port: {}\n".format(str(self.port).encode('utf8'))
-        output = output + "Sshoptions: {}\n".format(str(self.sshoptions).encode('utf8'))
-        output = output + "Servertype: {}\n".format(str(self.servertype).encode('utf8'))
-        output = output + "Autocommand: {}\n".format(str(self.autocommand).encode('utf8'))
+        """Return main data of the target as a string"""
+        output = []
 
-        # Return comment only if it exist
-        if isinstance(self.comment, basestring):
-            output = output + "Comment: {}\n".format(self.comment.encode('utf8'))
+        output.append("Targetname: {}".format(self.targetname.encode("utf8")))
+        output.append("Hostname: {}".format(self.hostname.encode("utf8")))
+        output.append("Port: {}".format(str(self.port.encode("utf8"))))
 
-        return output
+        if self.sshoptions:
+            output.append("SSH options: {}".format(self.sshoptions.encode("utf8")))
+
+        if self.servertype:
+            output.append("Servertype: {}".format(self.servertype.encode("utf8")))
+
+        if self.autocommand:
+            output.append("Autocommand: {}".format(self.autocommand.encode("utf8")))
+
+        if self.comment:
+            output.append("Comment: {}".format(self.comment.encode("utf8")))
+
+        return "\n".join(output)
 
     def show_users(self):
         """Show user list of the target"""
@@ -47,32 +51,40 @@ class Target(db.Model):
 
         return "\n".join(output)
 
-    """ User management """
+    # User management
     def adduser(self, user):
-        # Add a user to the relation table
+        """Add a user to the relation table"""
         if not self.is_member(user):
             self.members.append(user)
+
         return self
 
     def rmuser(self, user):
-        # Remove all user entries from the target
-        if self.is_member(user):
-            self.members.remove(user)
+        """Remove a user from the relation table"""
+        if not self.is_member(user):
+            self.members.append(user)
+
         return self
 
     def is_member(self, user):
+        """Return true if the given user is a member of the target, false otherwise"""
         return user in self.members
 
-    """ Usergroup management """
+    # Usergroup management
     def addgroup(self, usergroup):
+        """Add a usergroup to the relation table"""
         if not self.is_gmember(usergroup):
             self.gmembers.append(usergroup)
+
         return self
 
     def rmgroup(self, usergroup):
-        if self.is_gmember(usergroup):
-            self.gmembers(usergroup)
+        """Remove a usergroup to the relation table"""
+        if not self.is_gmember(usergroup):
+            self.members.append(usergroup)
+
         return self
 
     def is_gmember(self, usergroup):
-        return usergroup in self.members
+        """Return true if the given usergroup is a member of the target, false otherwise"""
+        return usergroup in self.gmembers

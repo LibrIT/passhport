@@ -1,24 +1,24 @@
+# -*-coding:Utf-8 -*-
+
 from app import db
 
-"""
-    Usergroup define a group of users (can contain some usergroups too)
-"""
+"""Usergroup defines a group of users (can contain some usergroups too)"""
 class Usergroup(db.Model):
     __tablename__ = "usergroup"
-    id          = db.Column(db.Integer,     primary_key=True)
-    groupname   = db.Column(db.String(256), index=True,     unique=True)
-    comment     = db.Column(db.String(500), index=True,     unique=False)
+    id            = db.Column(db.Integer,     primary_key = True)
+    usergroupname = db.Column(db.String(256), index = True, unique = True)
+    comment       = db.Column(db.String(500), index = True, unique = False)
+
     # Relations
-    members     = db.relationship('Target', 
-                        secondary='target_group')
+    members = db.relationship("Target", secondary = "target_group")
 
     def __repr__(self):
-        # This is represented by all data in it
-        output ="Groupname: {}\n".format(str(self.groupname).encode('utf8'))
+        """Return main data of the usergroup as a string"""
+        output = []
 
-        # Return comment only if it exist
-        if isinstance(self.comment, basestring):
-            output = output + "Comment: {}\n".format(self.comment.encode('utf8'))
+        output.append("Usergroupname: {}".format(self.usergroupname.encode("utf8")))
 
-        return output
+        if self.comment:
+            output.append("Comment: {}".format(self.comment.encode("utf8")))
 
+        return "\n".join(output)
