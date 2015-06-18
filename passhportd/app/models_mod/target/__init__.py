@@ -44,10 +44,21 @@ class Target(db.Model):
         """Show user list of the target"""
         output = []
 
-        output.append("User List:")
+        output.append("User list:")
 
         for user in self.members:
             output.append(user.show_email())
+
+        return "\n".join(output)
+
+    def show_usergroups(self):
+        """Show usergroup list of the target"""
+        output = []
+
+        output.append("Usergroup list:")
+
+        for usergroup in self.gmembers:
+            output.append(usergroup.show_name())
 
         return "\n".join(output)
 

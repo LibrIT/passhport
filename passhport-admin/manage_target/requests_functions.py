@@ -87,6 +87,22 @@ def requests_target_show_users(targetname):
 
     return 1
 
+def requests_target_show_usergroups(targetname):
+    """Get data about a target and its usergroup list"""
+    url_show_usergroups = url_passhport + "target/show_usergroups/" + targetname
+
+    try:
+        r = requests.get(url_show_usergroups)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1
+
 def requests_target_edit(targetname, new_targetname, new_hostname, new_comment, new_sshoptions, new_port, new_servertype, new_autocommand):
     """Target modification on passhportd via API"""
     target_data = {'targetname': targetname, 'new_targetname': new_targetname, 'new_hostname': new_hostname, 'new_comment': new_comment, 'new_sshoptions': new_sshoptions, 'new_port': new_port, 'new_servertype': new_servertype, 'new_autocommand': new_autocommand}

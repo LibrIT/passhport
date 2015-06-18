@@ -22,3 +22,7 @@ class Usergroup(db.Model):
             output.append("Comment: {}".format(self.comment.encode("utf8")))
 
         return "\n".join(output)
+
+    def show_name(self):
+        """Return a string containing the usergroup's name"""
+        return self.usergroupname.encode("utf8")
