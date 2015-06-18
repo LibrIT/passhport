@@ -36,7 +36,7 @@ def targetgroup_search(pattern):
 @app.route('/targetgroup/show/<targetgroupname>')
 def targetgroup_show(targetgroupname):
     """Return all data about a targetgroup"""
-    targetgroup_data = targetgroup.Targetgroup.query.filter_by(name = targetgroupname).first()
+    targetgroup_data = targetgroup.Targetgroup.query.filter_by(targetgroupname = targetgroupname).first()
 
     if targetgroup_data is None:
         return 'ERROR: No targetgroup with the name "' + targetgroupname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
@@ -59,8 +59,8 @@ def targetgroup_create():
         return "ERROR: The targetgruopname is required ", 417, {'Content-Type': 'text/plain'}
 
     # Check unicity for targetgroupname
-    query = db.session.query(targetgroup.Targetgroup.name)\
-        .filter(targetgroup.Targetgroup.name.like(targetgroupname))
+    query = db.session.query(targetgroup.Targetgroup.targetgroupname)\
+        .filter(targetgroup.Targetgroup.targetgroupname.like(targetgroupname))
 
     # Normally only one row
     for row in query.all():
@@ -68,8 +68,8 @@ def targetgroup_create():
             return 'ERROR: The targetgroupname "' + targetgroupname + '" is already used by another targetgroup ', 417, {'Content-Type': 'text/plain'}
 
     t = targetgroup.Targetgroup(
-            name    = targetgroupname,
-            comment = comment)
+            targetgroupname    = targetgroupname,
+            comment            = comment)
     db.session.add(t)
 
     # Try to add the targetgroup in the database
@@ -92,7 +92,7 @@ def targetgroup_edit():
     new_targetgroupname = request.form['new_targetgroupname']
     new_comment         = request.form['new_comment']
 
-    toupdate = db.session.query(targetgroup.Targetgroup).filter_by(name = targetgroupname)
+    toupdate = db.session.query(targetgroup.Targetgroup).filter_by(targetgroupname = targetgroupname)
 
     # Let's modify only relevent fields
     if new_comment:

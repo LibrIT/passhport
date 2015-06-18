@@ -58,7 +58,7 @@ class Target(db.Model):
         output.append("Usergroup list:")
 
         for usergroup in self.gmembers:
-            output.append(usergroup.show_name())
+            output.append(usergroup.show_usergroupname())
 
         return "\n".join(output)
 
@@ -90,17 +90,17 @@ class Target(db.Model):
         return False
 
     # Usergroup management
-    def addgroup(self, usergroup):
+    def addusergroup(self, usergroup):
         """Add a usergroup to the relation table"""
         if not self.is_gmember(usergroup):
             self.gmembers.append(usergroup)
 
         return self
 
-    def rmgroup(self, usergroup):
+    def rmusergroup(self, usergroup):
         """Remove a usergroup to the relation table"""
         if self.is_gmember(usergroup):
-            self.members.remove(usergroup)
+            self.gmembers.remove(usergroup)
 
         return self
 
@@ -108,10 +108,10 @@ class Target(db.Model):
         """Return true if the given usergroup is a member of the target, false otherwise"""
         return usergroup in self.gmembers
 
-    def usergroupname_member(self, usergroupname):
+    def usergroupname_in_target(self, usergroupname):
         """Return true if the given usergroupname belongs to a member of the target"""
-        for usergroup in self.members:
-            if user.show_email() == email:
+        for usergroup in self.gmembers:
+            if usergroup.show_usergroupname() == usergroupname:
                 return True
 
         return False

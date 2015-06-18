@@ -19,6 +19,7 @@ Usage:
     passhport-admin target search <pattern>
     passhport-admin target (show|show_users|show_usergroups|create|edit|del)
     passhport-admin target (adduser|rmuser) <email> <targetname>
+    passhport-admin target (addusergroup|rmusergroup) <groupname> <targetname>
     passhport-admin targetgroup list
     passhport-admin targetgroup search <pattern>
     passhport-admin targetgroup (show|create|edit|del)
@@ -283,6 +284,8 @@ if __name__ == '__main__':
         	target_prompt.prompt_target_rmuser(opt['<email>'], opt['<targetname>'])
         elif opt['addusergroup']:
             target_prompt.prompt_target_addusergroup(opt['<groupname>'], opt['<targetname>'])
+        elif opt['rmusergroup']:
+            target_prompt.prompt_target_rmusergroup(opt['<groupname>'], opt['<targetname>'])
     elif opt['usergroup']:
     	if opt['list']:
     		usergroup_prompt.prompt_usergroup_list()

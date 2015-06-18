@@ -311,39 +311,42 @@ def target_addusergroup():
 
     return 'OK: "' + usergroupname + '" added to "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/target/rmusergroup/',methods=['POST'])
+@app.route('/target/rmusergroup', methods = ['POST'])
 def target_rmusergroup():
-    """ Has to be tested """
+    """Remove a usergroup from the target in the database"""
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n"
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
-    targetname      = request.form['targetname']
-    usergroupname   = request.form['usergroupname']
+    targetname    = request.form['targetname']
+    usergroupname = request.form['usergroupname']
 
-    if len(targetname) <= 0 or len(usergroupname) <= 0 :
-        return "ERROR: targetname and usergroupname are mandatory\n"
+    # Check for mandatory fields
+    if not targetname or not usergroupname:
+        return "ERROR: The targetname and usergroupname are required ", 417, {'Content-Type': 'text/plain'}
 
     # Target and user have to exist in database
     t = get_target(targetname)
-    if t == False:
-        return "Error: target does not exist\n"
+    if not t:
+        return 'ERROR: No target "' + targetname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    g = get_ugroup(usergroupname)
-    if g == False:
-        return "Error: usergroup does not exist\n"
+    u = get_usergroup(usergroupname)
+    if not u:
+        return 'ERROR: No usergroup "' + usergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    # Now we can add the user
-    t.rmusergroup(g)
+    # Check if the given usergroup is a member of the given target
+    if not t.usergroupname_in_target(usergroupname):
+        return 'ERROR: The usergroup "' + usergroupname + '" is not a member of the target "' + targetname + '" ', 417, {'Content-Type': 'text/plain'}
+
+    # Now we can remove the usergroup
+    t.rmusergroup(u)
     try:
         db.session.commit()
-    except exc.SQLAlchemyError:
-        return "ERROR: " + exc
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + targetname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return usergroupname + " added to " + targetname + "\n"
-
-
+    return 'OK: "' + usergroupname + '" removed from "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
 
 # Utils
 def get_target(targetname):

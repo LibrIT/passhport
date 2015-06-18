@@ -186,3 +186,20 @@ def requests_target_addusergroup(usergroupname, targetname):
             return 0
 
     return 1
+
+def requests_target_rmusergroup(usergroupname, targetname):
+    """Remove a usergroup from a target via API"""
+    target_usergroup_data = {'targetname': targetname, 'usergroupname': usergroupname}
+    url_rmusergroup = url_passhport + "target/rmusergroup"
+
+    try:
+        r = requests.post(url_rmusergroup, data = target_usergroup_data)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1

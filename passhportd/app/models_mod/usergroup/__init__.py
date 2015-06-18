@@ -23,6 +23,6 @@ class Usergroup(db.Model):
 
         return "\n".join(output)
 
-    def show_name(self):
+    def show_usergroupname(self):
         """Return a string containing the usergroup's name"""
         return self.usergroupname.encode("utf8")
