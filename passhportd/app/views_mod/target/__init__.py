@@ -266,7 +266,7 @@ def target_rmuser():
         return 'ERROR: No user "' + email + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
     # Check if the given user is a member of the given target
-    if not t.email_member(email):
+    if not t.email_in_target(email):
         return 'ERROR: The user "' + email + '" is not a member of the target "' + targetname + '" ', 417, {'Content-Type': 'text/plain'}
 
     # Now we can remove the user

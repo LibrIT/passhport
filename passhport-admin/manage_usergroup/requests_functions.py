@@ -38,9 +38,9 @@ def requests_usergroup_search(pattern):
 
     return 1
 
-def requests_usergroup_create(groupname, comment):
+def requests_usergroup_create(usergroupname, comment):
     """Usergroup creation on passhportd via API"""
-    usergroup_data = {'groupname': groupname, 'comment': comment}
+    usergroup_data = {'usergroupname': usergroupname, 'comment': comment}
     url_create = url_passhport + "usergroup/create"
 
     try:
@@ -55,9 +55,9 @@ def requests_usergroup_create(groupname, comment):
 
     return 1
 
-def requests_usergroup_show(groupname):
+def requests_usergroup_show(usergroupname):
     """Get data about a usergroup"""
-    url_show = url_passhport + "usergroup/show/" + groupname
+    url_show = url_passhport + "usergroup/show/" + usergroupname
 
     try:
         r = requests.get(url_show)
@@ -71,9 +71,9 @@ def requests_usergroup_show(groupname):
 
     return 1
 
-def requests_usergroup_edit(groupname, new_groupname, new_comment):
+def requests_usergroup_edit(usergroupname, new_usergroupname, new_comment):
     """Usergroup modification on passhportd via API"""
-    usergroup_data = {'groupname': groupname, 'new_groupname': new_groupname, 'new_comment': new_comment}
+    usergroup_data = {'usergroupname': usergroupname, 'new_usergroupname': new_usergroupname, 'new_comment': new_comment}
     url_edit = url_passhport + "usergroup/edit"
 
     try:
@@ -88,9 +88,9 @@ def requests_usergroup_edit(groupname, new_groupname, new_comment):
 
     return 1
 
-def requests_usergroup_del(email):
+def requests_usergroup_del(usergroupname):
     """Usergroup deletion on passhportd via API"""
-    url_del = url_passhport + "usergroup/del/" + email
+    url_del = url_passhport + "usergroup/del/" + usergroupname
 
     try:
         r = requests.get(url_del)

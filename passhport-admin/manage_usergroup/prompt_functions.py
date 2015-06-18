@@ -15,33 +15,33 @@ def prompt_usergroup_search(pattern):
 
 def prompt_usergroup_create():
     """Ask arguments for usergroup creation"""
-    groupname = pyt_compat.input_compat("Groupname: ")
-    comment   = pyt_compat.input_compat("Comment: ")
+    usergroupname = pyt_compat.input_compat("Usergroupname: ")
+    comment       = pyt_compat.input_compat("Comment: ")
     print("")
 
-    return req.requests_usergroup_create(groupname, comment)
+    return req.requests_usergroup_create(usergroupname, comment)
 
 def prompt_usergroup_show():
     """Ask arguments for showing usergroup"""
-    groupname = pyt_compat.input_compat("Groupname: ")
+    usergroupname = pyt_compat.input_compat("Usergroupname: ")
     print("")
 
-    return req.requests_usergroup_show(groupname)
+    return req.requests_usergroup_show(usergroupname)
 
 def prompt_usergroup_edit():
     """Ask arguments for editing an existing usergroup"""
-    groupname = pyt_compat.input_compat("Name of the usergroup you want to modify: ")
+    usergroupname = pyt_compat.input_compat("Name of the usergroup you want to modify: ")
 
-    if req.requests_usergroup_show(groupname) == 0:
-        new_groupname = pyt_compat.input_compat("New name: ")
-        new_comment = pyt_compat.input_compat("New comment: ")
+    if req.requests_usergroup_show(usergroupname) == 0:
+        new_usergroupname = pyt_compat.input_compat("New name: ")
+        new_comment       = pyt_compat.input_compat("New comment: ")
         print("")
 
-        return req.requests_usergroup_edit(groupname, new_groupname, new_comment)
+        return req.requests_usergroup_edit(usergroupname, new_usergroupname, new_comment)
 
 def prompt_usergroup_del():
     """Ask arguments for deleting an existing usergroup"""
-    groupname = pyt_compat.input_compat("Groupname: ")
+    usergroupname = pyt_compat.input_compat("Usergroupname: ")
     print("")
 
-    return req.requests_usergroup_del(groupname)
+    return req.requests_usergroup_del(usergroupname)
