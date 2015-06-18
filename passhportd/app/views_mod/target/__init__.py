@@ -12,10 +12,8 @@ from app.models_mod import usergroup
 @app.route("/target/list")
 def target_list():
     """Return the target list of database"""
-
     result = []
     query  = db.session.query(target.Target.targetname).order_by(target.Target.targetname)
-
 
     for row in query.all():
         result.append(str(row[0]).encode('utf8'))
@@ -28,7 +26,6 @@ def target_list():
 @app.route('/target/search/<pattern>')
 def target_search(pattern):
     """Return a list of targets that match the given pattern"""
-
     """
     To check
         pattern not in db
@@ -51,7 +48,6 @@ def target_search(pattern):
 @app.route('/target/show/<targetname>')
 def target_show(targetname):
     """Return all data about a user"""
-
     """
     To check
         pattern not in db
@@ -61,15 +57,44 @@ def target_show(targetname):
 
     target_data = target.Target.query.filter_by(targetname = targetname).first()
 
-    if targetdata is None:
-        return 'ERROR: No target with the name "' + targetname + '" in the database.\n', 404, {'Content-Type': 'text/plain'}
+    if target_data is None:
+        return 'ERROR: No target with the name "' + targetname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
 
     return str(target_data), 200, {'Content-Type': 'text/plain'}
+
+@app.route('/target/show_users/<targetname>')
+def target_show_users(targetname):
+    """Return user list of the given target"""
+    # Check for required fields
+    if not targetname:
+        return "ERROR: The targetname is required ", 417, {'Content-Type': 'text/plain'}
+
+    target_data = target.Target.query.filter_by(targetname = targetname).first()
+
+    # Check if the given target exists in the database
+    if target_data is None:
+        return 'ERROR: No target with the name "' + targetname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
+
+    return str(target_data.show_users()), 200, {'Content-Type': 'text/plain'}
+
+@app.route('/target/show_usergroups/<targetname>')
+def target_show_usergroups(targetname):
+    """Return usergroup list of the given target"""
+    # Check for required field
+    if not targetname:
+        return "ERROR: The targetname is required ", 417, {'Content-Type': 'text/plain'}
+
+    target_data = target.Target.query.filter_by(targetname = targetname).first()
+
+    # Check if the given target exists in the database
+    if target_data is None:
+        return 'ERROR: No target with the name "' + targetname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
+
+    return str(target_data.show_usergroups()), 200, {'Content-Type': 'text/plain'}
 
 @app.route('/target/create', methods = ['POST'])
 def target_create():
     """Add a target in the database"""
-
     # Only POST data are handled
     if request.method != 'POST':
         return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
@@ -117,10 +142,9 @@ def target_create():
 
     return 'OK: "' + targetname + '" -> created' + '\n', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/target/edit/', methods = ['POST'])
+@app.route('/target/edit', methods = ['POST'])
 def target_edit():
     """Edit a target in the database"""
-
     # Only POST data are handled
     if request.method != 'POST':
         return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
@@ -163,7 +187,6 @@ def target_edit():
 @app.route('/target/del/<targetname>')
 def target_del(targetname):
     """Delete a target in the database"""
-
     if not targetname:
         return "ERROR: The targetname is required ", 417, {'Content-Type': 'text/plain'}
 
@@ -183,19 +206,18 @@ def target_del(targetname):
 
             return 'OK: "' + targetname + '" -> deleted' + '\n', 200, {'Content-Type': 'text/plain'}
 
-    return 'ERROR: No target with the targetname "' + targetname + '" in the database.\n', 404, {'Content-Type': 'text/plain'}
+    return 'ERROR: No target with the targetname "' + targetname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
 
 @app.route('/target/adduser', methods = ['POST'])
 def target_adduser():
     """Add a user in the target in the database"""
-
     # Only POST data are handled
     if request.method != 'POST':
         return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
-    targetname  = request.form['targetname']
-    email       = request.form['email']
+    targetname = request.form['targetname']
+    email      = request.form['email']
 
     # Check for mandatory fields
     if not targetname or not email:
@@ -204,11 +226,11 @@ def target_adduser():
     # Target and user have to exist in database
     t = get_target(targetname)
     if not t:
-        return 'ERROR: no target "' + targetname + '" in the database ', 404, {'Content-Type': 'text/plain'}
+        return 'ERROR: no target "' + targetname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
     u = get_user(email)
     if not u:
-        return 'ERROR: no user "' + email + '" in the database ', 404, {'Content-Type': 'text/plain'}
+        return 'ERROR: no user "' + email + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
     # Now we can add the user
     t.adduser(u)
@@ -217,112 +239,118 @@ def target_adduser():
     except exc.SQLAlchemyError, e:
         return 'ERROR: "' + targetname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return '"' + email + '" added to "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
+    return 'OK: "' + email + '" added to "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/target/rmuser',methods=['POST'])
+@app.route('/target/rmuser', methods = ['POST'])
 def target_rmuser():
+    """Remove a user from the target in the database"""
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n"
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
-    targetname  = request.form['targetname']
-    username    = request.form['username']
+    targetname = request.form['targetname']
+    email      = request.form['email']
 
-    if len(targetname) <= 0 or len(username) <= 0 :
-        return "ERROR: targetname and username are mandatory\n"
+    # Check for mandatory fields
+    if not targetname or not email:
+        return "ERROR: The targetname and email are required ", 417, {'Content-Type': 'text/plain'}
 
     # Target and user have to exist in database
     t = get_target(targetname)
-    if t == False:
-        return "Error: target does not exist\n"
+    if not t:
+        return 'ERROR: No target "' + targetname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    u = get_user(username)
-    if u == False:
-        return "Error: user does not exist\n"
+    u = get_user(email)
+    if not u:
+        return 'ERROR: No user "' + email + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    # We can remove the user from this target
+    # Check if the given user is a member of the given target
+    if not t.email_in_target(email):
+        return 'ERROR: The user "' + email + '" is not a member of the target "' + targetname + '" ', 417, {'Content-Type': 'text/plain'}
+
+    # Now we can remove the user
     t.rmuser(u)
     try:
         db.session.commit()
-    except exc.SQLAlchemyError:
-        return "ERROR: " + exc
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + targetname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return username + " removed from " + targetname + "\n"
+    return 'OK: "' + email + '" removed from "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
 
-
-@app.route('/target/addusergroup/',methods=['POST'])
+@app.route('/target/addusergroup', methods = ['POST'])
 def target_addusergroup():
-    " Has to be tested "
+    """Add a usergroup in the target in the database"""
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n"
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
-    targetname      = request.form['targetname']
-    usergroupname   = request.form['usergroupname']
+    targetname    = request.form['targetname']
+    usergroupname = request.form['usergroupname']
 
-    if len(targetname) <= 0 or len(usergroupname) <= 0 :
-        return "ERROR: targetname and usergroupname are mandatory\n"
+    # Check for mandatory fields
+    if not targetname or not usergroupname:
+        return "ERROR: The targetname and usergroupname are required ", 417, {'Content-Type': 'text/plain'}
 
     # Target and user have to exist in database
     t = get_target(targetname)
-    if t == False:
-        return "Error: target does not exist\n"
+    if not t:
+        return 'ERROR: no target "' + targetname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    g = get_ugroup(usergroupname)
-    if g == False:
-        return "Error: usergroup does not exist\n"
+    g = get_usergroup(usergroupname)
+    if not g:
+        return 'ERROR: no usergroup "' + usergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
     # Now we can add the user
     t.addusergroup(g)
     try:
         db.session.commit()
-    except exc.SQLAlchemyError:
-        return "ERROR: " + exc
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + targetname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return usergroupname + " added to " + targetname + "\n"
+    return 'OK: "' + usergroupname + '" added to "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
 
-
-@app.route('/target/rmusergroup/',methods=['POST'])
+@app.route('/target/rmusergroup', methods = ['POST'])
 def target_rmusergroup():
-    """ Has to be tested """
+    """Remove a usergroup from the target in the database"""
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n"
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
-    targetname      = request.form['targetname']
-    usergroupname   = request.form['usergroupname']
+    targetname    = request.form['targetname']
+    usergroupname = request.form['usergroupname']
 
-    if len(targetname) <= 0 or len(usergroupname) <= 0 :
-        return "ERROR: targetname and usergroupname are mandatory\n"
+    # Check for mandatory fields
+    if not targetname or not usergroupname:
+        return "ERROR: The targetname and usergroupname are required ", 417, {'Content-Type': 'text/plain'}
 
     # Target and user have to exist in database
     t = get_target(targetname)
-    if t == False:
-        return "Error: target does not exist\n"
+    if not t:
+        return 'ERROR: No target "' + targetname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    g = get_ugroup(usergroupname)
-    if g == False:
-        return "Error: usergroup does not exist\n"
+    u = get_usergroup(usergroupname)
+    if not u:
+        return 'ERROR: No usergroup "' + usergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    # Now we can add the user
-    t.rmusergroup(g)
+    # Check if the given usergroup is a member of the given target
+    if not t.usergroupname_in_target(usergroupname):
+        return 'ERROR: The usergroup "' + usergroupname + '" is not a member of the target "' + targetname + '" ', 417, {'Content-Type': 'text/plain'}
+
+    # Now we can remove the usergroup
+    t.rmusergroup(u)
     try:
         db.session.commit()
-    except exc.SQLAlchemyError:
-        return "ERROR: " + exc
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + targetname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return usergroupname + " added to " + targetname + "\n"
-
-
+    return 'OK: "' + usergroupname + '" removed from "' + targetname + '"', 200, {'Content-Type': 'text/plain'}
 
 # Utils
-" Return a Target object from the target name"
 def get_target(targetname):
     """Return the target with the given targetname"""
-
     t = db.session.query(target.Target).filter(
             target.Target.targetname == targetname).all()
 
@@ -334,7 +362,6 @@ def get_target(targetname):
 
 def get_user(email):
     """Return the user with the given email"""
-
     u = db.session.query(user.User).filter(
              user.User.email == email).all()
 
@@ -346,7 +373,6 @@ def get_user(email):
 
 def get_usergroup(usergroupname):
     """Return the usergroup with the given usergroupname"""
-
     g = db.session.query(usergroup.Usergroup).filter(
              usergroup.Usergroup.usergroupname == usergroupname).all()
 

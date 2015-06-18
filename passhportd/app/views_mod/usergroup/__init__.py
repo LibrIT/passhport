@@ -1,3 +1,5 @@
+# -*-coding:Utf-8 -*-
+
 from app import app
 from flask          import request
 from sqlalchemy     import exc
@@ -7,137 +9,147 @@ from app.models_mod import target
 from app.models_mod import user
 from app.models_mod import usergroup
 
-
 @app.route('/usergroup/list')
 def usergroup_list():
-    """
-    Return the usergroups list from database query
-    """
-    result = ""
-    for row in db.session.query(usergroup.Usergroup.groupname)\
-            .order_by(usergroup.Usergroup.groupname):
-        result = result + str(row[0]).encode('utf8')+"\n"
-    return result
+    """Return the usergroup list of database"""
+    result = []
+    query  = db.session.query(usergroup.Usergroup.usergroupname).order_by(usergroup.Usergroup.usergroupname)
+
+    for row in query.all():
+        result.append(str(row[0]).encode('utf8'))
+
+    if not result:
+        return "No usergroup in database.\n", 200, {'Content-Type': 'text/plain'}
+
+    return '\n'.join(result), 200, {'Content-Type': 'text/plain'}
 
 @app.route('/usergroup/search/<pattern>')
 def usergroup_search(pattern):
+    """Return a list of usergroups that match the given pattern"""
     """
     To check
-        Empty pattern
         pattern not in db
         Specific characters
         upper and lowercases
     """
-    result = ""
-    query = db.session.query(usergroup.Usergroup.groupname)\
-            .filter(usergroup.Usergroup.groupname.like('%'+pattern+'%'))
+
+    result = []
+    query  = db.session.query(usergroup.Usergroup.usergroupname)\
+        .filter(usergroup.Usergroup.usergroupname.like('%' + pattern + '%'))
 
     for row in query.all():
-        result = result + str(row[0]).encode('utf8')+"\n"
-    return result
+        result.append(str(row[0]).encode('utf8'))
 
+    if not result:
+        return 'No usergroup matching the pattern "' + pattern + '" found.\n', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/usergroup/show/<groupname>')
-def usergroup_show(groupname):
+    return '\n'.join(result), 200, {'Content-Type': 'text/plain'}
+
+@app.route('/usergroup/show/<usergroupname>')
+def usergroup_show(usergroupname):
+    """Return all data about a usergroup"""
     """
     To check
-        Empty pattern
         pattern not in db
         Specific characters
         upper and lowercases
     """
-    return str(usergroup.Usergroup.query. \
-            filter_by(groupname=groupname).first())
 
+    usergroup_data = usergroup.Usergroup.query.filter_by(usergroupname = usergroupname).first()
 
-@app.route('/usergroup/create/', methods=['POST'])
+    if usergroup_data is None:
+        return 'ERROR: No usergroup with the name "' + usergroupname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
+
+    return str(usergroup_data), 200, {'Content-Type': 'text/plain'}
+
+@app.route('/usergroup/create', methods = ['POST'])
 def usergroup_create():
-    """
-    To check
-        Empty fields,
-        Already existing field,
-        The access is well a POST
-        The database add / commit has been successful
-        #TODO Check if targetname already exist 
-    """
+    """Add a usergroup in the database"""
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n"
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
-    groupname  = request.form['groupname']
-    comment    = request.form['comment']
-    
-    # Check for mandatory fields
-    if len(groupname) <= 0 :
-        return "ERROR: groupname is mandatory\n"
+    usergroupname = request.form['usergroupname']
+    comment       = request.form['comment']
+
+    # Check for required fields
+    if not usergroupname:
+        return "ERROR: The usergroupname is required ", 417, {'Content-Type': 'text/plain'}
+
+    # Check unicity for groupname
+    query = db.session.query(usergroup.Usergroup.usergroupname)\
+        .filter(usergroup.Usergroup.usergroupname.like(usergroupname))
+
+    # Normally only one row
+    for row in query.all():
+        if str(row[0]) == usergroupname:
+            return 'ERROR: The name "' + usergroupname + '" is already used by another user ', 417, {'Content-Type': 'text/plain'}
 
     g = usergroup.Usergroup(
-            groupname  = groupname,
-            comment     = comment)
+            usergroupname  = usergroupname,
+            comment        = comment)
     db.session.add(g)
 
-    # Try to add the target on the databse
+    # Try to add the usergroup on the database
     try:
         db.session.commit()
-    except exc.SQLAlchemyError:
-        return "ERROR: " + exc + "\n"
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + usergroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return "OK: " + groupname + "\n"
+    return 'OK: "' + usergroupname + '" -> created' + '\n', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/usergroup/edit/', methods=['POST'])
+@app.route('/usergroup/edit', methods = ['POST'])
 def usergroup_edit():
-    """ Certainly this should be handled by the ORM... YOLO """
+    """Edit a user in the database"""
     # Only POST data are handled
     if request.method != 'POST':
-        return "POST Method is mandatory\n"
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
     # Simplification for the reading
-    groupname   = request.form['groupname']
-    newgroupname= request.form['newgroupname']
-    comment     = request.form['comment']
-    
-    # Old groupname is mandatory to modify the right usergroup
-    if len(groupname) > 0:
-        toupdate = db.session.query(usergroup.Usergroup). \
-                filter_by(groupname=groupname)
-    else:
-        return "ERROR: groupname is mandatory\n"
+    usergroupname     = request.form['usergroupname']
+    new_usergroupname = request.form['new_usergroupname']
+    new_comment       = request.form['new_comment']
 
-    # Let's modify only revelent fields
-    if len(newgroupname) > 0:
-        toupdate.update({"groupname": str(newgroupname).encode('utf8')})
-    if len(comment) > 0:
-        toupdate.update({"comment": str(comment).encode('utf8')})
+    toupdate = db.session.query(usergroup.Usergroup).filter_by(usergroupname = usergroupname)
+
+    # Let's modify only relevent fields
+    # Strangely the order is important, have to investigate why
+    if new_comment:
+        toupdate.update({"comment": str(new_comment).encode('utf8')})
+    if new_usergroupname:
+        toupdate.update({"usergroupname": str(new_usergroupname).encode('utf8')})
 
     try:
         db.session.commit()
-    except exc.SQLAlchemyError:
-        return "ERROR: " + exc
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + usergroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return "OK: " + groupname + "\n"
+    return 'OK: "' + usergroupname + '" -> edited' + '\n', 200, {'Content-Type': 'text/plain'}
 
+@app.route('/usergroup/del/<usergroupname>')
+def usergroup_del(usergroupname):
+    """Delete a user in the database"""
+    if not usergroupname:
+        return "ERROR: The groupname is required ", 417, {'Content-Type': 'text/plain'}
 
-@app.route('/usergroup/del/<groupname>')
-def usergroup_del(groupname):
-    """
-    To check
-        groupname exist
-        Delete is ok
-    """
-    if len(groupname) > 0:
-        db.session.query(usergroup.Usergroup). \
-            filter(usergroup.Usergroup.groupname == groupname).delete()
-    else:
-        return "ERROR: groupname is mandatory\n"
+    # Check if the groupname exists
+    query = db.session.query(usergroup.Usergroup.usergroupname)\
+        .filter(usergroup.Usergroup.usergroupname.like(usergroupname))
 
-    try:
-        db.session.commit()
-    except exc.SQLAlchemyError:
-        return "ERROR: " + exc
+    # Normally only one row
+    for row in query.all():
+        if str(row[0]) == usergroupname:
+            db.session.query(usergroup.Usergroup).filter(usergroup.Usergroup.usergroupname == usergroupname).delete()
 
-    return "Deleted\n"
+            try:
+                db.session.commit()
+            except exc.SQLAlchemyError, e:
+                return 'ERROR: "' + usergroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
+            return 'OK: "' + usergroupname + '" -> deleted' + '\n', 200, {'Content-Type': 'text/plain'}
+
+    return 'ERROR: No usergroup with the name "' + usergroupname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
 
 @app.route('/usergroup/adduser/', methods=['GET'])
 def usergroup_adduser():
@@ -146,9 +158,9 @@ def usergroup_adduser():
         return "POST Method is mandatory\n"
 
     # Simplification for the reading
-    groupname   = request.form['groupname']
-    username    = request.form['username']
-   
+    usergroupname   = request.form['usergroupname']
+    username        = request.form['username']
+
     if len(groupname) <= 0 or len(username) <= 0 :
         return "ERROR: groupname and username are mandatory\n"
 
@@ -180,7 +192,7 @@ def usergroup_rmuser():
     #TODO
     print  request.args.get('username')
     print  request.args.get('groupname')
- 
+
 @app.route('/usergroup/addusergroup', methods=['GET'])
 def usergroup_addgroup():
     #TODO

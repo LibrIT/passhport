@@ -9,7 +9,6 @@ from app.models_mod import user
 @app.route('/user/list')
 def user_list():
     """Return the user list of database"""
-
     result = []
     query  = db.session.query(user.User.email).order_by(user.User.email)
 
@@ -24,7 +23,6 @@ def user_list():
 @app.route('/user/search/<pattern>')
 def user_search(pattern):
     """Return a list of users that match the given pattern"""
-
     """
     To check
         pattern not in db
@@ -47,7 +45,6 @@ def user_search(pattern):
 @app.route('/user/show/<email>')
 def user_show(email):
     """Return all data about a user"""
-
     """
     To check
         pattern not in db
@@ -58,14 +55,13 @@ def user_show(email):
     user_data = user.User.query.filter_by(email = email).first()
 
     if user_data is None:
-        return 'ERROR: No user with the email "' + email + '" in the database.\n', 404, {'Content-Type': 'text/plain'}
+        return 'ERROR: No user with the email "' + email + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
 
     return str(user_data), 200, {'Content-Type': 'text/plain'}
 
 @app.route('/user/create', methods = ['POST'])
 def user_create():
     """Add a user in the database"""
-
     # Only POST data are handled
     if request.method != 'POST':
         return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
@@ -114,7 +110,6 @@ def user_create():
 @app.route('/user/edit', methods = ['POST'])
 def user_edit():
     """Edit a user in the database"""
-
     # Only POST data are handled
     if request.method != 'POST':
         return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
@@ -146,7 +141,6 @@ def user_edit():
 @app.route('/user/del/<email>')
 def user_del(email):
     """Delete a user in the database"""
-
     if not email:
         return "ERROR: The email is required ", 417, {'Content-Type': 'text/plain'}
 
@@ -166,4 +160,4 @@ def user_del(email):
 
             return 'OK: "' + email + '" -> deleted' + '\n', 200, {'Content-Type': 'text/plain'}
 
-    return 'ERROR: No user with the email "' + email + '" in the database.\n', 404, {'Content-Type': 'text/plain'}
+    return 'ERROR: No user with the email "' + email + '" in the database.\n', 417, {'Content-Type': 'text/plain'}

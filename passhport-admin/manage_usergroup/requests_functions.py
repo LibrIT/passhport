@@ -1,14 +1,14 @@
 # -*-coding:Utf-8 -*-
 
-"""Contains functions which make requests to the server for user's management"""
+"""Contains functions which make requests to the server for usergroup's management"""
 
 import requests
 
 url_passhport = "http://127.0.0.1:5000/"
 
-def requests_user_list():
-    """Get the list of all users"""
-    url_list = url_passhport + "user/list"
+def requests_usergroup_list():
+    """Get the list of all usergroups"""
+    url_list = url_passhport + "usergroup/list"
 
     try:
         r = requests.get(url_list)
@@ -22,9 +22,9 @@ def requests_user_list():
 
     return 1
 
-def requests_user_search(pattern):
-    """Get the list of users following the pattern"""
-    url_search = url_passhport + "user/search/" + pattern
+def requests_usergroup_search(pattern):
+    """Get the list of usergroups following the pattern"""
+    url_search = url_passhport + "usergroup/search/" + pattern
 
     try:
         r = requests.get(url_search)
@@ -38,13 +38,13 @@ def requests_user_search(pattern):
 
     return 1
 
-def requests_user_create(email, comment, sshkey):
-    """User creation on passhportd via API"""
-    user_data = {'email': email, 'comment': comment, 'sshkey': sshkey}
-    url_create = url_passhport + "user/create"
+def requests_usergroup_create(usergroupname, comment):
+    """Usergroup creation on passhportd via API"""
+    usergroup_data = {'usergroupname': usergroupname, 'comment': comment}
+    url_create = url_passhport + "usergroup/create"
 
     try:
-        r = requests.post(url_create, data = user_data)
+        r = requests.post(url_create, data = usergroup_data)
     except requests.RequestException, e:
         print("ERROR: " + str(e.message))
     else:
@@ -55,9 +55,9 @@ def requests_user_create(email, comment, sshkey):
 
     return 1
 
-def requests_user_show(email):
-    """Get data about a user"""
-    url_show = url_passhport + "user/show/" + email
+def requests_usergroup_show(usergroupname):
+    """Get data about a usergroup"""
+    url_show = url_passhport + "usergroup/show/" + usergroupname
 
     try:
         r = requests.get(url_show)
@@ -71,13 +71,13 @@ def requests_user_show(email):
 
     return 1
 
-def requests_user_edit(email, new_email, new_comment, new_sshkey):
-    """User modification on passhportd via API"""
-    user_data = {'email': email, 'new_email': new_email, 'new_comment': new_comment, 'new_sshkey': new_sshkey}
-    url_edit = url_passhport + "user/edit"
+def requests_usergroup_edit(usergroupname, new_usergroupname, new_comment):
+    """Usergroup modification on passhportd via API"""
+    usergroup_data = {'usergroupname': usergroupname, 'new_usergroupname': new_usergroupname, 'new_comment': new_comment}
+    url_edit = url_passhport + "usergroup/edit"
 
     try:
-        r = requests.post(url_edit, data = user_data)
+        r = requests.post(url_edit, data = usergroup_data)
     except requests.RequestException, e:
         print("ERROR: " + str(e.message))
     else:
@@ -88,9 +88,9 @@ def requests_user_edit(email, new_email, new_comment, new_sshkey):
 
     return 1
 
-def requests_user_del(email):
-    """User deletion on passhportd via API"""
-    url_del = url_passhport + "user/del/" + email
+def requests_usergroup_del(usergroupname):
+    """Usergroup deletion on passhportd via API"""
+    url_del = url_passhport + "usergroup/del/" + usergroupname
 
     try:
         r = requests.get(url_del)
