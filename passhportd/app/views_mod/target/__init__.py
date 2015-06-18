@@ -69,13 +69,13 @@ def target_show_users(targetname):
     if not targetname:
         return "ERROR: The targetname is required ", 417, {'Content-Type': 'text/plain'}
 
-    target_data = target.Target.query.filter_by(targetname = targetname).first().show_users()
+    target_data = target.Target.query.filter_by(targetname = targetname).first()
 
     # Check if the given target exists in the database
     if target_data is None:
         return 'ERROR: No target with the name "' + targetname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
 
-    return str(target_data), 200, {'Content-Type': 'text/plain'}
+    return str(target_data.show_users()), 200, {'Content-Type': 'text/plain'}
 
 @app.route('/target/show_usergroups/<targetname>')
 def target_show_usergroups(targetname):
@@ -84,13 +84,13 @@ def target_show_usergroups(targetname):
     if not targetname:
         return "ERROR: The targetname is required ", 417, {'Content-Type': 'text/plain'}
 
-    target_data = target.Target.query.filter_by(targetname = targetname).first().show_usergroups()
+    target_data = target.Target.query.filter_by(targetname = targetname).first()
 
     # Check if the given target exists in the database
     if target_data is None:
         return 'ERROR: No target with the name "' + targetname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
 
-    return str(target_data), 200, {'Content-Type': 'text/plain'}
+    return str(target_data.show_usergroups()), 200, {'Content-Type': 'text/plain'}
 
 @app.route('/target/create', methods = ['POST'])
 def target_create():
