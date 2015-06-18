@@ -81,8 +81,8 @@ class Target(db.Model):
         """Return true if the given user is a member of the target, false otherwise"""
         return user in self.members
 
-    def email_member(self, email):
-        """Return true if the given email belong to a member of the target"""
+    def email_in_target(self, email):
+        """Return true if the given email belongs to a member of the target"""
         for user in self.members:
             if user.show_email() == email:
                 return True
@@ -99,11 +99,19 @@ class Target(db.Model):
 
     def rmgroup(self, usergroup):
         """Remove a usergroup to the relation table"""
-        if not self.is_gmember(usergroup):
-            self.members.append(usergroup)
+        if self.is_gmember(usergroup):
+            self.members.remove(usergroup)
 
         return self
 
     def is_gmember(self, usergroup):
         """Return true if the given usergroup is a member of the target, false otherwise"""
         return usergroup in self.gmembers
+
+    def usergroupname_member(self, usergroupname):
+        """Return true if the given usergroupname belongs to a member of the target"""
+        for usergroup in self.members:
+            if user.show_email() == email:
+                return True
+
+        return False
