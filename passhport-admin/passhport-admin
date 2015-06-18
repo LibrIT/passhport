@@ -10,7 +10,7 @@ Usage:
     passhport-admin user create <email> <comment> <sshkey>
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
-    passhport-admin usergroup (show|create|edit|del) <groupname>
+    passhport-admin usergroup (show|create|edit|del)
     passhport-admin usergroup (adduser|rmuser) <username> <groupname>
     passhport-admin usergroup (addtarget|rmtarget) <target> <groupname>
     passhport-admin usergroup (addgroup|rmgroup) <subgroup> <groupname>
@@ -19,17 +19,27 @@ Usage:
     passhport-admin target search <pattern>
     passhport-admin target (show|show_users|create|edit|del)
     passhport-admin target (adduser|rmuser) <email> <targetname>
+    passhport-admin targetgroup list
+    passhport-admin targetgroup search <pattern>
+    passhport-admin targetgroup (show|create|edit|del)
+    passhport-admin targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
+    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
+    passhport-admin targetgroup (adduser|rmuser) <username>  <targetgroupname>
+    passhport-admin targetgroup (addusergroup|rmusergroup) <groupname>  <targetgroupname>
     passhport-admin (-h | --version)
 
 Arguments:
     pattern         SQL search pattern
     email           An email to identify a user
+    passhport-admin (-h | --version)
     comment         A comment
     sshkey          A SSH key to authenticate a user
     target          A target is a combinaison of a server and a port
     groupname       A group is a combinason of users and targets. A user in a group can access all the targets in it
     subgroup        Any group can be added to another group (take care to the cycles)
+    targetname      The name of a target
     targetgroup     A group of targets
+    targetgroupname The name of a targetgroup
     subtargetgroup  A group of targets can be added to any group of targets
     targetname      The name of a target
 
@@ -47,6 +57,10 @@ import manage_user.prompt_functions as user_prompt
 import manage_user.requests_functions as user_req
 import manage_target.prompt_functions as target_prompt
 import manage_target.requests_functions as target_req
+import manage_usergroup.prompt_functions as usergroup_prompt
+import manage_usergroup.requests_functions as usergroup_req
+import manage_targetgroup.prompt_functions as targetgroup_prompt
+import manage_targetgroup.requests_functions as targetgroup_req
 
 from docopt import docopt, DocoptExit
 
@@ -116,7 +130,7 @@ Options:
 Usage:
     usergroup list
     usergroup search <pattern>
-    usergroup (show|create|edit|del) <groupname>
+    usergroup (show|create|edit|del)
     usergroup (adduser|rmuser) <username> <groupname>
     usergroup (addtarget|rmtarget) <target> <groupname>
     usergroup (addgroup|rmgroup) <subgroup> <groupname>
@@ -189,7 +203,7 @@ lete permanently the target entry
 Usage:
     targetgroup list
     targetgroup search <pattern>
-    targetgroup (show|create|edit|del) <targetgroupname>
+    targetgroup (show|create|edit|del)
     targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
     targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
     targetgroup (adduser|rmuser) <username>  <targetgroupname>
@@ -278,3 +292,16 @@ if __name__ == '__main__':
             usergroup_prompt.prompt_usergroup_edit()
         elif opt['del']:
             usergroup_prompt.prompt_usergroup_del()
+    elif opt['targetgroup']:
+        if opt['list']:
+            targetgroup_prompt.prompt_targetgroup_list()
+        elif opt['search']:
+            targetgroup_prompt.prompt_targetgroup_search(opt['<pattern>'])
+        elif opt['create']:
+            targetgroup_prompt.prompt_targetgroup_create()
+        elif opt['show']:
+            targetgroup_prompt.prompt_targetgroup_show()
+        elif opt['edit']:
+            targetgroup_prompt.prompt_targetgroup_edit()
+        elif opt['del']:
+            targetgroup_prompt.prompt_targetgroup_del()

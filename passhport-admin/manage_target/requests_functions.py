@@ -138,7 +138,7 @@ def requests_target_adduser(email, targetname):
     return 1
 
 def requests_target_rmuser(email, targetname):
-	"""Remove a user from a target via API"""
+    """Remove a user from a target via API"""
     target_user_data = {'targetname': targetname, 'email': email}
     url_rmuser = url_passhport + "target/rmuser"
 

@@ -39,10 +39,11 @@ class Target(db.Model):
     def show_users(self):
         """Show user list of the target"""
         output = []
-        output.append(self.__repr__())
 
-        output.append("User List:\n")
-        output.append(str(self.members).encode("utf8"))
+        output.append("User List:")
+
+        for user in self.members:
+            output.append(user.show_email())
 
         return "\n".join(output)
 

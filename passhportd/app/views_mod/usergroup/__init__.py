@@ -139,7 +139,7 @@ def usergroup_del(groupname):
 
     # Normally only one row
     for row in query.all():
-        if str(row[0]) == email:
+        if str(row[0]) == groupname:
             db.session.query(usergroup.Usergroup).filter(usergroup.Usergroup.groupname == groupname).delete()
 
             try:
@@ -160,7 +160,7 @@ def usergroup_adduser():
     # Simplification for the reading
     groupname   = request.form['groupname']
     username    = request.form['username']
-   
+
     if len(groupname) <= 0 or len(username) <= 0 :
         return "ERROR: groupname and username are mandatory\n"
 
@@ -192,7 +192,7 @@ def usergroup_rmuser():
     #TODO
     print  request.args.get('username')
     print  request.args.get('groupname')
- 
+
 @app.route('/usergroup/addusergroup', methods=['GET'])
 def usergroup_addgroup():
     #TODO

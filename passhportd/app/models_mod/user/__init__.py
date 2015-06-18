@@ -26,3 +26,7 @@ class User(db.Model):
             output = output + "Comment: {}\n".format(self.comment.encode('utf8'))
 
         return output
+
+    def show_email(self):
+        """Return a string containing the user's email"""
+        return str(self.email.encode('utf8'))

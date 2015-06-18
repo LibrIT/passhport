@@ -38,9 +38,9 @@ def requests_usergroup_search(pattern):
 
     return 1
 
-def requests_usergroup_create(email, comment, sshkey):
-    """usergroup creation on passhportd via API"""
-    usergroup_data = {'email': email, 'comment': comment, 'sshkey': sshkey}
+def requests_usergroup_create(groupname, comment):
+    """Usergroup creation on passhportd via API"""
+    usergroup_data = {'groupname': groupname, 'comment': comment}
     url_create = url_passhport + "usergroup/create"
 
     try:
@@ -55,9 +55,9 @@ def requests_usergroup_create(email, comment, sshkey):
 
     return 1
 
-def requests_usergroup_show(email):
+def requests_usergroup_show(groupname):
     """Get data about a usergroup"""
-    url_show = url_passhport + "usergroup/show/" + email
+    url_show = url_passhport + "usergroup/show/" + groupname
 
     try:
         r = requests.get(url_show)
@@ -71,9 +71,9 @@ def requests_usergroup_show(email):
 
     return 1
 
-def requests_usergroup_edit(email, new_email, new_comment, new_sshkey):
-    """usergroup modification on passhportd via API"""
-    usergroup_data = {'email': email, 'new_email': new_email, 'new_comment': new_comment, 'new_sshkey': new_sshkey}
+def requests_usergroup_edit(groupname, new_groupname, new_comment):
+    """Usergroup modification on passhportd via API"""
+    usergroup_data = {'groupname': groupname, 'new_groupname': new_groupname, 'new_comment': new_comment}
     url_edit = url_passhport + "usergroup/edit"
 
     try:
@@ -89,7 +89,7 @@ def requests_usergroup_edit(email, new_email, new_comment, new_sshkey):
     return 1
 
 def requests_usergroup_del(email):
-    """usergroup deletion on passhportd via API"""
+    """Usergroup deletion on passhportd via API"""
     url_del = url_passhport + "usergroup/del/" + email
 
     try:

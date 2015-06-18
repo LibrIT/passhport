@@ -15,35 +15,33 @@ def prompt_usergroup_search(pattern):
 
 def prompt_usergroup_create():
     """Ask arguments for usergroup creation"""
-    email   = pyt_compat.input_compat("Email: ")
-    comment = pyt_compat.input_compat("Comment: ")
-    sshkey  = pyt_compat.input_compat("SSHKey: ")
+    groupname = pyt_compat.input_compat("Groupname: ")
+    comment   = pyt_compat.input_compat("Comment: ")
     print("")
 
-    return req.requests_usergroup_create(email, comment, sshkey)
+    return req.requests_usergroup_create(groupname, comment)
 
 def prompt_usergroup_show():
     """Ask arguments for showing usergroup"""
-    email = pyt_compat.input_compat("Email: ")
+    groupname = pyt_compat.input_compat("Groupname: ")
     print("")
 
-    return req.requests_usergroup_show(email)
+    return req.requests_usergroup_show(groupname)
 
 def prompt_usergroup_edit():
     """Ask arguments for editing an existing usergroup"""
-    email = pyt_compat.input_compat("Email of the usergroup you want to modify: ")
+    groupname = pyt_compat.input_compat("Name of the usergroup you want to modify: ")
 
-    if req.requests_usergroup_show(email) == 0:
-        new_email   = pyt_compat.input_compat("New email: ")
+    if req.requests_usergroup_show(groupname) == 0:
+        new_groupname = pyt_compat.input_compat("New name: ")
         new_comment = pyt_compat.input_compat("New comment: ")
-        new_sshkey  = pyt_compat.input_compat("New SSH key: ")
         print("")
 
-        return req.requests_usergroup_edit(email, new_email, new_comment, new_sshkey)
+        return req.requests_usergroup_edit(groupname, new_groupname, new_comment)
 
 def prompt_usergroup_del():
     """Ask arguments for deleting an existing usergroup"""
-    email = pyt_compat.input_compat("Email: ")
+    groupname = pyt_compat.input_compat("Groupname: ")
     print("")
 
-    return req.requests_usergroup_del(email)
+    return req.requests_usergroup_del(groupname)
