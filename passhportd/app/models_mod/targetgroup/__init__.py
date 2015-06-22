@@ -14,8 +14,6 @@ class Targetgroup(db.Model):
         output = []
 
         output.append("Targetgroupname: {}".format(self.targetgroupname.encode('utf8')))
-
-        if self.comment:
-            output.append("Comment: {}".format(self.comment.encode('utf8')))
+        output.append("Comment: {}".format(self.comment.encode('utf8')))
 
         return "\n".join(output)

@@ -17,9 +17,7 @@ class Usergroup(db.Model):
         output = []
 
         output.append("Usergroupname: {}".format(self.usergroupname.encode("utf8")))
-
-        if self.comment:
-            output.append("Comment: {}".format(self.comment.encode("utf8")))
+        output.append("Comment: {}".format(self.comment.encode("utf8")))
 
         return "\n".join(output)
 

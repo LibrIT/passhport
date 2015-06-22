@@ -25,18 +25,10 @@ class Target(db.Model):
         output.append("Targetname: {}".format(self.targetname.encode("utf8")))
         output.append("Hostname: {}".format(self.hostname.encode("utf8")))
         output.append("Port: {}".format(str(self.port).encode("utf8")))
-
-        if self.sshoptions:
-            output.append("SSH options: {}".format(self.sshoptions.encode("utf8")))
-
-        if self.servertype:
-            output.append("Servertype: {}".format(self.servertype.encode("utf8")))
-
-        if self.autocommand:
-            output.append("Autocommand: {}".format(self.autocommand.encode("utf8")))
-
-        if self.comment:
-            output.append("Comment: {}".format(self.comment.encode("utf8")))
+        output.append("SSH options: {}".format(self.sshoptions.encode("utf8")))
+        output.append("Servertype: {}".format(self.servertype.encode("utf8")))
+        output.append("Autocommand: {}".format(self.autocommand.encode("utf8")))
+        output.append("Comment: {}".format(self.comment.encode("utf8")))
 
         return "\n".join(output)
 

@@ -63,8 +63,8 @@ import manage_target.prompt_functions as target_prompt
 import manage_target.requests_functions as target_req
 import manage_usergroup.prompt_functions as usergroup_prompt
 import manage_usergroup.requests_functions as usergroup_req
-#import manage_targetgroup.prompt_functions as targetgroup_prompt
-#import manage_targetgroup.requests_functions as targetgroup_req
+import manage_targetgroup.prompt_functions as targetgroup_prompt
+import manage_targetgroup.requests_functions as targetgroup_req
 
 from docopt import docopt, DocoptExit
 
