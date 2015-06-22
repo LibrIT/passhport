@@ -316,6 +316,8 @@ if __name__ == '__main__':
             usergroup_prompt.prompt_usergroup_del()
         elif opt['adduser']:
             usergroup_prompt.prompt_usergroup_adduser(opt['<email>'], opt['<groupname>'])
+        elif opt['rmuser']:
+            usergroup_prompt.prompt_usergroup_rmuser(opt['<email>'], opt['<groupname>'])
     elif opt['targetgroup']:
         if opt['list']:
             targetgroup_prompt.prompt_targetgroup_list()

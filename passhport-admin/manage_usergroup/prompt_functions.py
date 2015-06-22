@@ -56,3 +56,7 @@ def prompt_usergroup_del():
 def prompt_usergroup_adduser(email, usergroupname):
     """Add a user to a usergroup"""
     return req.requests_usergroup_adduser(email, usergroupname)
+
+def prompt_usergroup_rmuser(email, usergroupname):
+    """Remove a user from a usergroup"""
+    return req.requests_usergroup_rmuser(email, usergroupname)

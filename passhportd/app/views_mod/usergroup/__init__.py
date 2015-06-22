@@ -199,11 +199,42 @@ def usergroup_adduser():
 
     return 'OK: "' + email + '" added to "' + usergroupname + '"', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/usergroup/rmuser/', methods=['GET'])
+@app.route('/usergroup/rmuser', methods = ['POST'])
 def usergroup_rmuser():
-    #TODO
-    print  request.args.get('username')
-    print  request.args.get('groupname')
+    """Remove a user from the usergroup in the database"""
+    # Only POST data are handled
+    if request.method != 'POST':
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
+
+    # Simplification for the reading
+    usergroupname = request.form['usergroupname']
+    email         = request.form['email']
+
+    # Check for mandatory fields
+    if not usergroupname or not email:
+        return "ERROR: The usergroupname and email are required ", 417, {'Content-Type': 'text/plain'}
+
+    # Usergroup and user have to exist in database
+    g = get_usergroup(usergroupname)
+    if not g:
+        return 'ERROR: No usergroup "' + usergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    u = get_user(email)
+    if not u:
+        return 'ERROR: No user "' + email + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    # Check if the given user is a member of the given usergroup
+    if not g.email_in_usergroup(email):
+        return 'ERROR: The user "' + email + '" is not a member of the usergroup "' + usergroupname + '" ', 417, {'Content-Type': 'text/plain'}
+
+    # Now we can remove the user
+    g.rmuser(u)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + usergroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
+
+    return 'OK: "' + email + '" removed from "' + usergroupname + '"', 200, {'Content-Type': 'text/plain'}
 
 @app.route('/usergroup/addusergroup', methods=['GET'])
 def usergroup_addgroup():

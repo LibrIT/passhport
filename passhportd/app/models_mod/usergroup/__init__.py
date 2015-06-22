@@ -47,3 +47,18 @@ class Usergroup(db.Model):
             self.members.append(user)
 
         return self
+
+    def rmuser(self, user):
+        """Remove a user from the relation table"""
+        if self.is_member(user):
+            self.members.remove(user)
+
+        return self
+
+    def email_in_usergroup(self, email):
+        """Return true if the given email belongs to a member of the usergroup"""
+        for user in self.members:
+            if user.show_email() == email:
+                return True
+
+        return False
