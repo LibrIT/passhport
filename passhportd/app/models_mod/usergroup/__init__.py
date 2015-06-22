@@ -10,7 +10,7 @@ class Usergroup(db.Model):
     comment       = db.Column(db.String(500), index = True, unique = False)
 
     # Relations
-    members = db.relationship("Target", secondary = "target_group")
+    members = db.relationship("User", secondary = "group_user")
 
     def __repr__(self):
         """Return main data of the usergroup as a string"""
@@ -24,3 +24,26 @@ class Usergroup(db.Model):
     def show_usergroupname(self):
         """Return a string containing the usergroup's name"""
         return self.usergroupname.encode("utf8")
+
+    def show_users(self):
+        """Show user list of the usergroup"""
+        output = []
+
+        output.append("User list:")
+
+        for user in self.members:
+            output.append(user.show_email())
+
+        return "\n".join(output)
+
+    # User management
+    def is_member(self, user):
+        """Return true if the given user is a member of the target, false otherwise"""
+        return user in self.members
+
+    def adduser(self, user):
+        """Add a user to the relation table"""
+        if not self.is_member(user):
+            self.members.append(user)
+
+        return self

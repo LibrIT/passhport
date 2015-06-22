@@ -13,8 +13,8 @@ Usage:
     passhport-admin user del <email>
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
-    passhport-admin usergroup (show|create|edit|del)
-    passhport-admin usergroup (adduser|rmuser) <username> <groupname>
+    passhport-admin usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
+    passhport-admin usergroup (adduser|rmuser) <email> <groupname>
     passhport-admin usergroup (addtarget|rmtarget) <target> <groupname>
     passhport-admin usergroup (addgroup|rmgroup) <subgroup> <groupname>
     passhport-admin usergroup (addtargetgroup|rmtargetgroup) <targetgroup> <groupname>
@@ -137,8 +137,8 @@ Options:
 Usage:
     usergroup list
     usergroup search <pattern>
-    usergroup (show|create|edit|del)
-    usergroup (adduser|rmuser) <username> <groupname>
+    usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
+    usergroup (adduser|rmuser) <email> <groupname>
     usergroup (addtarget|rmtarget) <target> <groupname>
     usergroup (addgroup|rmgroup) <subgroup> <groupname>
     usergroup (addtargetgroup|rmtargetgroup) <targetgroup> <groupname>
@@ -308,10 +308,14 @@ if __name__ == '__main__':
             usergroup_prompt.prompt_usergroup_create()
         elif opt['show']:
             usergroup_prompt.prompt_usergroup_show()
+        elif opt['show_users']:
+            usergroup_prompt.prompt_usergroup_show_users()
         elif opt['edit']:
             usergroup_prompt.prompt_usergroup_edit()
         elif opt['del']:
             usergroup_prompt.prompt_usergroup_del()
+        elif opt['adduser']:
+            usergroup_prompt.prompt_usergroup_adduser(opt['<email>'], opt['<groupname>'])
     elif opt['targetgroup']:
         if opt['list']:
             targetgroup_prompt.prompt_targetgroup_list()
