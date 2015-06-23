@@ -153,3 +153,20 @@ def requests_targetgroup_rmtarget(targetname, targetgroupname):
             return 0
 
     return 1
+
+def requests_targetgroup_adduser(email, targetgroupname):
+    """Add a user in a targetgroup via API"""
+    targetgroup_user_data = {'targetgroupname': targetgroupname, 'email': email}
+    url_adduser = url_passhport + "targetgroup/adduser"
+
+    try:
+        r = requests.post(url_adduser, data = targetgroup_user_data)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1

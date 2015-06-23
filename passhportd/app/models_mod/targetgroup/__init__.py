@@ -59,3 +59,10 @@ class Targetgroup(db.Model):
             self.tmembers.remove(target)
 
         return self
+
+    # User management
+    def adduser(self, user):
+        """Add a user to the relaton table"""
+        print("Not developped fully yet.")
+
+        return None
