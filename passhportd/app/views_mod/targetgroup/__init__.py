@@ -3,6 +3,7 @@
 from app            import app, db
 from flask          import request
 from app.models_mod import targetgroup
+from app.models_mod import target
 
 @app.route("/targetgroup/list")
 def targetgroup_list():
@@ -42,6 +43,21 @@ def targetgroup_show(targetgroupname):
         return 'ERROR: No targetgroup with the name "' + targetgroupname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
 
     return str(targetgroup_data), 200, {'Content-Type': 'text/plain'}
+
+@app.route('/targetgroup/show_targets/<targetgroupname>')
+def targetgroup_show_targets(targetgroupname):
+    """Return user list of the given target"""
+    # Check for required fields
+    if not targetgroupname:
+        return "ERROR: The targetgroupname is required ", 417, {'Content-Type': 'text/plain'}
+
+    targetgroup_data = targetgroup.Targetgroup.query.filter_by(targetgroupname = targetgroupname).first()
+
+    # Check if the given targetgroup exists in the database
+    if targetgroup_data is None:
+        return 'ERROR: No targetgroup with the name "' + targetgroupname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
+
+    return str(targetgroup_data.show_targets()), 200, {'Content-Type': 'text/plain'}
 
 @app.route('/targetgroup/create', methods = ['POST'])
 def targetgroup_create():
@@ -145,19 +161,75 @@ def targetgroup_rmuser():
     print  request.args.get('targetgroupname')
     return "rmuser"
 
-@app.route('/targetgroup/addtarget', methods=['GET'])
+@app.route('/targetgroup/addtarget', methods = ['POST'])
 def targetgroup_addtarget():
-    #TODO
-    print  request.args.get('targetname')
-    print  request.args.get('targetgroupname')
-    return "addtarget"
+    """Add a target in the targetgroup in the database"""
+    # Only POST data are handled
+    if request.method != 'POST':
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
-@app.route('/targetgroup/rmtarget', methods=['GET'])
+    # Simplification for the reading
+    targetname      = request.form['targetname']
+    targetgroupname = request.form['targetgroupname']
+
+    # Check for mandatory fields
+    if not targetname or not targetgroupname:
+        return "ERROR: The targetname and targetgroupname are required ", 417, {'Content-Type': 'text/plain'}
+
+    # Targetgroup and target have to exist in database
+    tg = get_targetgroup(targetgroupname)
+    if not tg:
+        return 'ERROR: no targetgroup "' + targetgroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    t = get_target(targetname)
+    if not t:
+        return 'ERROR: no target "' + targetname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    # Now we can add the target
+    tg.addtarget(t)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + targetgroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
+
+    return 'OK: "' + targetname + '" added to "' + targetgroupname + '"', 200, {'Content-Type': 'text/plain'}
+
+@app.route('/targetgroup/rmtarget', methods = ['POST'])
 def targetgroup_rmtarget():
-    #TODO
-    print  request.args.get('targetname')
-    print  request.args.get('targetgroupname')
-    return "rmtarget"
+    """Remove a target from the targetgroup in the database"""
+    # Only POST data are handled
+    if request.method != 'POST':
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
+
+    # Simplification for the reading
+    targetname      = request.form['targetname']
+    targetgroupname = request.form['targetgroupname']
+
+    # Check for required fields
+    if not targetname or not targetgroupname:
+        return "ERROR: The targetname and targetgroupname are required ", 417, {'Content-Type': 'text/plain'}
+
+    # Targetgroup and target have to exist in database
+    tg = get_targetgroup(targetgroupname)
+    if not tg:
+        return 'ERROR: No targetgroup "' + targetgroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    t = get_target(targetname)
+    if not t:
+        return 'ERROR: No target "' + targetname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    # Check if the given target is a member of the given targetgroup
+    if not tg.name_in_targetgroup(targetname):
+        return 'ERROR: The target "' + target + '" is not a member of the targetgroup "' + targetgroupname + '" ', 417, {'Content-Type': 'text/plain'}
+
+    # Now we can remove the target
+    tg.rmtarget(t)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + targetgroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
+
+    return 'OK: "' + targetname + '" removed from "' + targetgroupname + '"', 200, {'Content-Type': 'text/plain'}
 
 @app.route('/targetgroup/addusergroup', methods=['GET'])
 def targetgroup_addgroup():
@@ -186,3 +258,26 @@ def targetgroup_rmtargetgroup():
     print  request.args.get('subtargetgroupname')
     print  request.args.get('targetgroupname')
     return "rmtargetgroup"
+
+# Utils
+def get_target(targetname):
+    """Return the target with the given targetname"""
+    t = db.session.query(target.Target).filter(
+            target.Target.targetname == targetname).all()
+
+    # Target must exist in database
+    if t:
+        return t[0]
+    else:
+        return False
+
+def get_targetgroup(targetgroupname):
+    """Return the targetgroup with the given targetgroupname"""
+    tg = db.session.query(targetgroup.Targetgroup).filter(
+            targetgroup.Targetgroup.targetgroupname == targetgroupname).all()
+
+    # Targetgroup must exist in database
+    if tg:
+        return tg[0]
+    else:
+        return False

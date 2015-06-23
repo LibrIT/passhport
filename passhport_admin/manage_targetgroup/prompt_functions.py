@@ -28,6 +28,13 @@ def prompt_targetgroup_show():
 
     return req.requests_targetgroup_show(targetgroupname)
 
+def prompt_targetgroup_show_targets():
+    """Ask arguments for showing target list of the targetgroup"""
+    targetgroupname = pyt_compat.input_compat("Targetgroupname: ")
+    print("")
+
+    return req.requests_targetgroup_show_targets(targetgroupname)
+
 def prompt_targetgroup_edit():
     """Ask arguments for editing an existing targetgroup"""
     targetgroupname = pyt_compat.input_compat("Name of the targetgroup you want to modify: ")
@@ -47,3 +54,11 @@ def prompt_targetgroup_del():
     print("")
 
     return req.requests_targetgroup_del(targetgroupname)
+
+def prompt_targetgroup_addtarget(targetname, targetgroupname):
+    """Add a target to a targetgroup"""
+    return req.requests_targetgroup_addtarget(targetname, targetgroupname)
+
+def prompt_targetgroup_rmtarget(targetname, targetgroupname):
+    """Remove a target from a targetgroup"""
+    return req.requests_targetgroup_rmtarget(targetname, targetgroupname)

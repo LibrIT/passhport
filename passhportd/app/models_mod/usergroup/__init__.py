@@ -10,7 +10,7 @@ class Usergroup(db.Model):
     comment       = db.Column(db.String(500), index = True, unique = False)
 
     # Relations
-    members = db.relationship("User", secondary = "group_user")
+    members  = db.relationship("User",      secondary = "group_user")
 
     def __repr__(self):
         """Return main data of the usergroup as a string"""
@@ -38,7 +38,7 @@ class Usergroup(db.Model):
 
     # User management
     def is_member(self, user):
-        """Return true if the given user is a member of the target, false otherwise"""
+        """Return true if the given user is a member of the usergroup, false otherwise"""
         return user in self.members
 
     def adduser(self, user):
@@ -62,3 +62,15 @@ class Usergroup(db.Model):
                 return True
 
         return False
+
+    # Usergroup management
+    def is_gmember(self, usergroup):
+        """Return true if the given usergroup is a member of the usergroup, false otherwise"""
+        return usergroup in self.gmembers
+
+    def addusergroup(self, usergroup):
+        """Add a usergroup to the relation table"""
+        if not self.is_gmember(usergroup):
+            self.gmembers.append(usergroup)
+
+        return self

@@ -236,12 +236,9 @@ def usergroup_rmuser():
 
     return 'OK: "' + email + '" removed from "' + usergroupname + '"', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/usergroup/addusergroup', methods=['GET'])
-def usergroup_addgroup():
-    #TODO
-    print  request.args.get('subgroup')
-    print  request.args.get('groupname')
-    return "addgroup"
+@app.route('/usergroup/addusergroup', methods = ['POST'])
+def usergroup_addusergroup():
+    """Add a usergroup (subusergroup) in the usergroup in the database"""
 
 @app.route('/usergroup/rmusergroup', methods=['GET'])
 def usergroup_rmgroup():

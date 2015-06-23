@@ -32,6 +32,10 @@ class Target(db.Model):
 
         return "\n".join(output)
 
+    def show_name(self):
+        """Return a string containing the target's name"""
+        return self.targetname.encode("utf8")
+
     def show_users(self):
         """Show user list of the target"""
         output = []

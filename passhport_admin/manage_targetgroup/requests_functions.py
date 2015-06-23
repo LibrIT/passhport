@@ -71,6 +71,22 @@ def requests_targetgroup_show(targetgroupname):
 
     return 1
 
+def requests_targetgroup_show_targets(targetgroupname):
+    """Get target list of the targetgroup"""
+    url_show_targets = url_passhport + "targetgroup/show_targets/" + targetgroupname
+
+    try:
+        r = requests.get(url_show_targets)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1
+
 def requests_targetgroup_edit(targetgroupname, new_targetgroupname, new_comment):
     """Targetgroup modification on passhportd via API"""
     targetgroup_data = {'targetgroupname': targetgroupname, 'new_targetgroupname': new_targetgroupname, 'new_comment': new_comment}
@@ -94,6 +110,40 @@ def requests_targetgroup_del(targetgroupname):
 
     try:
         r = requests.get(url_del)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1
+
+def requests_targetgroup_addtarget(targetname, targetgroupname):
+    """Add a target in a targetgroup via API"""
+    targetgroup_target_data = {'targetname': targetname, 'targetgroupname': targetgroupname}
+    url_addtarget = url_passhport + "targetgroup/addtarget"
+
+    try:
+        r = requests.post(url_addtarget, data = targetgroup_target_data)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1
+
+def requests_targetgroup_rmtarget(targetname, targetgroupname):
+    """Remove a target from a targetgroup via API"""
+    targetgroup_target_data = {'targetname': targetname, 'targetgroupname': targetgroupname}
+    url_rmtarget = url_passhport + "targetgroup/rmtarget"
+
+    try:
+        r = requests.post(url_rmtarget, data = targetgroup_target_data)
     except requests.RequestException, e:
         print("ERROR: " + str(e.message))
     else:
