@@ -15,9 +15,7 @@ Usage:
     passhport-admin usergroup search <pattern>
     passhport-admin usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
     passhport-admin usergroup (adduser|rmuser) <email> <groupname>
-    passhport-admin usergroup (addtarget|rmtarget) <target> <groupname>
     passhport-admin usergroup (addgroup|rmgroup) <subgroup> <groupname>
-    passhport-admin usergroup (addtargetgroup|rmtargetgroup) <targetgroup> <groupname>
     passhport-admin target list
     passhport-admin target search <pattern>
     passhport-admin target (show|show_users|show_usergroups|create|edit|del)
@@ -139,9 +137,7 @@ Usage:
     usergroup search <pattern>
     usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
     usergroup (adduser|rmuser) <email> <groupname>
-    usergroup (addtarget|rmtarget) <target> <groupname>
     usergroup (addgroup|rmgroup) <subgroup> <groupname>
-    usergroup (addtargetgroup|rmtargetgroup) <targetgroup> <groupname>
 
 Arguments:
     pattern         SQL search pattern
