@@ -284,14 +284,14 @@ if __name__ == '__main__':
         elif opt['adduser']:
             target_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
         elif opt['rmuser']:
-        	target_prompt.prompt_target_rmuser(opt['<email>'], opt['<targetname>'])
+            target_prompt.prompt_target_rmuser(opt['<email>'], opt['<targetname>'])
         elif opt['addusergroup']:
             target_prompt.prompt_target_addusergroup(opt['<groupname>'], opt['<targetname>'])
         elif opt['rmusergroup']:
             target_prompt.prompt_target_rmusergroup(opt['<groupname>'], opt['<targetname>'])
     elif opt['usergroup']:
-    	if opt['list']:
-    		usergroup_prompt.prompt_usergroup_list()
+        if opt['list']:
+            usergroup_prompt.prompt_usergroup_list()
         elif opt['search']:
             usergroup_prompt.prompt_usergroup_search(opt['<pattern>'])
         elif opt['create']:
