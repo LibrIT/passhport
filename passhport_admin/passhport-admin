@@ -13,11 +13,9 @@ Usage:
     passhport-admin user del <email>
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
-    passhport-admin usergroup (show|create|edit|del)
-    passhport-admin usergroup (adduser|rmuser) <username> <groupname>
-    passhport-admin usergroup (addtarget|rmtarget) <target> <groupname>
-    passhport-admin usergroup (addgroup|rmgroup) <subgroup> <groupname>
-    passhport-admin usergroup (addtargetgroup|rmtargetgroup) <targetgroup> <groupname>
+    passhport-admin usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
+    passhport-admin usergroup (adduser|rmuser) <email> <groupname>
+    passhport-admin usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
     passhport-admin target list
     passhport-admin target search <pattern>
     passhport-admin target (show|show_users|show_usergroups|create|edit|del)
@@ -25,10 +23,10 @@ Usage:
     passhport-admin target (addusergroup|rmusergroup) <groupname> <targetname>
     passhport-admin targetgroup list
     passhport-admin targetgroup search <pattern>
-    passhport-admin targetgroup (show|create|edit|del)
+    passhport-admin targetgroup (show|show_targets|create|edit|del)
     passhport-admin targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
     passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
-    passhport-admin targetgroup (adduser|rmuser) <username>  <targetgroupname>
+    passhport-admin targetgroup (adduser|rmuser) <email> <targetgroupname>
     passhport-admin targetgroup (addusergroup|rmusergroup) <groupname>  <targetgroupname>
     passhport-admin (-h | --version)
 
@@ -40,7 +38,7 @@ Arguments:
     sshkey          A SSH key to authenticate a user
     target          A target is a combinaison of a server and a port
     groupname       A group is a combinason of users and targets. A user in a group can access all the targets in it
-    subgroup        Any group can be added to another group (take care to the cycles)
+    subusergroupname        Any group can be added to another group (take care to the cycles)
     targetname      The name of a target
     targetgroup     A group of targets
     targetgroupname The name of a targetgroup
@@ -63,8 +61,8 @@ import manage_target.prompt_functions as target_prompt
 import manage_target.requests_functions as target_req
 import manage_usergroup.prompt_functions as usergroup_prompt
 import manage_usergroup.requests_functions as usergroup_req
-#import manage_targetgroup.prompt_functions as targetgroup_prompt
-#import manage_targetgroup.requests_functions as targetgroup_req
+import manage_targetgroup.prompt_functions as targetgroup_prompt
+import manage_targetgroup.requests_functions as targetgroup_req
 
 from docopt import docopt, DocoptExit
 
@@ -137,20 +135,16 @@ Options:
 Usage:
     usergroup list
     usergroup search <pattern>
-    usergroup (show|create|edit|del)
-    usergroup (adduser|rmuser) <username> <groupname>
-    usergroup (addtarget|rmtarget) <target> <groupname>
-    usergroup (addgroup|rmgroup) <subgroup> <groupname>
-    usergroup (addtargetgroup|rmtargetgroup) <targetgroup> <groupname>
+    usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
+    usergroup (adduser|rmuser) <email> <groupname>
+    usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
 
 Arguments:
     pattern         SQL search pattern
     username        Often the login
     target          A target is a combinaison of a server and a port
     groupname       A group is a combinaison of users and targets. A user in a group can access all the targets in it
-    subgroup        Any group can be added to another group (take care to the cycles)
-    targetgroup     A group of targets
-    subtargetgroup  A group of targets can be added to any group of targets
+    subusergroupname        Any group can be added to another group (take care to the cycles)
 
 Options:
     list            List all groups
@@ -161,12 +155,8 @@ Options:
     del             Delete permanently the group entry
     adduser         Add a user in a group
     rmuser          Remove a user from a group
-    addtarget       Add a target in a group
-    rmtarget        Remove a target from a group
     addgroup        Add a group of users/targets to another group
     rmgroup         Remove a group of user target from another group
-    addtargetgroup  Add a group of targets to another group
-    urmtargetgroup  Remove a group of targets to another group
     """
         #TODO
         print(arg)
@@ -210,10 +200,10 @@ lete permanently the target entry
 Usage:
     targetgroup list
     targetgroup search <pattern>
-    targetgroup (show|create|edit|del)
+    targetgroup (show|show_targets|create|edit|del)
     targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
     targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
-    targetgroup (adduser|rmuser) <username>  <targetgroupname>
+    targetgroup (adduser|rmuser) <email> <targetgroupname>
     targetgroup (addusergroup|rmusergroup) <groupname>  <targetgroupname>
 
 Arguments:
@@ -308,10 +298,18 @@ if __name__ == '__main__':
             usergroup_prompt.prompt_usergroup_create()
         elif opt['show']:
             usergroup_prompt.prompt_usergroup_show()
+        elif opt['show_users']:
+            usergroup_prompt.prompt_usergroup_show_users()
         elif opt['edit']:
             usergroup_prompt.prompt_usergroup_edit()
         elif opt['del']:
             usergroup_prompt.prompt_usergroup_del()
+        elif opt['adduser']:
+            usergroup_prompt.prompt_usergroup_adduser(opt['<email>'], opt['<groupname>'])
+        elif opt['rmuser']:
+            usergroup_prompt.prompt_usergroup_rmuser(opt['<email>'], opt['<groupname>'])
+        elif opt['addusergroup']:
+            usergroup_prompt.prompt_usergroup_addusergroup(opt['<subusergroupname>'], opt['<groupname>'])
     elif opt['targetgroup']:
         if opt['list']:
             targetgroup_prompt.prompt_targetgroup_list()
@@ -321,7 +319,15 @@ if __name__ == '__main__':
             targetgroup_prompt.prompt_targetgroup_create()
         elif opt['show']:
             targetgroup_prompt.prompt_targetgroup_show()
+        elif opt['show_targets']:
+            targetgroup_prompt.prompt_targetgroup_show_targets()
         elif opt['edit']:
             targetgroup_prompt.prompt_targetgroup_edit()
         elif opt['del']:
             targetgroup_prompt.prompt_targetgroup_del()
+        elif opt['addtarget']:
+            targetgroup_prompt.prompt_targetgroup_addtarget(opt['<targetname>'], opt['<targetgroupname>'])
+        elif opt['rmtarget']:
+            targetgroup_prompt.prompt_targetgroup_rmtarget(opt['<targetname>'], opt['<targetgroupname>'])
+        elif opt['adduser']:
+            targetgroup_prompt.prompt_targetgroup_adduser(opt['<email>'], opt['<targetgroupname>'])

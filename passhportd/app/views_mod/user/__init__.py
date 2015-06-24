@@ -120,6 +120,15 @@ def user_edit():
     new_sshkey  = request.form['new_sshkey']
     new_comment = request.form['new_comment']
 
+    # Check required fields
+    if not email:
+        return "ERROR: The email is required ", 417, {'Content-Type': 'text/plain'}
+
+    # Check if the email exists in the database
+    query = db.session.query(user.User).filter_by(email = email).first()
+    if query is None:
+        return 'ERROR: No user with the email "' + email + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
+
     toupdate = db.session.query(user.User).filter_by(email = email)
 
     # Let's modify only relevent fields
