@@ -185,8 +185,7 @@ Options
     show            Show all the data of a target
     create          Launch the interactive target creation
     edit            Launch the interactive target modification
-    del             Deif __name__ == '__main__':
-lete permanently the target entry
+    del             Delete permanently the target entry
     editcommand     Edit the command line launched instead of a classical ssh connexion.
     adduser         Add a user rights on target
     rmuser          Remove a user rights from target
