@@ -239,6 +239,35 @@ def usergroup_rmuser():
 @app.route('/usergroup/addusergroup', methods = ['POST'])
 def usergroup_addusergroup():
     """Add a usergroup (subusergroup) in the usergroup in the database"""
+    # Only POST data are handled
+    if request.method != 'POST':
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
+
+    # Simplification for the reading
+    usergroupname    = request.form['usergroupname']
+    subusergroupname = request.form['subusergroupname']
+
+    # Check for mandatory fields
+    if not usergroupname or not subusergroupname:
+        return "ERROR: The usergroupname and subusergroupname are required ", 417, {'Content-Type': 'text/plain'}
+
+    # Usergroup and subusergroup have to exist in database
+    ug = get_usergroup(usergroupname)
+    if not ug:
+        return 'ERROR: no usergroup "' + usergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    sug = get_user(subusergroupname)
+    if not sug:
+        return 'ERROR: no usergroup "' + subusergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    # Now we can add the usergroup
+    ug.addusergroup(sug)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + usergroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
+
+    return 'OK: "' + subusergroupname + '" added to "' + usergroupname + '"', 200, {'Content-Type': 'text/plain'}
 
 @app.route('/usergroup/rmusergroup', methods=['GET'])
 def usergroup_rmgroup():

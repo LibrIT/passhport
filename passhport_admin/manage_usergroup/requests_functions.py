@@ -153,3 +153,20 @@ def requests_usergroup_rmuser(email, usergroupname):
             return 0
 
     return 1
+
+def requests_usergroup_addusergroup(subusergroupname, usergroupname):
+    """Add a usergroup (subusergroup) in a usergroup via API"""
+    usergroup_subusergroup_data = {'usergroupname': usergroupname, 'subusergroupname': subusergroupname}
+    url_addusergroup = url_passhport + "usergroup/addusergroup"
+
+    try:
+        r = requests.post(url_addusergroup, data = usergroup_subusergroup_data)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1

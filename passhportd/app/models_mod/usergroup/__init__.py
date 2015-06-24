@@ -11,6 +11,7 @@ class Usergroup(db.Model):
 
     # Relations
     members  = db.relationship("User",      secondary = "group_user")
+    gmembers = db.relationship("Usergroup", secondary = "group_group")
 
     def __repr__(self):
         """Return main data of the usergroup as a string"""
@@ -18,6 +19,10 @@ class Usergroup(db.Model):
 
         output.append("Usergroupname: {}".format(self.usergroupname.encode("utf8")))
         output.append("Comment: {}".format(self.comment.encode("utf8")))
+        output.append("Usergroup list:")
+
+        for usergroup in self.gmembers:
+            output.append(usergroup.show_usergroupname())
 
         return "\n".join(output)
 
