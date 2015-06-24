@@ -11,7 +11,7 @@ class Usergroup(db.Model):
 
     # Relations
     members  = db.relationship("User",      secondary = "group_user")
-    gmembers = db.relationship("Usergroup", secondary = "group_group")
+    #gmembers = db.relationship("Usergroup", secondary = "group_group")
 
     def __repr__(self):
         """Return main data of the usergroup as a string"""
