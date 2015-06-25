@@ -5,7 +5,7 @@
 Usage:
     passhport-admin (-i | --interactive)
     passhport-admin user list
-    passhport-admin user search <pattern>
+    passhport-admin user search [<pattern>]
     passhport-admin user (show|delete) [<email>]
     passhport-admin user create [((<email> <sshkey>) [<comment>])]
     passhport-admin user edit [<email> [--newemail=<email>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
@@ -56,18 +56,15 @@ Options:
 import sys
 import cmd
 
-import manage_user.prompt_functions as user_prompt
-import manage_user.requests_functions as user_req
-import manage_target.prompt_functions as target_prompt
-import manage_target.requests_functions as target_req
-import manage_usergroup.prompt_functions as usergroup_prompt
-import manage_usergroup.requests_functions as usergroup_req
-import manage_targetgroup.prompt_functions as targetgroup_prompt
-import manage_targetgroup.requests_functions as targetgroup_req
 import manage_user as mu
 import manage_target as mt
 import manage_usergroup as mug
 import manage_targetgroup as mtg
+
+from manage_user import *
+from manage_target import *
+from manage_usergroup import *
+from manage_targetgroup import *
 
 from docopt import docopt, DocoptExit
 
@@ -244,18 +241,20 @@ def requests_object_method(opt):
             'target':mt,
             'usergroup':mug,
             'targetgroup':mtg}
-    methods={'list','search','show','delete'}
+    methods={'list','search','show','delete','create','edit'}
+    param={}
 
     # Determine which object/method to use
+    # And build a list of list containing all parameters
     for key, value in opt.items():
         if key in objects.keys():
             obj = key
         elif key in methods:
             method = key
         else:
-            param = value
+            param[key] = value
 
-    if 'param' in locals():
+    if param:
         # All info are here nothing to ask to the user
         module = objects[obj].requests_functions
         getattr(module, method)(param)
@@ -270,17 +269,24 @@ opt = docopt(__doc__, sys.argv[1:])
 if __name__ == '__main__':
     if opt['--interactive']:
         MyInteractive().cmdloop()
+    else:
+        # We don't need the False options to call the method
+        options={key:value for key,value in opt.items() if value}
+        requests_object_method(options)
+"""
     elif opt['list'] or opt['search'] or opt['show'] or opt['delete']:
         # We don't need the False options to call the method
         options={key:value for key,value in opt.items() if value}
         requests_object_method(options)
     elif opt['user']:
         if opt['create']:
-            if opt['<email>'] and opt['<comment>'] and opt['<sshkey>']:
-                user_req.requests_user_create(opt['<email>'], opt['<comment>'], opt['<sshkey>'])
+            if opt['<email>'] and opt['<sshkey>']:
+                options={key:value for key,value in opt.items() if value}
+                requests_object_method(options)
             else:
                 user_prompt.prompt_user_create()
         elif opt['edit']:
+            print opt
             if opt['<email>'] and opt['<new_email>'] and opt['<comment>'] and opt['<sshkey>']:
                 user_req.requests_user_edit(opt['<email>'], opt['<new_email>'], opt['<comment>'], opt['<sshkey>'])
             else:
@@ -330,3 +336,4 @@ if __name__ == '__main__':
             targetgroup_prompt.prompt_targetgroup_rmtarget(opt['<targetname>'], opt['<targetgroupname>'])
         elif opt['adduser']:
             targetgroup_prompt.prompt_targetgroup_adduser(opt['<email>'], opt['<targetgroupname>'])
+            """
