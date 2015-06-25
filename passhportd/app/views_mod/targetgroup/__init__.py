@@ -303,12 +303,38 @@ def targetgroup_addusergroup():
 
     return 'OK: "' + usergroupname + '" added to "' + targetgroupname + '"', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/targetgroup/rmusergroup', methods=['GET'])
-def targetgroup_rmgroup():
-    #TODO
-    print  request.args.get('groupname')
-    print  request.args.get('targetgroupname')
-    return "rmusergroup"
+@app.route('/targetgroup/rmusergroup', methods = ['POST'])
+def targetgroup_rmusergroup():
+    """Remove a usergroup from the targetgroup in the database"""
+    # Only POST data are handled
+    if request.method != 'POST':
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
+
+    # Simplification for the reading
+    targetgroupname = request.form['targetgroupname']
+    usergroupname   = request.form['usergroupname']
+
+    # Check for required fields
+    if not targetgroupname or not usergroupname:
+        return "ERROR: The targetgroupname and usergroupname are required ", 417, {'Content-Type': 'text/plain'}
+
+    # Targetgroup and usergroup have to exist in database
+    tg = get_targetgroup(targetgroupname)
+    if not tg:
+        return 'ERROR: no targetgroup "' + targetgroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    ug = get_usergroup(usergroupname)
+    if not ug:
+        return 'ERROR: no usergroup "' + usergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    # Now we can remove the usergroup
+    tg.rmusergroup(ug)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + targetgroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
+
+    return 'OK: "' + usergroupname + '" removed from "' + targetgroupname + '"', 200, {'Content-Type': 'text/plain'}
 
 @app.route('/targetgroup/addtargetgroup', methods=['GET'])
 def targetgroup_addtargetgroup():
