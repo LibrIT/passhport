@@ -61,21 +61,6 @@ def usergroup_show(usergroupname):
 
     return str(usergroup_data), 200, {'Content-Type': 'text/plain'}
 
-@app.route('/usergroup/show_users/<usergroupname>')
-def usergroup_show_users(usergroupname):
-    """Return user list of the given usergroup"""
-    # Check for required fields
-    if not usergroupname:
-        return "ERROR: The usergroupname is required ", 417, {'Content-Type': 'text/plain'}
-
-    usergroup_data = usergroup.Usergroup.query.filter_by(usergroupname = usergroupname).first()
-
-    # Check if the given usergroup exists in the database
-    if usergroup_data is None:
-        return 'ERROR: No usergroup with the name "' + usergroupname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
-
-    return str(usergroup_data.show_users()), 200, {'Content-Type': 'text/plain'}
-
 @app.route('/usergroup/create', methods = ['POST'])
 def usergroup_create():
     """Add a usergroup in the database"""
@@ -268,40 +253,38 @@ def usergroup_addusergroup():
 
     return 'OK: "' + subusergroupname + '" added to "' + usergroupname + '"', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/usergroup/rmusergroup', methods=['GET'])
-def usergroup_rmgroup():
-    #TODO
-    print  request.args.get('subgroup')
-    print  request.args.get('groupname')
-    return "rmgroup"
+@app.route('/usergroup/rmusergroup', methods = ['POST'])
+def usergroup_rmusergroup():
+    """Remove a usergroup (subusergroup) from the usergroup in the database"""
+    # Only POST data are handled
+    if request.method != 'POST':
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
 
-#@app.route('/usergroup/addtarget', methods=['GET'])
-#def usergroup_addtarget():
-#    #TODO
-#    print  request.args.get('targetname')
-#    print  request.args.get('groupname')
-#    return "addtarget"
-#
-#@app.route('/usergroup/rmtarget', methods=['GET'])
-#def usergroup_rmtarget():
-#    #TODO
-#    print  request.args.get('targetname')
-#    print  request.args.get('groupname')
-#    return "rmtarget"
-#@app.route('/usergroup/addtargetgroup', methods=['GET'])
-#def usergroup_addtargetgroup():
-#    #TODO
-#    print  request.args.get('targetgroupname')
-#    print  request.args.get('groupname')
-#    return "addtargetgroup"
-#
-#@app.route('/usergroup/rmtargetgroup', methods=['GET'])
-#def usergroup_rmtargetgroup():
-#    #TODO
-#    print  request.args.get('targetgroupname')
-#    print  request.args.get('groupname')
-#    return "rmtargetgroup"
-#
+    # Simplification for the reading
+    usergroupname    = request.form['usergroupname']
+    subusergroupname = request.form['subusergroupname']
+
+    # Check for required fields
+    if not usergroupname or not subusergroupname:
+        return "ERROR: The usergroupname and subusergroupname are required ", 417, {'Content-Type': 'text/plain'}
+
+    # Usergroup and subusergroup have to exist in database
+    ug = get_usergroup(usergroupname)
+    if not ug:
+        return 'ERROR: no usergroup "' + usergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    sug = get_usergroup(subusergroupname)
+    if not sug:
+        return 'ERROR: no usergroup "' + subusergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    # Now we can remove the usergroup
+    ug.rmusergroup(sug)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + usergroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
+
+    return 'OK: "' + subusergroupname + '" removed from "' + usergroupname + '"', 200, {'Content-Type': 'text/plain'}
 
 # Utils
 def get_usergroup(usergroupname):

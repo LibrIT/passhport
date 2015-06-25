@@ -28,13 +28,6 @@ def prompt_targetgroup_show():
 
     return req.requests_targetgroup_show(targetgroupname)
 
-def prompt_targetgroup_show_targets():
-    """Ask arguments for showing target list of the targetgroup"""
-    targetgroupname = pyt_compat.input_compat("Targetgroupname: ")
-    print("")
-
-    return req.requests_targetgroup_show_targets(targetgroupname)
-
 def prompt_targetgroup_edit():
     """Ask arguments for editing an existing targetgroup"""
     targetgroupname = pyt_compat.input_compat("Name of the targetgroup you want to modify: ")
@@ -66,3 +59,23 @@ def prompt_targetgroup_rmtarget(targetname, targetgroupname):
 def prompt_targetgroup_adduser(email, targetgroupname):
     """Add a user to a targetgroup"""
     return req.requests_targetgroup_adduser(email, targetgroupname)
+
+def prompt_targetgroup_rmuser(email, targetgroupname):
+    """Remove a user from a targetgroup"""
+    return req.requests_targetgroup_rmuser(email, targetgroupname)
+
+def prompt_targetgroup_addusergroup(usergroupname, targetgroupname):
+    """Add a usergroup to a targetgroup"""
+    return req.requests_targetgroup_addusergroup(usergroupname, targetgroupname)
+
+def prompt_targetgroup_rmusergroup(usergroupname, targetgroupname):
+    """Remove a usergroup from a targetgroup"""
+    return req.requests_targetgroup_rmusergroup(usergroupname, targetgroupname)
+
+def prompt_targetgroup_addtargetgroup(subtargetgroupname, targetgroupname):
+    """Add a targetgroup (subtargetgroup) to a targetgroup"""
+    return req.requests_targetgroup_addtargetgroup(subtargetgroupname, targetgroupname)
+
+def prompt_targetgroup_rmtargetgroup(subtargetgroupname, targetgroupname):
+    """Remove a targetgroup (subtargetgroup) from a targetgroup"""
+    return req.requests_targetgroup_rmtargetgroup(subtargetgroupname, targetgroupname)

@@ -13,21 +13,21 @@ Usage:
     passhport-admin user del <email>
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
-    passhport-admin usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
+    passhport-admin usergroup (show|create|edit|del)
     passhport-admin usergroup (adduser|rmuser) <email> <groupname>
     passhport-admin usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
     passhport-admin target list
     passhport-admin target search <pattern>
-    passhport-admin target (show|show_users|show_usergroups|create|edit|del)
+    passhport-admin target (show|create|edit|del)
     passhport-admin target (adduser|rmuser) <email> <targetname>
     passhport-admin target (addusergroup|rmusergroup) <groupname> <targetname>
     passhport-admin targetgroup list
     passhport-admin targetgroup search <pattern>
-    passhport-admin targetgroup (show|show_targets|create|edit|del)
-    passhport-admin targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
-    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
+    passhport-admin targetgroup (show|create|edit|del)
+    passhport-admin targetgroup (addtarget|rmtarget) <targetname> <targetgroupname>
+    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <subtargetgroupname> <targetgroupname>
     passhport-admin targetgroup (adduser|rmuser) <email> <targetgroupname>
-    passhport-admin targetgroup (addusergroup|rmusergroup) <groupname>  <targetgroupname>
+    passhport-admin targetgroup (addusergroup|rmusergroup) <groupname> <targetgroupname>
     passhport-admin (-h | --version)
 
 Arguments:
@@ -135,7 +135,7 @@ Options:
 Usage:
     usergroup list
     usergroup search <pattern>
-    usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
+    usergroup (show|create|edit|del)
     usergroup (adduser|rmuser) <email> <groupname>
     usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
 
@@ -167,7 +167,7 @@ Options:
 Usage:
     target list
     target search <pattern>
-    target (show|show_users|show_usergroups|create|edit|del)
+    target (show|create|edit|del)
     target editcommand <command> <targetname>
     target (adduser|rmuser) <email> <targetname>
     target (addusergroup|rmusergroup) <groupname> <targetname>
@@ -199,9 +199,9 @@ Options
 Usage:
     targetgroup list
     targetgroup search <pattern>
-    targetgroup (show|show_targets|create|edit|del)
+    targetgroup (show|create|edit|del)
     targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
-    targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
+    targetgroup (addtargetgroup|rmtargetgroup) <subtargetgroupname> <targetgroupname>
     targetgroup (adduser|rmuser) <email> <targetgroupname>
     targetgroup (addusergroup|rmusergroup) <groupname>  <targetgroupname>
 
@@ -272,10 +272,6 @@ if __name__ == '__main__':
             target_prompt.prompt_target_create()
         elif opt['show']:
             target_prompt.prompt_target_show()
-        elif opt['show_users']:
-            target_prompt.prompt_target_show_users()
-        elif opt['show_usergroups']:
-            target_prompt.prompt_target_show_usergroups()
         elif opt['edit']:
             target_prompt.prompt_target_edit()
         elif opt['del']:
@@ -297,8 +293,6 @@ if __name__ == '__main__':
             usergroup_prompt.prompt_usergroup_create()
         elif opt['show']:
             usergroup_prompt.prompt_usergroup_show()
-        elif opt['show_users']:
-            usergroup_prompt.prompt_usergroup_show_users()
         elif opt['edit']:
             usergroup_prompt.prompt_usergroup_edit()
         elif opt['del']:
@@ -309,6 +303,8 @@ if __name__ == '__main__':
             usergroup_prompt.prompt_usergroup_rmuser(opt['<email>'], opt['<groupname>'])
         elif opt['addusergroup']:
             usergroup_prompt.prompt_usergroup_addusergroup(opt['<subusergroupname>'], opt['<groupname>'])
+        elif opt['rmusergroup']:
+            usergroup_prompt.prompt_usergroup_rmusergroup(opt['<subusergroupname>'], opt['<groupname>'])
     elif opt['targetgroup']:
         if opt['list']:
             targetgroup_prompt.prompt_targetgroup_list()
@@ -318,8 +314,6 @@ if __name__ == '__main__':
             targetgroup_prompt.prompt_targetgroup_create()
         elif opt['show']:
             targetgroup_prompt.prompt_targetgroup_show()
-        elif opt['show_targets']:
-            targetgroup_prompt.prompt_targetgroup_show_targets()
         elif opt['edit']:
             targetgroup_prompt.prompt_targetgroup_edit()
         elif opt['del']:
@@ -330,3 +324,13 @@ if __name__ == '__main__':
             targetgroup_prompt.prompt_targetgroup_rmtarget(opt['<targetname>'], opt['<targetgroupname>'])
         elif opt['adduser']:
             targetgroup_prompt.prompt_targetgroup_adduser(opt['<email>'], opt['<targetgroupname>'])
+        elif opt['rmuser']:
+            targetgroup_prompt.prompt_targetgroup_rmuser(opt['<email>'], opt['<targetgroupname>'])
+        elif opt['addusergroup']:
+            targetgroup_prompt.prompt_targetgroup_addusergroup(opt['<groupname>'], opt['<targetgroupname>'])
+        elif opt['rmusergroup']:
+            targetgroup_prompt.prompt_targetgroup_rmusergroup(opt['<groupname>'], opt['<targetgroupname>'])
+        elif opt['addtargetgroup']:
+            targetgroup_prompt.prompt_targetgroup_addtargetgroup(opt['<subtargetgroupname>'], opt['<targetgroupname>'])
+        elif opt['rmtargetgroup']:
+            targetgroup_prompt.prompt_targetgroup_rmtargetgroup(opt['<subtargetgroupname>'], opt['<targetgroupname>'])
