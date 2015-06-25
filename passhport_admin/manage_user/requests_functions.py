@@ -6,7 +6,7 @@ import requests
 
 url_passhport = "http://127.0.0.1:5000/"
 
-def requests_user_list():
+def list():
     """Get the list of all users"""
     url_list = url_passhport + "user/list"
 
@@ -22,7 +22,7 @@ def requests_user_list():
 
     return 1
 
-def requests_user_search(pattern):
+def search(pattern):
     """Get the list of users following the pattern"""
     url_search = url_passhport + "user/search/" + pattern
 
@@ -38,7 +38,7 @@ def requests_user_search(pattern):
 
     return 1
 
-def requests_user_create(email, comment, sshkey):
+def create(email, comment, sshkey):
     """User creation on passhportd via API"""
     user_data = {'email': email, 'comment': comment, 'sshkey': sshkey}
     url_create = url_passhport + "user/create"
@@ -55,7 +55,7 @@ def requests_user_create(email, comment, sshkey):
 
     return 1
 
-def requests_user_show(email):
+def show(email):
     """Get data about a user"""
     url_show = url_passhport + "user/show/" + email
 
@@ -71,7 +71,7 @@ def requests_user_show(email):
 
     return 1
 
-def requests_user_edit(email, new_email, new_comment, new_sshkey):
+def edit(email, new_email, new_comment, new_sshkey):
     """User modification on passhportd via API"""
     user_data = {'email': email, 'new_email': new_email, 'new_comment': new_comment, 'new_sshkey': new_sshkey}
     url_edit = url_passhport + "user/edit"
@@ -88,7 +88,7 @@ def requests_user_edit(email, new_email, new_comment, new_sshkey):
 
     return 1
 
-def requests_user_del(email):
+def delete(email):
     """User deletion on passhportd via API"""
     url_del = url_passhport + "user/del/" + email
 
