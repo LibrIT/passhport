@@ -57,3 +57,7 @@ def prompt_usergroup_rmuser(email, usergroupname):
 def prompt_usergroup_addusergroup(subusergroupname, usergroupname):
     """Add a usergroup (subusergroup) to a usergroup"""
     return req.requests_usergroup_addusergroup(subusergroupname, usergroupname)
+
+def prompt_usergroup_rmusergroup(subusergroupname, usergroupname):
+    """Remove a usergroup (subusergroup) from a usergroup"""
+    return req.requests_usergroup_rmusergroup(subusergroupname, usergroupname)

@@ -303,6 +303,8 @@ if __name__ == '__main__':
             usergroup_prompt.prompt_usergroup_rmuser(opt['<email>'], opt['<groupname>'])
         elif opt['addusergroup']:
             usergroup_prompt.prompt_usergroup_addusergroup(opt['<subusergroupname>'], opt['<groupname>'])
+        elif opt['rmusergroup']:
+            usergroup_prompt.prompt_usergroup_rmusergroup(opt['<subusergroupname>'], opt['<groupname>'])
     elif opt['targetgroup']:
         if opt['list']:
             targetgroup_prompt.prompt_targetgroup_list()

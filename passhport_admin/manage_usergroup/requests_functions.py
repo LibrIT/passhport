@@ -154,3 +154,20 @@ def requests_usergroup_addusergroup(subusergroupname, usergroupname):
             return 0
 
     return 1
+
+def requests_usergroup_rmusergroup(subusergroupname, usergroupname):
+    """Remove a usergroup (subusergroup) from a usergroup via API"""
+    usergroup_subusergroup_data = {'usergroupname': usergroupname, 'subusergroupname': subusergroupname}
+    url_rmusergroup = url_passhport + "usergroup/rmusergroup"
+
+    try:
+        r = requests.post(url_rmusergroup, data = usergroup_subusergroup_data)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1

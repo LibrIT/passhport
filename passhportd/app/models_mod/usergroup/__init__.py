@@ -95,3 +95,10 @@ class Usergroup(db.Model):
             self.gmembers.append(usergroup)
 
         return self
+
+    def rmusergroup(self, usergroup):
+        """Remove a usergroup from the relation table"""
+        if self.is_gmember(usergroup):
+            self.gmembers.remove(usergroup)
+
+        return self

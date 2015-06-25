@@ -45,21 +45,6 @@ def targetgroup_show(targetgroupname):
 
     return str(targetgroup_data), 200, {'Content-Type': 'text/plain'}
 
-@app.route('/targetgroup/show_targets/<targetgroupname>')
-def targetgroup_show_targets(targetgroupname):
-    """Return user list of the given target"""
-    # Check for required fields
-    if not targetgroupname:
-        return "ERROR: The targetgroupname is required ", 417, {'Content-Type': 'text/plain'}
-
-    targetgroup_data = targetgroup.Targetgroup.query.filter_by(targetgroupname = targetgroupname).first()
-
-    # Check if the given targetgroup exists in the database
-    if targetgroup_data is None:
-        return 'ERROR: No targetgroup with the name "' + targetgroupname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
-
-    return str(targetgroup_data.show_targets()), 200, {'Content-Type': 'text/plain'}
-
 @app.route('/targetgroup/create', methods = ['POST'])
 def targetgroup_create():
     """Add a targetgroup in the database"""
