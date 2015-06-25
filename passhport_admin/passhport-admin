@@ -25,7 +25,7 @@ Usage:
     passhport-admin targetgroup search <pattern>
     passhport-admin targetgroup (show|create|edit|del)
     passhport-admin targetgroup (addtarget|rmtarget) <targetname> <targetgroupname>
-    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
+    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <subtargetgroupname> <targetgroupname>
     passhport-admin targetgroup (adduser|rmuser) <email> <targetgroupname>
     passhport-admin targetgroup (addusergroup|rmusergroup) <groupname> <targetgroupname>
     passhport-admin (-h | --version)
@@ -201,7 +201,7 @@ Usage:
     targetgroup search <pattern>
     targetgroup (show|create|edit|del)
     targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
-    targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
+    targetgroup (addtargetgroup|rmtargetgroup) <subtargetgroupname> <targetgroupname>
     targetgroup (adduser|rmuser) <email> <targetgroupname>
     targetgroup (addusergroup|rmusergroup) <groupname>  <targetgroupname>
 
@@ -330,3 +330,7 @@ if __name__ == '__main__':
             targetgroup_prompt.prompt_targetgroup_addusergroup(opt['<groupname>'], opt['<targetgroupname>'])
         elif opt['rmusergroup']:
             targetgroup_prompt.prompt_targetgroup_rmusergroup(opt['<groupname>'], opt['<targetgroupname>'])
+        elif opt['addtargetgroup']:
+            targetgroup_prompt.prompt_targetgroup_addtargetgroup(opt['<subtargetgroupname>'], opt['<targetgroupname>'])
+        elif opt['rmtargetgroup']:
+            targetgroup_prompt.prompt_targetgroup_rmtargetgroup(opt['<subtargetgroupname>'], opt['<targetgroupname>'])

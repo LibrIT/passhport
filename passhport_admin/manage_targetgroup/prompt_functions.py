@@ -71,3 +71,11 @@ def prompt_targetgroup_addusergroup(usergroupname, targetgroupname):
 def prompt_targetgroup_rmusergroup(usergroupname, targetgroupname):
     """Remove a usergroup from a targetgroup"""
     return req.requests_targetgroup_rmusergroup(usergroupname, targetgroupname)
+
+def prompt_targetgroup_addtargetgroup(subtargetgroupname, targetgroupname):
+    """Add a targetgroup (subtargetgroup) to a targetgroup"""
+    return req.requests_targetgroup_addtargetgroup(subtargetgroupname, targetgroupname)
+
+def prompt_targetgroup_rmtargetgroup(subtargetgroupname, targetgroupname):
+    """Remove a targetgroup (subtargetgroup) from a targetgroup"""
+    return req.requests_targetgroup_rmtargetgroup(subtargetgroupname, targetgroupname)

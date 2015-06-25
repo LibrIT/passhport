@@ -2,6 +2,13 @@
 
 from app import db
 
+# Table to handle the self-referencing many-to-many relationship for the Targetgroup class:
+# First column holds the containers, the second the subgroups.
+tgroup_of_tgroup = db.Table("tgroup_of_tgroup",
+        db.Column("container_id",      db.Integer, db.ForeignKey("targetgroup.id"), primary_key = True),
+        db.Column("subtargetgroup_id", db.Integer, db.ForeignKey("targetgroup.id"), primary_key = True)
+        )
+
 """Targetgroup defines a group of targets (can contain some targetgroups too)"""
 class Targetgroup(db.Model):
     __tablename__   = "targetgroup"
@@ -13,6 +20,12 @@ class Targetgroup(db.Model):
     members   = db.relationship("User",        secondary = "tgroup_user")
     tmembers  = db.relationship("Target",      secondary = "tgroup_target")
     gmembers  = db.relationship("Usergroup",   secondary = "tgroup_group")
+    tgmembers = db.relationship("Targetgroup",
+            secondary     = tgroup_of_tgroup,
+            primaryjoin   = id == tgroup_of_tgroup.c.container_id,
+            secondaryjoin = id == tgroup_of_tgroup.c.subtargetgroup_id,
+            backref       = "containedin"
+            )
 
     def __repr__(self):
         """Return main data of the targetgroup as a string"""
@@ -35,7 +48,16 @@ class Targetgroup(db.Model):
         for usergroup in self.gmembers:
             output.append(usergroup.show_usergroupname())
 
+        output.append("Targetgroup list:")
+
+        for targetgroup in self.tgmembers:
+            output.append(targetgroup.show_targetgroupname())
+
         return "\n".join(output)
+
+    def show_targetgroupname(self):
+        """Return a string containing the targetgroup’s name"""
+        return self.targetgroupname.encode("utf8")
 
     # Target management
     def is_tmembers(self, target):
@@ -99,5 +121,24 @@ class Targetgroup(db.Model):
         """Remove a usergroup from the relation table"""
         if self.is_gmembers(usergroup):
             self.gmembers.remove(usergroup)
+
+        return self
+
+    # Targetgroup anagement
+    def is_tgmembers(self, targetgroup):
+        """Return true if the given targetgroup is a member of the targetgroup, false otherwise"""
+        return targetgroup in self.tgmembers
+
+    def addtargetgroup(self, targetgroup):
+        """Add a targetgroup to the relaton table"""
+        if not self.is_tgmembers(targetgroup):
+            self.tgmembers.append(targetgroup)
+
+        return self
+
+    def rmtargetgroup(self, targetgroup):
+        """Remove a targetgroup from the relaton table"""
+        if self.is_tgmembers(targetgroup):
+            self.tgmembers.remove(targetgroup)
 
         return self

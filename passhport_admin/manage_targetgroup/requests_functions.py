@@ -205,3 +205,37 @@ def requests_targetgroup_rmusergroup(usergroupname, targetgroupname):
             return 0
 
     return 1
+
+def requests_targetgroup_addtargetgroup(subtargetgroupname, targetgroupname):
+    """Add a targetgroup (subtargetgroup) in a targetgroup via API"""
+    targetgroup_subtargetgroup_data = {'targetgroupname': targetgroupname, 'subtargetgroupname': subtargetgroupname}
+    url_addtargetgroup = url_passhport + "targetgroup/addtargetgroup"
+
+    try:
+        r = requests.post(url_addtargetgroup, data = targetgroup_subtargetgroup_data)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1
+
+def requests_targetgroup_rmtargetgroup(subtargetgroupname, targetgroupname):
+    """Remove a targetgroup (subtargetgroup) from a targetgroup via API"""
+    targetgroup_subtargetgroup_data = {'targetgroupname': targetgroupname, 'subtargetgroupname': subtargetgroupname}
+    url_rmtargetgroup = url_passhport + "targetgroup/rmtargetgroup"
+
+    try:
+        r = requests.post(url_rmtargetgroup, data = targetgroup_subtargetgroup_data)
+    except requests.RequestException, e:
+        print("ERROR: " + str(e.message))
+    else:
+        print(r.text)
+
+        if r.status_code == requests.codes.ok:
+            return 0
+
+    return 1
