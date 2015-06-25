@@ -10,6 +10,7 @@ class Targetgroup(db.Model):
     comment         = db.Column(db.String(500), index = True, unique = False)
 
     # Relations
+    members   = db.relationship("User",        secondary = "tgroup_user")
     tmembers  = db.relationship("Target",      secondary = "tgroup_target")
     gmembers  = db.relationship("Usergroup",   secondary = "tgroup_group")
 
@@ -19,6 +20,11 @@ class Targetgroup(db.Model):
 
         output.append("Targetgroupname: {}".format(self.targetgroupname.encode('utf8')))
         output.append("Comment: {}".format(self.comment.encode('utf8')))
+        output.append("User list:")
+
+        for user in self.members:
+            output.append(user.show_email())
+
         output.append("Target list:")
 
         for target in self.tmembers:
@@ -54,8 +60,13 @@ class Targetgroup(db.Model):
         return self
 
     # User management
+    def is_members(self, user):
+        """Return true if the given user is a member of the targetgroup, false otherwise"""
+        return user in self.members
+
     def adduser(self, user):
         """Add a user to the relaton table"""
-        print("Not developped fully yet.")
+        if not self.is_members(user):
+            self.members.append(user)
 
-        return None
+        return self
