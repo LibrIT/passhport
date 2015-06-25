@@ -30,6 +30,11 @@ class Targetgroup(db.Model):
         for target in self.tmembers:
             output.append(target.show_name())
 
+        output.append("Usergroup list:")
+
+        for usergroup in self.gmembers:
+            output.append(usergroup.show_usergroupname())
+
         return "\n".join(output)
 
     # Target management
@@ -75,5 +80,17 @@ class Targetgroup(db.Model):
         """Remove a user from the relation table"""
         if self.is_members(user):
             self.members.remove(user)
+
+        return self
+
+    # Usergroup management
+    def is_gmembers(self, usergroup):
+        """Return true if the given usergroup is a member of the targetgroup, false otherwise"""
+        return usergroup in self.gmembers
+
+    def addusergroup(self, usergroup):
+        """Add a usergroup to the relaton table"""
+        if not self.is_gmembers(usergroup):
+            self.gmembers.append(usergroup)
 
         return self

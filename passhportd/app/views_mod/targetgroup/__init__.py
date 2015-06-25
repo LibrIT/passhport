@@ -5,6 +5,7 @@ from flask          import request
 from app.models_mod import targetgroup
 from app.models_mod import target
 from app.models_mod import user
+from app.models_mod import usergroup
 
 @app.route("/targetgroup/list")
 def targetgroup_list():
@@ -269,12 +270,38 @@ def targetgroup_rmuser():
 
     return 'OK: "' + email + '" removed from "' + targetgroupname + '"', 200, {'Content-Type': 'text/plain'}
 
-@app.route('/targetgroup/addusergroup', methods=['GET'])
-def targetgroup_addgroup():
-    #TODO
-    print  request.args.get('groupname')
-    print  request.args.get('targetgroupname')
-    return "addusergroup"
+@app.route('/targetgroup/addusergroup', methods = ['POST'])
+def targetgroup_addusergroup():
+    """Add a usergroup in the targetgroup in the database"""
+    # Only POST data are handled
+    if request.method != 'POST':
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
+
+    # Simplification for the reading
+    targetgroupname = request.form['targetgroupname']
+    usergroupname   = request.form['usergroupname']
+
+    # Check for required fields
+    if not targetgroupname or not usergroupname:
+        return "ERROR: The targetgroupname and usergroupname are required ", 417, {'Content-Type': 'text/plain'}
+
+    # Targetgroup and usergroup have to exist in database
+    tg = get_targetgroup(targetgroupname)
+    if not tg:
+        return 'ERROR: no targetgroup "' + targetgroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    ug = get_usergroup(usergroupname)
+    if not ug:
+        return 'ERROR: no usergroup "' + usergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    # Now we can add the usergroup
+    tg.addusergroup(ug)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + targetgroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
+
+    return 'OK: "' + usergroupname + '" added to "' + targetgroupname + '"', 200, {'Content-Type': 'text/plain'}
 
 @app.route('/targetgroup/rmusergroup', methods=['GET'])
 def targetgroup_rmgroup():
@@ -328,5 +355,16 @@ def get_user(email):
     # User must exist in database
     if u:
         return u[0]
+    else:
+        return False
+
+def get_usergroup(usergroupname):
+    """Return the usergroup with the given usergroupname"""
+    ug = db.session.query(usergroup.Usergroup).filter(
+             usergroup.Usergroup.usergroupname == usergroupname).all()
+
+    # Usergroup must exist in database
+    if ug:
+        return ug[0]
     else:
         return False

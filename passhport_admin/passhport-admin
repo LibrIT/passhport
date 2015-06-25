@@ -24,10 +24,10 @@ Usage:
     passhport-admin targetgroup list
     passhport-admin targetgroup search <pattern>
     passhport-admin targetgroup (show|create|edit|del)
-    passhport-admin targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
+    passhport-admin targetgroup (addtarget|rmtarget) <targetname> <targetgroupname>
     passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
     passhport-admin targetgroup (adduser|rmuser) <email> <targetgroupname>
-    passhport-admin targetgroup (addusergroup|rmusergroup) <groupname>  <targetgroupname>
+    passhport-admin targetgroup (addusergroup|rmusergroup) <groupname> <targetgroupname>
     passhport-admin (-h | --version)
 
 Arguments:
@@ -326,3 +326,5 @@ if __name__ == '__main__':
             targetgroup_prompt.prompt_targetgroup_adduser(opt['<email>'], opt['<targetgroupname>'])
         elif opt['rmuser']:
             targetgroup_prompt.prompt_targetgroup_rmuser(opt['<email>'], opt['<targetgroupname>'])
+        elif opt['addusergroup']:
+            targetgroup_prompt.prompt_targetgroup_addusergroup(opt['<groupname>'], opt['<targetgroupname>'])
