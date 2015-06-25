@@ -6,24 +6,25 @@ Usage:
     passhport-admin (-i | --interactive)
     passhport-admin user list
     passhport-admin user search <pattern>
-    passhport-admin user (show|create|edit|del)
-    passhport-admin user show <email>
-    passhport-admin user create <email> <comment> <sshkey>
-    passhport-admin user edit <email> <new_email> <comment> <sshkey>
-    passhport-admin user del <email>
-    passhport-admin usergroup list
-    passhport-admin usergroup search <pattern>
-    passhport-admin usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
-    passhport-admin usergroup (adduser|rmuser) <email> <groupname>
-    passhport-admin usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
+    passhport-admin user (show|delete) [<email>]
+    passhport-admin user create [((<email> <sshkey>) [<comment>])]
+    passhport-admin user edit [<email> [--newemail=<email>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
     passhport-admin target list
     passhport-admin target search <pattern>
-    passhport-admin target (show|show_users|show_usergroups|create|edit|del)
+    passhport-admin target (show|show_users|show_usergroups|create|edit|delete)
+    passhport-admin target (show|delete) <targetname>
+    passhport-admin target create <targetname> <hostname> <comment> <sshoptions> <port> <servertype> <autocommand>
+    passhport-admin target edit <targetname> <newtargetname> <hostname> <comment> <sshoptions> <port> <servertype> <autocommand>
     passhport-admin target (adduser|rmuser) <email> <targetname>
+    passhport-admin usergroup list
+    passhport-admin usergroup search <pattern>
+    passhport-admin usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|delete)
+    passhport-admin usergroup (adduser|rmuser) <email> <groupname>
+    passhport-admin usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
     passhport-admin target (addusergroup|rmusergroup) <groupname> <targetname>
     passhport-admin targetgroup list
     passhport-admin targetgroup search <pattern>
-    passhport-admin targetgroup (show|show_targets|create|edit|del)
+    passhport-admin targetgroup (show|show_targets|create|edit|delete)
     passhport-admin targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
     passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
     passhport-admin targetgroup (adduser|rmuser) <email> <targetgroupname>
@@ -63,6 +64,10 @@ import manage_usergroup.prompt_functions as usergroup_prompt
 import manage_usergroup.requests_functions as usergroup_req
 import manage_targetgroup.prompt_functions as targetgroup_prompt
 import manage_targetgroup.requests_functions as targetgroup_req
+import manage_user as mu
+import manage_target as mt
+import manage_usergroup as mug
+import manage_targetgroup as mtg
 
 from docopt import docopt, DocoptExit
 
@@ -109,11 +114,11 @@ class MyInteractive (cmd.Cmd):
 Usage:
     user list
     user search <pattern>
-    user (show|create|edit|del)
+    user (show|create|edit|delete)
     user show <email>
     user create <email> <comment> <sshkey>
     user edit <email> <new_email> <comment> <sshkey>
-    user del <email>
+    user delete <email>
 
 Arguments:
     pattern         SQL search pattern
@@ -124,7 +129,7 @@ Options:
     show            Show all the data of a user
     create          Launch the interactive user creation
     edit            Launch the interactive user modification
-    del             Delete permanently the user entry"""
+    delete             Delete permanently the user entry"""
 
         #TODO
         print(arg)
@@ -152,7 +157,7 @@ Options:
     show            Show all the data of a group, including the users/target in it
     create          Launch the interactive group creation
     edit            Launch the interactive group modification
-    del             Delete permanently the group entry
+    delete             Delete permanently the group entry
     adduser         Add a user in a group
     rmuser          Remove a user from a group
     addgroup        Add a group of users/targets to another group
@@ -167,7 +172,7 @@ Options:
 Usage:
     target list
     target search <pattern>
-    target (show|show_users|show_usergroups|create|edit|del)
+    target (show|show_users|show_usergroups|create|edit|delete)
     target editcommand <command> <targetname>
     target (adduser|rmuser) <email> <targetname>
     target (addusergroup|rmusergroup) <groupname> <targetname>
@@ -185,7 +190,7 @@ Options
     show            Show all the data of a target
     create          Launch the interactive target creation
     edit            Launch the interactive target modification
-    del             Delete permanently the target entry
+    delete             Delete permanently the target entry
     editcommand     Edit the command line launched instead of a classical ssh connexion.
     adduser         Add a user rights on target
     rmuser          Remove a user rights from target
@@ -199,7 +204,7 @@ Options
 Usage:
     targetgroup list
     targetgroup search <pattern>
-    targetgroup (show|show_targets|create|edit|del)
+    targetgroup (show|show_targets|create|edit|delete)
     targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
     targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
     targetgroup (adduser|rmuser) <email> <targetgroupname>
@@ -218,7 +223,7 @@ Options
     show            Show all the data of a targetgroup
     create          Launch the interactive targetgroup creation
     edit            Launch the interactive targetgroup modification
-    del             Delete permanently the targetgroup entry
+    delete             Delete permanently the targetgroup entry
     adduser         Add a user rights on targetgroup (including all the targets in it)
     rmuser          Remove a user rights from targetgroup
     addusergroup    Add rights to a group of users on this targetgroup
@@ -233,53 +238,64 @@ Options
         print('Good Bye!')
         exit()
 
-opt = docopt(__doc__, sys.argv[1:])
+def requests_object_method(opt):
+    """Call the right method depending of the object type"""
+    objects={'user':mu,
+            'target':mt,
+            'usergroup':mug,
+            'targetgroup':mtg}
+    methods={'list','search','show','delete'}
 
+    # Determine which object/method to use
+    for key, value in opt.items():
+        if key in objects.keys():
+            obj = key
+        elif key in methods:
+            method = key
+        else:
+            param = value
+
+    if 'param' in locals():
+        # All info are here nothing to ask to the user
+        module = objects[obj].requests_functions
+        getattr(module, method)(param)
+    else:
+        # Need more info, lets prompt user
+        module = objects[obj].prompt_functions
+        getattr(module, method)()
+
+
+
+opt = docopt(__doc__, sys.argv[1:])
 if __name__ == '__main__':
     if opt['--interactive']:
         MyInteractive().cmdloop()
+    elif opt['list'] or opt['search'] or opt['show'] or opt['delete']:
+        # We don't need the False options to call the method
+        options={key:value for key,value in opt.items() if value}
+        requests_object_method(options)
     elif opt['user']:
-        if opt['list']:
-            user_prompt.prompt_user_list()
-        elif opt['search']:
-            user_prompt.prompt_user_search(opt['<pattern>'])
-        elif opt['create']:
+        if opt['create']:
             if opt['<email>'] and opt['<comment>'] and opt['<sshkey>']:
                 user_req.requests_user_create(opt['<email>'], opt['<comment>'], opt['<sshkey>'])
             else:
                 user_prompt.prompt_user_create()
-        elif opt['show']:
-            if opt['<email>']:
-                user_req.requests_user_show(opt['<email>'])
-            else:
-                user_prompt.prompt_user_show()
         elif opt['edit']:
             if opt['<email>'] and opt['<new_email>'] and opt['<comment>'] and opt['<sshkey>']:
                 user_req.requests_user_edit(opt['<email>'], opt['<new_email>'], opt['<comment>'], opt['<sshkey>'])
             else:
                 user_prompt.prompt_user_edit()
-        elif opt['del']:
-            if opt['<email>']:
-                user_req.requests_user_del(opt['<email>'])
-            else:
-                user_prompt.prompt_user_del()
     elif opt['target']:
-        if opt['list']:
-            target_prompt.prompt_target_list()
-        elif opt['search']:
-            target_prompt.prompt_target_search(opt['<pattern>'])
-        elif opt['create']:
-            target_prompt.prompt_target_create()
-        elif opt['show']:
-            target_prompt.prompt_target_show()
-        elif opt['show_users']:
-            target_prompt.prompt_target_show_users()
-        elif opt['show_usergroups']:
-            target_prompt.prompt_target_show_usergroups()
+        if opt['create']:
+            if opt['<targetname>'] and opt['<hostname>']:
+                print "ok"
+            else:
+                target_prompt.prompt_target_create()
         elif opt['edit']:
-            target_prompt.prompt_target_edit()
-        elif opt['del']:
-            target_prompt.prompt_target_del()
+            if opt['targetname'] and ( opt['<newtargetname>'] or opt['<hostname>'] or opt['<comment>'] or opt['<sshoptions>'] or opt['<port>'] or opt['<servertype>'] or opt['<autocommand>']):
+                print "ok"
+            else:
+                target_prompt.prompt_target_edit()
         elif opt['adduser']:
             target_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
         elif opt['rmuser']:
@@ -289,20 +305,12 @@ if __name__ == '__main__':
         elif opt['rmusergroup']:
             target_prompt.prompt_target_rmusergroup(opt['<groupname>'], opt['<targetname>'])
     elif opt['usergroup']:
-        if opt['list']:
-            usergroup_prompt.prompt_usergroup_list()
-        elif opt['search']:
-            usergroup_prompt.prompt_usergroup_search(opt['<pattern>'])
-        elif opt['create']:
+        if opt['create']:
             usergroup_prompt.prompt_usergroup_create()
-        elif opt['show']:
-            usergroup_prompt.prompt_usergroup_show()
         elif opt['show_users']:
             usergroup_prompt.prompt_usergroup_show_users()
         elif opt['edit']:
             usergroup_prompt.prompt_usergroup_edit()
-        elif opt['del']:
-            usergroup_prompt.prompt_usergroup_del()
         elif opt['adduser']:
             usergroup_prompt.prompt_usergroup_adduser(opt['<email>'], opt['<groupname>'])
         elif opt['rmuser']:
@@ -310,20 +318,12 @@ if __name__ == '__main__':
         elif opt['addusergroup']:
             usergroup_prompt.prompt_usergroup_addusergroup(opt['<subusergroupname>'], opt['<groupname>'])
     elif opt['targetgroup']:
-        if opt['list']:
-            targetgroup_prompt.prompt_targetgroup_list()
-        elif opt['search']:
-            targetgroup_prompt.prompt_targetgroup_search(opt['<pattern>'])
-        elif opt['create']:
+        if opt['create']:
             targetgroup_prompt.prompt_targetgroup_create()
-        elif opt['show']:
-            targetgroup_prompt.prompt_targetgroup_show()
         elif opt['show_targets']:
             targetgroup_prompt.prompt_targetgroup_show_targets()
         elif opt['edit']:
             targetgroup_prompt.prompt_targetgroup_edit()
-        elif opt['del']:
-            targetgroup_prompt.prompt_targetgroup_del()
         elif opt['addtarget']:
             targetgroup_prompt.prompt_targetgroup_addtarget(opt['<targetname>'], opt['<targetgroupname>'])
         elif opt['rmtarget']:
