@@ -35,25 +35,25 @@ echo "[user] show   1/2: " ${r/1/ERROR}
 
 # EDIT 1/2
 PATTERN="ERROR: No user with the email \"${USEREMAIL}\" in the database."
-${CMD} edit ${USEREMAIL} new_${USEREMAIL} "${COMMENT}" "${SSHKEY}" | grep "${PATTERN}"  &> /dev/null
+${CMD} edit ${USEREMAIL} --newemail=new_${USEREMAIL} --newcomment="${COMMENT}" --newsshkey="${SSHKEY}" | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] edit   1/2: " ${r/1/ERROR}
 
 # DEL 1/2
 PATTERN="ERROR: No user with the email \"${USEREMAIL}\" in the database."
-${CMD} del ${USEREMAIL}  | grep "${PATTERN}"  &> /dev/null
+${CMD} delete ${USEREMAIL}  | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] del    1/2: " ${r/1/ERROR}
 
 # CREATE 1/2
 PATTERN="OK: \"${USEREMAIL}\" -> created"
-${CMD} create ${USEREMAIL} "${COMMENT}" "${SSHKEY}" | grep "${PATTERN}"  &> /dev/null
+${CMD} create ${USEREMAIL} "${SSHKEY}" "${COMMENT}" | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] create 1/2: " ${r/1/ERROR}
 
 # CREATE 2/2
 PATTERN="ERROR: The email \"${USEREMAIL}\" is already used by another user" 
-${CMD} create ${USEREMAIL} "${COMMENT}" "${SSHKEY}" | grep "${PATTERN}"  &> /dev/null
+${CMD} create ${USEREMAIL} "${SSHKEY}" "${COMMENT}" | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] create 2/2: " ${r/1/ERROR}
 
@@ -73,12 +73,12 @@ echo "[user] show   2/2: " ${r/1/ERROR}
 
 # EDIT 2/2
 PATTERN="OK: \"${USEREMAIL}\" -> edited" 
-${CMD} edit ${USEREMAIL} new_${USEREMAIL} "${COMMENT}" "${SSHKEY}" | grep "${PATTERN}"  &> /dev/null
+${CMD} edit ${USEREMAIL} --newemail=new_${USEREMAIL} --newcomment="${COMMENT}" --newsshkey="${SSHKEY}" | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] edit   1/2: " ${r/1/ERROR}
 
 # DEL 2/2
 PATTERN="OK: \"new_${USEREMAIL}\" -> deleted"
-${CMD} del new_${USEREMAIL} | grep "${PATTERN}"  &> /dev/null
+${CMD} delete new_${USEREMAIL} | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] del    2/2: " ${r/1/ERROR}

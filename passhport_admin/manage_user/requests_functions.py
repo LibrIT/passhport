@@ -22,9 +22,9 @@ def list():
 
     return 1
 
-def search(pattern):
+def search(param):
     """Get the list of users following the pattern"""
-    url_search = url_passhport + "user/search/" + pattern
+    url_search = url_passhport + "user/search/" + param['<pattern>']
 
     try:
         r = requests.get(url_search)
@@ -38,8 +38,13 @@ def search(pattern):
 
     return 1
 
-def create(email, comment, sshkey):
+def create(param):
     """User creation on passhportd via API"""
+    email   = param['<email>']
+    sshkey  = param['<sshkey>']
+    comment = ""
+    if '<comment>' in param:
+        comment = param['<comment>']
     user_data = {'email': email, 'comment': comment, 'sshkey': sshkey}
     url_create = url_passhport + "user/create"
 
@@ -55,9 +60,9 @@ def create(email, comment, sshkey):
 
     return 1
 
-def show(email):
+def show(param):
     """Get data about a user"""
-    url_show = url_passhport + "user/show/" + email
+    url_show = url_passhport + "user/show/" + param['<email>']
 
     try:
         r = requests.get(url_show)
@@ -71,8 +76,18 @@ def show(email):
 
     return 1
 
-def edit(email, new_email, new_comment, new_sshkey):
+def edit(param):
     """User modification on passhportd via API"""
+    email       = param['<email>']
+    new_email   = ""
+    new_comment = ""
+    new_sshkey  = ""
+    if '--newemail' in param:
+        new_email   = param['--newemail']
+    if '--newcomment' in param:
+        new_comment = param['--newcomment']
+    if '--newsshkey' in param:
+        new_sshkey  = param['--newsshkey']
     user_data = {'email': email, 'new_email': new_email, 'new_comment': new_comment, 'new_sshkey': new_sshkey}
     url_edit = url_passhport + "user/edit"
 
@@ -88,9 +103,9 @@ def edit(email, new_email, new_comment, new_sshkey):
 
     return 1
 
-def delete(email):
+def delete(param):
     """User deletion on passhportd via API"""
-    url_del = url_passhport + "user/del/" + email
+    url_del = url_passhport + "user/del/" + param['<email>']
 
     try:
         r = requests.get(url_del)
