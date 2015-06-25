@@ -13,7 +13,7 @@ Usage:
     passhport-admin user del <email>
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
-    passhport-admin usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
+    passhport-admin usergroup (show|create|edit|del)
     passhport-admin usergroup (adduser|rmuser) <email> <groupname>
     passhport-admin usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
     passhport-admin target list
@@ -135,7 +135,7 @@ Options:
 Usage:
     usergroup list
     usergroup search <pattern>
-    usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
+    usergroup (show|create|edit|del)
     usergroup (adduser|rmuser) <email> <groupname>
     usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
 
@@ -297,8 +297,6 @@ if __name__ == '__main__':
             usergroup_prompt.prompt_usergroup_create()
         elif opt['show']:
             usergroup_prompt.prompt_usergroup_show()
-        elif opt['show_users']:
-            usergroup_prompt.prompt_usergroup_show_users()
         elif opt['edit']:
             usergroup_prompt.prompt_usergroup_edit()
         elif opt['del']:

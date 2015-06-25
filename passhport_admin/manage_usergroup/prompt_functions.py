@@ -28,13 +28,6 @@ def prompt_usergroup_show():
 
     return req.requests_usergroup_show(usergroupname)
 
-def prompt_usergroup_show_users():
-    """Ask arguments for showing usergroup and its user list"""
-    usergroupname = pyt_compat.input_compat("Usergroupname: ")
-    print("")
-
-    return req.requests_usergroup_show_users(usergroupname)
-
 def prompt_usergroup_edit():
     """Ask arguments for editing an existing usergroup"""
     usergroupname = pyt_compat.input_compat("Name of the usergroup you want to modify: ")

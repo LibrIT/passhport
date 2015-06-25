@@ -71,22 +71,6 @@ def requests_usergroup_show(usergroupname):
 
     return 1
 
-def requests_usergroup_show_users(usergroupname):
-    """Get data about a usergroup and its user list"""
-    url_show_users = url_passhport + "usergroup/show_users/" + usergroupname
-
-    try:
-        r = requests.get(url_show_users)
-    except requests.RequestException, e:
-        print("ERROR: " + str(e.message))
-    else:
-        print(r.text)
-
-        if r.status_code == requests.codes.ok:
-            return 0
-
-    return 1
-
 def requests_usergroup_edit(usergroupname, new_usergroupname, new_comment):
     """Usergroup modification on passhportd via API"""
     usergroup_data = {'usergroupname': usergroupname, 'new_usergroupname': new_usergroupname, 'new_comment': new_comment}

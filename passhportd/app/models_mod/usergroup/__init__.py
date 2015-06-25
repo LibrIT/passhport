@@ -30,10 +30,15 @@ class Usergroup(db.Model):
 
         output.append("Usergroupname: {}".format(self.usergroupname.encode("utf8")))
         output.append("Comment: {}".format(self.comment.encode("utf8")))
-        output.append("Usergroup list:")
+        output.append("User list:")
 
-        for usergroup in self.gmembers:
-            output.append(usergroup.show_usergroupname())
+        for user in self.members:
+            output.append(user.show_email())
+
+        output.append("Usergroup list: coming soon")
+
+        # for usergroup in self.gmembers:
+        #    output.append(usergroup.show_usergroupname())
 
         return "\n".join(output)
 
