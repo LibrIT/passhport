@@ -70,3 +70,10 @@ class Targetgroup(db.Model):
             self.members.append(user)
 
         return self
+
+    def rmuser(self, user):
+        """Remove a user from the relation table"""
+        if self.is_members(user):
+            self.members.remove(user)
+
+        return self

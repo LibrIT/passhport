@@ -324,3 +324,5 @@ if __name__ == '__main__':
             targetgroup_prompt.prompt_targetgroup_rmtarget(opt['<targetname>'], opt['<targetgroupname>'])
         elif opt['adduser']:
             targetgroup_prompt.prompt_targetgroup_adduser(opt['<email>'], opt['<targetgroupname>'])
+        elif opt['rmuser']:
+            targetgroup_prompt.prompt_targetgroup_rmuser(opt['<email>'], opt['<targetgroupname>'])

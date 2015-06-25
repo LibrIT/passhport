@@ -133,13 +133,6 @@ def targetgroup_del(targetgroupname):
 
     return 'ERROR: No targetgroup with the name "' + targetgroupname + '" in the database.\n', 417, {'Content-Type': 'text/plain'}
 
-@app.route('/targetgroup/rmuser/', methods=['GET'])
-def targetgroup_rmuser():
-    #TODO
-    print  request.args.get('username')
-    print  request.args.get('targetgroupname')
-    return "rmuser"
-
 @app.route('/targetgroup/addtarget', methods = ['POST'])
 def targetgroup_addtarget():
     """Add a target in the targetgroup in the database"""
@@ -242,6 +235,39 @@ def targetgroup_adduser():
         return 'ERROR: "' + targetgroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
     return 'OK: "' + email + '" added to "' + targetgroupname + '"', 200, {'Content-Type': 'text/plain'}
+
+@app.route('/targetgroup/rmuser', methods = ['POST'])
+def targetgroup_rmuser():
+    """Remove a user from the targetgroup in the database"""
+    # Only POST data are handled
+    if request.method != 'POST':
+        return "ERROR: POST method is required ", 405, {'Content-Type': 'text/plain'}
+
+    # Simplification for the reading
+    targetgroupname = request.form['targetgroupname']
+    email           = request.form['email']
+
+    # Check for required fields
+    if not targetgroupname or not email:
+        return "ERROR: The targetgroupname and email are required ", 417, {'Content-Type': 'text/plain'}
+
+    # Targetgroup and user have to exist in database
+    tg = get_targetgroup(targetgroupname)
+    if not tg:
+        return 'ERROR: no targetgroup "' + targetgroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    u = get_user(email)
+    if not u:
+        return 'ERROR: no user "' + email + '" in the database ', 417, {'Content-Type': 'text/plain'}
+
+    # Now we can remove the user
+    tg.rmuser(u)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError, e:
+        return 'ERROR: "' + targetgroupname + '" -> ' + e.message + '\n', 409, {'Content-Type': 'text/plain'}
+
+    return 'OK: "' + email + '" removed from "' + targetgroupname + '"', 200, {'Content-Type': 'text/plain'}
 
 @app.route('/targetgroup/addusergroup', methods=['GET'])
 def targetgroup_addgroup():
