@@ -185,8 +185,7 @@ Options
     show            Show all the data of a target
     create          Launch the interactive target creation
     edit            Launch the interactive target modification
-    del             Deif __name__ == '__main__':
-lete permanently the target entry
+    del             Delete permanently the target entry
     editcommand     Edit the command line launched instead of a classical ssh connexion.
     adduser         Add a user rights on target
     rmuser          Remove a user rights from target
@@ -284,14 +283,14 @@ if __name__ == '__main__':
         elif opt['adduser']:
             target_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
         elif opt['rmuser']:
-        	target_prompt.prompt_target_rmuser(opt['<email>'], opt['<targetname>'])
+            target_prompt.prompt_target_rmuser(opt['<email>'], opt['<targetname>'])
         elif opt['addusergroup']:
             target_prompt.prompt_target_addusergroup(opt['<groupname>'], opt['<targetname>'])
         elif opt['rmusergroup']:
             target_prompt.prompt_target_rmusergroup(opt['<groupname>'], opt['<targetname>'])
     elif opt['usergroup']:
-    	if opt['list']:
-    		usergroup_prompt.prompt_usergroup_list()
+        if opt['list']:
+            usergroup_prompt.prompt_usergroup_list()
         elif opt['search']:
             usergroup_prompt.prompt_usergroup_search(opt['<pattern>'])
         elif opt['create']:

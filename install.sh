@@ -24,6 +24,7 @@ DISTRIBUTIONS="Debian GNU/Linux 7 Debian GNU/Linux 8"
 #Python includes needed for the work
 DEPENDENCIES=( 'from docopt import docopt' 'from flask import Flask' 'from flask.ext.sqlalchemy import SQLAlchemy' 'from migrate.versioning import api' )
 USERNAME="passhport"
+GROUPNAME="${USERNAME}"
 HOMEDIR="/home/${USERNAME}"
 DATABASE="${HOMEDIR}/app.db"
 PASSWORD="$(openssl passwd -crypt $( < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8))" #crypted
@@ -48,7 +49,7 @@ fi
 which python &> /dev/null
 if [ $? = 1 ]
 then
-    echo "Error: common, you NEED a python on your PATH."
+    echo "Error: dayum ! You _NEED_ a python on your PATH."
     exit 126
 fi
 
@@ -68,43 +69,72 @@ done
 # Old application
 #################
 # Testing the user existence
-getent passwd | grep "^${USERNAME}:"
-if [ $? = 0 ]
+echo -n "Checking if \"${USERNAME}\" user already exist on the system... "
+getent passwd | grep "^${USERNAME}:" > /dev/null 2>&1
+if [ $? -eq 0 ]
 then
-    echo "Error: The user ${USERNAME} already exist..."
+    echo "Error !"
+    echo "The user \"${USERNAME}\" already exist..."
+    echo "Tip : remove the user \"${USERNAME}\" from /etc/passwd"
     exit 126
+else
+    echo "Done."
 fi
-        
-# Testing Authorized keys file
-if [ -f ${HOMEDIR}/.ssh/authorized_keys2 ]
+
+# Testing group existence
+echo -n "Checking if \"${GROUPNAME}\" group already exist on the system... "
+grep "^${GROUPNAME}:" /etc/group > /dev/null 2>&1
+if [ $? -eq 0 ]
 then
-    echo "The file ${HOMEDIR}/.ssh/authorized_keys2 already exist. Please create a new user or delete the file."
+    echo "Error !"
+    echo "The group \"${GROUPNAME}\" already exist..."
+    echo "Tip : remove the group \"${GROUPNAME}\" from /etc/group"
     exit 126
+else
+    echo "Done."
+fi
+
+# Testing Authorized keys file
+echo -n "Checking if \"${HOMEDIR}/.ssh/authorized_keys\" already exists... "
+if [ -f "${HOMEDIR}/.ssh/authorized_keys2" ]
+then
+    echo "Error : the file \"${HOMEDIR}/.ssh/authorized_keys2\" already exist. Please create a new user or delete the file."
+    exit 126
+else
+    echo "doesn't exist ! (good)"
 fi
 
 # Testing database (standard one...)
-if [ -f ${DATABASE} ]
+echo -n "Checking if passhport database (${DATABASE}) already exist... "
+if [ -f "${DATABASE}" ]
 then
-    echo "The database ${DATABASE} already exist. Please delete the file."
+    echo "Error : the database \"${DATABASE}\" already exist. Please delete the file."
     exit 126
+else
+    echo "doesn't exist ! (good)"
 fi
 
 #################
 # Create the user
 #################
-echo "Creating the ${USERNAME} user on the system"
-useradd -U -p ${PASSWORD} ${USERNAME}
-chown -R ${USERNAME}: ${BASEDIR}
+echo -n "Creating the ${USERNAME} user on the system... "
+useradd --create-home --base-dir "${HOMEDIR}" --home-dir "${HOMEDIR}" --user-group --password ${PASSWORD} ${USERNAME} > /dev/null 2>&1
+if [ $? -eq 0 ]
+then
+    echo "done."
+else
+    echo "Error while creating system user \"${USERNAME}\"."
+    echo "Please try to see if you have space left in the partition containing \"${HOMEDIR}\"."
+    exit 126   
+fi
+#chown -R ${USERNAME}:${GROUPNAME} ${HOMEDIR}
 
 #####################
 # Initialize database
 #####################
 echo "Initialize database"
-curdir=${pwd}
-su ${USERNAME}
-cd ${curdir}
-cd ${DIRNAME}
-./db_create.py
+SOURCE_DIR=`pwd`
+su ${USERNAME} -c "cd ${SOURCE_DIR}/passhportd/ && ./db_create.py"
 
 #######################
 # Create the first user

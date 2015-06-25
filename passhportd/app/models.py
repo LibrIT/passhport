@@ -28,12 +28,6 @@ class TGroup_Target(db.Model):
     tgroup_id     = db.Column(db.Integer, db.ForeignKey("targetgroup.id"), primary_key = True)
     target_id     = db.Column(db.Integer, db.ForeignKey("target.id"),      primary_key = True)
 
-"""GroupGroup Group in group (a group can contain multiple subgroups)"""
-class Group_Group(db.Model):
-    __tablename__     = "group_group"
-    containergroup_id = db.Column(db.Integer, db.ForeignKey("usergroup.id"), primary_key = True)
-    group_id          = db.Column(db.Integer, db.ForeignKey("usergroup.id"), primary_key = True)
-
 """TgroupTgroup Targets a group can access"""
 class TGroup_TGroup(db.Model):
     __tablename__  = "tgroup_tgroup"
@@ -45,3 +39,5 @@ class Tgroup_Group(db.Model):
     __tablename__  = "tgroup_group"
     targetgroup_id = db.Column(db.Integer, db.ForeignKey("targetgroup.id"), primary_key = True)
     group_id       = db.Column(db.Integer, db.ForeignKey("usergroup.id"),   primary_key = True)
+
+

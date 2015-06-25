@@ -2,6 +2,13 @@
 
 from app import db
 
+#Table to handle the self-referencing many-to-many relationship for the Usergroup class:
+#First column holds the containers, the second the subgroups.
+group_of_group = db.Table('group_of_group',
+        db.Column("container_id", db.Integer, db.ForeignKey("usergroup.id"), primary_key=True),
+        db.Column("subgroup_id", db.Integer, db.ForeignKey("usergroup.id"), primary_key=True)
+        )
+
 """Usergroup defines a group of users (can contain some usergroups too)"""
 class Usergroup(db.Model):
     __tablename__ = "usergroup"
@@ -11,7 +18,11 @@ class Usergroup(db.Model):
 
     # Relations
     members  = db.relationship("User",      secondary = "group_user")
-    #gmembers = db.relationship("Usergroup", secondary = "group_group")
+    gmembers = db.relationship("Usergroup",
+            secondary = group_of_group,
+            primaryjoin = id == group_of_group.c.container_id,
+            secondaryjoin = id == group_of_group.c.subgroup_id,
+            backref = "containedin")
 
     def __repr__(self):
         """Return main data of the usergroup as a string"""

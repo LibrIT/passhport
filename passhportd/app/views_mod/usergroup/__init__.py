@@ -54,7 +54,6 @@ def usergroup_show(usergroupname):
         Specific characters
         upper and lowercases
     """
-
     usergroup_data = usergroup.Usergroup.query.filter_by(usergroupname = usergroupname).first()
 
     if usergroup_data is None:
@@ -256,7 +255,7 @@ def usergroup_addusergroup():
     if not ug:
         return 'ERROR: no usergroup "' + usergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    sug = get_user(subusergroupname)
+    sug = get_usergroup(subusergroupname)
     if not sug:
         return 'ERROR: no usergroup "' + subusergroupname + '" in the database ', 417, {'Content-Type': 'text/plain'}
 
