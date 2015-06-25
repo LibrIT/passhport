@@ -241,7 +241,9 @@ def requests_object_method(opt):
             'target':mt,
             'usergroup':mug,
             'targetgroup':mtg}
-    methods={'list','search','show','delete','create','edit'}
+    methods={'list', 'search', 'show', 'delete', 'create', 'edit',
+            'adduser', 'rmuser', 'addusergroup', 'rmusergroup',
+            'addtarget', 'rmtarget', 'addtargetgroup', 'rmtargetgroup'}
     param={}
 
     # Determine which object/method to use
@@ -273,67 +275,3 @@ if __name__ == '__main__':
         # We don't need the False options to call the method
         options={key:value for key,value in opt.items() if value}
         requests_object_method(options)
-"""
-    elif opt['list'] or opt['search'] or opt['show'] or opt['delete']:
-        # We don't need the False options to call the method
-        options={key:value for key,value in opt.items() if value}
-        requests_object_method(options)
-    elif opt['user']:
-        if opt['create']:
-            if opt['<email>'] and opt['<sshkey>']:
-                options={key:value for key,value in opt.items() if value}
-                requests_object_method(options)
-            else:
-                user_prompt.prompt_user_create()
-        elif opt['edit']:
-            print opt
-            if opt['<email>'] and opt['<new_email>'] and opt['<comment>'] and opt['<sshkey>']:
-                user_req.requests_user_edit(opt['<email>'], opt['<new_email>'], opt['<comment>'], opt['<sshkey>'])
-            else:
-                user_prompt.prompt_user_edit()
-    elif opt['target']:
-        if opt['create']:
-            if opt['<targetname>'] and opt['<hostname>']:
-                print "ok"
-            else:
-                target_prompt.prompt_target_create()
-        elif opt['edit']:
-            if opt['targetname'] and ( opt['<newtargetname>'] or opt['<hostname>'] or opt['<comment>'] or opt['<sshoptions>'] or opt['<port>'] or opt['<servertype>'] or opt['<autocommand>']):
-                print "ok"
-            else:
-                target_prompt.prompt_target_edit()
-        elif opt['adduser']:
-            target_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
-        elif opt['rmuser']:
-            target_prompt.prompt_target_rmuser(opt['<email>'], opt['<targetname>'])
-        elif opt['addusergroup']:
-            target_prompt.prompt_target_addusergroup(opt['<groupname>'], opt['<targetname>'])
-        elif opt['rmusergroup']:
-            target_prompt.prompt_target_rmusergroup(opt['<groupname>'], opt['<targetname>'])
-    elif opt['usergroup']:
-        if opt['create']:
-            usergroup_prompt.prompt_usergroup_create()
-        elif opt['show_users']:
-            usergroup_prompt.prompt_usergroup_show_users()
-        elif opt['edit']:
-            usergroup_prompt.prompt_usergroup_edit()
-        elif opt['adduser']:
-            usergroup_prompt.prompt_usergroup_adduser(opt['<email>'], opt['<groupname>'])
-        elif opt['rmuser']:
-            usergroup_prompt.prompt_usergroup_rmuser(opt['<email>'], opt['<groupname>'])
-        elif opt['addusergroup']:
-            usergroup_prompt.prompt_usergroup_addusergroup(opt['<subusergroupname>'], opt['<groupname>'])
-    elif opt['targetgroup']:
-        if opt['create']:
-            targetgroup_prompt.prompt_targetgroup_create()
-        elif opt['show_targets']:
-            targetgroup_prompt.prompt_targetgroup_show_targets()
-        elif opt['edit']:
-            targetgroup_prompt.prompt_targetgroup_edit()
-        elif opt['addtarget']:
-            targetgroup_prompt.prompt_targetgroup_addtarget(opt['<targetname>'], opt['<targetgroupname>'])
-        elif opt['rmtarget']:
-            targetgroup_prompt.prompt_targetgroup_rmtarget(opt['<targetname>'], opt['<targetgroupname>'])
-        elif opt['adduser']:
-            targetgroup_prompt.prompt_targetgroup_adduser(opt['<email>'], opt['<targetgroupname>'])
-            """
