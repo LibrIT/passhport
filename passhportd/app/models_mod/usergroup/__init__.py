@@ -35,10 +35,10 @@ class Usergroup(db.Model):
         for user in self.members:
             output.append(user.show_email())
 
-        output.append("Usergroup list: coming soon")
+        output.append("Usergroup list: ")
 
-        # for usergroup in self.gmembers:
-        #    output.append(usergroup.show_usergroupname())
+        for usergroup in self.gmembers:
+            output.append(usergroup.show_usergroupname())
 
         return "\n".join(output)
 
