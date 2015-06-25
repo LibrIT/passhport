@@ -7,19 +7,21 @@ Usage:
     passhport-admin user list
     passhport-admin user search <pattern>
     passhport-admin user (show|create|edit|del)
-    passhport-admin user show <email>
+    passhport-admin user (show|del) <email>
     passhport-admin user create <email> <comment> <sshkey>
     passhport-admin user edit <email> <new_email> <comment> <sshkey>
-    passhport-admin user del <email>
+    passhport-admin target list
+    passhport-admin target search <pattern>
+    passhport-admin target (show|show_users|show_usergroups|create|edit|del)
+    passhport-admin target (show|del) <targetname>
+    passhport-admin target create <targetname> <hostname> <comment> <sshoptions> <port> <servertype> <autocommand>
+    passhport-admin target edit <targetname> <newtargetname> <hostname> <comment> <sshoptions> <port> <servertype> <autocommand>
+    passhport-admin target (adduser|rmuser) <email> <targetname>
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
     passhport-admin usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
     passhport-admin usergroup (adduser|rmuser) <email> <groupname>
     passhport-admin usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
-    passhport-admin target list
-    passhport-admin target search <pattern>
-    passhport-admin target (show|show_users|show_usergroups|create|edit|del)
-    passhport-admin target (adduser|rmuser) <email> <targetname>
     passhport-admin target (addusergroup|rmusergroup) <groupname> <targetname>
     passhport-admin targetgroup list
     passhport-admin targetgroup search <pattern>
@@ -269,17 +271,25 @@ if __name__ == '__main__':
         elif opt['search']:
             target_prompt.prompt_target_search(opt['<pattern>'])
         elif opt['create']:
-            target_prompt.prompt_target_create()
+            if opt['<targetname>'] and opt['<hostname>']:
+                print "ok"
+            else:
+                target_prompt.prompt_target_create()
         elif opt['show']:
-            target_prompt.prompt_target_show()
-        elif opt['show_users']:
-            target_prompt.prompt_target_show_users()
-        elif opt['show_usergroups']:
-            target_prompt.prompt_target_show_usergroups()
+            if opt['<targetname>']:
+                target_req.requests_target_show(opt['<targetname>'])
+            else:
+                target_prompt.prompt_target_show()
         elif opt['edit']:
-            target_prompt.prompt_target_edit()
+            if opt['targetname'] and ( opt['<newtargetname>'] or opt['<hostname>'] or opt['<comment>'] or opt['<sshoptions>'] or opt['<port>'] or opt['<servertype>'] or opt['<autocommand>']):
+                print "ok"
+            else:
+                target_prompt.prompt_target_edit()
         elif opt['del']:
-            target_prompt.prompt_target_del()
+            if opt['<targetname>']:
+                target_req.requests_target_del(opt['<targetname>'])
+            else:
+                target_prompt.prompt_target_del()
         elif opt['adduser']:
             target_prompt.prompt_target_adduser(opt['<email>'], opt['<targetname>'])
         elif opt['rmuser']:
