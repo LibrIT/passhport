@@ -26,7 +26,9 @@ DEPENDENCIES=( 'from docopt import docopt' 'from flask import Flask' 'from flask
 USERNAME="passhport"
 GROUPNAME="${USERNAME}"
 HOMEDIR="/home/${USERNAME}"
-DATABASE="${HOMEDIR}/app.db"
+ADMINBINDIR="${HOMEDIR}/adminbin/"
+SERVERBINDIR="${HOMEDIR}/serverbin/"
+DATADIR="${HOMEDIR}/var"
 PASSWORD="$(openssl passwd -crypt $( < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8))" #crypted
 DIRNAME="$(dirname $0)"
 
@@ -49,7 +51,7 @@ fi
 which python &> /dev/null
 if [ $? = 1 ]
 then
-    echo "Error: dayum ! You _NEED_ a python on your PATH."
+    echo "Error: you need python compiler on your PATH."
     exit 126
 fi
 
@@ -78,7 +80,7 @@ then
     echo "Tip : remove the user \"${USERNAME}\" from /etc/passwd"
     exit 126
 else
-    echo "Done."
+    echo "done."
 fi
 
 # Testing group existence
@@ -91,24 +93,25 @@ then
     echo "Tip : remove the group \"${GROUPNAME}\" from /etc/group"
     exit 126
 else
-    echo "Done."
+    echo "done."
 fi
 
 # Testing Authorized keys file
-echo -n "Checking if \"${HOMEDIR}/.ssh/authorized_keys\" already exists... "
+echo -n "Checking if \"${HOMEDIR}/.ssh/authorized_keys2\" already exists... "
 if [ -f "${HOMEDIR}/.ssh/authorized_keys2" ]
 then
-    echo "Error : the file \"${HOMEDIR}/.ssh/authorized_keys2\" already exist. Please create a new user or delete the file."
+    echo "Error !"
+    echo "The file \"${HOMEDIR}/.ssh/authorized_keys2\" already exist. Please create a new user or delete the file."
     exit 126
 else
     echo "doesn't exist ! (good)"
 fi
 
 # Testing database (standard one...)
-echo -n "Checking if passhport database (${DATABASE}) already exist... "
-if [ -f "${DATABASE}" ]
+echo -n "Checking if passhport database (${DATADIR}/app.db) already exist... "
+if [ -f "${DATADIR}/app.db" ]
 then
-    echo "Error : the database \"${DATABASE}\" already exist. Please delete the file."
+    echo "Error : the database \"${DATADIR}/app.db\" already exist. Please delete the file."
     exit 126
 else
     echo "doesn't exist ! (good)"
@@ -124,23 +127,64 @@ then
     echo "done."
 else
     echo "Error while creating system user \"${USERNAME}\"."
-    echo "Please try to see if you have space left in the partition containing \"${HOMEDIR}\"."
     exit 126   
 fi
 #chown -R ${USERNAME}:${GROUPNAME} ${HOMEDIR}
 
+##################
+# Install server binaries
+##################
+echo -n "Installing server-side binaries... "
+mkdir -p "${SERVERBINDIR}"
+cp -r passhportd/* "${SERVERBINDIR}/."
+if [ $? -eq 0 ]
+then
+    echo "done."
+else
+    echo "Error while copying server-side binaries."
+    exit 126   
+fi
+chown -R ${USERNAME}:${GROUPNAME} "${SERVERBINDIR}"
+
+##################
+# Install admin binaries
+##################
+echo -n "Installing admin binaries... "
+mkdir -p "${ADMINBINDIR}"
+cp -r passhport_admin/* "${ADMINBINDIR}/."
+if [ $? -eq 0 ]
+then
+    echo "done."
+else
+    echo "Error while copying admin binaries."
+    exit 126   
+fi
+chown -R ${USERNAME}:${GROUPNAME} "${ADMINBINDIR}"
+
+
 #####################
 # Initialize database
 #####################
-echo "Initialize database"
+echo -n "Initialize database... "
 SOURCE_DIR=`pwd`
-su ${USERNAME} -c "cd ${SOURCE_DIR}/passhportd/ && ./db_create.py"
+su ${USERNAME} -c "${SERVERBINDIR}/db_create.py"
+if [ $? -eq 0 ]
+then
+    echo "done."
+else
+    echo "Error while creating database."
+    exit 126   
+fi
 
 #######################
 # Create the first user
 #######################
 #TODO
 
-echo "All actions done."
+echo ""
+echo "==> Great ! All actions finished successfully !"
+echo "INFO : Server scripts directory is \"${SERVERBINDIR}\""
+echo "INFO : Administration scripts directory is \"${ADMINBINDIR}\""
+echo "INFO : Database directory is : \"${DATADIR}\""
 
 
