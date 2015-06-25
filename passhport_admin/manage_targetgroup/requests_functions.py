@@ -71,22 +71,6 @@ def requests_targetgroup_show(targetgroupname):
 
     return 1
 
-def requests_targetgroup_show_targets(targetgroupname):
-    """Get target list of the targetgroup"""
-    url_show_targets = url_passhport + "targetgroup/show_targets/" + targetgroupname
-
-    try:
-        r = requests.get(url_show_targets)
-    except requests.RequestException, e:
-        print("ERROR: " + str(e.message))
-    else:
-        print(r.text)
-
-        if r.status_code == requests.codes.ok:
-            return 0
-
-    return 1
-
 def requests_targetgroup_edit(targetgroupname, new_targetgroupname, new_comment):
     """Targetgroup modification on passhportd via API"""
     targetgroup_data = {'targetgroupname': targetgroupname, 'new_targetgroupname': new_targetgroupname, 'new_comment': new_comment}

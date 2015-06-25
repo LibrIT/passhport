@@ -19,6 +19,10 @@ class Targetgroup(db.Model):
 
         output.append("Targetgroupname: {}".format(self.targetgroupname.encode('utf8')))
         output.append("Comment: {}".format(self.comment.encode('utf8')))
+        output.append("Target list:")
+
+        for target in self.tmembers:
+            output.append(target.show_name())
 
         return "\n".join(output)
 
@@ -34,17 +38,6 @@ class Targetgroup(db.Model):
                 return True
 
         return False
-
-    def show_targets(self):
-        """Show target list of the targetgroup"""
-        output = []
-
-        output.append("Target list:")
-
-        for target in self.tmembers:
-            output.append(target.show_name())
-
-        return "\n".join(output)
 
     def addtarget(self, target):
         """Add a target to the relation table"""

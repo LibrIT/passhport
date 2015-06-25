@@ -23,7 +23,7 @@ Usage:
     passhport-admin target (addusergroup|rmusergroup) <groupname> <targetname>
     passhport-admin targetgroup list
     passhport-admin targetgroup search <pattern>
-    passhport-admin targetgroup (show|show_targets|create|edit|del)
+    passhport-admin targetgroup (show|create|edit|del)
     passhport-admin targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
     passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
     passhport-admin targetgroup (adduser|rmuser) <email> <targetgroupname>
@@ -199,7 +199,7 @@ Options
 Usage:
     targetgroup list
     targetgroup search <pattern>
-    targetgroup (show|show_targets|create|edit|del)
+    targetgroup (show|create|edit|del)
     targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
     targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
     targetgroup (adduser|rmuser) <email> <targetgroupname>
@@ -312,8 +312,6 @@ if __name__ == '__main__':
             targetgroup_prompt.prompt_targetgroup_create()
         elif opt['show']:
             targetgroup_prompt.prompt_targetgroup_show()
-        elif opt['show_targets']:
-            targetgroup_prompt.prompt_targetgroup_show_targets()
         elif opt['edit']:
             targetgroup_prompt.prompt_targetgroup_edit()
         elif opt['del']:
