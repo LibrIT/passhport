@@ -47,20 +47,6 @@ def prompt_target_show():
 
     return req.requests_target_show(targetname)
 
-def prompt_target_show_users():
-    """Ask arguments for showing target and its user list"""
-    targetname = pyt_compat.input_compat("Targetname: ")
-    print("")
-
-    return req.requests_target_show_users(targetname)
-
-def prompt_target_show_usergroups():
-    """Ask arguments for showing target and its usergroup list"""
-    targetname = pyt_compat.input_compat("Targetname: ")
-    print("")
-
-    return req.requests_target_show_usergroups(targetname)
-
 def prompt_target_edit():
     """Ask arguments for editing an existing target"""
     targetname = pyt_compat.input_compat("Name of the target you want to modify: ")
