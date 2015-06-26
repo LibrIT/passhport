@@ -18,8 +18,8 @@ class Usergroup(db.Model):
 
     # Relations
     members  = db.relationship("User",      secondary = "group_user")
-    gmembers = db.relationship("Usergroup", 
-            secondary = group_of_group, 
+    gmembers = db.relationship("Usergroup",
+            secondary = group_of_group,
             primaryjoin = id == group_of_group.c.container_id,
             secondaryjoin = id == group_of_group.c.subgroup_id,
             backref = "containedin")
@@ -30,7 +30,12 @@ class Usergroup(db.Model):
 
         output.append("Usergroupname: {}".format(self.usergroupname.encode("utf8")))
         output.append("Comment: {}".format(self.comment.encode("utf8")))
-        output.append("Usergroup list:")
+        output.append("User list:")
+
+        for user in self.members:
+            output.append(user.show_email())
+
+        output.append("Usergroup list: ")
 
         for usergroup in self.gmembers:
             output.append(usergroup.show_usergroupname())
@@ -88,5 +93,12 @@ class Usergroup(db.Model):
         """Add a usergroup to the relation table"""
         if not self.is_gmember(usergroup):
             self.gmembers.append(usergroup)
+
+        return self
+
+    def rmusergroup(self, usergroup):
+        """Remove a usergroup from the relation table"""
+        if self.is_gmember(usergroup):
+            self.gmembers.remove(usergroup)
 
         return self

@@ -29,27 +29,10 @@ class Target(db.Model):
         output.append("Servertype: {}".format(self.servertype.encode("utf8")))
         output.append("Autocommand: {}".format(self.autocommand.encode("utf8")))
         output.append("Comment: {}".format(self.comment.encode("utf8")))
-
-        return "\n".join(output)
-
-    def show_name(self):
-        """Return a string containing the target's name"""
-        return self.targetname.encode("utf8")
-
-    def show_users(self):
-        """Show user list of the target"""
-        output = []
-
         output.append("User list:")
 
         for user in self.members:
             output.append(user.show_email())
-
-        return "\n".join(output)
-
-    def show_usergroups(self):
-        """Show usergroup list of the target"""
-        output = []
 
         output.append("Usergroup list:")
 
@@ -57,6 +40,10 @@ class Target(db.Model):
             output.append(usergroup.show_usergroupname())
 
         return "\n".join(output)
+
+    def show_name(self):
+        """Return a string containing the target's name"""
+        return self.targetname.encode("utf8")
 
     # User management
     def adduser(self, user):

@@ -4,7 +4,7 @@
 # basic functions
 
 #GENERAL
-PADM="../passhport-admin"
+PADM="./passhport-admin"
 
 #################
 # USER MANAGEMENT

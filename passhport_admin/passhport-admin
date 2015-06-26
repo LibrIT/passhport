@@ -18,17 +18,16 @@ Usage:
     passhport-admin target (adduser|rmuser) <email> <targetname>
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
-    passhport-admin usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|delete)
+    passhport-admin usergroup (show|create|edit|del)
     passhport-admin usergroup (adduser|rmuser) <email> <groupname>
     passhport-admin usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
-    passhport-admin target (addusergroup|rmusergroup) <groupname> <targetname>
     passhport-admin targetgroup list
     passhport-admin targetgroup search <pattern>
-    passhport-admin targetgroup (show|show_targets|create|edit|delete)
-    passhport-admin targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
-    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
+    passhport-admin targetgroup (show|create|edit|del)
+    passhport-admin targetgroup (addtarget|rmtarget) <targetname> <targetgroupname>
+    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <subtargetgroupname> <targetgroupname>
     passhport-admin targetgroup (adduser|rmuser) <email> <targetgroupname>
-    passhport-admin targetgroup (addusergroup|rmusergroup) <groupname>  <targetgroupname>
+    passhport-admin targetgroup (addusergroup|rmusergroup) <groupname> <targetgroupname>
     passhport-admin (-h | --version)
 
 Arguments:
@@ -137,7 +136,7 @@ Options:
 Usage:
     usergroup list
     usergroup search <pattern>
-    usergroup (show|show_users|show_targets|show_usergroups|show_targetgroups|create|edit|del)
+    usergroup (show|create|edit|del)
     usergroup (adduser|rmuser) <email> <groupname>
     usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
 
@@ -169,7 +168,7 @@ Options:
 Usage:
     target list
     target search <pattern>
-    target (show|show_users|show_usergroups|create|edit|delete)
+    target (show|create|edit|del)
     target editcommand <command> <targetname>
     target (adduser|rmuser) <email> <targetname>
     target (addusergroup|rmusergroup) <groupname> <targetname>
@@ -201,11 +200,11 @@ Options
 Usage:
     targetgroup list
     targetgroup search <pattern>
-    targetgroup (show|show_targets|create|edit|delete)
+    targetgroup (show|create|edit|del)
     targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
-    targetgroup (addtargetgroup|rmtargetgroup) <targetgroupname>
+    targetgroup (addtargetgroup|rmtargetgroup) <subtargetgroupname> <targetgroupname>
     targetgroup (adduser|rmuser) <email> <targetgroupname>
-    targetgroup (addusergroup|rmusergroup) <groupname>  <targetgroupname>
+    targetgroup (addusergroup|rmusergroup) <groupname> <targetgroupname>
 
 Arguments:
     pattern         SQL search pattern
@@ -237,14 +236,14 @@ Options
 
 def requests_object_method(opt):
     """Call the right method depending of the object type"""
-    objects={'user':mu,
-            'target':mt,
-            'usergroup':mug,
-            'targetgroup':mtg}
-    methods={'list', 'search', 'show', 'delete', 'create', 'edit',
-            'adduser', 'rmuser', 'addusergroup', 'rmusergroup',
-            'addtarget', 'rmtarget', 'addtargetgroup', 'rmtargetgroup'}
-    param={}
+    objects = {'user':mu,
+               'target':mt,
+               'usergroup':mug,
+               'targetgroup':mtg}
+    methods = {'list', 'search', 'show', 'delete', 'create', 'edit',
+               'adduser', 'rmuser', 'addusergroup', 'rmusergroup',
+               'addtarget', 'rmtarget', 'addtargetgroup', 'rmtargetgroup'}
+    param   = {}
 
     # Determine which object/method to use
     # And build a list of list containing all parameters
@@ -264,8 +263,6 @@ def requests_object_method(opt):
         # Need more info, lets prompt user
         module = objects[obj].prompt_functions
         getattr(module, method)()
-
-
 
 opt = docopt(__doc__, sys.argv[1:])
 if __name__ == '__main__':
