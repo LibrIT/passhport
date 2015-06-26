@@ -5,45 +5,45 @@
 import python_compat as pyt_compat
 import requests_functions as req
 
-def prompt_user_list():
+def list():
     """List all users in the database"""
-    return req.requests_user_list()
+    return req.list()
 
-def prompt_user_search(pattern):
+def search():
     """Search a user according to the pattern"""
-    return req.requests_user_search(pattern)
+    pattern = pyt_compat.input_compat("Pattern: ")
+    return req.search({'<pattern>':pattern})
 
-def prompt_user_create():
+def create():
     """Ask arguments for user creation"""
     email   = pyt_compat.input_compat("Email: ")
-    comment = pyt_compat.input_compat("Comment: ")
     sshkey  = pyt_compat.input_compat("SSHKey: ")
-    print("")
+    comment = pyt_compat.input_compat("Comment: ")
 
-    return req.requests_user_create(email, comment, sshkey)
+    return req.create({'<email>':email, '<comment>':comment, '<sshkey>':sshkey})
 
-def prompt_user_show():
+def show():
     """Ask arguments for showing user"""
     email = pyt_compat.input_compat("Email: ")
-    print("")
 
-    return req.requests_user_show(email)
+    return req.show({'<email>':email})
 
-def prompt_user_edit():
+def edit():
     """Ask arguments for editing an existing user"""
     email = pyt_compat.input_compat("Email of the user you want to modify: ")
 
-    if req.requests_user_show(email) == 0:
+    if req.show({'<email>':email}) == 0:
         new_email   = pyt_compat.input_compat("New email: ")
         new_comment = pyt_compat.input_compat("New comment: ")
         new_sshkey  = pyt_compat.input_compat("New SSH key: ")
-        print("")
 
-        return req.requests_user_edit(email, new_email, new_comment, new_sshkey)
+        return req.edit({'<email>':email, 
+            '--newemail'  : new_email, 
+            '--newcomment': new_comment, 
+            '--newsshkey' : new_sshkey})
 
-def prompt_user_del():
+def delete():
     """Ask arguments for deleting an existing user"""
     email = pyt_compat.input_compat("Email: ")
-    print("")
 
-    return req.requests_user_del(email)
+    return req.delete({'<email>':email})

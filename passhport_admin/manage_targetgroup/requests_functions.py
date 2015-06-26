@@ -6,7 +6,7 @@ import requests
 
 url_passhport = "http://127.0.0.1:5000/"
 
-def requests_targetgroup_list():
+def requests_targetgroup_list(dummy):
     """Get the list of all targetgroups"""
     url_list = url_passhport + "targetgroup/list"
 
