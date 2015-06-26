@@ -236,14 +236,14 @@ Options
 
 def requests_object_method(opt):
     """Call the right method depending of the object type"""
-    objects={'user':mu,
-            'target':mt,
-            'usergroup':mug,
-            'targetgroup':mtg}
-    methods={'list', 'search', 'show', 'delete', 'create', 'edit',
-            'adduser', 'rmuser', 'addusergroup', 'rmusergroup',
-            'addtarget', 'rmtarget', 'addtargetgroup', 'rmtargetgroup'}
-    param={}
+    objects = {'user':mu,
+               'target':mt,
+               'usergroup':mug,
+               'targetgroup':mtg}
+    methods = {'list', 'search', 'show', 'delete', 'create', 'edit',
+               'adduser', 'rmuser', 'addusergroup', 'rmusergroup',
+               'addtarget', 'rmtarget', 'addtargetgroup', 'rmtargetgroup'}
+    param   = {}
 
     # Determine which object/method to use
     # And build a list of list containing all parameters
@@ -263,8 +263,6 @@ def requests_object_method(opt):
         # Need more info, lets prompt user
         module = objects[obj].prompt_functions
         getattr(module, method)()
-
-
 
 opt = docopt(__doc__, sys.argv[1:])
 if __name__ == '__main__':
