@@ -6,13 +6,14 @@ import requests
 
 url_passhport = "http://127.0.0.1:5000/"
 
+
 def requests_target_list(dummy):
     """Get the list of all targets"""
     url_list = url_passhport + "target/list"
 
     try:
         r = requests.get(url_list)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -21,6 +22,7 @@ def requests_target_list(dummy):
             return 0
 
     return 1
+
 
 def requests_target_search(pattern):
     """Get the list of targets that match the pattern"""
@@ -28,7 +30,7 @@ def requests_target_search(pattern):
 
     try:
         r = requests.get(url_search)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -38,14 +40,29 @@ def requests_target_search(pattern):
 
     return 1
 
-def requests_target_create(targetname, hostname, comment, sshoptions, port, servertype, autocommand):
+
+def requests_target_create(
+        targetname,
+        hostname,
+        comment,
+        sshoptions,
+        port,
+        servertype,
+        autocommand):
     """Target creation on passhportd via API"""
-    target_data = {'targetname': targetname, 'hostname': hostname, 'comment': comment, 'sshoptions': sshoptions, 'port': port, 'servertype': servertype, 'autocommand': autocommand}
+    target_data = {
+        'targetname': targetname,
+        'hostname': hostname,
+        'comment': comment,
+        'sshoptions': sshoptions,
+        'port': port,
+        'servertype': servertype,
+        'autocommand': autocommand}
     url_create = url_passhport + "target/create"
 
     try:
-        r = requests.post(url_create, data = target_data)
-    except requests.RequestException, e:
+        r = requests.post(url_create, data=target_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -54,6 +71,7 @@ def requests_target_create(targetname, hostname, comment, sshoptions, port, serv
             return 0
 
     return 1
+
 
 def requests_target_show(targetname):
     """Get data about a target"""
@@ -61,7 +79,7 @@ def requests_target_show(targetname):
 
     try:
         r = requests.get(url_show)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -71,14 +89,31 @@ def requests_target_show(targetname):
 
     return 1
 
-def requests_target_edit(targetname, new_targetname, new_hostname, new_comment, new_sshoptions, new_port, new_servertype, new_autocommand):
+
+def requests_target_edit(
+        targetname,
+        new_targetname,
+        new_hostname,
+        new_comment,
+        new_sshoptions,
+        new_port,
+        new_servertype,
+        new_autocommand):
     """Target modification on passhportd via API"""
-    target_data = {'targetname': targetname, 'new_targetname': new_targetname, 'new_hostname': new_hostname, 'new_comment': new_comment, 'new_sshoptions': new_sshoptions, 'new_port': new_port, 'new_servertype': new_servertype, 'new_autocommand': new_autocommand}
+    target_data = {
+        'targetname': targetname,
+        'new_targetname': new_targetname,
+        'new_hostname': new_hostname,
+        'new_comment': new_comment,
+        'new_sshoptions': new_sshoptions,
+        'new_port': new_port,
+        'new_servertype': new_servertype,
+        'new_autocommand': new_autocommand}
     url_edit = url_passhport + "target/edit"
 
     try:
-        r = requests.post(url_edit, data = target_data)
-    except requests.RequestException, e:
+        r = requests.post(url_edit, data=target_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -87,6 +122,7 @@ def requests_target_edit(targetname, new_targetname, new_hostname, new_comment, 
             return 0
 
     return 1
+
 
 def requests_target_del(targetname):
     """Target deletion on passhportd via API"""
@@ -94,7 +130,7 @@ def requests_target_del(targetname):
 
     try:
         r = requests.get(url_del)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -103,6 +139,7 @@ def requests_target_del(targetname):
             return 0
 
     return 1
+
 
 def requests_target_adduser(email, targetname):
     """Add a user in a target via API"""
@@ -110,8 +147,8 @@ def requests_target_adduser(email, targetname):
     url_adduser = url_passhport + "target/adduser"
 
     try:
-        r = requests.post(url_adduser, data = target_user_data)
-    except requests.RequestException, e:
+        r = requests.post(url_adduser, data=target_user_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -120,6 +157,7 @@ def requests_target_adduser(email, targetname):
             return 0
 
     return 1
+
 
 def requests_target_rmuser(email, targetname):
     """Remove a user from a target via API"""
@@ -127,8 +165,8 @@ def requests_target_rmuser(email, targetname):
     url_rmuser = url_passhport + "target/rmuser"
 
     try:
-        r = requests.post(url_rmuser, data = target_user_data)
-    except requests.RequestException, e:
+        r = requests.post(url_rmuser, data=target_user_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -137,15 +175,18 @@ def requests_target_rmuser(email, targetname):
             return 0
 
     return 1
+
 
 def requests_target_addusergroup(usergroupname, targetname):
     """Add a usergroup in a target via API"""
-    target_usergroup_data = {'targetname': targetname, 'usergroupname': usergroupname}
+    target_usergroup_data = {
+        'targetname': targetname,
+        'usergroupname': usergroupname}
     url_addusergroup = url_passhport + "target/addusergroup"
 
     try:
-        r = requests.post(url_addusergroup, data = target_usergroup_data)
-    except requests.RequestException, e:
+        r = requests.post(url_addusergroup, data=target_usergroup_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -155,14 +196,17 @@ def requests_target_addusergroup(usergroupname, targetname):
 
     return 1
 
+
 def requests_target_rmusergroup(usergroupname, targetname):
     """Remove a usergroup from a target via API"""
-    target_usergroup_data = {'targetname': targetname, 'usergroupname': usergroupname}
+    target_usergroup_data = {
+        'targetname': targetname,
+        'usergroupname': usergroupname}
     url_rmusergroup = url_passhport + "target/rmusergroup"
 
     try:
-        r = requests.post(url_rmusergroup, data = target_usergroup_data)
-    except requests.RequestException, e:
+        r = requests.post(url_rmusergroup, data=target_usergroup_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)

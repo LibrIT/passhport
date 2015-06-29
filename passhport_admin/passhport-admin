@@ -73,6 +73,7 @@ def docopt_cmd(func):
     This decorator is used to simplify the try/except block and pass the result
     of the docopt parsing to the called action.
     """
+
     def fn(self, arg):
         try:
             opt = docopt(fn.__doc__, arg)
@@ -90,7 +91,6 @@ def docopt_cmd(func):
             return
 
         return func(self, opt)
-
 
     fn.__name__ = func.__name__
     fn.__doc__ = func.__doc__
@@ -127,7 +127,7 @@ Options:
     edit            Launch the interactive user modification
     delete             Delete permanently the user entry"""
 
-        #TODO
+        # TODO
         print(arg)
 
     @docopt_cmd
@@ -159,7 +159,7 @@ Options:
     addgroup        Add a group of users/targets to another group
     rmgroup         Remove a group of user target from another group
     """
-        #TODO
+        # TODO
         print(arg)
 
     @docopt_cmd
@@ -234,16 +234,17 @@ Options
         print('Good Bye!')
         exit()
 
+
 def requests_object_method(opt):
     """Call the right method depending of the object type"""
-    objects = {'user':mu,
-               'target':mt,
-               'usergroup':mug,
-               'targetgroup':mtg}
+    objects = {'user': mu,
+               'target': mt,
+               'usergroup': mug,
+               'targetgroup': mtg}
     methods = {'list', 'search', 'show', 'delete', 'create', 'edit',
                'adduser', 'rmuser', 'addusergroup', 'rmusergroup',
                'addtarget', 'rmtarget', 'addtargetgroup', 'rmtargetgroup'}
-    param   = {}
+    param = {}
 
     # Determine which object/method to use
     # And build a list of list containing all parameters
@@ -270,5 +271,5 @@ if __name__ == '__main__':
         MyInteractive().cmdloop()
     else:
         # We don't need the False options to call the method
-        options={key:value for key,value in opt.items() if value}
+        options = {key: value for key, value in opt.items() if value}
         requests_object_method(options)

@@ -6,13 +6,14 @@ import requests
 
 url_passhport = "http://127.0.0.1:5000/"
 
+
 def requests_targetgroup_list(dummy):
     """Get the list of all targetgroups"""
     url_list = url_passhport + "targetgroup/list"
 
     try:
         r = requests.get(url_list)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -21,6 +22,7 @@ def requests_targetgroup_list(dummy):
             return 0
 
     return 1
+
 
 def requests_targetgroup_search(pattern):
     """Get the list of targetgroups that match the pattern"""
@@ -28,7 +30,7 @@ def requests_targetgroup_search(pattern):
 
     try:
         r = requests.get(url_search)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -37,6 +39,7 @@ def requests_targetgroup_search(pattern):
             return 0
 
     return 1
+
 
 def requests_targetgroup_create(targetgroupname, comment):
     """Targetgroup creation on passhportd via API"""
@@ -44,8 +47,8 @@ def requests_targetgroup_create(targetgroupname, comment):
     url_create = url_passhport + "targetgroup/create"
 
     try:
-        r = requests.post(url_create, data = targetgroup_data)
-    except requests.RequestException, e:
+        r = requests.post(url_create, data=targetgroup_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -54,6 +57,7 @@ def requests_targetgroup_create(targetgroupname, comment):
             return 0
 
     return 1
+
 
 def requests_targetgroup_show(targetgroupname):
     """Get data about a targetgroup"""
@@ -61,7 +65,7 @@ def requests_targetgroup_show(targetgroupname):
 
     try:
         r = requests.get(url_show)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -71,14 +75,21 @@ def requests_targetgroup_show(targetgroupname):
 
     return 1
 
-def requests_targetgroup_edit(targetgroupname, new_targetgroupname, new_comment):
+
+def requests_targetgroup_edit(
+        targetgroupname,
+        new_targetgroupname,
+        new_comment):
     """Targetgroup modification on passhportd via API"""
-    targetgroup_data = {'targetgroupname': targetgroupname, 'new_targetgroupname': new_targetgroupname, 'new_comment': new_comment}
+    targetgroup_data = {
+        'targetgroupname': targetgroupname,
+        'new_targetgroupname': new_targetgroupname,
+        'new_comment': new_comment}
     url_edit = url_passhport + "targetgroup/edit"
 
     try:
-        r = requests.post(url_edit, data = targetgroup_data)
-    except requests.RequestException, e:
+        r = requests.post(url_edit, data=targetgroup_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -87,6 +98,7 @@ def requests_targetgroup_edit(targetgroupname, new_targetgroupname, new_comment)
             return 0
 
     return 1
+
 
 def requests_targetgroup_del(targetgroupname):
     """Targetgroup deletion on passhportd via API"""
@@ -94,7 +106,7 @@ def requests_targetgroup_del(targetgroupname):
 
     try:
         r = requests.get(url_del)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -103,15 +115,18 @@ def requests_targetgroup_del(targetgroupname):
             return 0
 
     return 1
+
 
 def requests_targetgroup_addtarget(targetname, targetgroupname):
     """Add a target in a targetgroup via API"""
-    targetgroup_target_data = {'targetname': targetname, 'targetgroupname': targetgroupname}
+    targetgroup_target_data = {
+        'targetname': targetname,
+        'targetgroupname': targetgroupname}
     url_addtarget = url_passhport + "targetgroup/addtarget"
 
     try:
-        r = requests.post(url_addtarget, data = targetgroup_target_data)
-    except requests.RequestException, e:
+        r = requests.post(url_addtarget, data=targetgroup_target_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -120,15 +135,18 @@ def requests_targetgroup_addtarget(targetname, targetgroupname):
             return 0
 
     return 1
+
 
 def requests_targetgroup_rmtarget(targetname, targetgroupname):
     """Remove a target from a targetgroup via API"""
-    targetgroup_target_data = {'targetname': targetname, 'targetgroupname': targetgroupname}
+    targetgroup_target_data = {
+        'targetname': targetname,
+        'targetgroupname': targetgroupname}
     url_rmtarget = url_passhport + "targetgroup/rmtarget"
 
     try:
-        r = requests.post(url_rmtarget, data = targetgroup_target_data)
-    except requests.RequestException, e:
+        r = requests.post(url_rmtarget, data=targetgroup_target_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -137,15 +155,18 @@ def requests_targetgroup_rmtarget(targetname, targetgroupname):
             return 0
 
     return 1
+
 
 def requests_targetgroup_adduser(email, targetgroupname):
     """Add a user in a targetgroup via API"""
-    targetgroup_user_data = {'targetgroupname': targetgroupname, 'email': email}
+    targetgroup_user_data = {
+        'targetgroupname': targetgroupname,
+        'email': email}
     url_adduser = url_passhport + "targetgroup/adduser"
 
     try:
-        r = requests.post(url_adduser, data = targetgroup_user_data)
-    except requests.RequestException, e:
+        r = requests.post(url_adduser, data=targetgroup_user_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -154,15 +175,18 @@ def requests_targetgroup_adduser(email, targetgroupname):
             return 0
 
     return 1
+
 
 def requests_targetgroup_rmuser(email, targetgroupname):
     """Remove a user in a targetgroup via API"""
-    targetgroup_user_data = {'targetgroupname': targetgroupname, 'email': email}
+    targetgroup_user_data = {
+        'targetgroupname': targetgroupname,
+        'email': email}
     url_rmuser = url_passhport + "targetgroup/rmuser"
 
     try:
-        r = requests.post(url_rmuser, data = targetgroup_user_data)
-    except requests.RequestException, e:
+        r = requests.post(url_rmuser, data=targetgroup_user_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -171,15 +195,18 @@ def requests_targetgroup_rmuser(email, targetgroupname):
             return 0
 
     return 1
+
 
 def requests_targetgroup_addusergroup(usergroupname, targetgroupname):
     """Add a usergroup in a targetgroup via API"""
-    targetgroup_usergroup_data = {'targetgroupname': targetgroupname, 'usergroupname': usergroupname}
+    targetgroup_usergroup_data = {
+        'targetgroupname': targetgroupname,
+        'usergroupname': usergroupname}
     url_addusergroup = url_passhport + "targetgroup/addusergroup"
 
     try:
-        r = requests.post(url_addusergroup, data = targetgroup_usergroup_data)
-    except requests.RequestException, e:
+        r = requests.post(url_addusergroup, data=targetgroup_usergroup_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -188,15 +215,18 @@ def requests_targetgroup_addusergroup(usergroupname, targetgroupname):
             return 0
 
     return 1
+
 
 def requests_targetgroup_rmusergroup(usergroupname, targetgroupname):
     """Remove a usergroup from a targetgroup via API"""
-    targetgroup_usergroup_data = {'targetgroupname': targetgroupname, 'usergroupname': usergroupname}
+    targetgroup_usergroup_data = {
+        'targetgroupname': targetgroupname,
+        'usergroupname': usergroupname}
     url_rmusergroup = url_passhport + "targetgroup/rmusergroup"
 
     try:
-        r = requests.post(url_rmusergroup, data = targetgroup_usergroup_data)
-    except requests.RequestException, e:
+        r = requests.post(url_rmusergroup, data=targetgroup_usergroup_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -205,15 +235,20 @@ def requests_targetgroup_rmusergroup(usergroupname, targetgroupname):
             return 0
 
     return 1
+
 
 def requests_targetgroup_addtargetgroup(subtargetgroupname, targetgroupname):
     """Add a targetgroup (subtargetgroup) in a targetgroup via API"""
-    targetgroup_subtargetgroup_data = {'targetgroupname': targetgroupname, 'subtargetgroupname': subtargetgroupname}
+    targetgroup_subtargetgroup_data = {
+        'targetgroupname': targetgroupname,
+        'subtargetgroupname': subtargetgroupname}
     url_addtargetgroup = url_passhport + "targetgroup/addtargetgroup"
 
     try:
-        r = requests.post(url_addtargetgroup, data = targetgroup_subtargetgroup_data)
-    except requests.RequestException, e:
+        r = requests.post(
+            url_addtargetgroup,
+            data=targetgroup_subtargetgroup_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -223,14 +258,19 @@ def requests_targetgroup_addtargetgroup(subtargetgroupname, targetgroupname):
 
     return 1
 
+
 def requests_targetgroup_rmtargetgroup(subtargetgroupname, targetgroupname):
     """Remove a targetgroup (subtargetgroup) from a targetgroup via API"""
-    targetgroup_subtargetgroup_data = {'targetgroupname': targetgroupname, 'subtargetgroupname': subtargetgroupname}
+    targetgroup_subtargetgroup_data = {
+        'targetgroupname': targetgroupname,
+        'subtargetgroupname': subtargetgroupname}
     url_rmtargetgroup = url_passhport + "targetgroup/rmtargetgroup"
 
     try:
-        r = requests.post(url_rmtargetgroup, data = targetgroup_subtargetgroup_data)
-    except requests.RequestException, e:
+        r = requests.post(
+            url_rmtargetgroup,
+            data=targetgroup_subtargetgroup_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)

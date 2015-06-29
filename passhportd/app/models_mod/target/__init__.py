@@ -3,20 +3,22 @@
 from app import db
 
 """Target defines information for every server accessible through passhport"""
+
+
 class Target(db.Model):
     __tablename__ = "target"
-    id            = db.Column(db.Integer,     primary_key = True)
-    targetname    = db.Column(db.String(256), index = True, unique   = True)
-    hostname      = db.Column(db.String(120), index = True, nullable = False)
-    port          = db.Column(db.Integer,     index = False)
-    sshoptions    = db.Column(db.String(500), index = True)
-    servertype    = db.Column(db.String(64),  index = True)
-    autocommand   = db.Column(db.String(128), index = True)
-    comment       = db.Column(db.String(500), index = True)
+    id = db.Column(db.Integer, primary_key=True)
+    targetname = db.Column(db.String(256), index=True, unique=True)
+    hostname = db.Column(db.String(120), index=True, nullable=False)
+    port = db.Column(db.Integer, index=False)
+    sshoptions = db.Column(db.String(500), index=True)
+    servertype = db.Column(db.String(64), index=True)
+    autocommand = db.Column(db.String(128), index=True)
+    comment = db.Column(db.String(500), index=True)
 
     # Relations
-    members  = db.relationship("User",      secondary = "target_user")
-    gmembers = db.relationship("Usergroup", secondary = "target_group")
+    members = db.relationship("User", secondary="target_user")
+    gmembers = db.relationship("Usergroup", secondary="target_group")
 
     def __repr__(self):
         """Return main data of the target as a string"""
@@ -27,7 +29,9 @@ class Target(db.Model):
         output.append("Port: {}".format(str(self.port).encode("utf8")))
         output.append("SSH options: {}".format(self.sshoptions.encode("utf8")))
         output.append("Servertype: {}".format(self.servertype.encode("utf8")))
-        output.append("Autocommand: {}".format(self.autocommand.encode("utf8")))
+        output.append(
+            "Autocommand: {}".format(
+                self.autocommand.encode("utf8")))
         output.append("Comment: {}".format(self.comment.encode("utf8")))
         output.append("User list:")
 
