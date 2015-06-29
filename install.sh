@@ -53,7 +53,10 @@ if [ $? = 1 ]
 then
     echo "Error: you need python compiler on your PATH."
     exit 126
-fi
+fi 
+
+echo -n "Currently using "
+python --version
 
 # We test to import the different librairies with python
 for dependence in "${DEPENDENCIES[@]}"
@@ -63,6 +66,8 @@ do
     if [ "$result" = "1" ]
     then
         echo "Error: Passhport missing a dependence to do this: ${dependence}"
+        echo "Maybe you have librairies for python 3 and you're using python 2.7"
+        echo "Check your environnement to knows the default python version on your distribution".
         exit 126
     fi
 done

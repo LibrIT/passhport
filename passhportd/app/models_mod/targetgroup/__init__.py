@@ -4,34 +4,46 @@ from app import db
 
 # Table to handle the self-referencing many-to-many relationship for the Targetgroup class:
 # First column holds the containers, the second the subgroups.
-tgroup_of_tgroup = db.Table("tgroup_of_tgroup",
-        db.Column("container_id",      db.Integer, db.ForeignKey("targetgroup.id"), primary_key = True),
-        db.Column("subtargetgroup_id", db.Integer, db.ForeignKey("targetgroup.id"), primary_key = True)
-        )
+tgroup_of_tgroup = db.Table(
+    "tgroup_of_tgroup",
+    db.Column(
+        "container_id",
+        db.Integer,
+        db.ForeignKey("targetgroup.id"),
+        primary_key=True),
+    db.Column(
+        "subtargetgroup_id",
+        db.Integer,
+        db.ForeignKey("targetgroup.id"),
+        primary_key=True))
 
 """Targetgroup defines a group of targets (can contain some targetgroups too)"""
+
+
 class Targetgroup(db.Model):
-    __tablename__   = "targetgroup"
-    id              = db.Column(db.Integer,     primary_key = True)
-    targetgroupname = db.Column(db.String(256), index = True, unique = True)
-    comment         = db.Column(db.String(500), index = True, unique = False)
+    __tablename__ = "targetgroup"
+    id = db.Column(db.Integer, primary_key=True)
+    targetgroupname = db.Column(db.String(256), index=True, unique=True)
+    comment = db.Column(db.String(500), index=True, unique=False)
 
     # Relations
-    members   = db.relationship("User",        secondary = "tgroup_user")
-    tmembers  = db.relationship("Target",      secondary = "tgroup_target")
-    gmembers  = db.relationship("Usergroup",   secondary = "tgroup_group")
-    tgmembers = db.relationship("Targetgroup",
-            secondary     = tgroup_of_tgroup,
-            primaryjoin   = id == tgroup_of_tgroup.c.container_id,
-            secondaryjoin = id == tgroup_of_tgroup.c.subtargetgroup_id,
-            backref       = "containedin"
-            )
+    members = db.relationship("User", secondary="tgroup_user")
+    tmembers = db.relationship("Target", secondary="tgroup_target")
+    gmembers = db.relationship("Usergroup", secondary="tgroup_group")
+    tgmembers = db.relationship(
+        "Targetgroup",
+        secondary=tgroup_of_tgroup,
+        primaryjoin=id == tgroup_of_tgroup.c.container_id,
+        secondaryjoin=id == tgroup_of_tgroup.c.subtargetgroup_id,
+        backref="containedin")
 
     def __repr__(self):
         """Return main data of the targetgroup as a string"""
         output = []
 
-        output.append("Targetgroupname: {}".format(self.targetgroupname.encode('utf8')))
+        output.append(
+            "Targetgroupname: {}".format(
+                self.targetgroupname.encode('utf8')))
         output.append("Comment: {}".format(self.comment.encode('utf8')))
         output.append("User list:")
 

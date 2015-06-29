@@ -2,33 +2,46 @@
 
 from app import db
 
-#Table to handle the self-referencing many-to-many relationship for the Usergroup class:
-#First column holds the containers, the second the subgroups.
-group_of_group = db.Table('group_of_group',
-        db.Column("container_id", db.Integer, db.ForeignKey("usergroup.id"), primary_key=True),
-        db.Column("subgroup_id", db.Integer, db.ForeignKey("usergroup.id"), primary_key=True)
-        )
+# Table to handle the self-referencing many-to-many relationship for the Usergroup class:
+# First column holds the containers, the second the subgroups.
+group_of_group = db.Table(
+    'group_of_group',
+    db.Column(
+        "container_id",
+        db.Integer,
+        db.ForeignKey("usergroup.id"),
+        primary_key=True),
+    db.Column(
+        "subgroup_id",
+        db.Integer,
+        db.ForeignKey("usergroup.id"),
+        primary_key=True))
 
 """Usergroup defines a group of users (can contain some usergroups too)"""
+
+
 class Usergroup(db.Model):
     __tablename__ = "usergroup"
-    id            = db.Column(db.Integer,     primary_key = True)
-    usergroupname = db.Column(db.String(256), index = True, unique = True)
-    comment       = db.Column(db.String(500), index = True, unique = False)
+    id = db.Column(db.Integer, primary_key=True)
+    usergroupname = db.Column(db.String(256), index=True, unique=True)
+    comment = db.Column(db.String(500), index=True, unique=False)
 
     # Relations
-    members  = db.relationship("User",      secondary = "group_user")
-    gmembers = db.relationship("Usergroup",
-            secondary = group_of_group,
-            primaryjoin = id == group_of_group.c.container_id,
-            secondaryjoin = id == group_of_group.c.subgroup_id,
-            backref = "containedin")
+    members = db.relationship("User", secondary="group_user")
+    gmembers = db.relationship(
+        "Usergroup",
+        secondary=group_of_group,
+        primaryjoin=id == group_of_group.c.container_id,
+        secondaryjoin=id == group_of_group.c.subgroup_id,
+        backref="containedin")
 
     def __repr__(self):
         """Return main data of the usergroup as a string"""
         output = []
 
-        output.append("Usergroupname: {}".format(self.usergroupname.encode("utf8")))
+        output.append(
+            "Usergroupname: {}".format(
+                self.usergroupname.encode("utf8")))
         output.append("Comment: {}".format(self.comment.encode("utf8")))
         output.append("User list:")
 

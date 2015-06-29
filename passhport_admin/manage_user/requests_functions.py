@@ -6,13 +6,14 @@ import requests
 
 url_passhport = "http://127.0.0.1:5000/"
 
+
 def list():
     """Get the list of all users"""
     url_list = url_passhport + "user/list"
 
     try:
         r = requests.get(url_list)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -21,6 +22,7 @@ def list():
             return 0
 
     return 1
+
 
 def search(param):
     """Get the list of users following the pattern"""
@@ -28,7 +30,7 @@ def search(param):
 
     try:
         r = requests.get(url_search)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -38,10 +40,11 @@ def search(param):
 
     return 1
 
+
 def create(param):
     """User creation on passhportd via API"""
-    email   = param['<email>']
-    sshkey  = param['<sshkey>']
+    email = param['<email>']
+    sshkey = param['<sshkey>']
     comment = ""
     if '<comment>' in param:
         comment = param['<comment>']
@@ -49,8 +52,8 @@ def create(param):
     url_create = url_passhport + "user/create"
 
     try:
-        r = requests.post(url_create, data = user_data)
-    except requests.RequestException, e:
+        r = requests.post(url_create, data=user_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -59,6 +62,7 @@ def create(param):
             return 0
 
     return 1
+
 
 def show(param):
     """Get data about a user"""
@@ -66,7 +70,7 @@ def show(param):
 
     try:
         r = requests.get(url_show)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -75,25 +79,30 @@ def show(param):
             return 0
 
     return 1
+
 
 def edit(param):
     """User modification on passhportd via API"""
-    email       = param['<email>']
-    new_email   = ""
+    email = param['<email>']
+    new_email = ""
     new_comment = ""
-    new_sshkey  = ""
+    new_sshkey = ""
     if '--newemail' in param:
-        new_email   = param['--newemail']
+        new_email = param['--newemail']
     if '--newcomment' in param:
         new_comment = param['--newcomment']
     if '--newsshkey' in param:
-        new_sshkey  = param['--newsshkey']
-    user_data = {'email': email, 'new_email': new_email, 'new_comment': new_comment, 'new_sshkey': new_sshkey}
+        new_sshkey = param['--newsshkey']
+    user_data = {
+        'email': email,
+        'new_email': new_email,
+        'new_comment': new_comment,
+        'new_sshkey': new_sshkey}
     url_edit = url_passhport + "user/edit"
 
     try:
-        r = requests.post(url_edit, data = user_data)
-    except requests.RequestException, e:
+        r = requests.post(url_edit, data=user_data)
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
@@ -102,6 +111,7 @@ def edit(param):
             return 0
 
     return 1
+
 
 def delete(param):
     """User deletion on passhportd via API"""
@@ -109,7 +119,7 @@ def delete(param):
 
     try:
         r = requests.get(url_del)
-    except requests.RequestException, e:
+    except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
         print(r.text)
