@@ -316,7 +316,7 @@ class TestUser:
         email = "rocket@man.net"
         sshkey = "railway"
         comment = "speedy"
-        email2 = "john@caffe.net"
+        email2 = "john@caffe.org"
         sshkey2 = "coffeshop"
         comment2 = "slow"
         res_list = []
@@ -345,4 +345,70 @@ class TestUser:
 
         res_list = "\n".join(res_list)
 
-        assert_equal(res_list, "john@caffe.net\nrocket@man.net")
+        assert_equal(res_list, "rocket@man.net")
+
+    def test_search_empty_pattern(self):
+        """User searching with an empty pattern returns all users in database succeeds"""
+        email = "rocket@man.net"
+        sshkey = "railway"
+        comment = "speedy"
+        email2 = "john@caffe.org"
+        sshkey2 = "coffeshop"
+        comment2 = "slow"
+        res_list = []
+
+        u = user.User(
+            email=email.encode("utf8"),
+            sshkey=sshkey.encode("utf8"),
+            comment=comment.encode("utf8"))
+        u2 = user.User(
+            email=email2.encode("utf8"),
+            sshkey=sshkey2.encode("utf8"),
+            comment=comment2.encode("utf8"))
+
+        db.session.add(u)
+        db.session.add(u2)
+        db.session.commit()
+
+        query = db.session.query(
+            user.User.email).filter(
+            user.User.email.like(
+                '%' +
+                "" +
+                '%')).all()
+
+        for row in query:
+            res_list.append(str(row[0]))
+
+        res_list = "\n".join(res_list)
+
+        assert_equal(res_list, "john@caffe.org\nrocket@man.net")
+
+    def test_search_no_users_match_pattern(self):
+        """User searching with a pattern that no user match with in database returns nothing succeeds"""
+        email = "rocket@man.net"
+        sshkey = "railway"
+        comment = "speedy"
+        res_list = []
+
+        u = user.User(
+            email=email.encode("utf8"),
+            sshkey=sshkey.encode("utf8"),
+            comment=comment.encode("utf8"))
+
+        db.session.add(u)
+        db.session.commit()
+
+        query = db.session.query(
+            user.User.email).filter(
+            user.User.email.like(
+                '%' +
+                "zu" +
+                '%')).all()
+
+        for row in query:
+            res_list.append(str(row[0]))
+
+        res_list = "\n".join(res_list)
+
+        assert_equal(res_list, "")
