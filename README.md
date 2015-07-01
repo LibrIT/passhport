@@ -34,3 +34,8 @@ Used technologies:
  * Flask-Alchemy
  * Alchemy-migration
 
+Tests:
+------------------
+ To launch unit tests on the server side, go in passhportd directory and type:
+ 
+     nosetests -v
