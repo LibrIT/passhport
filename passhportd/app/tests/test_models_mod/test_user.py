@@ -13,7 +13,9 @@ class TestUser:
     """Test for the class User"""
     @classmethod
     def setup_class(cls):
-        """Initialize configuration and create an empty database before testing"""
+        """Initialize configuration and create an empty database before
+        testing
+        """
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + \
@@ -62,7 +64,8 @@ class TestUser:
 
     @raises(exc.IntegrityError)
     def test_create_existing_email(self):
-        """User creation in database with an already used email fails"""
+        """User creation in database with an already used email fails
+        """
         email = "john@example.com"
         sshkey  = """ssh-rsa AAAAB3NzEaC1yc2EAAAADAQABAAABAQDAdH3Dwen9fNgBxZ+QrR3wt9TSQt1+kizp9uz6heudbZ9J6+xghvDnTmwhcm7MROLXG9FMHPtDXNviVmwa/Pj/EQp/2390XT8BLy9/yYpfMrbYSSJEcnchd7EA1U1txjc5mQbWTxiXFcM6UifwF1cjJrOda0OZpR+BdoEkpLrkyuTOWgdV5zoVu0pLrSJNdHAFEtPZ0yaTuX3ufk3ScSeIdXyj4qaX/T0mIuXmfP89yy0ipFMiimXvi/D2Q+MMDAjbDQuW1YlX730hgKJTZD+X5RkNHFHpggTLpvvRDffhqxuBvQNNgUk0hPQ6gFgQIgVIgjIiJkM/j0Ayig+k+4hT john2@example.com"""
         comment = "A random comment man"
@@ -83,7 +86,8 @@ class TestUser:
 
     @raises(exc.IntegrityError)
     def test_create_existing_sshkey(self):
-        """User creation in database with an already used sshkey fails"""
+        """User creation in database with an already used sshkey fails
+        """
         email = "john@example.com"
         sshkey  = """ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdH3Dwen9fNgBxZ+QrR3wt9TSQt1+kizp9uz6heudbZ9J6+xghvDnTmwhcm7MROLXG9FMHPtDXNviVmwa/Pj/EQp/2390XT8BLy9/yYpfMrbYSSJEcnchd7EA1U1txjc5mQbWTxiXFcM6UifwF1cjJrOda0OZpR+BdoEkpLrkyuTOWgdV5zoVu0pLrSJNdHAFEtPZ0yaTuX3ufk3ScSeIdXyj4qaX/T0mIuXmfP89yy0ipFMiimXvi/D2Q+MMDAjbDQuW1YlX730hgKJTZD+X5RkNHFHpggTLpvvRDffhqxuBvQNNgUk0hPQ6gFgQIgVIgjIiJkM/j0Ayig+k+4hT john@example.com"""
         comment = "An awesome comment man"
@@ -146,7 +150,9 @@ class TestUser:
         assert_equal(u_edit.comment, new_comment)
 
     def test_edit_non_existing_user(self):
-        """User edition of a non existing user in database does nothing (but doesn't raise error)"""
+        """User edition of a non existing user in database does nothing
+        (but doesn't raise error)
+        """
         u = db.session.query(
             user.User).filter_by(
             email="random@alea.info".encode("utf8"))
@@ -159,7 +165,8 @@ class TestUser:
 
     @raises(exc.IntegrityError)
     def test_edit_existing_email(self):
-        """User edition with a new email already used in database fails"""
+        """User edition with a new email already used in database fails
+        """
         email = "rocket@man.net"
         sshkey = "railway"
         comment = "speedy"
@@ -188,7 +195,9 @@ class TestUser:
 
     @raises(exc.IntegrityError)
     def test_edit_existing_sshkey(self):
-        """User edition with a new sshkey already used in database fails"""
+        """User edition with a new sshkey already used in database
+        fails
+        """
         email = "rocket@man.net"
         sshkey = "railway"
         comment = "speedy"
@@ -236,7 +245,9 @@ class TestUser:
         assert_equal(comment, user_data.comment)
 
     def test_show_non_existing_user(self):
-        """User show a non existing user in database does nothing (but doesn't raise error)"""
+        """User show a non existing user in database does nothing
+        (but doesn't raise error)
+        """
         user_data = user.User.query.filter_by(
             email="the@mail.net".encode("utf8")).first()
 
@@ -311,7 +322,8 @@ class TestUser:
         assert_equal(user_list, "john@example.com")
 
     def test_search(self):
-        """User search with users matching pattern in database succeeds"""
+        """User search with users matching pattern in database succeeds
+        """
         email = "rocket@man.net"
         sshkey = "railway"
         comment = "speedy"
@@ -347,7 +359,9 @@ class TestUser:
         assert_equal(res_list, "rocket@man.net")
 
     def test_search_empty_pattern(self):
-        """User searching with an empty pattern returns all users in database succeeds"""
+        """User searching with an empty pattern returns all users
+        in database succeeds
+        """
         email = "rocket@man.net"
         sshkey = "railway"
         comment = "speedy"
@@ -384,7 +398,9 @@ class TestUser:
         assert_equal(res_list, "john@caffe.org\nrocket@man.net")
 
     def test_search_no_users_match_pattern(self):
-        """User searching with a pattern that no user match with in database returns nothing succeeds"""
+        """User searching with a pattern that no user match with
+        in database returns nothing succeeds
+        """
         email = "rocket@man.net"
         sshkey = "railway"
         comment = "speedy"
