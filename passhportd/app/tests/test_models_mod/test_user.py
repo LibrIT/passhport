@@ -106,10 +106,12 @@ class TestUser:
         db.session.add(u)
         db.session.commit()
 
-    # We should test if an empty email while creating a user raises an error, but it seems that SQLite doesn't check it
+    # We should test if an empty email while creating a user raises
+    # an error, but it seems that SQLite doesn't check it
     # def test_create_empty_email(self):
 
-    # We should test if an empty sshkey while creating a user raises an error, but it seems that SQLite doesn't check it
+    # We should test if an empty sshkey while creating a user raises
+    # an error, but it seems that SQLite doesn't check it
     # def test_create_empty_sshkey(self):
 
     def test_edit(self):
