@@ -115,10 +115,10 @@ def edit(param):
 
 def delete(param):
     """User deletion on passhportd via API"""
-    url_del = url_passhport + "user/del/" + param['<email>']
+    url_delete = url_passhport + "user/delete/" + param['<email>']
 
     try:
-        r = requests.get(url_del)
+        r = requests.get(url_delete)
     except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:

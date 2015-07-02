@@ -10,7 +10,6 @@ from config import basedir
 
 
 class TestUser:
-
     """Test for the class User"""
     @classmethod
     def setup_class(cls):
@@ -54,7 +53,7 @@ class TestUser:
 
         u_db = db.session.query(
             user.User).filter_by(
-            email="john@example.com".encode("utf8")).first()
+            email="john@example.com").first()
 
         assert_equal(u_db.email, email)
         assert_equal(u_db.sshkey, sshkey)

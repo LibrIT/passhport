@@ -73,9 +73,9 @@ echo "[user] show   2/2: " ${r/1/ERROR}
 
 # EDIT 2/2
 PATTERN="OK: \"${USEREMAIL}\" -> edited" 
-${CMD} edit ${USEREMAIL} --newemail=new_${USEREMAIL} --newcomment="${COMMENT}" --newsshkey="${SSHKEY}" | grep "${PATTERN}"  &> /dev/null
+${CMD} edit ${USEREMAIL} --newemail=new_${USEREMAIL} --newcomment="${COMMENT}" --newsshkey="${SSHKEY}" | grep "${PATTERN}" &> /dev/null
 r=${?/0/OK}
-echo "[user] edit   1/2: " ${r/1/ERROR}
+echo "[user] edit   2/2: " ${r/1/ERROR}
 
 # DEL 2/2
 PATTERN="OK: \"new_${USEREMAIL}\" -> deleted"
