@@ -610,3 +610,359 @@ class TestTarget:
         res_list = "\n".join(res_list)
 
         assert_equal(res_list, "")
+
+    def test_add_user(self):
+        """Target adding a user succeeds"""
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+
+        email = "rasta@populos.museum"
+        sshkey = "something"
+        comment = "seldom"
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+
+        u = user.User(
+            email=email,
+            sshkey=sshkey,
+            comment=comment)
+
+        db.session.add(t)
+        db.session.commit()
+
+        t.adduser(u)
+        db.session.commit()
+
+        t_db = db.session.query(
+            target.Target).filter_by(
+            targetname=targetname).first()
+
+        assert_equal(t_db.members, [u])
+
+    def test_add_user_already_in_target(self):
+        """Target adding a user already in target does nothing
+        (but doesn't raise error)
+        """
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+
+        email = "rasta@populos.museum"
+        sshkey = "something"
+        comment = "seldom"
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+
+        u = user.User(
+            email=email,
+            sshkey=sshkey,
+            comment=comment)
+
+        db.session.add(t)
+        db.session.commit()
+
+        t.adduser(u)
+        db.session.commit()
+
+        t.adduser(u)
+        db.session.commit()
+
+        t_db = db.session.query(
+            target.Target).filter_by(
+            targetname=targetname).first()
+
+        assert_equal(t_db.members, [u])
+
+    def test_remove_user(self):
+        """Target removing a user succeeds"""
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+
+        email = "rasta@populos.museum"
+        sshkey = "something"
+        comment = "seldom"
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+
+        u = user.User(
+            email=email,
+            sshkey=sshkey,
+            comment=comment)
+
+        db.session.add(t)
+        db.session.commit()
+
+        t.adduser(u)
+        db.session.commit()
+
+        t.rmuser(u)
+        db.session.commit()
+
+        t_db = db.session.query(
+            target.Target).filter_by(
+            targetname=targetname).first()
+
+        assert_equal(t_db.members, [])
+
+    def test_remove_user_not_in_target(self):
+        """Target removing a user not in target does nothing
+        (but doesn't raise error)
+        """
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+
+        email = "rasta@populos.museum"
+        sshkey = "something"
+        comment = "seldom"
+        email2 = "marsu@pila.mi"
+        sshkey2 = "queue"
+        comment2 = "yellow"
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+
+        u = user.User(
+            email=email,
+            sshkey=sshkey,
+            comment=comment)
+
+        u2 = user.User(
+            email=email2,
+            sshkey=sshkey2,
+            comment=comment2)
+
+        db.session.add(t)
+        db.session.commit()
+
+        t.adduser(u)
+        t.adduser(u2)
+        db.session.commit()
+
+        t.rmuser(u)
+        db.session.commit()
+
+        t.rmuser(u)
+        db.session.commit()
+
+        t_db = db.session.query(
+            target.Target).filter_by(
+            targetname=targetname).first()
+
+        assert_equal(t_db.members, [u2])
+
+    def test_add_usergroup(self):
+        """Target adding a usergroup succeeds"""
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+
+        usergroupname = "VVVVVV"
+        comment_usergroup = "Captain Viridian to the rescue"
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+
+        ug = usergroup.Usergroup(
+            usergroupname=usergroupname,
+            comment=comment_usergroup)
+
+        db.session.add(t)
+        db.session.commit()
+
+        t.addusergroup(ug)
+        db.session.commit()
+
+        t_db = db.session.query(
+            target.Target).filter_by(
+            targetname=targetname).first()
+
+        assert_equal(t_db.gmembers, [ug])
+
+    def test_add_usergroup_already_in_target(self):
+        """Target adding a usergroup already in target does nothing
+        (but doesn't raise error)
+        """
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+
+        usergroupname = "VVVVVV"
+        comment_usergroup = "Captain Viridian to the rescue"
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+
+        ug = usergroup.Usergroup(
+            usergroupname=usergroupname,
+            comment=comment_usergroup)
+
+        db.session.add(t)
+        db.session.commit()
+
+        t.addusergroup(ug)
+        db.session.commit()
+
+        t.addusergroup(ug)
+        db.session.commit()
+
+        t_db = db.session.query(
+            target.Target).filter_by(
+            targetname=targetname).first()
+
+        assert_equal(t_db.gmembers, [ug])
+
+    def test_remove_usergroup(self):
+        """Target removing a usergroup succeeds"""
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+
+        usergroupname = "VVVVVV"
+        comment_usergroup = "Captain Viridian to the rescue"
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+
+        ug = usergroup.Usergroup(
+            usergroupname=usergroupname,
+            comment=comment_usergroup)
+
+        db.session.add(t)
+        db.session.commit()
+
+        t.addusergroup(ug)
+        db.session.commit()
+
+        t.rmusergroup(ug)
+        db.session.commit()
+
+        t_db = db.session.query(
+            target.Target).filter_by(
+            targetname=targetname).first()
+
+        assert_equal(t_db.gmembers, [])
+
+    def test_remove_usergroup_not_in_target(self):
+        """Target removing a usergroup not in target does nothing
+        (but doesn't raise error)
+        """
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+
+        usergroupname = "VVVVVV"
+        comment_usergroup = "Captain Viridian to the rescue"
+        usergroupname2 = "PPPPPP"
+        comment_usergroup2 = "Captain Pamplemousse need rescue"
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+
+        ug = usergroup.Usergroup(
+            usergroupname=usergroupname,
+            comment=comment_usergroup)
+
+        ug2 = usergroup.Usergroup(
+            usergroupname=usergroupname2,
+            comment=comment_usergroup2)
+
+        db.session.add(t)
+        db.session.commit()
+
+        t.addusergroup(ug)
+        db.session.commit()
+
+        t.rmusergroup(ug2)
+        db.session.commit()
+
+        t_db = db.session.query(
+            target.Target).filter_by(
+            targetname=targetname).first()
+
+        assert_equal(t_db.gmembers, [ug])
