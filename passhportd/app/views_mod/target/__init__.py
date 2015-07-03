@@ -194,8 +194,8 @@ def target_edit():
         "\n", 200, {"Content-Type": "text/plain"}
 
 
-@app.route("/target/del/<targetname>")
-def target_del(targetname):
+@app.route("/target/delete/<targetname>")
+def target_delete(targetname):
     """Delete a target in the database"""
     if not targetname:
         return "ERROR: The targetname is required ", 417, {
