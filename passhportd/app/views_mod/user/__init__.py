@@ -212,6 +212,3 @@ def user_delete(email):
 
     return 'OK: "' + email + '" -> deleted' + \
         "\n", 200, {"Content-Type": "text/plain"}
-
-    return 'ERROR: No user with the email "' + email + \
-        '" in the database.\n', 417, {"Content-Type": "text/plain"}
