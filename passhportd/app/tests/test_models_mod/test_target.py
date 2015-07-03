@@ -361,3 +361,252 @@ class TestTarget:
         assert_equal(servertype, target_data.servertype)
         assert_equal(autocommand, target_data.autocommand)
         assert_equal(comment, target_data.comment)
+
+    def test_show_non_existing_target(self):
+        """Target show a non existing target in database does nothing
+        (but doesn't raise error)
+        """
+        target_data = target.Target.query.filter_by(
+            targetname="bull").first()
+
+        assert_is_none(target_data)
+
+    def test_delete(self):
+        """Target deletion in database succeeds"""
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+        db.session.add(t)
+        db.session.commit()
+
+        db.session.delete(t)
+        db.session.commit()
+
+        t_db = db.session.query(
+            target.Target).filter_by(
+            targetname="clever_server").first()
+
+        assert_is_none(t_db)
+
+    @raises(exc.InvalidRequestError)
+    def test_delete_non_existing_target(self):
+        """Target deletion with a non existing target fails"""
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+        db.session.delete(t)
+        db.session.commit()
+
+    def test_list_no_targets(self):
+        """Target listing with no target in database succeeds"""
+        query = db.session.query(
+            target.Target.targetname).order_by(
+            target.Target.targetname).all()
+
+        assert_equal(query, [])
+
+    def test_list_existing_targets(self):
+        """Target listing with existing targets in database succeeds"""
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+        target_list = []
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+        db.session.add(t)
+        db.session.commit()
+
+        query = db.session.query(
+            target.Target.targetname).order_by(
+            target.Target.targetname).all()
+        for row in query:
+            target_list.append(str(row[0]))
+
+        target_list = "".join(target_list)
+
+        assert_equal(target_list, "clever_server")
+
+    def test_search(self):
+        """Target search with targets matching pattern in database
+        succeeds
+        """
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+        targetname2  = "bad_server"
+        hostname2    = "127.0.0.3"
+        port2        = 55
+        sshoptions2  = "--zapel"
+        servertype2  = "Gentoo"
+        autocommand2 = "make foo"
+        comment2     = "Worse target"
+        res_list     = []
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+        t2 = target.Target(
+            targetname=targetname2,
+            hostname=hostname2,
+            port=port2,
+            sshoptions=sshoptions2,
+            servertype=servertype2,
+            autocommand=autocommand2,
+            comment=comment2)
+
+        db.session.add(t)
+        db.session.add(t2)
+        db.session.commit()
+
+        query = db.session.query(
+            target.Target.targetname).filter(
+            target.Target.targetname.like(
+                "%" +
+                "clever" +
+                "%")).all()
+
+        for row in query:
+            res_list.append(str(row[0]))
+
+        res_list = "\n".join(res_list)
+
+        assert_equal(res_list, "clever_server")
+
+    def test_search_empty_pattern(self):
+        """Target searching with an empty pattern returning all targets
+        in database succeeds"""
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+        targetname2  = "bad_server"
+        hostname2    = "127.0.0.3"
+        port2        = 55
+        sshoptions2  = "--zapel"
+        servertype2  = "Gentoo"
+        autocommand2 = "make foo"
+        comment2     = "Worse target"
+        res_list     = []
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+        t2 = target.Target(
+            targetname=targetname2,
+            hostname=hostname2,
+            port=port2,
+            sshoptions=sshoptions2,
+            servertype=servertype2,
+            autocommand=autocommand2,
+            comment=comment2)
+
+        db.session.add(t)
+        db.session.add(t2)
+        db.session.commit()
+
+        query = db.session.query(
+            target.Target.targetname).filter(
+            target.Target.targetname.like(
+                "%" +
+                "" +
+                "%")).all()
+
+        for row in query:
+            res_list.append(str(row[0]))
+
+        res_list = "\n".join(res_list)
+
+        assert_equal(res_list, "bad_server\nclever_server")
+
+    def test_search_no_users_match_pattern(self):
+        """Target searching with a pattern that no target match with
+        in database returning nothing succeeds
+        """
+        targetname  = "clever_server"
+        hostname    = "127.0.0.1"
+        port        = 54
+        sshoptions  = "--zap"
+        servertype  = "Bodhi"
+        autocommand = "ls -lh"
+        comment     = "Magnificent target"
+        res_list = []
+
+        t = target.Target(
+            targetname=targetname,
+            hostname=hostname,
+            port=port,
+            sshoptions=sshoptions,
+            servertype=servertype,
+            autocommand=autocommand,
+            comment=comment)
+
+        db.session.add(t)
+        db.session.commit()
+
+        query = db.session.query(
+            target.Target.targetname).filter(
+            target.Target.targetname.like(
+                "%" +
+                "zhu" +
+                "%")).all()
+
+        for row in query:
+            res_list.append(str(row[0]))
+
+        res_list = "\n".join(res_list)
+
+        assert_equal(res_list, "")
