@@ -33,7 +33,8 @@ def user_search(pattern):
 
     result = []
     query  = db.session.query(user.User.email)\
-        .filter(user.User.email.like("%" + pattern + "%")).all()
+        .filter(user.User.email.like("%" + pattern + "%"))\
+        .order_by(user.User.email).all()
 
     for row in query:
         result.append(row[0].encode("utf8"))

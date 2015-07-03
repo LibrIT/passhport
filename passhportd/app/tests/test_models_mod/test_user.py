@@ -351,7 +351,8 @@ class TestUser:
             user.User.email.like(
                 '%' +
                 ".net" +
-                '%')).all()
+                '%')).order_by(
+                    user.User.email).all()
 
         for row in query:
             res_list.append(str(row[0]))
@@ -390,7 +391,8 @@ class TestUser:
             user.User.email.like(
                 '%' +
                 "" +
-                '%')).all()
+                '%')).order_by(
+                    user.User.email).all()
 
         for row in query:
             res_list.append(str(row[0]))
@@ -421,7 +423,8 @@ class TestUser:
             user.User.email.like(
                 '%' +
                 "zu" +
-                '%')).all()
+                '%')).order_by(
+                    user.User.email).all()
 
         for row in query:
             res_list.append(str(row[0]))
