@@ -36,7 +36,8 @@ def target_search(pattern):
 
     result = []
     query  = db.session.query(target.Target.targetname)\
-        .filter(target.Target.targetname.like("%" + pattern + "%")).all()
+        .filter(target.Target.targetname.like("%" + pattern + "%"))\
+        .order_by(target.Target.targetname).all()
 
     for row in query:
         result.append(row[0])

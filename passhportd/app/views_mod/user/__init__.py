@@ -1,5 +1,8 @@
 # -*-coding:Utf-8 -*-
 
+import os
+import config
+
 from flask import request
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
@@ -33,7 +36,8 @@ def user_search(pattern):
 
     result = []
     query  = db.session.query(user.User.email)\
-        .filter(user.User.email.like("%" + pattern + "%")).all()
+        .filter(user.User.email.like("%" + pattern + "%"))\
+        .order_by(user.User.email).all()
 
     for row in query:
         result.append(row[0].encode("utf8"))
@@ -104,6 +108,15 @@ def user_create():
             '" is already used by another user ',\
              417, {"Content-Type": "text/plain"}
 
+    # Add the SSH key in the file authorized_keys
+    try:
+        with open(config.SSH_KEY_FILE, "a") as \
+            authorized_keys_file:
+            authorized_keys_file.write(sshkey + "\n")
+    except IOError:
+        return 'ERROR: cannot write in the file "authorized_keys"', 500, \
+            {"Content-Type": "text/plain"}
+
     u = user.User(
         email=email,
         sshkey=sshkey,
@@ -141,9 +154,9 @@ def user_edit():
             "Content-Type": "text/plain"}
 
     # Check if the email exists in the database
-    query = db.session.query(user.User).filter_by(email=email).first()
+    query_check = db.session.query(user.User).filter_by(email=email).first()
 
-    if query is None:
+    if query_check is None:
         return 'ERROR: No user with the email "' + email + \
             '" in the database.\n', 417, {"Content-Type": "text/plain"}
 
@@ -162,6 +175,34 @@ def user_edit():
             return 'ERROR: The SSH key "' + new_sshkey + \
                 '" is already used by another user ', \
                 417, {"Content-Type": "text/plain"}
+
+        # Edit the SSH key in the file authorized_keys
+        try:
+            with open(config.SSH_KEY_FILE, "r+") as \
+                authorized_keys_file:
+                line_edited = False
+                content = authorized_keys_file.readlines()
+                authorized_keys_file.seek(0)
+
+                for line in content:
+                    if not line_edited:
+                        if line != (query_check.sshkey + "\n"):
+                            authorized_keys_file.write(line)
+                        else:
+                            authorized_keys_file.write(new_sshkey + "\n")
+                            line_edited = True
+                    else:
+                        if line == (query_check.sshkey + "\n"):
+                            warning = ("WARNING: There is more than one line "
+                                "with the sshkey " + query_check.sshkey + \
+                                ", probably added manually. "
+                                "You should edit it manually")
+                        authorized_keys_file.write(line)
+
+                authorized_keys_file.truncate()
+        except IOError:
+            return 'ERROR: cannot write in the file "authorized_keys"', 500, \
+                {"Content-Type": "text/plain"}
 
         to_update.update({"sshkey": new_sshkey.encode("utf8")})
     if new_email:
@@ -200,6 +241,33 @@ def user_delete(email):
         return 'ERROR: No user with the email "' + email + \
             '" in the database.\n', 417, {"Content-Type": "text/plain"}
 
+    warning = ""
+    # Delete the SSH key from the file authorized_keys
+    try:
+        with open(config.SSH_KEY_FILE, "r+") as \
+            authorized_keys_file:
+            line_deleted = False
+            content = authorized_keys_file.readlines()
+            authorized_keys_file.seek(0)
+
+            for line in content:
+                if not line_deleted:
+                    if line != (query.sshkey + "\n"):
+                        authorized_keys_file.write(line)
+                    else:
+                        line_deleted = True
+                else:
+                    if line == (query.sshkey + "\n"):
+                        warning = ("WARNING: There is more than one line "
+                            "with the sshkey " + query.sshkey + ", probably "
+                            "added manually. You should delete it manually")
+                    authorized_keys_file.write(line)
+
+            authorized_keys_file.truncate()
+    except IOError:
+        return 'ERROR: cannot write in the file "authorized_keys"', 500, \
+            {"Content-Type": "text/plain"}
+
     db.session.query(
         user.User).filter(
         user.User.email == email).delete()
@@ -211,4 +279,4 @@ def user_delete(email):
             "\n", 409, {"Content-Type": "text/plain"}
 
     return 'OK: "' + email + '" -> deleted' + \
-        "\n", 200, {"Content-Type": "text/plain"}
+        "\n" + warning, 200, {"Content-Type": "text/plain"}

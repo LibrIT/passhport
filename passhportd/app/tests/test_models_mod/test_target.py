@@ -509,7 +509,8 @@ class TestTarget:
             target.Target.targetname.like(
                 "%" +
                 "clever" +
-                "%")).all()
+                "%")).order_by(
+                target.Target.targetname).all()
 
         for row in query:
             res_list.append(str(row[0]))
@@ -563,7 +564,8 @@ class TestTarget:
             target.Target.targetname.like(
                 "%" +
                 "" +
-                "%")).all()
+                "%")).order_by(
+                target.Target.targetname).all()
 
         for row in query:
             res_list.append(str(row[0]))
@@ -602,7 +604,8 @@ class TestTarget:
             target.Target.targetname.like(
                 "%" +
                 "zhu" +
-                "%")).all()
+                "%")).order_by(
+                target.Target.targetname).all()
 
         for row in query:
             res_list.append(str(row[0]))
