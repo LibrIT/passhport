@@ -6,17 +6,17 @@ import python_compat as pyt_compat
 import requests_functions as req
 
 
-def prompt_target_list():
+def list():
     """List all targets in the database"""
-    return req.requests_target_list()
+    return req.list()
 
 
-def prompt_target_search(pattern):
+def search(pattern):
     """Search a target according to the pattern"""
-    return req.requests_target_search(pattern)
+    return req.search({'<pattern>': pattern})
 
 
-def prompt_target_create():
+def create():
     """Ask arguments for target creation"""
     targetname = pyt_compat.input_compat("Targetname: ")
     hostname = pyt_compat.input_compat("Hostname: ")
@@ -39,27 +39,24 @@ def prompt_target_create():
 
     servertype = pyt_compat.input_compat("Server’s type: ")
     autocommand = pyt_compat.input_compat("Autocommand: ")
-    print("")
 
-    return req.requests_target_create(
-        targetname,
-        hostname,
-        comment,
-        sshoptions,
-        port,
-        servertype,
-        autocommand)
+    return req.create({'<targetname>': targetname,
+        '<hostname>': hostname,
+        '<comment>': comment,
+        '<sshoptions>': sshoptions,
+        '<port>': port,
+        '<servertype>': servertype,
+        '<autocommand>': autocommand})
 
 
-def prompt_target_show():
+def show():
     """Ask arguments for showing target"""
     targetname = pyt_compat.input_compat("Targetname: ")
-    print("")
 
-    return req.requests_target_show(targetname)
+    return req.show({'<targetname': targetname})
 
 
-def prompt_target_edit():
+def edit():
     """Ask arguments for editing an existing target"""
     targetname = pyt_compat.input_compat(
         "Name of the target you want to modify: ")
@@ -88,42 +85,42 @@ def prompt_target_edit():
         new_autocommand = pyt_compat.input_compat("New autocommand: ")
         print("")
 
-        return req.requests_target_edit(
-            targetname,
-            new_targetname,
-            new_hostname,
-            new_comment,
-            new_sshoptions,
-            new_port,
-            new_servertype,
-            new_autocommand)
-
-    return None
+        return req.create({'<targetname>': targetname,
+            '<hostname>': new_hostname,
+            '<comment>': new_comment,
+            '<sshoptions>': new_sshoptions,
+            '<port>': new_port,
+            '<servertype>': new_servertype,
+            '<autocommand>': new_autocommand})
 
 
-def prompt_target_del():
+def delet():
     """Ask arguments for deleting an existing target"""
     targetname = pyt_compat.input_compat("Targetname: ")
-    print("")
 
-    return req.requests_target_del(targetname)
+    return req.delete({'<targetname>': targetname})
 
 
-def prompt_target_adduser(email, targetname):
+def adduser():
     """Add a user to a target"""
-    return req.requests_target_adduser(email, targetname)
+    #TODO ask for email/target
+    return req.adduser({'<email>': email, '<targetname>': targetname})
 
 
-def prompt_target_rmuser(email, targetname):
+def rmuser():
     """Remove a user from a target"""
-    return req.requests_target_rmuser(email, targetname)
+    #TODO ask for email/target
+    return req.rmuser({'<email>': email, '<targetname>': targetname})
 
 
-def prompt_target_addusergroup(usergroupname, targetname):
+def addusergroup():
     """Add a usergroup to a target"""
-    return req.requests_target_addusergroup(usergroupname, targetname)
+    #TODO ask for usergroup/target
+    return req.addusergroup({'<usergroupname>': usergroupname, 
+        '<targetname>': targetname})
 
 
-def prompt_target_rmusergroup(usergroupname, targetname):
+def rmusergroup():
     """Remove a usergroup from a target"""
-    return req.requests_target_rmusergroup(usergroupname, targetname)
+    #TODO ask for usergroup/target
+    return req.rmusergroup(usergroupname, targetname)
