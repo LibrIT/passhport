@@ -24,15 +24,15 @@ class Target(db.Model):
         """Return main data of the target as a string"""
         output = []
 
-        output.append("Targetname: {}".format(self.targetname.encode("utf8")))
-        output.append("Hostname: {}".format(self.hostname.encode("utf8")))
-        output.append("Port: {}".format(str(self.port).encode("utf8")))
-        output.append("SSH options: {}".format(self.sshoptions.encode("utf8")))
-        output.append("Servertype: {}".format(self.servertype.encode("utf8")))
+        output.append("Targetname: {}".format(self.targetname))
+        output.append("Hostname: {}".format(self.hostname))
+        output.append("Port: {}".format(str(self.port)))
+        output.append("SSH options: {}".format(self.sshoptions))
+        output.append("Servertype: {}".format(self.servertype))
         output.append(
             "Autocommand: {}".format(
-                self.autocommand.encode("utf8")))
-        output.append("Comment: {}".format(self.comment.encode("utf8")))
+                self.autocommand))
+        output.append("Comment: {}".format(self.comment))
         output.append("User list:")
 
         for user in self.members:
@@ -47,7 +47,7 @@ class Target(db.Model):
 
     def show_name(self):
         """Return a string containing the target's name"""
-        return self.targetname.encode("utf8")
+        return self.targetname
 
     # User management
     def adduser(self, user):

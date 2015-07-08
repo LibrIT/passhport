@@ -23,9 +23,9 @@ class User(db.Model):
         """Return main data of the user as a string"""
         output = []
 
-        output.append("Email: {}".format(self.email.encode("utf8")))
-        output.append("SSH key: {}".format(self.sshkey.encode("utf8")))
-        output.append("Comment: {}".format(self.comment.encode("utf8")))
+        output.append("Email: {}".format(self.email))
+        output.append("SSH key: {}".format(self.sshkey))
+        output.append("Comment: {}".format(self.comment))
 
         return "\n".join(output)
 
