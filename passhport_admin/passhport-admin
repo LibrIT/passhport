@@ -7,15 +7,14 @@ Usage:
     passhport-admin user list
     passhport-admin user search [<pattern>]
     passhport-admin user (show|delete) [<email>]
-    passhport-admin user create [((<email> <sshkey>) [<comment>])]
+    passhport-admin user create [((<email> <sshkey>) [--comment=<comment>])]
     passhport-admin user edit [<email> [--newemail=<email>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
     passhport-admin target list
     passhport-admin target search <pattern>
-    passhport-admin target (show|show_users|show_usergroups|create|edit|delete)
-    passhport-admin target (show|delete) <targetname>
-    passhport-admin target create <targetname> <hostname> <comment> <sshoptions> <port> <servertype> <autocommand>
-    passhport-admin target edit <targetname> <newtargetname> <hostname> <comment> <sshoptions> <port> <servertype> <autocommand>
-    passhport-admin target (adduser|rmuser) <email> <targetname>
+    passhport-admin target (show|delete) [<targetname>]
+    passhport-admin target create [((<targetname> <hostname>) [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] [--servretype=<servertype>] [--autocommand=<autocommand>])]
+    passhport-admin target edit [<targetname> [--newtargetname=<targetname>] [--newhostname=<hostname>] [--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>] [--newservertype=<servertype>] [--newservertype=<autocommand>]]
+    passhport-admin target (adduser|rmuser) [<email> <targetname>]
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
     passhport-admin usergroup (show|create|edit|del)
