@@ -263,11 +263,11 @@ def targetgroup_adduser():
 
     # Simplification for the reading
     targetgroupname = request.form['targetgroupname']
-    email = request.form['email']
+    name = request.form['name']
 
     # Check for required fields
-    if not targetgroupname or not email:
-        return "ERROR: The targetgroupname and email are required ", 417, {
+    if not targetgroupname or not name:
+        return "ERROR: The targetgroupname and name are required ", 417, {
             'Content-Type': 'text/plain'}
 
     # Targetgroup and user have to exist in database
@@ -276,9 +276,9 @@ def targetgroup_adduser():
         return 'ERROR: no targetgroup "' + targetgroupname + \
             '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    u = get_user(email)
+    u = get_user(name)
     if not u:
-        return 'ERROR: no user "' + email + \
+        return 'ERROR: no user "' + name + \
             '" in the database ', 417, {'Content-Type': 'text/plain'}
 
     # Now we can add the user
@@ -289,7 +289,7 @@ def targetgroup_adduser():
         return 'ERROR: "' + targetgroupname + '" -> ' + \
             e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return 'OK: "' + email + '" added to "' + targetgroupname + \
+    return 'OK: "' + name + '" added to "' + targetgroupname + \
         '"', 200, {'Content-Type': 'text/plain'}
 
 
@@ -303,11 +303,11 @@ def targetgroup_rmuser():
 
     # Simplification for the reading
     targetgroupname = request.form['targetgroupname']
-    email = request.form['email']
+    name = request.form['name']
 
     # Check for required fields
-    if not targetgroupname or not email:
-        return "ERROR: The targetgroupname and email are required ", 417, {
+    if not targetgroupname or not name:
+        return "ERROR: The targetgroupname and name are required ", 417, {
             'Content-Type': 'text/plain'}
 
     # Targetgroup and user have to exist in database
@@ -316,9 +316,9 @@ def targetgroup_rmuser():
         return 'ERROR: no targetgroup "' + targetgroupname + \
             '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    u = get_user(email)
+    u = get_user(name)
     if not u:
-        return 'ERROR: no user "' + email + \
+        return 'ERROR: no user "' + name + \
             '" in the database ', 417, {'Content-Type': 'text/plain'}
 
     # Now we can remove the user
@@ -329,7 +329,7 @@ def targetgroup_rmuser():
         return 'ERROR: "' + targetgroupname + '" -> ' + \
             e.message + '\n', 409, {'Content-Type': 'text/plain'}
 
-    return 'OK: "' + email + '" removed from "' + \
+    return 'OK: "' + name + '" removed from "' + \
         targetgroupname + '"', 200, {'Content-Type': 'text/plain'}
 
 
@@ -519,10 +519,10 @@ def get_targetgroup(targetgroupname):
         return False
 
 
-def get_user(email):
-    """Return the user with the given email"""
+def get_user(name):
+    """Return the user with the given name"""
     u = db.session.query(user.User).filter(
-        user.User.email == email).all()
+        user.User.name == name).all()
 
     # User must exist in database
     if u:

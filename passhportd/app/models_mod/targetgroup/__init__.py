@@ -48,7 +48,7 @@ class Targetgroup(db.Model):
         output.append("User list:")
 
         for user in self.members:
-            output.append(user.show_email())
+            output.append(user.show_name())
 
         output.append("Target list:")
 

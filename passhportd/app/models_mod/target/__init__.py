@@ -36,7 +36,7 @@ class Target(db.Model):
         output.append("User list:")
 
         for user in self.members:
-            output.append(user.show_email())
+            output.append(user.show_name())
 
         output.append("Usergroup list:")
 
@@ -68,10 +68,10 @@ class Target(db.Model):
         """Return true if the given user is a member of the target, false otherwise"""
         return user in self.members
 
-    def email_in_target(self, email):
-        """Return true if the given email belongs to a member of the target"""
+    def name_in_target(self, name):
+        """Return true if the given name belongs to a member of the target"""
         for user in self.members:
-            if user.show_email() == email:
+            if user.show_name() == name:
                 return True
 
         return False

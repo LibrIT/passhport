@@ -14,7 +14,7 @@ from app.models_mod import user
 def user_list():
     """Return the user list of database"""
     result = []
-    query = db.session.query(user.User.email).order_by(user.User.email).all()
+    query = db.session.query(user.User.name).order_by(user.User.name).all()
 
     for row in query:
         result.append(row[0].encode("utf8"))
@@ -35,9 +35,9 @@ def user_search(pattern):
     """
 
     result = []
-    query  = db.session.query(user.User.email)\
-        .filter(user.User.email.like("%" + pattern + "%"))\
-        .order_by(user.User.email).all()
+    query  = db.session.query(user.User.name)\
+        .filter(user.User.name.like("%" + pattern + "%"))\
+        .order_by(user.User.name).all()
 
     for row in query:
         result.append(row[0].encode("utf8"))
@@ -49,8 +49,8 @@ def user_search(pattern):
     return "\n".join(result), 200, {"Content-Type": "text/plain"}
 
 
-@app.route("/user/show/<email>")
-def user_show(email):
+@app.route("/user/show/<name>")
+def user_show(name):
     """Return all data about a user"""
     """
     To check
@@ -59,14 +59,14 @@ def user_show(email):
     """
 
     # Check for required fields
-    if not email:
-        return "ERROR: The email is required ", 417, {
+    if not name:
+        return "ERROR: The name is required ", 417, {
             "Content-Type": "text/plain"}
 
-    user_data = user.User.query.filter_by(email=email).first()
+    user_data = user.User.query.filter_by(name=name).first()
 
     if user_data is None:
-        return 'ERROR: No user with the email "' + email + \
+        return 'ERROR: No user with the name "' + name + \
             '" in the database.\n', 417, {"Content-Type": "text/plain"}
 
     return str(user_data), 200, {"Content-Type": "text/plain"}
@@ -81,21 +81,21 @@ def user_create():
             "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    email = request.form["email"]
+    name = request.form["name"]
     sshkey = request.form["sshkey"]
     comment = request.form["comment"]
 
     # Check for required fields
-    if not email or not sshkey:
-        return "ERROR: The email and SSH key are required ", 417, {
+    if not name or not sshkey:
+        return "ERROR: The name and SSH key are required ", 417, {
             "Content-Type": "text/plain"}
 
-    # Check unicity for email
-    query = db.session.query(user.User.email)\
-        .filter_by(email=email).first()
+    # Check unicity for name
+    query = db.session.query(user.User.name)\
+        .filter_by(name=name).first()
 
     if query is not None:
-        return 'ERROR: The email "' + email + \
+        return 'ERROR: The name "' + name + \
             '" is already used by another user ',\
              417, {"Content-Type": "text/plain"}
 
@@ -118,7 +118,7 @@ def user_create():
             {"Content-Type": "text/plain"}
 
     u = user.User(
-        email=email,
+        name=name,
         sshkey=sshkey,
         comment=comment)
     db.session.add(u)
@@ -127,11 +127,11 @@ def user_create():
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + email + '" -> ' + e.message + \
-            "\n", 409, {"Content-Type": "text/plain"}
+        return 'ERROR: "' + name + '" -> ' + e.message , 409, \
+                {"Content-Type": "text/plain"}
 
-    return 'OK: "' + email + '" -> created' + \
-        "\n", 200, {"Content-Type": "text/plain"}
+    return 'OK: "' + name + '" -> created', 200, \
+            {"Content-Type": "text/plain"}
 
 
 @app.route("/user/edit", methods=["POST"])
@@ -143,24 +143,24 @@ def user_edit():
             "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    email = request.form["email"]
-    new_email = request.form["new_email"]
+    name = request.form["name"]
+    new_name = request.form["new_name"]
     new_sshkey = request.form["new_sshkey"]
     new_comment = request.form["new_comment"]
 
     # Check required fields
-    if not email:
-        return "ERROR: The email is required ", 417, {
+    if not name:
+        return "ERROR: The name is required ", 417, {
             "Content-Type": "text/plain"}
 
-    # Check if the email exists in the database
-    query_check = db.session.query(user.User).filter_by(email=email).first()
+    # Check if the name exists in the database
+    query_check = db.session.query(user.User).filter_by(name=name).first()
 
     if query_check is None:
-        return 'ERROR: No user with the email "' + email + \
+        return 'ERROR: No user with the name "' + name + \
             '" in the database.\n', 417, {"Content-Type": "text/plain"}
 
-    to_update = db.session.query(user.User).filter_by(email=email)
+    to_update = db.session.query(user.User).filter_by(name=name)
 
     # Let's modify only relevent fields
     # Strangely the order is important, have to investigate why
@@ -205,41 +205,40 @@ def user_edit():
                 {"Content-Type": "text/plain"}
 
         to_update.update({"sshkey": new_sshkey.encode("utf8")})
-    if new_email:
-        # Check unicity for email
-        query = db.session.query(user.User.email)\
-            .filter_by(email=new_email).first()
+    if new_name:
+        # Check unicity for name
+        query = db.session.query(user.User.name)\
+            .filter_by(name=new_name).first()
 
-        if query is not None and new_email != query.email:
-            return 'ERROR: The email "' + new_email + \
+        if query is not None and new_name != query.name:
+            return 'ERROR: The name "' + new_name + \
                 '" is already used by another user ', \
                 417, {"Content-Type": "text/plain"}
 
-        to_update.update({"email": new_email.encode("utf8")})
+        to_update.update({"name": new_name.encode("utf8")})
 
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + email + '" -> ' + e.message + \
-            "\n", 409, {"Content-Type": "text/plain"}
+        return 'ERROR: "' + name + '" -> ' + e.message, 409, \
+                {"Content-Type": "text/plain"}
 
-    return 'OK: "' + email + '" -> edited' + \
-        "\n", 200, {"Content-Type": "text/plain"}
+    return 'OK: "' + name + '" -> edited', 200, {"Content-Type": "text/plain"}
 
 
-@app.route("/user/delete/<email>")
-def user_delete(email):
+@app.route("/user/delete/<name>")
+def user_delete(name):
     """Delete a user in the database"""
-    if not email:
-        return "ERROR: The email is required ", 417, {
+    if not name:
+        return "ERROR: The name is required ", 417, {
             "Content-Type": "text/plain"}
 
-    # Check if the email exists
-    query = db.session.query(user.User).filter_by(email=email).first()
+    # Check if the name exists
+    query = db.session.query(user.User).filter_by(name=name).first()
 
     if query is None:
-        return 'ERROR: No user with the email "' + email + \
-            '" in the database.\n', 417, {"Content-Type": "text/plain"}
+        return 'ERROR: No user with the name "' + name + \
+            '" in the database.', 417, {"Content-Type": "text/plain"}
 
     warning = ""
     # Delete the SSH key from the file authorized_keys
@@ -270,13 +269,13 @@ def user_delete(email):
 
     db.session.query(
         user.User).filter(
-        user.User.email == email).delete()
+        user.User.name == name).delete()
 
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + email + '" -> ' + e.message + \
-            "\n", 409, {"Content-Type": "text/plain"}
+        return 'ERROR: "' + name + '" -> ' + e.message, 409, \
+                {"Content-Type": "text/plain"}
 
-    return 'OK: "' + email + '" -> deleted' + \
+    return 'OK: "' + name + '" -> deleted' + \
         "\n" + warning, 200, {"Content-Type": "text/plain"}
