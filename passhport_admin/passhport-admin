@@ -6,28 +6,30 @@ Usage:
     passhport-admin (-i | --interactive)
     passhport-admin user list
     passhport-admin user search [<pattern>]
-    passhport-admin user (show|delete) [<email>]
-    passhport-admin user create [((<email> <sshkey>) [<comment>])]
-    passhport-admin user edit [<email> [--newemail=<email>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
+    passhport-admin user (show|delete) [<name>]
+    passhport-admin user create [((<name> <sshkey>) [--comment=<comment>])]
+    passhport-admin user edit [<name> [--newname=<name>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
     passhport-admin target list
     passhport-admin target search <pattern>
-    passhport-admin target (show|show_users|show_usergroups|create|edit|delete)
-    passhport-admin target (show|delete) <targetname>
-    passhport-admin target create <targetname> <hostname> <comment> <sshoptions> <port> <servertype> <autocommand>
-    passhport-admin target edit <targetname> <newtargetname> <hostname> <comment> <sshoptions> <port> <servertype> <autocommand>
-    passhport-admin target (adduser|rmuser) <email> <targetname>
+    passhport-admin target (show|delete) [<name>]
+    passhport-admin target create [((<name> <hostname>) [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] [--servretype=<servertype>] [--autocommand=<autocommand>])]
+    passhport-admin target edit [<name> [--newname=<name>] \
+[--newhostname=<hostname>] [--newcomment=<comment>] \
+[--newsshoptions=<sshoptions>] [--newport=<port>] \
+[--newservertype=<servertype>] [--newautocommand=<autocommand>]]
+    passhport-admin target (adduser|rmuser) [<username> <targetname>]
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
     passhport-admin usergroup (show|create|edit|del)
-    passhport-admin usergroup (adduser|rmuser) <email> <groupname>
-    passhport-admin usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
+    passhport-admin usergroup (adduser|rmuser) <username> <usergroupname>
+    passhport-admin usergroup (addusergroup|rmusergroup) <subusergroupname> <usergroupname>
     passhport-admin targetgroup list
     passhport-admin targetgroup search <pattern>
     passhport-admin targetgroup (show|create|edit|del)
     passhport-admin targetgroup (addtarget|rmtarget) <targetname> <targetgroupname>
     passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <subtargetgroupname> <targetgroupname>
-    passhport-admin targetgroup (adduser|rmuser) <email> <targetgroupname>
-    passhport-admin targetgroup (addusergroup|rmusergroup) <groupname> <targetgroupname>
+    passhport-admin targetgroup (adduser|rmuser) <username> <targetgroupname>
+    passhport-admin targetgroup (addusergroup|rmusergroup) <usergroupname> <targetgroupname>
     passhport-admin (-h | --version)
 
 Arguments:
@@ -55,15 +57,17 @@ Options:
 import sys
 import cmd
 
-import manage_user as mu
-import manage_target as mt
-import manage_usergroup as mug
-import manage_targetgroup as mtg
+#import manage_user as mu
+#import manage_target as mt
+#import manage_usergroup as mug
+#import manage_targetgroup as mtg
 
-from manage_user import *
-from manage_target import *
-from manage_usergroup import *
-from manage_targetgroup import *
+#from manage_user import *
+#from manage_target import *
+#from manage_usergroup import *
+#from manage_targetgroup import *
+import manager 
+from manager import *
 
 from docopt import docopt, DocoptExit
 
@@ -237,10 +241,7 @@ Options
 
 def requests_object_method(opt):
     """Call the right method depending of the object type"""
-    objects = {'user': mu,
-               'target': mt,
-               'usergroup': mug,
-               'targetgroup': mtg}
+    objects = {"user", "target", "usergroup", "targetgroup"}
     methods = {'list', 'search', 'show', 'delete', 'create', 'edit',
                'adduser', 'rmuser', 'addusergroup', 'rmusergroup',
                'addtarget', 'rmtarget', 'addtargetgroup', 'rmtargetgroup'}
@@ -249,7 +250,7 @@ def requests_object_method(opt):
     # Determine which object/method to use
     # And build a list of list containing all parameters
     for key, value in opt.items():
-        if key in objects.keys():
+        if key in objects:
             obj = key
         elif key in methods:
             method = key
@@ -258,12 +259,13 @@ def requests_object_method(opt):
 
     if param:
         # All info are here nothing to ask to the user
-        module = objects[obj].requests_functions
-        getattr(module, method)(param)
+        module = manager.requests_functions
+        getattr(module, method)(obj,param)
     else:
         # Need more info, lets prompt user
-        module = objects[obj].prompt_functions
-        getattr(module, method)()
+        module = manager.prompt_functions
+        getattr(module, method)(obj)
+
 
 opt = docopt(__doc__, sys.argv[1:])
 if __name__ == '__main__':

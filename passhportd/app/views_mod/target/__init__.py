@@ -13,14 +13,14 @@ def target_list():
     """Return the target list of database"""
     result = []
     query = db.session.query(
-        target.Target.targetname).order_by(
-        target.Target.targetname).all()
+        target.Target.name).order_by(
+        target.Target.name).all()
 
     for row in query:
         result.append(row[0])
 
     if not result:
-        return "No target in database.\n", 200, {"Content-Type": "text/plain"}
+        return "No target in database.", 200, {"Content-Type": "text/plain"}
 
     return "\n".join(result), 200, {"Content-Type": "text/plain"}
 
@@ -35,9 +35,9 @@ def target_search(pattern):
     """
 
     result = []
-    query  = db.session.query(target.Target.targetname)\
-        .filter(target.Target.targetname.like("%" + pattern + "%"))\
-        .order_by(target.Target.targetname).all()
+    query  = db.session.query(target.Target.name)\
+        .filter(target.Target.name.like("%" + pattern + "%"))\
+        .order_by(target.Target.name).all()
 
     for row in query:
         result.append(row[0])
@@ -49,8 +49,8 @@ def target_search(pattern):
     return "\n".join(result), 200, {"Content-Type": "text/plain"}
 
 
-@app.route("/target/show/<targetname>")
-def target_show(targetname):
+@app.route("/target/show/<name>")
+def target_show(name):
     """Return all data about a user"""
     """
     To check
@@ -59,14 +59,14 @@ def target_show(targetname):
     """
 
     # Check for required fields
-    if not targetname:
-        return "ERROR: The email is required ", 417, {
+    if not name:
+        return "ERROR: The name is required ", 417, {
             "Content-Type": "text/plain"}
 
-    target_data = target.Target.query.filter_by(targetname=targetname).first()
+    target_data = target.Target.query.filter_by(name=name).first()
 
     if target_data is None:
-        return 'ERROR: No target with the name "' + targetname + \
+        return 'ERROR: No target with the name "' + name + \
             '" in the database.\n', 417, {"Content-Type": "text/plain"}
 
     return str(target_data), 200, {"Content-Type": "text/plain"}
@@ -80,8 +80,9 @@ def target_create():
         return "ERROR: POST method is required ", 405, {
             "Content-Type": "text/plain"}
 
+    print "plop"
     # Simplification for the reading
-    targetname = request.form["targetname"]
+    name = request.form["name"]
     hostname = request.form["hostname"]
     port = request.form["port"]
     sshoptions = request.form["sshoptions"]
@@ -90,24 +91,24 @@ def target_create():
     comment = request.form["comment"]
 
     # Check for required fields
-    if not targetname or not hostname:
-        return "ERROR: The targetname and hostname are required ", 417, {
+    if not name or not hostname:
+        return "ERROR: The name and hostname are required ", 417, {
             "Content-Type": "text/plain"}
 
     if not port:
         port = 22
 
-    # Check unicity for targetname
-    query = db.session.query(target.Target.targetname)\
-        .filter_by(targetname=targetname).first()
+    # Check unicity for name
+    query = db.session.query(target.Target.name)\
+        .filter_by(name=name).first()
 
     if query is not None:
-        return 'ERROR: The targetname "' + targetname + \
+        return 'ERROR: The name "' + name + \
             '" is already used by another target ',\
              417, {"Content-Type": "text/plain"}
 
     t = target.Target(
-        targetname=targetname,
+        name=name,
         hostname=hostname,
         port=port,
         sshoptions=sshoptions,
@@ -120,11 +121,11 @@ def target_create():
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + targetname + '" -> ' + e.message + \
-            "\n", 409, {"Content-Type": "text/plain"}
+        return 'ERROR: "' + name + '" -> ' + e.message, 409, \
+                {"Content-Type": "text/plain"}
 
-    return 'OK: "' + targetname + '" -> created' + \
-        "\n", 200, {"Content-Type": "text/plain"}
+    return 'OK: "' + name + '" -> created', 200, \
+            {"Content-Type": "text/plain"}
 
 
 @app.route("/target/edit", methods=["POST"])
@@ -136,8 +137,8 @@ def target_edit():
             "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    targetname = request.form["targetname"]
-    new_targetname = request.form["new_targetname"]
+    name = request.form["name"]
+    new_name = request.form["new_name"]
     new_hostname = request.form["new_hostname"]
     new_port = request.form["new_port"]
     new_sshoptions = request.form["new_sshoptions"]
@@ -146,19 +147,19 @@ def target_edit():
     new_comment = request.form["new_comment"]
 
     # Check required fields
-    if not targetname:
-        return "ERROR: The targetname is required ", 417, {
+    if not name:
+        return "ERROR: The name is required ", 417, {
             "Content-Type": "text/plain"}
 
-    # Check if the targetname exists in the database
+    # Check if the name exists in the database
     query = db.session.query(target.Target)\
-        .filter_by(targetname=targetname).first()
+        .filter_by(name=name).first()
 
     if query is None:
-        return 'ERROR: No target with the targetname "' + targetname + \
+        return 'ERROR: No target with the name "' + name + \
             '" in the database.\n', 417, {"Content-Type": "text/plain"}
 
-    toupdate = db.session.query(target.Target).filter_by(targetname=targetname)
+    toupdate = db.session.query(target.Target).filter_by(name=name)
 
     # Let's modify only relevent fields
     if new_sshoptions:
@@ -173,54 +174,54 @@ def target_edit():
         toupdate.update({"port": new_port})
     if new_hostname:
         toupdate.update({"hostname": new_hostname})
-    if new_targetname:
-        # Check unicity for targetname
-        query = db.session.query(target.Target.targetname)\
-            .filter_by(targetname=new_targetname).first()
+    if new_name:
+        # Check unicity for name
+        query = db.session.query(target.Target.name)\
+            .filter_by(name=new_name).first()
 
-        if query is not None and new_targetname != query.targetname:
-            return 'ERROR: The targetname "' + new_targetname + \
+        if query is not None and new_name != query.name:
+            return 'ERROR: The name "' + new_name + \
                 '" is already used by another target ', \
                 417, {"Content-Type": "text/plain"}
 
-        toupdate.update({"targetname": new_targetname})
+        toupdate.update({"name": new_name})
 
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + targetname + '" -> ' + e.message + \
+        return 'ERROR: "' + name + '" -> ' + e.message + \
             "\n", 409, {"Content-Type": "text/plain"}
 
-    return 'OK: "' + targetname + '" -> edited' + \
+    return 'OK: "' + name + '" -> edited' + \
         "\n", 200, {"Content-Type": "text/plain"}
 
 
-@app.route("/target/delete/<targetname>")
-def target_delete(targetname):
+@app.route("/target/delete/<name>")
+def target_delete(name):
     """Delete a target in the database"""
-    if not targetname:
-        return "ERROR: The targetname is required ", 417, {
+    if not name:
+        return "ERROR: The name is required ", 417, {
             "Content-Type": "text/plain"}
 
-    # Check if the targetname exists
-    query = db.session.query(target.Target.targetname)\
-        .filter_by(targetname=targetname).first()
+    # Check if the name exists
+    query = db.session.query(target.Target.name)\
+        .filter_by(name=name).first()
 
     if query is None:
-        return 'ERROR: No target with the targetname "' + targetname + \
+        return 'ERROR: No target with the name "' + name + \
             '" in the database.\n', 417, {"Content-Type": "text/plain"}
 
     db.session.query(
         target.Target).filter(
-        target.Target.targetname == targetname).delete()
+        target.Target.name == name).delete()
 
     try:
         db.session.commit()
     except exc.SQLAlchemyError:
-        return 'ERROR: "' + targetname + '" -> ' + e.message + \
+        return 'ERROR: "' + name + '" -> ' + e.message + \
             "\n", 409, {"Content-Type": "text/plain"}
 
-    return 'OK: "' + targetname + '" -> deleted' + \
+    return 'OK: "' + name + '" -> deleted' + \
         "\n", 200, {"Content-Type": "text/plain"}
 
 
@@ -234,11 +235,11 @@ def target_adduser():
 
     # Simplification for the reading
     targetname = request.form['targetname']
-    email = request.form['email']
+    username = request.form['username']
 
     # Check for mandatory fields
-    if not targetname or not email:
-        return "ERROR: The targetname and email are required ", 417, {
+    if not targetname or not username:
+        return "ERROR: The targetname and username are required ", 417, {
             'Content-Type': 'text/plain'}
 
     # Target and user have to exist in database
@@ -247,9 +248,9 @@ def target_adduser():
         return 'ERROR: no target "' + targetname + \
             '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    u = get_user(email)
+    u = get_user(username)
     if not u:
-        return 'ERROR: no user "' + email + \
+        return 'ERROR: no user "' + username + \
             '" in the database ', 417, {'Content-Type': 'text/plain'}
 
     # Now we can add the user
@@ -260,7 +261,7 @@ def target_adduser():
         return 'ERROR: "' + targetname + '" -> ' + e.message + \
             '\n', 409, {'Content-Type': 'text/plain'}
 
-    return 'OK: "' + email + '" added to "' + targetname + \
+    return 'OK: "' + username + '" added to "' + targetname + \
         '"', 200, {'Content-Type': 'text/plain'}
 
 
@@ -274,11 +275,11 @@ def target_rmuser():
 
     # Simplification for the reading
     targetname = request.form['targetname']
-    email = request.form['email']
+    username = request.form['username']
 
     # Check for mandatory fields
-    if not targetname or not email:
-        return "ERROR: The targetname and email are required ", 417, {
+    if not targetname or not username:
+        return "ERROR: The targetname and name are required ", 417, {
             'Content-Type': 'text/plain'}
 
     # Target and user have to exist in database
@@ -287,14 +288,14 @@ def target_rmuser():
         return 'ERROR: No target "' + targetname + \
             '" in the database ', 417, {'Content-Type': 'text/plain'}
 
-    u = get_user(email)
+    u = get_user(username)
     if not u:
-        return 'ERROR: No user "' + email + \
+        return 'ERROR: No user "' + username + \
             '" in the database ', 417, {'Content-Type': 'text/plain'}
 
     # Check if the given user is a member of the given target
-    if not t.email_in_target(email):
-        return 'ERROR: The user "' + email + '" is not a member of the target "' + \
+    if not t.name_in_target(username):
+        return 'ERROR: The user "' + username + '" is not a member of the target "' + \
             targetname + '" ', 417, {'Content-Type': 'text/plain'}
 
     # Now we can remove the user
@@ -305,7 +306,7 @@ def target_rmuser():
         return 'ERROR: "' + targetname + '" -> ' + e.message + \
             '\n', 409, {'Content-Type': 'text/plain'}
 
-    return 'OK: "' + email + '" removed from "' + \
+    return 'OK: "' + username + '" removed from "' + \
         targetname + '"', 200, {'Content-Type': 'text/plain'}
 
 
@@ -408,10 +409,10 @@ def get_target(targetname):
         return False
 
 
-def get_user(email):
-    """Return the user with the given email"""
+def get_user(name):
+    """Return the user with the given name"""
     u = db.session.query(user.User).filter(
-        user.User.email == email).all()
+        user.User.name == name).all()
 
     # User must exist in database
     if u:

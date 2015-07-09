@@ -46,7 +46,7 @@ class Usergroup(db.Model):
         output.append("User list:")
 
         for user in self.members:
-            output.append(user.show_email())
+            output.append(user.show_name())
 
         output.append("Usergroup list: ")
 
@@ -66,7 +66,7 @@ class Usergroup(db.Model):
         output.append("User list:")
 
         for user in self.members:
-            output.append(user.show_email())
+            output.append(user.show_name())
 
         return "\n".join(output)
 
@@ -89,10 +89,10 @@ class Usergroup(db.Model):
 
         return self
 
-    def email_in_usergroup(self, email):
-        """Return true if the given email belongs to a member of the usergroup"""
+    def name_in_usergroup(self, name):
+        """Return true if the given name belongs to a member of the usergroup"""
         for user in self.members:
-            if user.show_email() == email:
+            if user.show_name() == name:
                 return True
 
         return False
