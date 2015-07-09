@@ -1,9 +1,16 @@
 #!/usr/bin/env python
 # -*-coding:Utf-8 -*-
 
-def pcreate(param):
+import python_compat as pyt_compat
+import requests_functions as req
+
+def pcreate():
     """Prompt user to obtain data to request"""
-    print "plop"
+    name = pyt_compat.input_compat("Name: ")
+    sshkey = pyt_compat.input_compat("SSHKey: ")
+    comment = pyt_compat.input_compat("Comment: ")
+
+    return {'<name>': name, '<sshkey>': sshkey, '<comment>': comment}
 
 
 def create(param):
@@ -17,9 +24,19 @@ def create(param):
             'comment': comment}
 
 
-def pedit(param):
+def pedit():
     """Prompt user to obtain data to request"""
-    print "1plop"
+    name = pyt_compat.input_compat("Name of the user you want to modify: ")
+
+    if req.show("user", {'<name>': name}) == 0:
+        new_name = pyt_compat.input_compat("New name: ")
+        new_comment = pyt_compat.input_compat("New comment: ")
+        new_sshkey = pyt_compat.input_compat("New SSH key: ")
+
+        return {'<name>': name,
+                '--newname': new_name,
+                '--newcomment': new_comment,
+                '--newsshkey': new_sshkey}
 
 
 def edit(param):

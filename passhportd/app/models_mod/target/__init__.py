@@ -8,7 +8,7 @@ from app import db
 class Target(db.Model):
     __tablename__ = "target"
     id = db.Column(db.Integer, primary_key=True)
-    targetname = db.Column(db.String(256), index=True, unique=True)
+    name = db.Column(db.String(256), index=True, unique=True)
     hostname = db.Column(db.String(120), index=True, nullable=False)
     port = db.Column(db.Integer, index=False)
     sshoptions = db.Column(db.String(500), index=True)
@@ -24,7 +24,7 @@ class Target(db.Model):
         """Return main data of the target as a string"""
         output = []
 
-        output.append("Targetname: {}".format(self.targetname))
+        output.append("Name: {}".format(self.name))
         output.append("Hostname: {}".format(self.hostname))
         output.append("Port: {}".format(str(self.port)))
         output.append("SSH options: {}".format(self.sshoptions))
@@ -47,7 +47,7 @@ class Target(db.Model):
 
     def show_name(self):
         """Return a string containing the target's name"""
-        return self.targetname
+        return self.name
 
     # User management
     def adduser(self, user):

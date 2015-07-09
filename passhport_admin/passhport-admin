@@ -13,7 +13,10 @@ Usage:
     passhport-admin target search <pattern>
     passhport-admin target (show|delete) [<name>]
     passhport-admin target create [((<name> <hostname>) [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] [--servretype=<servertype>] [--autocommand=<autocommand>])]
-    passhport-admin target edit [<name> [--newname=<name>] [--newhostname=<hostname>] [--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>] [--newservertype=<servertype>] [--newservertype=<autocommand>]]
+    passhport-admin target edit [<name> [--newname=<name>] \
+[--newhostname=<hostname>] [--newcomment=<comment>] \
+[--newsshoptions=<sshoptions>] [--newport=<port>] \
+[--newservertype=<servertype>] [--newautocommand=<autocommand>]]
     passhport-admin target (adduser|rmuser) [<username> <targetname>]
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
