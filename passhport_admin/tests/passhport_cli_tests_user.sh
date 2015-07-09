@@ -21,7 +21,7 @@ SSHKEY="ssh-rsa AAAAB3NzaC1yc2TAAAADAQABAAABAQCoeJeOHb++y3dx6sv26/wHbWyX5sbtwKba
 # Creating an already existing user
 # Search/show/edit/del an existing user
 
-# SEARCH 1/2 
+# SEARCH 1/2
 PATTERN="No user matching the pattern \"${USEREMAIL}\" found."
 ${CMD} search ${USEREMAIL} | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
@@ -41,7 +41,7 @@ echo "[user] edit   1/2: " ${r/1/ERROR}
 
 # DEL 1/2
 PATTERN="ERROR: No user with the email \"${USEREMAIL}\" in the database."
-${CMD} delete ${USEREMAIL}  | grep "${PATTERN}"  &> /dev/null
+${CMD} delete --force ${USEREMAIL}  | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] del    1/2: " ${r/1/ERROR}
 
@@ -52,7 +52,7 @@ r=${?/0/OK}
 echo "[user] create 1/2: " ${r/1/ERROR}
 
 # CREATE 2/2
-PATTERN="ERROR: The email \"${USEREMAIL}\" is already used by another user" 
+PATTERN="ERROR: The email \"${USEREMAIL}\" is already used by another user"
 ${CMD} create ${USEREMAIL} "${SSHKEY}" "${COMMENT}" | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] create 2/2: " ${r/1/ERROR}
@@ -72,13 +72,13 @@ r=${?/0/OK}
 echo "[user] show   2/2: " ${r/1/ERROR}
 
 # EDIT 2/2
-PATTERN="OK: \"${USEREMAIL}\" -> edited" 
+PATTERN="OK: \"${USEREMAIL}\" -> edited"
 ${CMD} edit ${USEREMAIL} --newemail=new_${USEREMAIL} --newcomment="${COMMENT}" --newsshkey="${SSHKEY}" | grep "${PATTERN}" &> /dev/null
 r=${?/0/OK}
 echo "[user] edit   2/2: " ${r/1/ERROR}
 
 # DEL 2/2
 PATTERN="OK: \"new_${USEREMAIL}\" -> deleted"
-${CMD} delete new_${USEREMAIL} | grep "${PATTERN}"  &> /dev/null
+${CMD} delete --force new_${USEREMAIL} | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] del    2/2: " ${r/1/ERROR}

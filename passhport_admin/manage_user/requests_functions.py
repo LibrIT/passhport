@@ -1,6 +1,8 @@
 # -*-coding:Utf-8 -*-
 
-"""Contains functions which make requests to the server for user's management"""
+"""Contains functions which make requests to the server for
+user's management
+"""
 
 import requests
 

@@ -5,7 +5,6 @@
 import python_compat as pyt_compat
 import requests_functions as req
 
-
 def list():
     """List all users in the database"""
     return req.list()
@@ -53,4 +52,19 @@ def delete():
     """Ask arguments for deleting an existing user"""
     email = pyt_compat.input_compat("Email: ")
 
-    return req.delete({'<email>': email})
+    choice_is_correct = False
+    while not choice_is_correct:  # Loop to key in choice correctly
+        choice = pyt_compat.input_compat(
+            "Are you sure you want to do this? [Y/n] ")
+
+        # We assume the choice is correct, we will check right after
+        choice_is_correct = True
+
+        # Verifying that the choice is actually correct
+        if choice.upper() == "Y":
+            return req.delete({'<email>': email})
+        elif choice.upper() == "N":
+            print("Operation aborted")
+        else:
+            print("You didn't type a correct choice, please try again.")
+            choice_is_correct = False

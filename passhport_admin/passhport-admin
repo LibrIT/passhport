@@ -4,9 +4,9 @@
 """
 Usage:
     passhport-admin (-i | --interactive)
-    passhport-admin user list
+    passhport-admin user (list|delete)
     passhport-admin user search [<pattern>]
-    passhport-admin user (show|delete) [<email>]
+    passhport-admin user (show|(delete --force)) [<email>]
     passhport-admin user create [((<email> <sshkey>) [<comment>])]
     passhport-admin user edit [<email> [--newemail=<email>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
     passhport-admin target list
@@ -69,9 +69,8 @@ from docopt import docopt, DocoptExit
 
 
 def docopt_cmd(func):
-    """
-    This decorator is used to simplify the try/except block and pass the result
-    of the docopt parsing to the called action.
+    """This decorator is used to simplify the try/except block and pass
+    the result of the docopt parsing to the called action.
     """
 
     def fn(self, arg):
