@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*-coding:Utf-8 -*-
 
-import python_compat as pyt_compat
-import requests_functions as req
+from . import python_compat as pyt_compat
 
 def pcreate():
     """Prompt user to obtain data to request"""
@@ -19,7 +18,7 @@ def create(param):
     if '--comment' in param:
         comment = param['--comment']
 
-    return {'name': param['<name>'], 
+    return {'name': param['<name>'],
             'sshkey': param['<sshkey>'],
             'comment': comment}
 
@@ -55,4 +54,3 @@ def edit(param):
             'new_name': new_name,
             'new_comment': new_comment,
             'new_sshkey': new_sshkey}
-
