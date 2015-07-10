@@ -54,7 +54,7 @@ class TestTarget:
         comment     = "Magnificent target"
         output      = """Targetname: clever_server\nHostname: 127.0.0.1\nPort: 54\nSSH options: --zap\nServertype: Bodhi\nAutocommand: ls -lh\nComment: Magnificent target\nUser list:\nrocket@man.net\nUsergroup list:\nChevaliers_du_zodiaque"""
 
-        email = "rocket@man.net"
+        name = "rocket@man.net"
         sshkey = "railway"
         comment_user = "speedy"
         user_list = []
@@ -64,7 +64,7 @@ class TestTarget:
         usergroup_list = []
 
         u = user.User(
-            email=email,
+            name=name,
             sshkey=sshkey,
             comment=comment_user)
         user_list.append(u)
@@ -113,7 +113,7 @@ class TestTarget:
         autocommand = "ls -lh"
         comment     = "Magnificent target"
 
-        email = "rocket@man.net"
+        name = "rocket@man.net"
         sshkey = "railway"
         comment_user = "speedy"
         user_list = []
@@ -123,7 +123,7 @@ class TestTarget:
         usergroup_list = []
 
         u = user.User(
-            email=email,
+            name=name,
             sshkey=sshkey,
             comment=comment_user)
         user_list.append(u)
@@ -184,10 +184,10 @@ class TestTarget:
         new_autocommand = "ls -klarth"
         new_comment     = "Marvellous target"
 
-        email = "rocket@man.net"
+        name = "rocket@man.net"
         sshkey = "railway"
         comment_user = "speedy"
-        email2 = "palette@color.net"
+        name2 = "palette@color.net"
         sshkey2 = "rough tell"
         comment_user2 = "slow"
         user_list = []
@@ -199,7 +199,7 @@ class TestTarget:
         usergroup_list = []
 
         u = user.User(
-            email=email,
+            name=name,
             sshkey=sshkey,
             comment=comment_user)
         user_list.append(u)
@@ -223,7 +223,7 @@ class TestTarget:
         db.session.commit()
 
         u = user.User(
-            email=email2,
+            name=name2,
             sshkey=sshkey2,
             comment=comment_user2)
         user_list.append(u)
@@ -624,7 +624,7 @@ class TestTarget:
         autocommand = "ls -lh"
         comment     = "Magnificent target"
 
-        email = "rasta@populos.museum"
+        name = "rasta@populos.museum"
         sshkey = "something"
         comment = "seldom"
 
@@ -638,7 +638,7 @@ class TestTarget:
             comment=comment)
 
         u = user.User(
-            email=email,
+            name=name,
             sshkey=sshkey,
             comment=comment)
 
@@ -666,7 +666,7 @@ class TestTarget:
         autocommand = "ls -lh"
         comment     = "Magnificent target"
 
-        email = "rasta@populos.museum"
+        name = "rasta@populos.museum"
         sshkey = "something"
         comment = "seldom"
 
@@ -680,7 +680,7 @@ class TestTarget:
             comment=comment)
 
         u = user.User(
-            email=email,
+            name=name,
             sshkey=sshkey,
             comment=comment)
 
@@ -709,7 +709,7 @@ class TestTarget:
         autocommand = "ls -lh"
         comment     = "Magnificent target"
 
-        email = "rasta@populos.museum"
+        name = "rasta@populos.museum"
         sshkey = "something"
         comment = "seldom"
 
@@ -723,7 +723,7 @@ class TestTarget:
             comment=comment)
 
         u = user.User(
-            email=email,
+            name=name,
             sshkey=sshkey,
             comment=comment)
 
@@ -754,10 +754,10 @@ class TestTarget:
         autocommand = "ls -lh"
         comment     = "Magnificent target"
 
-        email = "rasta@populos.museum"
+        name = "rasta@populos.museum"
         sshkey = "something"
         comment = "seldom"
-        email2 = "marsu@pila.mi"
+        name2 = "marsu@pila.mi"
         sshkey2 = "queue"
         comment2 = "yellow"
 
@@ -771,12 +771,12 @@ class TestTarget:
             comment=comment)
 
         u = user.User(
-            email=email,
+            name=name,
             sshkey=sshkey,
             comment=comment)
 
         u2 = user.User(
-            email=email2,
+            name=name2,
             sshkey=sshkey2,
             comment=comment2)
 

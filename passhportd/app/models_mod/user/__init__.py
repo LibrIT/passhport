@@ -8,7 +8,7 @@ from app import db
 class User(db.Model):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), index=True, unique=True, nullable=False)
+    name = db.Column(db.String(120), index=True, unique=True, nullable=False)
     sshkey = db.Column(
         db.String(500),
         index=False,
@@ -23,12 +23,12 @@ class User(db.Model):
         """Return main data of the user as a string"""
         output = []
 
-        output.append("Email: {}".format(self.email))
+        output.append("Name: {}".format(self.name))
         output.append("SSH key: {}".format(self.sshkey))
         output.append("Comment: {}".format(self.comment))
 
         return "\n".join(output)
 
-    def show_email(self):
-        """Return a string containing the user's email"""
-        return self.email.encode("utf8")
+    def show_name(self):
+        """Return a string containing the user's name"""
+        return self.name.encode("utf8")
