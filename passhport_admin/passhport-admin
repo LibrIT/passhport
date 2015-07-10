@@ -54,20 +54,14 @@ Options:
     -h, --help          Show this screen and exit.
 """
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import sys
 import cmd
 
-#import manage_user as mu
-#import manage_target as mt
-#import manage_usergroup as mug
-#import manage_targetgroup as mtg
-
-#from manage_user import *
-#from manage_target import *
-#from manage_usergroup import *
-#from manage_targetgroup import *
-import manager
-from manager import *
+from manager import (prompt_functions, requests_functions, user, target,
+usergroup, targetgroup)
 
 from docopt import docopt, DocoptExit
 
@@ -258,11 +252,11 @@ def requests_object_method(opt):
 
     if param:
         # All info are here nothing to ask to the user
-        module = manager.requests_functions
+        module = requests_functions
         getattr(module, method)(obj,param)
     else:
         # Need more info, lets prompt user
-        module = manager.prompt_functions
+        module = prompt_functions
         getattr(module, method)(obj)
 
 

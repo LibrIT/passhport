@@ -2,6 +2,10 @@
 
 """Contains functions which make requests to the server"""
 
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import requests
 
 from . import user as user

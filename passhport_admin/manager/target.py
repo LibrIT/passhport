@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*-coding:Utf-8 -*-
 
-from . import python_compat as pyt_compat
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from builtins import input
 
 def is_int(port):
     """Check if port is an integer"""
@@ -15,24 +18,24 @@ def is_int(port):
 
 def ask_port(prompt_text):
     """Same as input() but check if user enter an integer"""
-    port = pyt_compat.input_compat(prompt_text)
+    port = input(prompt_text)
 
     while port and not is_int(port):  # Loop until user enter a real number
         print("You didn't enter a number, please try again.")
-        port = pyt_compat.input_compat(prompt_text)
+        port = input(prompt_text)
 
     return port
 
 
 def prompt_create():
     """Prompt user to obtain data to request"""
-    name = pyt_compat.input_compat("Name: ")
-    hostname = pyt_compat.input_compat("Hostname: ")
+    name = input("Name: ")
+    hostname = input("Hostname: ")
     port = ask_port("Port: ")
-    sshoptions = pyt_compat.input_compat("SSH Options: ")
-    servertype = pyt_compat.input_compat("Server type: ")
-    autocommand = pyt_compat.input_compat("Autocommand: ")
-    comment = pyt_compat.input_compat("Comment: ")
+    sshoptions = input("SSH Options: ")
+    servertype = input("Server type: ")
+    autocommand = input("Autocommand: ")
+    comment = input("Comment: ")
 
     return {"<name>": name,
         "<hostname>": hostname,
@@ -77,17 +80,16 @@ def create(param):
 
 def prompt_edit():
     """Prompt user to obtain data to request"""
-    name = pyt_compat.input_compat("Name of the target you want to modify: ")
+    name = input("Name of the target you want to modify: ")
 
     if req.show("target", {"<name>": name}) == 0:
-        new_name = pyt_compat.input_compat("New name: ")
-        new_hostname = pyt_compat.input_compat("New hostname: ")
+        new_name = input("New name: ")
+        new_hostname = input("New hostname: ")
         new_port = ask_port("New port: ")
-        new_sshoptions = pyt_compat.input_compat("New SSH options: ")
-        new_servertype = pyt_compat.input_compat("New server type: ")
-        new_autocommand = pyt_compat.input_compat("New autocommand: ")
-        new_comment = pyt_compat.input_compat("New comment: ")
-
+        new_sshoptions = input("New SSH options: ")
+        new_servertype = input("New server type: ")
+        new_autocommand = input("New autocommand: ")
+        new_comment = input("New comment: ")
 
     return {"<name>": name,
             "--newname": new_name,
@@ -123,7 +125,6 @@ def edit(param):
         new_autocommand = param["--newautocommand"]
     if "--newcomment" in param:
         new_comment = param["--newcomment"]
-
 
     return {"name": param["<name>"],
             "new_name": new_name,

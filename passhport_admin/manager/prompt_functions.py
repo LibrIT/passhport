@@ -4,7 +4,11 @@
 call request functions
 """
 
-from . import python_compat as pyt_compat
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from builtins import input
+
 from . import requests_functions as req
 
 from . import user as user
@@ -20,22 +24,19 @@ def list(obj):
 
 def search(obj):
     """Search an object of this type which match the pattern"""
-    pattern = pyt_compat.input_compat("Pattern: ")
-
+    pattern = input("Pattern: ")
     return req.search(obj, {"<pattern>": pattern})
 
 
 def show(obj):
     """Ask arguments for showing the object"""
-    name = pyt_compat.input_compat("Name: ")
-
+    name = input("Name: ")
     return req.show(obj, {"<name>": name})
 
 
 def delete(obj):
     """Ask arguments for deleting an existing user"""
-    name = pyt_compat.input_compat("Name: ")
-
+    name = input("Name: ")
     return req.delete({"<name>": name})
 
 
@@ -56,3 +57,5 @@ def edit(obj):
 
     if data:
         return req.edit(obj, data)
+
+    return None

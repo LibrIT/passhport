@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # -*-coding:Utf-8 -*-
 
-from . import python_compat as pyt_compat
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from builtins import input
 
 def prompt_create():
     """Prompt user to obtain data for request"""
-    name = pyt_compat.input_compat("Name: ")
-    sshkey = pyt_compat.input_compat("SSH Key: ")
-    comment = pyt_compat.input_compat("Comment: ")
+    name = input("Name: ")
+    sshkey = input("SSH Key: ")
+    comment = input("Comment: ")
 
     return {"<name>": name, "<sshkey>": sshkey, "<comment>": comment}
 
@@ -26,7 +29,7 @@ def create(param):
 
 def prompt_edit():
     """Prompt user to obtain data to request"""
-    name = pyt_compat.input_compat("Name of the user you want to modify: ")
+    name = input("Name of the user you want to modify: ")
 
     if req.show("user", {"<name>": name}) == 0:
         new_name = pyt_compat.input_compat("New name: ")
