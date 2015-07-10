@@ -46,9 +46,8 @@ class Targetgroup(db.Model):
         output = []
 
         output.append(
-            "Targetgroupname: {}".format(
-                self.targetgroupname.encode('utf8')))
-        output.append("Comment: {}".format(self.comment.encode('utf8')))
+            "Targetgroupname: {}".format(self.targetgroupname))
+        output.append("Comment: {}".format(self.comment))
         output.append("User list:")
 
         for user in self.members:
@@ -73,7 +72,7 @@ class Targetgroup(db.Model):
 
     def show_targetgroupname(self):
         """Return a string containing the targetgroup’s name"""
-        return self.targetgroupname.encode("utf8")
+        return self.targetgroupname
 
     # Target management
     def is_tmembers(self, target):

@@ -23,7 +23,7 @@ def usergroup_list():
         usergroup.Usergroup.usergroupname)
 
     for row in query.all():
-        result.append(str(row[0]).encode('utf8'))
+        result.append(row[0])
 
     if not result:
         return "No usergroup in database.\n", 200, {
@@ -47,7 +47,7 @@ def usergroup_search(pattern):
         .filter(usergroup.Usergroup.usergroupname.like('%' + pattern + '%'))
 
     for row in query.all():
-        result.append(str(row[0]).encode('utf8'))
+        result.append(row[0])
 
     if not result:
         return 'No usergroup matching the pattern "' + pattern + \
@@ -138,10 +138,10 @@ def usergroup_edit():
     # Let's modify only relevent fields
     # Strangely the order is important, have to investigate why
     if new_comment:
-        toupdate.update({"comment": str(new_comment).encode('utf8')})
+        toupdate.update({"comment": new_comment})
     if new_usergroupname:
         toupdate.update(
-            {"usergroupname": str(new_usergroupname).encode('utf8')})
+            {"usergroupname": new_usergroupname})
 
     try:
         db.session.commit()

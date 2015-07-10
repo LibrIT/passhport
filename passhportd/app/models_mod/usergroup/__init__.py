@@ -44,9 +44,8 @@ class Usergroup(db.Model):
         output = []
 
         output.append(
-            "Usergroupname: {}".format(
-                self.usergroupname.encode("utf8")))
-        output.append("Comment: {}".format(self.comment.encode("utf8")))
+            "Usergroupname: {}".format(self.usergroupname))
+        output.append("Comment: {}".format(self.comment))
         output.append("User list:")
 
         for user in self.members:
@@ -61,7 +60,7 @@ class Usergroup(db.Model):
 
     def show_usergroupname(self):
         """Return a string containing the usergroup's name"""
-        return self.usergroupname.encode("utf8")
+        return self.usergroupname
 
     def show_users(self):
         """Show user list of the usergroup"""

@@ -35,4 +35,4 @@ class User(db.Model):
 
     def show_name(self):
         """Return a string containing the user's name"""
-        return self.name.encode("utf8")
+        return self.name

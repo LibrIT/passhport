@@ -21,7 +21,7 @@ def targetgroup_list():
         targetgroup.Targetgroup.targetgroupname)
 
     for row in query.all():
-        result.append(str(row[0].encode('utf8')))
+        result.append(str(row[0]))
 
     if not result:
         return "No targetgroup in database.\n", 200, {
@@ -42,7 +42,7 @@ def targetgroup_search(pattern):
             '%'))
 
     for row in query.all():
-        result.append(str(row[0]).encode('utf8'))
+        result.append(str(row[0]))
 
     if not result:
         return 'No targetgroup matching the pattern "' + pattern + \
@@ -126,10 +126,10 @@ def targetgroup_edit():
 
     # Let's modify only relevent fields
     if new_comment:
-        toupdate.update({'comment': str(new_comment).encode('utf8')})
+        toupdate.update({'comment': str(new_comment)})
     if new_targetgroupname:
         toupdate.update(
-            {'targetgroupname': str(new_targetgroupname).encode('utf8')})
+            {'targetgroupname': str(new_targetgroupname)})
 
     try:
         db.session.commit()
