@@ -1,5 +1,5 @@
 #!/bin/bash
-# Launch all command line which don't need interractions
+# Launch all command line which don't need interactions
 # Goal is to be able to test rapidly all the passhport-admin
 # basic functions
 
@@ -21,7 +21,7 @@ SSHKEY="ssh-rsa AAAAB3NzaC1yc2TAAAADAQABAAABAQCoeJeOHb++y3dx6sv26/wHbWyX5sbtwKba
 # Creating an already existing user
 # Search/show/edit/del an existing user
 
-# SEARCH 1/2 
+# SEARCH 1/2
 PATTERN="No user matching the pattern \"${USERNAME}\" found."
 ${CMD} search ${USERNAME} | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
@@ -52,7 +52,7 @@ r=${?/0/OK}
 echo "[user] create 1/2: " ${r/1/ERROR}
 
 # CREATE 2/2
-PATTERN="ERROR: The name \"${USERNAME}\" is already used by another user" 
+PATTERN="ERROR: The name \"${USERNAME}\" is already used by another user"
 ${CMD} create ${USERNAME} "${SSHKEY}" --comment="${COMMENT}" | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] create 2/2: " ${r/1/ERROR}
@@ -72,7 +72,7 @@ r=${?/0/OK}
 echo "[user] show   2/2: " ${r/1/ERROR}
 
 # EDIT 2/2
-PATTERN="OK: \"${USERNAME}\" -> edited" 
+PATTERN="OK: \"${USERNAME}\" -> edited"
 ${CMD} edit ${USERNAME} --newname=new_${USERNAME} --newcomment="${COMMENT}" --newsshkey="${SSHKEY}" | grep "${PATTERN}" &> /dev/null
 r=${?/0/OK}
 echo "[user] edit   2/2: " ${r/1/ERROR}
