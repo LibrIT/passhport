@@ -52,9 +52,9 @@ class TestTarget:
         servertype  = "Bodhi"
         autocommand = "ls -lh"
         comment     = "Magnificent target"
-        output      = """Targetname: clever_server\nHostname: 127.0.0.1\nPort: 54\nSSH options: --zap\nServertype: Bodhi\nAutocommand: ls -lh\nComment: Magnificent target\nUser list:\nrocket@man.net\nUsergroup list:\nChevaliers_du_zodiaque"""
+        output      = """Name: clever_server\nHostname: 127.0.0.1\nPort: 54\nSSH options: --zap\nServertype: Bodhi\nAutocommand: ls -lh\nComment: Magnificent target\nUser list:\nrocket@man.net\nUsergroup list:\nChevaliers_du_zodiaque"""
 
-        name = "rocket@man.net"
+        username = "rocket@man.net"
         sshkey = "railway"
         comment_user = "speedy"
         user_list = []
@@ -64,7 +64,7 @@ class TestTarget:
         usergroup_list = []
 
         u = user.User(
-            name=name,
+            name=username,
             sshkey=sshkey,
             comment=comment_user)
         user_list.append(u)
@@ -75,7 +75,7 @@ class TestTarget:
         usergroup_list.append(ug)
 
         t = target.Target(
-            targetname=targetname,
+            name=targetname,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -89,9 +89,9 @@ class TestTarget:
 
         t_db = db.session.query(
             target.Target).filter_by(
-            targetname="clever_server").first()
+            name="clever_server").first()
 
-        assert_equal(t_db.targetname, targetname)
+        assert_equal(t_db.name, targetname)
         assert_equal(t_db.hostname, hostname)
         assert_equal(t_db.port, port)
         assert_equal(t_db.sshoptions, sshoptions)
@@ -101,11 +101,11 @@ class TestTarget:
         assert_equal(repr(t_db), output)
 
     @raises(exc.IntegrityError)
-    def test_create_existing_targetname(self):
+    def test_create_existing_name(self):
         """Target creation in database with an already used
-        targetname fails
+        name fails
         """
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -134,7 +134,7 @@ class TestTarget:
         usergroup_list.append(ug)
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -147,7 +147,7 @@ class TestTarget:
         db.session.commit()
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname="a great host",
             port=port,
             sshoptions=sshoptions,
@@ -159,13 +159,13 @@ class TestTarget:
         db.session.add(t)
         db.session.commit()
 
-    # We should test if an empty targetname while creating a target
+    # We should test if an empty name while creating a target
     # raises an error, but it seems that SQLite doesn't check it
-    # def test_create_empty_targetname(self):
+    # def test_create_empty_name(self):
 
     # We should test if an empty hostname while creating a target
     # raises an error, but it seems that SQLite doesn't check it
-    # def test_create_empty_targetname(self):
+    # def test_create_empty_name(self):
 
     def test_edit(self):
         """Target edition in database succeeds"""
@@ -184,10 +184,10 @@ class TestTarget:
         new_autocommand = "ls -klarth"
         new_comment     = "Marvellous target"
 
-        name = "rocket@man.net"
+        username = "rocket@man.net"
         sshkey = "railway"
         comment_user = "speedy"
-        name2 = "palette@color.net"
+        username2 = "palette@color.net"
         sshkey2 = "rough tell"
         comment_user2 = "slow"
         user_list = []
@@ -199,7 +199,7 @@ class TestTarget:
         usergroup_list = []
 
         u = user.User(
-            name=name,
+            name=username,
             sshkey=sshkey,
             comment=comment_user)
         user_list.append(u)
@@ -210,7 +210,7 @@ class TestTarget:
         usergroup_list.append(ug)
 
         t = target.Target(
-            targetname=targetname,
+            name=targetname,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -223,7 +223,7 @@ class TestTarget:
         db.session.commit()
 
         u = user.User(
-            name=name2,
+            name=username2,
             sshkey=sshkey2,
             comment=comment_user2)
         user_list.append(u)
@@ -235,10 +235,10 @@ class TestTarget:
 
         target_to_edit = db.session.query(
             target.Target).filter_by(
-            targetname="clever_server")
+            name="clever_server")
         updated_rows = target_to_edit.update(
             {
-                "targetname": new_targetname,
+                "name": new_targetname,
                 "hostname": new_hostname,
                 "port": new_port,
                 "sshoptions": new_sshoptions,
@@ -249,11 +249,11 @@ class TestTarget:
 
         t_edit = db.session.query(
             target.Target).filter_by(
-            targetname=new_targetname).first()
+            name=new_targetname).first()
 
         assert_equal(updated_rows, 1)
         assert_equal(t.id, t_edit.id)
-        assert_equal(t_edit.targetname, new_targetname)
+        assert_equal(t_edit.name, new_targetname)
         assert_equal(t_edit.hostname, new_hostname)
         assert_equal(t_edit.port, new_port)
         assert_equal(t_edit.sshoptions, new_sshoptions)
@@ -266,10 +266,10 @@ class TestTarget:
         """
         t = db.session.query(
             target.Target).filter_by(
-            targetname="delicious_target")
+            name="delicious_target")
         updated_rows = t.update(
             {
-                "targetname": "awful",
+                "name": "awful",
                 "hostname": "batmobile",
                 "port": 42,
                 "sshoptions": "-p",
@@ -282,18 +282,18 @@ class TestTarget:
         db.session.commit()
 
     @raises(exc.IntegrityError)
-    def test_edit_existing_targetname(self):
-        """Target edition with a new targetname already used in
+    def test_edit_existing_name(self):
+        """Target edition with a new name already used in
         database fails
         """
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
         servertype  = "Bodhi"
         autocommand = "ls -lh"
         comment     = "Magnificent target"
-        targetname2  = "bad_server"
+        name2  = "bad_server"
         hostname2    = "127.0.0.3"
         port2        = 55
         sshoptions2  = "--zapel"
@@ -302,7 +302,7 @@ class TestTarget:
         comment2     = "Worse target"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -310,7 +310,7 @@ class TestTarget:
             autocommand=autocommand,
             comment=comment)
         t2 = target.Target(
-            targetname=targetname2,
+            name=name2,
             hostname=hostname2,
             port=port2,
             sshoptions=sshoptions2,
@@ -325,14 +325,14 @@ class TestTarget:
 
         t2 = db.session.query(
              target.Target).filter_by(
-             targetname=targetname2)
-        updated_rows = t2.update({"targetname": targetname})
+             name=name2)
+        updated_rows = t2.update({"name": name})
 
         db.session.commit()
 
     def test_show(self):
         """Target show in database succeeds"""
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -341,7 +341,7 @@ class TestTarget:
         comment     = "Magnificent target"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -352,9 +352,9 @@ class TestTarget:
         db.session.commit()
 
         target_data = target.Target.query.filter_by(
-            targetname=targetname).first()
+            name=name).first()
 
-        assert_equal(targetname, target_data.targetname)
+        assert_equal(name, target_data.name)
         assert_equal(hostname, target_data.hostname)
         assert_equal(port, target_data.port)
         assert_equal(sshoptions, target_data.sshoptions)
@@ -367,13 +367,13 @@ class TestTarget:
         (but doesn't raise error)
         """
         target_data = target.Target.query.filter_by(
-            targetname="bull").first()
+            name="bull").first()
 
         assert_is_none(target_data)
 
     def test_delete(self):
         """Target deletion in database succeeds"""
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -382,7 +382,7 @@ class TestTarget:
         comment     = "Magnificent target"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -397,14 +397,14 @@ class TestTarget:
 
         t_db = db.session.query(
             target.Target).filter_by(
-            targetname="clever_server").first()
+            name="clever_server").first()
 
         assert_is_none(t_db)
 
     @raises(exc.InvalidRequestError)
     def test_delete_non_existing_target(self):
         """Target deletion with a non existing target fails"""
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -413,7 +413,7 @@ class TestTarget:
         comment     = "Magnificent target"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -426,14 +426,14 @@ class TestTarget:
     def test_list_no_targets(self):
         """Target listing with no target in database succeeds"""
         query = db.session.query(
-            target.Target.targetname).order_by(
-            target.Target.targetname).all()
+            target.Target.name).order_by(
+            target.Target.name).all()
 
         assert_equal(query, [])
 
     def test_list_existing_targets(self):
         """Target listing with existing targets in database succeeds"""
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -443,7 +443,7 @@ class TestTarget:
         target_list = []
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -454,8 +454,8 @@ class TestTarget:
         db.session.commit()
 
         query = db.session.query(
-            target.Target.targetname).order_by(
-            target.Target.targetname).all()
+            target.Target.name).order_by(
+            target.Target.name).all()
         for row in query:
             target_list.append(str(row[0]))
 
@@ -467,14 +467,14 @@ class TestTarget:
         """Target search with targets matching pattern in database
         succeeds
         """
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
         servertype  = "Bodhi"
         autocommand = "ls -lh"
         comment     = "Magnificent target"
-        targetname2  = "bad_server"
+        name2  = "bad_server"
         hostname2    = "127.0.0.3"
         port2        = 55
         sshoptions2  = "--zapel"
@@ -484,7 +484,7 @@ class TestTarget:
         res_list     = []
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -492,7 +492,7 @@ class TestTarget:
             autocommand=autocommand,
             comment=comment)
         t2 = target.Target(
-            targetname=targetname2,
+            name=name2,
             hostname=hostname2,
             port=port2,
             sshoptions=sshoptions2,
@@ -505,12 +505,12 @@ class TestTarget:
         db.session.commit()
 
         query = db.session.query(
-            target.Target.targetname).filter(
-            target.Target.targetname.like(
+            target.Target.name).filter(
+            target.Target.name.like(
                 "%" +
                 "clever" +
                 "%")).order_by(
-                target.Target.targetname).all()
+                target.Target.name).all()
 
         for row in query:
             res_list.append(str(row[0]))
@@ -522,14 +522,14 @@ class TestTarget:
     def test_search_empty_pattern(self):
         """Target searching with an empty pattern returning all targets
         in database succeeds"""
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
         servertype  = "Bodhi"
         autocommand = "ls -lh"
         comment     = "Magnificent target"
-        targetname2  = "bad_server"
+        name2  = "bad_server"
         hostname2    = "127.0.0.3"
         port2        = 55
         sshoptions2  = "--zapel"
@@ -539,7 +539,7 @@ class TestTarget:
         res_list     = []
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -547,7 +547,7 @@ class TestTarget:
             autocommand=autocommand,
             comment=comment)
         t2 = target.Target(
-            targetname=targetname2,
+            name=name2,
             hostname=hostname2,
             port=port2,
             sshoptions=sshoptions2,
@@ -560,12 +560,12 @@ class TestTarget:
         db.session.commit()
 
         query = db.session.query(
-            target.Target.targetname).filter(
-            target.Target.targetname.like(
+            target.Target.name).filter(
+            target.Target.name.like(
                 "%" +
                 "" +
                 "%")).order_by(
-                target.Target.targetname).all()
+                target.Target.name).all()
 
         for row in query:
             res_list.append(str(row[0]))
@@ -578,7 +578,7 @@ class TestTarget:
         """Target searching with a pattern that no target match with
         in database returning nothing succeeds
         """
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -588,7 +588,7 @@ class TestTarget:
         res_list = []
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -600,12 +600,12 @@ class TestTarget:
         db.session.commit()
 
         query = db.session.query(
-            target.Target.targetname).filter(
-            target.Target.targetname.like(
+            target.Target.name).filter(
+            target.Target.name.like(
                 "%" +
                 "zhu" +
                 "%")).order_by(
-                target.Target.targetname).all()
+                target.Target.name).all()
 
         for row in query:
             res_list.append(str(row[0]))
@@ -616,7 +616,7 @@ class TestTarget:
 
     def test_add_user(self):
         """Target adding a user succeeds"""
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -629,7 +629,7 @@ class TestTarget:
         comment = "seldom"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -650,7 +650,7 @@ class TestTarget:
 
         t_db = db.session.query(
             target.Target).filter_by(
-            targetname=targetname).first()
+            name=name).first()
 
         assert_equal(t_db.members, [u])
 
@@ -658,7 +658,7 @@ class TestTarget:
         """Target adding a user already in target does nothing
         (but doesn't raise error)
         """
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -671,7 +671,7 @@ class TestTarget:
         comment = "seldom"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -695,13 +695,13 @@ class TestTarget:
 
         t_db = db.session.query(
             target.Target).filter_by(
-            targetname=targetname).first()
+            name=name).first()
 
         assert_equal(t_db.members, [u])
 
     def test_remove_user(self):
         """Target removing a user succeeds"""
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -714,7 +714,7 @@ class TestTarget:
         comment = "seldom"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -738,7 +738,7 @@ class TestTarget:
 
         t_db = db.session.query(
             target.Target).filter_by(
-            targetname=targetname).first()
+            name=name).first()
 
         assert_equal(t_db.members, [])
 
@@ -746,7 +746,7 @@ class TestTarget:
         """Target removing a user not in target does nothing
         (but doesn't raise error)
         """
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -762,7 +762,7 @@ class TestTarget:
         comment2 = "yellow"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -795,13 +795,13 @@ class TestTarget:
 
         t_db = db.session.query(
             target.Target).filter_by(
-            targetname=targetname).first()
+            name=name).first()
 
         assert_equal(t_db.members, [u2])
 
     def test_add_usergroup(self):
         """Target adding a usergroup succeeds"""
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -813,7 +813,7 @@ class TestTarget:
         comment_usergroup = "Captain Viridian to the rescue"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -833,7 +833,7 @@ class TestTarget:
 
         t_db = db.session.query(
             target.Target).filter_by(
-            targetname=targetname).first()
+            name=name).first()
 
         assert_equal(t_db.gmembers, [ug])
 
@@ -841,7 +841,7 @@ class TestTarget:
         """Target adding a usergroup already in target does nothing
         (but doesn't raise error)
         """
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -853,7 +853,7 @@ class TestTarget:
         comment_usergroup = "Captain Viridian to the rescue"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -876,13 +876,13 @@ class TestTarget:
 
         t_db = db.session.query(
             target.Target).filter_by(
-            targetname=targetname).first()
+            name=name).first()
 
         assert_equal(t_db.gmembers, [ug])
 
     def test_remove_usergroup(self):
         """Target removing a usergroup succeeds"""
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -894,7 +894,7 @@ class TestTarget:
         comment_usergroup = "Captain Viridian to the rescue"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -917,7 +917,7 @@ class TestTarget:
 
         t_db = db.session.query(
             target.Target).filter_by(
-            targetname=targetname).first()
+            name=name).first()
 
         assert_equal(t_db.gmembers, [])
 
@@ -925,7 +925,7 @@ class TestTarget:
         """Target removing a usergroup not in target does nothing
         (but doesn't raise error)
         """
-        targetname  = "clever_server"
+        name  = "clever_server"
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
@@ -939,7 +939,7 @@ class TestTarget:
         comment_usergroup2 = "Captain Pamplemousse need rescue"
 
         t = target.Target(
-            targetname=targetname,
+            name=name,
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
@@ -966,6 +966,6 @@ class TestTarget:
 
         t_db = db.session.query(
             target.Target).filter_by(
-            targetname=targetname).first()
+            name=name).first()
 
         assert_equal(t_db.gmembers, [ug])
