@@ -1,5 +1,9 @@
 # -*-coding:Utf-8 -*-
 
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 from app import db
 
 """User defines information for every adminsys using passhport"""

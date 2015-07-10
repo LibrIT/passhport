@@ -4,7 +4,7 @@
 """
 Usage:
     passhport-admin (-i | --interactive)
-    passhport-admin user (list|delete)
+    passhport-admin user (list)
     passhport-admin user search [<pattern>]
     passhport-admin user (show|delete) [<name>]
     passhport-admin user create [((<name> <sshkey>) [--comment=<comment>])]

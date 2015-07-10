@@ -1,6 +1,10 @@
 #!/usr/bin/env python
-"""
-   Server side using flask
-"""
+# -*-coding:Utf-8 -*-
+
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
+"""Server side using flask"""
 from app import app
 app.run(debug=True)

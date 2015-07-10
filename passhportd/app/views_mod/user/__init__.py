@@ -1,5 +1,10 @@
 # -*-coding:Utf-8 -*-
 
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from io import open
+
 import os
 import config
 
@@ -17,7 +22,7 @@ def user_list():
     query = db.session.query(user.User.name).order_by(user.User.name).all()
 
     for row in query:
-        result.append(row[0].encode("utf8"))
+        result.append(row[0])
 
     if not result:
         return "No user in database.\n", 200, {"Content-Type": "text/plain"}
@@ -40,7 +45,7 @@ def user_search(pattern):
         .order_by(user.User.name).all()
 
     for row in query:
-        result.append(row[0].encode("utf8"))
+        result.append(row[0])
 
     if not result:
         return 'No user matching the pattern "' + pattern + \
@@ -110,7 +115,7 @@ def user_create():
 
     # Add the SSH key in the file authorized_keys
     try:
-        with open(config.SSH_KEY_FILE, "a") as \
+        with open(config.SSH_KEY_FILE, "a", encoding="utf8") as \
             authorized_keys_file:
             authorized_keys_file.write(sshkey + "\n")
     except IOError:
@@ -165,7 +170,7 @@ def user_edit():
     # Let's modify only relevent fields
     # Strangely the order is important, have to investigate why
     if new_comment:
-        to_update.update({"comment": new_comment.encode("utf8")})
+        to_update.update({"comment": new_comment})
     if new_sshkey:
         # Check unicity for SSH key
         query = db.session.query(user.User.sshkey)\
@@ -178,7 +183,7 @@ def user_edit():
 
         # Edit the SSH key in the file authorized_keys
         try:
-            with open(config.SSH_KEY_FILE, "r+") as \
+            with open(config.SSH_KEY_FILE, "r+", encoding="utf8") as \
                 authorized_keys_file:
                 line_edited = False
                 content = authorized_keys_file.readlines()
@@ -189,7 +194,7 @@ def user_edit():
                         if line != (query_check.sshkey + "\n"):
                             authorized_keys_file.write(line)
                         else:
-                            authorized_keys_file.write(new_sshkey + "\n")
+                            authorized_keys_file.write(query.sshkey + "\n")
                             line_edited = True
                     else:
                         if line == (query_check.sshkey + "\n"):
@@ -204,7 +209,7 @@ def user_edit():
             return 'ERROR: cannot write in the file "authorized_keys"', 500, \
                 {"Content-Type": "text/plain"}
 
-        to_update.update({"sshkey": new_sshkey.encode("utf8")})
+        to_update.update({"sshkey": new_sshkey})
     if new_name:
         # Check unicity for name
         query = db.session.query(user.User.name)\
@@ -215,7 +220,7 @@ def user_edit():
                 '" is already used by another user ', \
                 417, {"Content-Type": "text/plain"}
 
-        to_update.update({"name": new_name.encode("utf8")})
+        to_update.update({"name": new_name})
 
     try:
         db.session.commit()
@@ -243,7 +248,7 @@ def user_delete(name):
     warning = ""
     # Delete the SSH key from the file authorized_keys
     try:
-        with open(config.SSH_KEY_FILE, "r+") as \
+        with open(config.SSH_KEY_FILE, "r+", encoding="utf8") as \
             authorized_keys_file:
             line_deleted = False
             content = authorized_keys_file.readlines()
