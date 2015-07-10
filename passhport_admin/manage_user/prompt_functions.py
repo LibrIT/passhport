@@ -2,8 +2,12 @@
 
 """Contains functions that interpret commmands from the CLI and call request functions for user's management"""
 
-import python_compat as pyt_compat
-import requests_functions as req
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+from builtins import *
+
+# from . import python_compat as pyt_compat
+from . import requests_functions as req
 
 def list():
     """List all users in the database"""
@@ -12,7 +16,7 @@ def list():
 
 def search():
     """Search a user according to the pattern"""
-    pattern = pyt_compat.input_compat("Pattern: ")
+    pattern = input("Pattern: ")
     return req.search({'<pattern>': pattern})
 
 

@@ -2,8 +2,8 @@
 
 """Contains functions that interpret commmands from the CLI and call request functions for target's management"""
 
-import python_compat as pyt_compat
-import requests_functions as req
+from . import python_compat as pyt_compat
+from . import requests_functions as req
 
 
 def prompt_target_list():
