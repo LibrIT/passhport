@@ -70,11 +70,15 @@ class Target(db.Model):
         return self
 
     def is_member(self, user):
-        """Return true if the given user is a member of the target, false otherwise"""
+        """Return true if the given user is a member of the target,
+        false otherwise
+        """
         return user in self.members
 
     def name_in_target(self, name):
-        """Return true if the given name belongs to a member of the target"""
+        """Return true if the given name belongs to a member
+        of the target
+        """
         for user in self.members:
             if user.show_name() == name:
                 return True
@@ -97,11 +101,15 @@ class Target(db.Model):
         return self
 
     def is_gmember(self, usergroup):
-        """Return true if the given usergroup is a member of the target, false otherwise"""
+        """Return true if the given usergroup is a member
+        of the target, false otherwise
+        """
         return usergroup in self.gmembers
 
     def usergroupname_in_target(self, usergroupname):
-        """Return true if the given usergroupname belongs to a member of the target"""
+        """Return true if the given usergroupname belongs to a member
+        of the target
+        """
         for usergroup in self.gmembers:
             if usergroup.show_usergroupname() == usergroupname:
                 return True
