@@ -6,10 +6,9 @@ from __future__ import unicode_literals
 
 from app import db
 
-"""User defines information for every adminsys using passhport"""
-
 
 class User(db.Model):
+    """User defines information for every adminsys using passhport"""
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), index=True, unique=True, nullable=False)

@@ -6,10 +6,11 @@ from __future__ import unicode_literals
 
 from app import db
 
-"""Target defines information for every server accessible through passhport"""
-
 
 class Target(db.Model):
+    """Target defines information for every server accessible
+    through passhport
+    """
     __tablename__ = "target"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), index=True, unique=True)

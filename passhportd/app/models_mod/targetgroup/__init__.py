@@ -6,7 +6,8 @@ from __future__ import unicode_literals
 
 from app import db
 
-# Table to handle the self-referencing many-to-many relationship for the Targetgroup class:
+# Table to handle the self-referencing many-to-many relationship
+# for the Targetgroup class:
 # First column holds the containers, the second the subgroups.
 tgroup_of_tgroup = db.Table(
     "tgroup_of_tgroup",
@@ -21,10 +22,11 @@ tgroup_of_tgroup = db.Table(
         db.ForeignKey("targetgroup.id"),
         primary_key=True))
 
-"""Targetgroup defines a group of targets (can contain some targetgroups too)"""
-
 
 class Targetgroup(db.Model):
+    """Targetgroup defines a group of targets
+    (can contain some targetgroups too)
+    """
     __tablename__ = "targetgroup"
     id = db.Column(db.Integer, primary_key=True)
     targetgroupname = db.Column(db.String(256), index=True, unique=True)
@@ -76,11 +78,15 @@ class Targetgroup(db.Model):
 
     # Target management
     def is_tmembers(self, target):
-        """Return true if the given target is a member of the targetgroup, false otherwise"""
+        """Return true if the given target is a member
+        of the targetgroup, false otherwise
+        """
         return target in self.tmembers
 
     def name_in_targetgroup(self, targetname):
-        """Return true if the given targetname belongs to a member of the targetgroup"""
+        """Return true if the given targetname belongs to a member
+        of the targetgroup
+        """
         for target in self.tmembers:
             if target.show_name() == targetname:
                 return True
@@ -103,7 +109,9 @@ class Targetgroup(db.Model):
 
     # User management
     def is_members(self, user):
-        """Return true if the given user is a member of the targetgroup, false otherwise"""
+        """Return true if the given user is a member
+        of the targetgroup, false otherwise
+        """
         return user in self.members
 
     def adduser(self, user):
@@ -122,7 +130,9 @@ class Targetgroup(db.Model):
 
     # Usergroup management
     def is_gmembers(self, usergroup):
-        """Return true if the given usergroup is a member of the targetgroup, false otherwise"""
+        """Return true if the given usergroup is a member
+        of the targetgroup, false otherwise
+        """
         return usergroup in self.gmembers
 
     def addusergroup(self, usergroup):
@@ -141,7 +151,9 @@ class Targetgroup(db.Model):
 
     # Targetgroup anagement
     def is_tgmembers(self, targetgroup):
-        """Return true if the given targetgroup is a member of the targetgroup, false otherwise"""
+        """Return true if the given targetgroup is a member
+        of the targetgroup, false otherwise
+        """
         return targetgroup in self.tgmembers
 
     def addtargetgroup(self, targetgroup):

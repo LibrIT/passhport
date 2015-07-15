@@ -6,10 +6,11 @@ from __future__ import unicode_literals
 
 from app import db
 
-# Table to handle the self-referencing many-to-many relationship for the Usergroup class:
+# Table to handle the self-referencing many-to-many relationship
+# for the Usergroup class:
 # First column holds the containers, the second the subgroups.
 group_of_group = db.Table(
-    'group_of_group',
+    "group_of_group",
     db.Column(
         "container_id",
         db.Integer,
@@ -21,10 +22,11 @@ group_of_group = db.Table(
         db.ForeignKey("usergroup.id"),
         primary_key=True))
 
-"""Usergroup defines a group of users (can contain some usergroups too)"""
-
 
 class Usergroup(db.Model):
+    """Usergroup defines a group of users
+    (can contain some usergroups too)
+    """
     __tablename__ = "usergroup"
     id = db.Column(db.Integer, primary_key=True)
     usergroupname = db.Column(db.String(256), index=True, unique=True)
@@ -75,7 +77,9 @@ class Usergroup(db.Model):
 
     # User management
     def is_member(self, user):
-        """Return true if the given user is a member of the usergroup, false otherwise"""
+        """Return true if the given user is a member of the usergroup,
+        false otherwise
+        """
         return user in self.members
 
     def adduser(self, user):
@@ -93,7 +97,9 @@ class Usergroup(db.Model):
         return self
 
     def name_in_usergroup(self, name):
-        """Return true if the given name belongs to a member of the usergroup"""
+        """Return true if the given name belongs to a member
+        of the usergroup
+        """
         for user in self.members:
             if user.show_name() == name:
                 return True
@@ -102,7 +108,9 @@ class Usergroup(db.Model):
 
     # Usergroup management
     def is_gmember(self, usergroup):
-        """Return true if the given usergroup is a member of the usergroup, false otherwise"""
+        """Return true if the given usergroup is a member
+        of the usergroup, false otherwise
+        """
         return usergroup in self.gmembers
 
     def addusergroup(self, usergroup):
