@@ -54,6 +54,7 @@ Options:
     -h, --help          Show this screen and exit.
 """
 
+# Compatibility 2.7-3.4
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -105,13 +106,11 @@ class MyInteractive (cmd.Cmd):
     def do_user(self, arg):
         """
 Usage:
-    user list
-    user search <pattern>
-    user (show|create|edit|delete)
-    user show <email>
-    user create <email> <comment> <sshkey>
-    user edit <email> <new_email> <comment> <sshkey>
-    user delete <email>
+    passhport-admin user (list)
+    passhport-admin user search [<pattern>]
+    passhport-admin user (show|delete) [<name>]
+    passhport-admin user create [((<name> <sshkey>) [--comment=<comment>])]
+    passhport-admin user edit [<name> [--newname=<name>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
 
 Arguments:
     pattern         SQL search pattern

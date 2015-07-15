@@ -32,9 +32,9 @@ def prompt_edit():
     name = input("Name of the user you want to modify: ")
 
     if req.show("user", {"<name>": name}) == 0:
-        new_name = pyt_compat.input_compat("New name: ")
-        new_comment = pyt_compat.input_compat("New comment: ")
-        new_sshkey = pyt_compat.input_compat("New SSH key: ")
+        new_name = input("New name: ")
+        new_comment = input("New comment: ")
+        new_sshkey = input("New SSH key: ")
 
         return {"<name>": name,
                 "--newname": new_name,
