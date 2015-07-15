@@ -25,7 +25,7 @@ def user_list():
         result.append(row[0])
 
     if not result:
-        return "No user in database.\n", 200, {"Content-Type": "text/plain"}
+        return "No user in database.", 200, {"Content-Type": "text/plain"}
 
     return "\n".join(result), 200, {"Content-Type": "text/plain"}
 
@@ -33,12 +33,6 @@ def user_list():
 @app.route("/user/search/<pattern>")
 def user_search(pattern):
     """Return a list of users that match the given pattern"""
-    """
-    To check
-        Specific characters
-        upper and lowercases
-    """
-
     result = []
     query  = db.session.query(user.User.name)\
         .filter(user.User.name.like("%" + pattern + "%"))\
@@ -49,7 +43,7 @@ def user_search(pattern):
 
     if not result:
         return 'No user matching the pattern "' + pattern + \
-            '" found.\n', 200, {"Content-Type": "text/plain"}
+            '" found.', 200, {"Content-Type": "text/plain"}
 
     return "\n".join(result), 200, {"Content-Type": "text/plain"}
 
@@ -57,12 +51,6 @@ def user_search(pattern):
 @app.route("/user/show/<name>")
 def user_show(name):
     """Return all data about a user"""
-    """
-    To check
-        Specific characters
-        upper and lowercases
-    """
-
     # Check for required fields
     if not name:
         return "ERROR: The name is required ", 417, {
@@ -72,7 +60,7 @@ def user_show(name):
 
     if user_data is None:
         return 'ERROR: No user with the name "' + name + \
-            '" in the database.\n', 417, {"Content-Type": "text/plain"}
+            '" in the database.', 417, {"Content-Type": "text/plain"}
 
     return str(user_data), 200, {"Content-Type": "text/plain"}
 
@@ -163,7 +151,7 @@ def user_edit():
 
     if query_check is None:
         return 'ERROR: No user with the name "' + name + \
-            '" in the database.\n', 417, {"Content-Type": "text/plain"}
+            '" in the database.', 417, {"Content-Type": "text/plain"}
 
     to_update = db.session.query(user.User).filter_by(name=name)
 
@@ -283,4 +271,4 @@ def user_delete(name):
                 {"Content-Type": "text/plain"}
 
     return 'OK: "' + name + '" -> deleted' + \
-        "\n" + warning, 200, {"Content-Type": "text/plain"}
+         warning, 200, {"Content-Type": "text/plain"}

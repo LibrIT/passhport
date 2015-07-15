@@ -4,7 +4,7 @@
 # basic functions
 
 #GENERAL
-PADM="python3.4 ./passhport-admin"
+PADM="./passhport-admin"
 
 #################
 # USER MANAGEMENT

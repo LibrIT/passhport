@@ -32,12 +32,6 @@ def target_list():
 @app.route("/target/search/<pattern>")
 def target_search(pattern):
     """Return a list of targets that match the given pattern"""
-    """
-    To check
-        Specific characters
-        upper and lowercases
-    """
-
     result = []
     query  = db.session.query(target.Target.name)\
         .filter(target.Target.name.like("%" + pattern + "%"))\
@@ -48,7 +42,7 @@ def target_search(pattern):
 
     if not result:
         return 'No target matching the pattern "' + pattern + \
-            '" found.\n', 200, {"Content-Type": "text/plain"}
+            '" found.', 200, {"Content-Type": "text/plain"}
 
     return "\n".join(result), 200, {"Content-Type": "text/plain"}
 
@@ -56,12 +50,6 @@ def target_search(pattern):
 @app.route("/target/show/<name>")
 def target_show(name):
     """Return all data about a user"""
-    """
-    To check
-        Specific characters
-        upper and lowercases
-    """
-
     # Check for required fields
     if not name:
         return "ERROR: The name is required ", 417, {
@@ -71,7 +59,7 @@ def target_show(name):
 
     if target_data is None:
         return 'ERROR: No target with the name "' + name + \
-            '" in the database.\n', 417, {"Content-Type": "text/plain"}
+            '" in the database.', 417, {"Content-Type": "text/plain"}
 
     return str(target_data), 200, {"Content-Type": "text/plain"}
 
@@ -160,7 +148,7 @@ def target_edit():
 
     if query is None:
         return 'ERROR: No target with the name "' + name + \
-            '" in the database.\n', 417, {"Content-Type": "text/plain"}
+            '" in the database.', 417, {"Content-Type": "text/plain"}
 
     toupdate = db.session.query(target.Target).filter_by(name=name)
 
@@ -192,11 +180,11 @@ def target_edit():
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + name + '" -> ' + e.message + \
-            "\n", 409, {"Content-Type": "text/plain"}
+        return 'ERROR: "' + name + '" -> ' + e.message, 409, {
+            "Content-Type": "text/plain"}
 
-    return 'OK: "' + name + '" -> edited' + \
-        "\n", 200, {"Content-Type": "text/plain"}
+    return 'OK: "' + name + '" -> edited', 200, {
+        "Content-Type": "text/plain"}
 
 
 @app.route("/target/delete/<name>")
@@ -212,7 +200,7 @@ def target_delete(name):
 
     if query is None:
         return 'ERROR: No target with the name "' + name + \
-            '" in the database.\n', 417, {"Content-Type": "text/plain"}
+            '" in the database.', 417, {"Content-Type": "text/plain"}
 
     db.session.query(
         target.Target).filter(
@@ -221,11 +209,11 @@ def target_delete(name):
     try:
         db.session.commit()
     except exc.SQLAlchemyError:
-        return 'ERROR: "' + name + '" -> ' + e.message + \
-            "\n", 409, {"Content-Type": "text/plain"}
+        return 'ERROR: "' + name + '" -> ' + e.message, 409, {
+            "Content-Type": "text/plain"}
 
-    return 'OK: "' + name + '" -> deleted' + \
-        "\n", 200, {"Content-Type": "text/plain"}
+    return 'OK: "' + name + '" -> deleted', 200, {
+        "Content-Type": "text/plain"}
 
 
 @app.route("/target/adduser", methods=["POST"])
@@ -261,8 +249,8 @@ def target_adduser():
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + targetname + '" -> ' + e.message + \
-            '\n', 409, {"Content-Type": "text/plain"}
+        return 'ERROR: "' + targetname + '" -> ' + e.message, 409, {
+            "Content-Type": "text/plain"}
 
     return 'OK: "' + username + '" added to "' + targetname + \
         '"', 200, {"Content-Type": "text/plain"}
@@ -307,8 +295,8 @@ def target_rmuser():
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + targetname + '" -> ' + e.message + \
-            '\n', 409, {"Content-Type": "text/plain"}
+        return 'ERROR: "' + targetname + '" -> ' + e.message, 409, {
+            "Content-Type": "text/plain"}
 
     return 'OK: "' + username + '" removed from "' + \
         targetname + '"', 200, {"Content-Type": "text/plain"}
@@ -347,18 +335,18 @@ def target_addusergroup():
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + targetname + '" -> ' + e.message + \
-            '\n', 409, {"Content-Type": "text/plain"}
+        return 'ERROR: "' + targetname + '" -> ' + e.message, 409, {
+            "Content-Type": "text/plain"}
 
     return 'OK: "' + usergroupname + '" added to "' + \
         targetname + '"', 200, {"Content-Type": "text/plain"}
 
 
-@app.route('/target/rmusergroup', methods=['POST'])
+@app.route("/target/rmusergroup", methods=["POST"])
 def target_rmusergroup():
     """Remove a usergroup from the target in the database"""
     # Only POST data are handled
-    if request.method != 'POST':
+    if request.method != "POST":
         return "ERROR: POST method is required ", 405, {
             "Content-Type": "text/plain"}
 
@@ -393,8 +381,8 @@ def target_rmusergroup():
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + targetname + '" -> ' + e.message + \
-            '\n', 409, {"Content-Type": "text/plain"}
+        return 'ERROR: "' + targetname + '" -> ' + e.message, 409, {
+            "Content-Type": "text/plain"}
 
     return 'OK: "' + usergroupname + '" removed from "' + \
         targetname + '"', 200, {"Content-Type": "text/plain"}
