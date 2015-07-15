@@ -89,7 +89,8 @@ def targetgroup_create():
     for row in query.all():
         if str(row[0]) == targetgroupname:
             return 'ERROR: The targetgroupname "' + targetgroupname + \
-                '" is already used by another targetgroup ', 417, {'Content-Type': 'text/plain'}
+                '" is already used by another targetgroup ', \
+                417, {'Content-Type': 'text/plain'}
 
     t = targetgroup.Targetgroup(
         targetgroupname=targetgroupname,
@@ -157,7 +158,8 @@ def targetgroup_del(targetgroupname):
         if str(row[0]) == targetgroupname:
             db.session.query(
                 targetgroup.Targetgroup).filter(
-                targetgroup.Targetgroup.targetgroupname == targetgroupname).delete()
+                targetgroup.Targetgroup.targetgroupname == targetgroupname)\
+                .delete()
 
             try:
                 db.session.commit()
@@ -186,8 +188,8 @@ def targetgroup_addtarget():
 
     # Check for mandatory fields
     if not targetname or not targetgroupname:
-        return "ERROR: The targetname and targetgroupname are required ", 417, {
-            'Content-Type': 'text/plain'}
+        return "ERROR: The targetname and targetgroupname are required ",
+        417, {'Content-Type': 'text/plain'}
 
     # Targetgroup and target have to exist in database
     tg = get_targetgroup(targetgroupname)
@@ -226,8 +228,8 @@ def targetgroup_rmtarget():
 
     # Check for required fields
     if not targetname or not targetgroupname:
-        return "ERROR: The targetname and targetgroupname are required ", 417, {
-            'Content-Type': 'text/plain'}
+        return "ERROR: The targetname and targetgroupname are required ",
+        417, {'Content-Type': 'text/plain'}
 
     # Targetgroup and target have to exist in database
     tg = get_targetgroup(targetgroupname)
@@ -242,7 +244,8 @@ def targetgroup_rmtarget():
 
     # Check if the given target is a member of the given targetgroup
     if not tg.name_in_targetgroup(targetname):
-        return 'ERROR: The target "' + target + '" is not a member of the targetgroup "' + \
+        return 'ERROR: The target "' + target + \
+            '" is not a member of the targetgroup "' + \
             targetgroupname + '" ', 417, {'Content-Type': 'text/plain'}
 
     # Now we can remove the target
@@ -351,8 +354,8 @@ def targetgroup_addusergroup():
 
     # Check for required fields
     if not targetgroupname or not usergroupname:
-        return "ERROR: The targetgroupname and usergroupname are required ", 417, {
-            'Content-Type': 'text/plain'}
+        return "ERROR: The targetgroupname and usergroupname are required ",
+        417, {'Content-Type': 'text/plain'}
 
     # Targetgroup and usergroup have to exist in database
     tg = get_targetgroup(targetgroupname)
@@ -391,8 +394,8 @@ def targetgroup_rmusergroup():
 
     # Check for required fields
     if not targetgroupname or not usergroupname:
-        return "ERROR: The targetgroupname and usergroupname are required ", 417, {
-            'Content-Type': 'text/plain'}
+        return "ERROR: The targetgroupname and usergroupname are required ",
+        417, {'Content-Type': 'text/plain'}
 
     # Targetgroup and usergroup have to exist in database
     tg = get_targetgroup(targetgroupname)
@@ -419,7 +422,9 @@ def targetgroup_rmusergroup():
 
 @app.route('/targetgroup/addtargetgroup', methods=['POST'])
 def targetgroup_addtargetgroup():
-    """Add a targetgroup (subtargetgroup) in the targetgroup in the database"""
+    """Add a targetgroup (subtargetgroup) in the targetgroup
+    in the database
+    """
     # Only POST data are handled
     if request.method != 'POST':
         return "ERROR: POST method is required ", 405, {
@@ -431,8 +436,8 @@ def targetgroup_addtargetgroup():
 
     # Check for required fields
     if not targetgroupname or not subtargetgroupname:
-        return "ERROR: The targetgroupname and subtargetgroupname are required ", 417, {
-            'Content-Type': 'text/plain'}
+        return "ERROR: The targetgroupname and subtargetgroupname "
+        "are required ", 417, {'Content-Type': 'text/plain'}
 
     # Targetgroup and subtargetgroup have to exist in database
     tg = get_targetgroup(targetgroupname)
@@ -459,7 +464,9 @@ def targetgroup_addtargetgroup():
 
 @app.route('/targetgroup/rmtargetgroup', methods=['POST'])
 def targetgroup_rmtargetgroup():
-    """Remove a targetgroup (subtargetgroup) from the targetgroup in the database"""
+    """Remove a targetgroup (subtargetgroup) from the targetgroup
+    in the database
+    """
     # Only POST data are handled
     if request.method != 'POST':
         return "ERROR: POST method is required ", 405, {
@@ -471,8 +478,8 @@ def targetgroup_rmtargetgroup():
 
     # Check for required fields
     if not targetgroupname or not subtargetgroupname:
-        return "ERROR: The targetgroupname and subtargetgroupname are required ", 417, {
-            'Content-Type': 'text/plain'}
+        return "ERROR: The targetgroupname and subtargetgroupname "
+        "are required ", 417, {'Content-Type': 'text/plain'}
 
     # Targetgroup and subtargetgroup have to exist in database
     tg = get_targetgroup(targetgroupname)

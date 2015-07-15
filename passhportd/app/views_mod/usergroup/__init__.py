@@ -100,7 +100,8 @@ def usergroup_create():
     for row in query.all():
         if str(row[0]) == usergroupname:
             return 'ERROR: The name "' + usergroupname + \
-                '" is already used by another user ', 417, {'Content-Type': 'text/plain'}
+                '" is already used by another user ', \
+                417, {'Content-Type': 'text/plain'}
 
     g = usergroup.Usergroup(
         usergroupname=usergroupname,
@@ -254,7 +255,8 @@ def usergroup_rmuser():
 
     # Check if the given user is a member of the given usergroup
     if not g.name_in_usergroup(name):
-        return 'ERROR: The user "' + name + '" is not a member of the usergroup "' + \
+        return 'ERROR: The user "' + name + \
+            '" is not a member of the usergroup "' + \
             usergroupname + '" ', 417, {'Content-Type': 'text/plain'}
 
     # Now we can remove the user
@@ -283,8 +285,8 @@ def usergroup_addusergroup():
 
     # Check for mandatory fields
     if not usergroupname or not subusergroupname:
-        return "ERROR: The usergroupname and subusergroupname are required ", 417, {
-            'Content-Type': 'text/plain'}
+        return "ERROR: The usergroupname and subusergroupname are required ", \
+            417, {'Content-Type': 'text/plain'}
 
     # Usergroup and subusergroup have to exist in database
     ug = get_usergroup(usergroupname)
@@ -323,8 +325,8 @@ def usergroup_rmusergroup():
 
     # Check for required fields
     if not usergroupname or not subusergroupname:
-        return "ERROR: The usergroupname and subusergroupname are required ", 417, {
-            'Content-Type': 'text/plain'}
+        return "ERROR: The usergroupname and subusergroupname are required ",
+        417, {'Content-Type': 'text/plain'}
 
     # Usergroup and subusergroup have to exist in database
     ug = get_usergroup(usergroupname)

@@ -228,33 +228,33 @@ def target_delete(name):
         "\n", 200, {"Content-Type": "text/plain"}
 
 
-@app.route('/target/adduser', methods=['POST'])
+@app.route("/target/adduser", methods=["POST"])
 def target_adduser():
     """Add a user in the target in the database"""
     # Only POST data are handled
-    if request.method != 'POST':
+    if request.method != "POST":
         return "ERROR: POST method is required ", 405, {
-            'Content-Type': 'text/plain'}
+            "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    targetname = request.form['targetname']
-    username = request.form['username']
+    targetname = request.form["targetname"]
+    username = request.form["username"]
 
     # Check for mandatory fields
     if not targetname or not username:
         return "ERROR: The targetname and username are required ", 417, {
-            'Content-Type': 'text/plain'}
+            "Content-Type": "text/plain"}
 
     # Target and user have to exist in database
     t = get_target(targetname)
     if not t:
         return 'ERROR: no target "' + targetname + \
-            '" in the database ', 417, {'Content-Type': 'text/plain'}
+            '" in the database ', 417, {"Content-Type": "text/plain"}
 
     u = get_user(username)
     if not u:
         return 'ERROR: no user "' + username + \
-            '" in the database ', 417, {'Content-Type': 'text/plain'}
+            '" in the database ', 417, {"Content-Type": "text/plain"}
 
     # Now we can add the user
     t.adduser(u)
@@ -262,44 +262,45 @@ def target_adduser():
         db.session.commit()
     except exc.SQLAlchemyError as e:
         return 'ERROR: "' + targetname + '" -> ' + e.message + \
-            '\n', 409, {'Content-Type': 'text/plain'}
+            '\n', 409, {"Content-Type": "text/plain"}
 
     return 'OK: "' + username + '" added to "' + targetname + \
-        '"', 200, {'Content-Type': 'text/plain'}
+        '"', 200, {"Content-Type": "text/plain"}
 
 
-@app.route('/target/rmuser', methods=['POST'])
+@app.route("/target/rmuser", methods=["POST"])
 def target_rmuser():
     """Remove a user from the target in the database"""
     # Only POST data are handled
-    if request.method != 'POST':
+    if request.method != "POST":
         return "ERROR: POST method is required ", 405, {
-            'Content-Type': 'text/plain'}
+            "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    targetname = request.form['targetname']
-    username = request.form['username']
+    targetname = request.form["targetname"]
+    username = request.form["username"]
 
     # Check for mandatory fields
     if not targetname or not username:
         return "ERROR: The targetname and name are required ", 417, {
-            'Content-Type': 'text/plain'}
+            "Content-Type": "text/plain"}
 
     # Target and user have to exist in database
     t = get_target(targetname)
     if not t:
         return 'ERROR: No target "' + targetname + \
-            '" in the database ', 417, {'Content-Type': 'text/plain'}
+            '" in the database ', 417, {"Content-Type": "text/plain"}
 
     u = get_user(username)
     if not u:
         return 'ERROR: No user "' + username + \
-            '" in the database ', 417, {'Content-Type': 'text/plain'}
+            '" in the database ', 417, {"Content-Type": "text/plain"}
 
     # Check if the given user is a member of the given target
     if not t.name_in_target(username):
-        return 'ERROR: The user "' + username + '" is not a member of the target "' + \
-            targetname + '" ', 417, {'Content-Type': 'text/plain'}
+        return 'ERROR: The user "' + username + \
+            '" is not a member of the target "' + \
+            targetname + '" ', 417, {"Content-Type": "text/plain"}
 
     # Now we can remove the user
     t.rmuser(u)
@@ -307,39 +308,39 @@ def target_rmuser():
         db.session.commit()
     except exc.SQLAlchemyError as e:
         return 'ERROR: "' + targetname + '" -> ' + e.message + \
-            '\n', 409, {'Content-Type': 'text/plain'}
+            '\n', 409, {"Content-Type": "text/plain"}
 
     return 'OK: "' + username + '" removed from "' + \
-        targetname + '"', 200, {'Content-Type': 'text/plain'}
+        targetname + '"', 200, {"Content-Type": "text/plain"}
 
 
-@app.route('/target/addusergroup', methods=['POST'])
+@app.route("/target/addusergroup", methods=["POST"])
 def target_addusergroup():
     """Add a usergroup in the target in the database"""
     # Only POST data are handled
-    if request.method != 'POST':
+    if request.method != "POST":
         return "ERROR: POST method is required ", 405, {
-            'Content-Type': 'text/plain'}
+            "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    targetname = request.form['targetname']
-    usergroupname = request.form['usergroupname']
+    targetname = request.form["targetname"]
+    usergroupname = request.form["usergroupname"]
 
     # Check for mandatory fields
     if not targetname or not usergroupname:
         return "ERROR: The targetname and usergroupname are required ", 417, {
-            'Content-Type': 'text/plain'}
+            "Content-Type": "text/plain"}
 
     # Target and user have to exist in database
     t = get_target(targetname)
     if not t:
         return 'ERROR: no target "' + targetname + \
-            '" in the database ', 417, {'Content-Type': 'text/plain'}
+            '" in the database ', 417, {"Content-Type": "text/plain"}
 
     g = get_usergroup(usergroupname)
     if not g:
         return 'ERROR: no usergroup "' + usergroupname + \
-            '" in the database ', 417, {'Content-Type': 'text/plain'}
+            '" in the database ', 417, {"Content-Type": "text/plain"}
 
     # Now we can add the user
     t.addusergroup(g)
@@ -347,10 +348,10 @@ def target_addusergroup():
         db.session.commit()
     except exc.SQLAlchemyError as e:
         return 'ERROR: "' + targetname + '" -> ' + e.message + \
-            '\n', 409, {'Content-Type': 'text/plain'}
+            '\n', 409, {"Content-Type": "text/plain"}
 
     return 'OK: "' + usergroupname + '" added to "' + \
-        targetname + '"', 200, {'Content-Type': 'text/plain'}
+        targetname + '"', 200, {"Content-Type": "text/plain"}
 
 
 @app.route('/target/rmusergroup', methods=['POST'])
@@ -359,32 +360,33 @@ def target_rmusergroup():
     # Only POST data are handled
     if request.method != 'POST':
         return "ERROR: POST method is required ", 405, {
-            'Content-Type': 'text/plain'}
+            "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    targetname = request.form['targetname']
-    usergroupname = request.form['usergroupname']
+    targetname = request.form["targetname"]
+    usergroupname = request.form["usergroupname"]
 
     # Check for mandatory fields
     if not targetname or not usergroupname:
         return "ERROR: The targetname and usergroupname are required ", 417, {
-            'Content-Type': 'text/plain'}
+            "Content-Type": "text/plain"}
 
     # Target and user have to exist in database
     t = get_target(targetname)
     if not t:
         return 'ERROR: No target "' + targetname + \
-            '" in the database ', 417, {'Content-Type': 'text/plain'}
+            '" in the database ', 417, {"Content-Type": "text/plain"}
 
     u = get_usergroup(usergroupname)
     if not u:
         return 'ERROR: No usergroup "' + usergroupname + \
-            '" in the database ', 417, {'Content-Type': 'text/plain'}
+            '" in the database ', 417, {"Content-Type": "text/plain"}
 
     # Check if the given usergroup is a member of the given target
     if not t.usergroupname_in_target(usergroupname):
-        return 'ERROR: The usergroup "' + usergroupname + '" is not a member of the target "' + \
-            targetname + '" ', 417, {'Content-Type': 'text/plain'}
+        return 'ERROR: The usergroup "' + usergroupname + \
+            '" is not a member of the target "' + \
+            targetname + '" ', 417, {"Content-Type": "text/plain"}
 
     # Now we can remove the usergroup
     t.rmusergroup(u)
@@ -392,14 +394,12 @@ def target_rmusergroup():
         db.session.commit()
     except exc.SQLAlchemyError as e:
         return 'ERROR: "' + targetname + '" -> ' + e.message + \
-            '\n', 409, {'Content-Type': 'text/plain'}
+            '\n', 409, {"Content-Type": "text/plain"}
 
     return 'OK: "' + usergroupname + '" removed from "' + \
-        targetname + '"', 200, {'Content-Type': 'text/plain'}
+        targetname + '"', 200, {"Content-Type": "text/plain"}
 
 # Utils
-
-
 def get_target(targetname):
     """Return the target with the given targetname"""
     t = db.session.query(target.Target).filter(
