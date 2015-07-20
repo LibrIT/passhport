@@ -84,3 +84,12 @@ def edit(obj, param):
     url = url_passhport + obj + "/edit"
 
     return post(url, data)
+
+def adduser(obj, param):
+    """Add a user to an object on passhportd via API"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "adduser")(param)
+    url = url_passhport + obj + "/adduser"
+
+    return post(url, data)

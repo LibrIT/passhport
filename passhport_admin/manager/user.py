@@ -12,7 +12,7 @@ def prompt_create():
     sshkey = input("SSH Key: ")
     comment = input("Comment: ")
 
-    return {"<name>": name, "<sshkey>": sshkey, "<comment>": comment}
+    return {"<name>": name, "<sshkey>": sshkey, "--comment": comment}
 
 
 def create(param):

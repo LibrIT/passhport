@@ -391,7 +391,7 @@ def target_rmusergroup():
 def get_target(targetname):
     """Return the target with the given targetname"""
     t = db.session.query(target.Target).filter(
-        target.Target.targetname == targetname).all()
+        target.Target.name == targetname).all()
 
     # Target must exist in database
     if t:

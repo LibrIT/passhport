@@ -59,3 +59,15 @@ def edit(obj):
         return req.edit(obj, data)
 
     return None
+
+
+def adduser(obj):
+    """Ask arguments for adding a user to an object"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_adduser")()
+
+    if data:
+        return req.adduser(obj, data)
+
+    return None
