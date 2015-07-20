@@ -71,7 +71,7 @@ def usergroup_create():
             "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    usergroupname = request.form["usergroupname"]
+    usergroupname = request.form["name"]
     comment = request.form["comment"]
 
     # Check for required fields

@@ -162,3 +162,18 @@ def rmuser(param):
     """Format param to remove a user"""
     return {"username": param["<username>"],
             "targetname": param["<targetname>"]}
+
+
+def prompt_addusergroup():
+    """Prompt user to obtain data to add a usergroup"""
+    usergroupname = input("Usergroupname: ")
+    targetname = input("Targetname: ")
+
+    return {"<usergroupname>": usergroupname,
+            "<targetname>": targetname}
+
+
+def addusergroup(param):
+    """Format param to add a usergroup"""
+    return {"usergroupname": param["<usergroupname>"],
+            "targetname": param["<targetname>"]}

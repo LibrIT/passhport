@@ -18,6 +18,7 @@ Usage:
 [--newsshoptions=<sshoptions>] [--newport=<port>] \
 [--newservertype=<servertype>] [--newautocommand=<autocommand>]]
     passhport-admin target (adduser|rmuser) [<username> <targetname>]
+    passhport-admin target (addusergroup|rmusergroup) [<usergroupname> <targetname>]
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
     passhport-admin usergroup (show|delete) [<name>]
@@ -88,7 +89,7 @@ def docopt_cmd(func):
             return
 
         except SystemExit:
-            # The SystemExit exception prints the usage for --help
+            # passhport-admin target (adduser|rmuser) [<username> <targetname>]The SystemExit exception prints the usage for --help
             # We do not need to do the print here.
             return
 
@@ -177,6 +178,7 @@ Usage:
 [--newsshoptions=<sshoptions>] [--newport=<port>] \
 [--newservertype=<servertype>] [--newautocommand=<autocommand>]]
     target (adduser|rmuser) [<username> <targetname>]
+    target (addusergroup|rmusergroup) [<usergroupname> <targetname>]
 
 Arguments:
     pattern         SQL search pattern

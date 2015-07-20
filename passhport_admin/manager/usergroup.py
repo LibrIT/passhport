@@ -11,7 +11,7 @@ def prompt_create():
     name = input("Name: ")
     comment = input("Comment: ")
 
-    return {"<name>": name, "<comment>": comment}
+    return {"<name>": name, "--comment": comment}
 
 
 def create(param):

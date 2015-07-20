@@ -85,6 +85,7 @@ def edit(obj, param):
 
     return post(url, data)
 
+
 def adduser(obj, param):
     """Add a user to an object on passhportd via API"""
     objects = {"target": target, "usergroup": usergroup,
@@ -94,11 +95,22 @@ def adduser(obj, param):
 
     return post(url, data)
 
+
 def rmuser(obj, param):
     """Remove a user from an object on passhportd via API"""
     objects = {"target": target, "usergroup": usergroup,
             "targetgroup": targetgroup}
     data = getattr(objects[obj], "rmuser")(param)
     url = url_passhport + obj + "/rmuser"
+
+    return post(url, data)
+
+
+def addusergroup(obj, param):
+    """Add a usergroup to an object on passhportd via API"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "addusergroup")(param)
+    url = url_passhport + obj + "/addusergroup"
 
     return post(url, data)
