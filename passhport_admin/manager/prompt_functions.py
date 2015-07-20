@@ -71,3 +71,15 @@ def adduser(obj):
         return req.adduser(obj, data)
 
     return None
+
+
+def rmuser(obj):
+    """Ask arguments for removing a user from an object"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_rmuser")()
+
+    if data:
+        return req.rmuser(obj, data)
+
+    return None

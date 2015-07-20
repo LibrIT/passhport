@@ -93,3 +93,12 @@ def adduser(obj, param):
     url = url_passhport + obj + "/adduser"
 
     return post(url, data)
+
+def rmuser(obj, param):
+    """Remove a user from an object on passhportd via API"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "rmuser")(param)
+    url = url_passhport + obj + "/rmuser"
+
+    return post(url, data)

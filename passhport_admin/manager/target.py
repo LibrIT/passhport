@@ -147,3 +147,18 @@ def adduser(param):
     """Format param to add a user"""
     return {"username": param["<username>"],
             "targetname": param["<targetname>"]}
+
+
+def prompt_rmuser():
+    """Prompt user to obtain data to remove a user"""
+    username = input("Username: ")
+    targetname = input("Targetname: ")
+
+    return {"<username>": username,
+            "<targetname>": targetname}
+
+
+def rmuser(param):
+    """Format param to remove a user"""
+    return {"username": param["<username>"],
+            "targetname": param["<targetname>"]}
