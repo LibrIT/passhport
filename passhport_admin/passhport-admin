@@ -4,13 +4,13 @@
 """
 Usage:
     passhport-admin (-i | --interactive)
-    passhport-admin user (list)
+    passhport-admin user list
     passhport-admin user search [<pattern>]
     passhport-admin user (show|delete) [<name>]
     passhport-admin user create [((<name> <sshkey>) [--comment=<comment>])]
     passhport-admin user edit [<name> [--newname=<name>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
     passhport-admin target list
-    passhport-admin target search <pattern>
+    passhport-admin target search [<pattern>]
     passhport-admin target (show|delete) [<name>]
     passhport-admin target create [((<name> <hostname>) [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] [--servretype=<servertype>] [--autocommand=<autocommand>])]
     passhport-admin target edit [<name> [--newname=<name>] \
@@ -20,16 +20,20 @@ Usage:
     passhport-admin target (adduser|rmuser) [<username> <targetname>]
     passhport-admin usergroup list
     passhport-admin usergroup search <pattern>
-    passhport-admin usergroup (show|create|edit|del)
-    passhport-admin usergroup (adduser|rmuser) <username> <usergroupname>
-    passhport-admin usergroup (addusergroup|rmusergroup) <subusergroupname> <usergroupname>
+    passhport-admin usergroup (show|delete) [<name>]
+    passhport-admin usergroup create [<name> [--comment=<comment>]]
+    passhport-admin usergroup edit [<name> [--newname=<name>] [--newcomment=<comment>]]
+    passhport-admin usergroup (adduser|rmuser) [<username> <usergroupname>]
+    passhport-admin usergroup (addusergroup|rmusergroup) [<subusergroupname> <usergroupname>]
     passhport-admin targetgroup list
     passhport-admin targetgroup search <pattern>
-    passhport-admin targetgroup (show|create|edit|del)
-    passhport-admin targetgroup (addtarget|rmtarget) <targetname> <targetgroupname>
-    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <subtargetgroupname> <targetgroupname>
-    passhport-admin targetgroup (adduser|rmuser) <username> <targetgroupname>
-    passhport-admin targetgroup (addusergroup|rmusergroup) <usergroupname> <targetgroupname>
+    passhport-admin targetgroup (show|delete) [<name>]
+    passhport-admin targetgroup create [<name> [--comment=<comment>]]
+    passhport-admin targetgroup edit [<name> [--newname=<name>] [--newcomment=<comment>]]
+    passhport-admin targetgroup (adduser|rmuser) [<username> <targetgroupname>]
+    passhport-admin targetgroup (addtarget|rmtarget) [<targetname> <targetgroupname>]
+    passhport-admin targetgroup (addusergroup|rmusergroup) [<usergroupname> <targetgroupname>]
+    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) [<subtargetgroupname> <targetgroupname>]
     passhport-admin (-h | --version)
 
 Arguments:
@@ -106,11 +110,11 @@ class MyInteractive (cmd.Cmd):
     def do_user(self, arg):
         """
 Usage:
-    passhport-admin user (list)
-    passhport-admin user search [<pattern>]
-    passhport-admin user (show|delete) [<name>]
-    passhport-admin user create [((<name> <sshkey>) [--comment=<comment>])]
-    passhport-admin user edit [<name> [--newname=<name>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
+    user list
+    user search [<pattern>]
+    user (show|delete) [<name>]
+    user create [((<name> <sshkey>) [--comment=<comment>])]
+    user edit [<name> [--newname=<name>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
 
 Arguments:
     pattern         SQL search pattern
@@ -132,9 +136,11 @@ Options:
 Usage:
     usergroup list
     usergroup search <pattern>
-    usergroup (show|create|edit|del)
-    usergroup (adduser|rmuser) <email> <groupname>
-    usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
+    usergroup (show|delete) [<name>]
+    usergroup create [<name> [--comment=<comment>]]
+    usergroup edit [<name> [--newname=<name>] [--newcomment=<comment>]]
+    usergroup (adduser|rmuser) [<username> <usergroupname>]
+    usergroup (addusergroup|rmusergroup) [<subusergroupname> <usergroupname>]
 
 Arguments:
     pattern         SQL search pattern
@@ -163,11 +169,14 @@ Options:
         """
 Usage:
     target list
-    target search <pattern>
-    target (show|create|edit|del)
-    target editcommand <command> <targetname>
-    target (adduser|rmuser) <email> <targetname>
-    target (addusergroup|rmusergroup) <groupname> <targetname>
+    target search [<pattern>]
+    target (show|delete) [<name>]
+    target create [((<name> <hostname>) [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] [--servretype=<servertype>] [--autocommand=<autocommand>])]
+    target edit [<name> [--newname=<name>] \
+[--newhostname=<hostname>] [--newcomment=<comment>] \
+[--newsshoptions=<sshoptions>] [--newport=<port>] \
+[--newservertype=<servertype>] [--newautocommand=<autocommand>]]
+    target (adduser|rmuser) [<username> <targetname>]
 
 Arguments:
     pattern         SQL search pattern
@@ -196,11 +205,13 @@ Options
 Usage:
     targetgroup list
     targetgroup search <pattern>
-    targetgroup (show|create|edit|del)
-    targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
-    targetgroup (addtargetgroup|rmtargetgroup) <subtargetgroupname> <targetgroupname>
-    targetgroup (adduser|rmuser) <email> <targetgroupname>
-    targetgroup (addusergroup|rmusergroup) <groupname> <targetgroupname>
+    targetgroup (show|delete) [<name>]
+    targetgroup create [<name> [--comment=<comment>]]
+    targetgroup edit [<name> [--newname=<name>] [--newcomment=<comment>]]
+    targetgroup (adduser|rmuser) [<username> <targetgroupname>]
+    targetgroup (addtarget|rmtarget) [<targetname> <targetgroupname>]
+    targetgroup (addusergroup|rmusergroup) [<usergroupname> <targetgroupname>]
+    targetgroup (addtargetgroup|rmtargetgroup) [<subtargetgroupname> <targetgroupname>]
 
 Arguments:
     pattern         SQL search pattern

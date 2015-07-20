@@ -35,13 +35,13 @@ def show(obj):
 
 
 def delete(obj):
-    """Ask arguments for deleting an existing user"""
+    """Ask arguments for deleting an existing object"""
     name = input("Name: ")
     return req.delete({"<name>": name})
 
 
 def create(obj):
-    """Ask arguments for user creation"""
+    """Ask arguments for object creation"""
     objects = {"user": user, "target": target, "usergroup": usergroup,
             "targetgroup": targetgroup}
     data = getattr(objects[obj], "prompt_create")()
