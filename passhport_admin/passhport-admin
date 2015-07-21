@@ -20,7 +20,7 @@ Usage:
     passhport-admin target (adduser|rmuser) [<username> <targetname>]
     passhport-admin target (addusergroup|rmusergroup) [<usergroupname> <targetname>]
     passhport-admin usergroup list
-    passhport-admin usergroup search <pattern>
+    passhport-admin usergroup search [<pattern>]
     passhport-admin usergroup (show|delete) [<name>]
     passhport-admin usergroup create [<name> [--comment=<comment>]]
     passhport-admin usergroup edit [<name> [--newname=<name>] [--newcomment=<comment>]]

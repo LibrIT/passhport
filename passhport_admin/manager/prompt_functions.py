@@ -96,7 +96,6 @@ def addusergroup(obj):
 
     return None
 
-
 def rmusergroup(obj):
     """Ask arguments for removing a usergroup from an object"""
     objects = {"target": target, "usergroup": usergroup,

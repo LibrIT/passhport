@@ -6,6 +6,8 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from builtins import input
 
+from . import user as user
+
 def prompt_create():
     """Prompt user to obtain data for request"""
     name = input("Name: ")

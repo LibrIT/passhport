@@ -52,3 +52,55 @@ def edit(param):
     return {"name": param["<name>"],
             "new_name": new_name,
             "new_comment": new_comment}
+
+def prompt_adduser():
+    """Prompt user to obtain data to add a user"""
+    username = input("Username: ")
+    usergroupname = input("Usergroupname: ")
+
+    return {"<username>": username,
+            "<usergroupname>": usergroupname}
+
+def adduser(param):
+    """Format param to add a user"""
+    return {"username": param["<username>"],
+            "usergroupname": param["<usergroupname>"]}
+
+def prompt_rmuser():
+    """Prompt user to obtain data to remove a user"""
+    username = input("Username: ")
+    usergroupname = input("Usergroupname: ")
+
+    return {"<username>": username,
+            "<usergroupname>": usergroupname}
+
+def rmuser(param):
+    """Format param to remove a user"""
+    return {"username": param["<username>"],
+            "usergroupname": param["<usergroupname>"]}
+
+def prompt_addusergroup():
+    """Prompt user to obtain data to add a usergroup"""
+    subusergroupname = input("Subusergroupname: ")
+    usergroupname = input("Usergroupname: ")
+
+    return {"<subusergroupname>": subusergroupname,
+            "<usergroupname>": usergroupname}
+
+def addusergroup(param):
+    """Format param to add a usergroup"""
+    return {"subusergroupname": param["<subusergroupname>"],
+            "usergroupname": param["<usergroupname>"]}
+
+def prompt_rmusergroup():
+    """Prompt user to obtain data to remove a usergroup"""
+    subusergroupname = input("Subsergroupname: ")
+    usergroupname = input("Usergroupname: ")
+
+    return {"<subusergroupname>": subusergroupname,
+            "<usergroupname>": usergroupname}
+
+def rmusergroup(param):
+    """Format param to remove a usergroup"""
+    return {"subusergroupname": param["<subusergroupname>"],
+            "usergroupname": param["<usergroupname>"]}

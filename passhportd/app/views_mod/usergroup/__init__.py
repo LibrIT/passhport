@@ -182,11 +182,11 @@ def usergroup_adduser():
 
     # Simplification for the reading
     usergroupname = request.form["usergroupname"]
-    name = request.form["name"]
+    username = request.form["username"]
 
     # Check for mandatory fields
-    if not usergroupname or not name:
-        return "ERROR: The usergroupname and name are required ", 417, {
+    if not usergroupname or not username:
+        return "ERROR: The usergroupname and username are required ", 417, {
             "Content-Type": "text/plain"}
 
     # Usergroup and user have to exist in database
@@ -195,9 +195,9 @@ def usergroup_adduser():
         return 'ERROR: no usergroup "' + usergroupname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    u = get_user(name)
+    u = get_user(username)
     if not u:
-        return 'ERROR: no user "' + name + \
+        return 'ERROR: no user "' + username + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
     # Now we can add the user
@@ -208,7 +208,7 @@ def usergroup_adduser():
         return 'ERROR: "' + usergroupname + '" -> ' + \
             e.message, 409, {"Content-Type": "text/plain"}
 
-    return 'OK: "' + name + '" added to "' + usergroupname + \
+    return 'OK: "' + username + '" added to "' + usergroupname + \
         '"', 200, {"Content-Type": "text/plain"}
 
 
@@ -222,11 +222,11 @@ def usergroup_rmuser():
 
     # Simplification for the reading
     usergroupname = request.form["usergroupname"]
-    name = request.form["name"]
+    username = request.form["username"]
 
     # Check for mandatory fields
-    if not usergroupname or not name:
-        return "ERROR: The usergroupname and name are required ", 417, {
+    if not usergroupname or not username:
+        return "ERROR: The usergroupname and username are required ", 417, {
             "Content-Type": "text/plain"}
 
     # Usergroup and user have to exist in database
@@ -235,14 +235,14 @@ def usergroup_rmuser():
         return 'ERROR: No usergroup "' + usergroupname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    u = get_user(name)
+    u = get_user(username)
     if not u:
-        return 'ERROR: No user "' + name + \
+        return 'ERROR: No user "' + username + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
     # Check if the given user is a member of the given usergroup
-    if not g.name_in_usergroup(name):
-        return 'ERROR: The user "' + name + \
+    if not g.name_in_usergroup(username):
+        return 'ERROR: The user "' + username + \
             '" is not a member of the usergroup "' + \
             usergroupname + '" ', 417, {"Content-Type": "text/plain"}
 
@@ -254,7 +254,7 @@ def usergroup_rmuser():
         return 'ERROR: "' + usergroupname + '" -> ' + \
             e.message, 409, {"Content-Type": "text/plain"}
 
-    return 'OK: "' + name + '" removed from "' + \
+    return 'OK: "' + username + '" removed from "' + \
         usergroupname + '"', 200, {"Content-Type": "text/plain"}
 
 
