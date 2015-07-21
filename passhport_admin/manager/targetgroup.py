@@ -6,8 +6,6 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from builtins import input
 
-from . import user as user
-
 def prompt_create():
     """Prompt user to obtain data for request"""
     name = input("Name: ")
@@ -54,3 +52,107 @@ def edit(param):
     return {"name": param["<name>"],
             "new_name": new_name,
             "new_comment": new_comment}
+
+def prompt_adduser():
+    """Prompt user to obtain data to add a user"""
+    username = input("Username: ")
+    targetgroupname = input("Targetgroupname: ")
+
+    return {"<username>": username,
+            "<targetgroupname>": targetgroupname}
+
+def adduser(param):
+    """Format param to add a user"""
+    return {"username": param["<username>"],
+            "targetgroupname": param["<targetgroupname>"]}
+
+def prompt_rmuser():
+    """Prompt user to obtain data to remove a user"""
+    username = input("Username: ")
+    targetgroupname = input("Targetgroupname: ")
+
+    return {"<username>": username,
+            "<targetgroupname>": targetgroupname}
+
+def rmuser(param):
+    """Format param to remove a user"""
+    return {"username": param["<username>"],
+            "targetgroupname": param["<targetgroupname>"]}
+
+def prompt_addtarget():
+    """Prompt user to obtain data to add a target"""
+    targetname = input("Targetname: ")
+    targetgroupname = input("Targetgroupname: ")
+
+    return {"<targetname>": targetname,
+            "<targetgroupname>": targetgroupname}
+
+def addtarget(param):
+    """Format param to add a target"""
+    return {"targetname": param["<targetname>"],
+            "targetgroupname": param["<targetgroupname>"]}
+
+def prompt_rmtarget():
+    """Prompt user to obtain data to remove a target"""
+    targetname = input("Targetname: ")
+    targetgroupname = input("Targetgroupname: ")
+
+    return {"<targetname>": targetname,
+            "<targetgroupname>": targetgroupname}
+
+def rmtarget(param):
+    """Format param to remove a target"""
+    return {"targetname": param["<targetname>"],
+            "targetgroupname": param["<targetgroupname>"]}
+
+def prompt_addusergroup():
+    """Prompt user to obtain data to add a usergroup"""
+    usergroupname = input("Usergroupname: ")
+    targetgroupname = input("Targetgroupname: ")
+
+    return {"<usergroupname>": usergroupname,
+            "<targetgroupname>": targetgroupname}
+
+def addusergroup(param):
+    """Format param to add a usergroup"""
+    return {"usergroupname": param["<usergroupname>"],
+            "targetgroupname": param["<targetgroupname>"]}
+
+def prompt_rmusergroup():
+    """Prompt user to obtain data to remove a usergroup"""
+    usergroupname = input("Usergroupname: ")
+    targetgroupname = input("Targetgroupname: ")
+
+    return {"<usergroupname>": usergroupname,
+            "<targetgroupname>": targetgroupname}
+
+def rmusergroup(param):
+    """Format param to remove a usergroup"""
+    return {"usergroupname": param["<usergroupname>"],
+            "targetgroupname": param["<targetgroupname>"]}
+
+def prompt_addtargetgroup():
+    """Prompt user to obtain data to add a targetgroup"""
+    subtargetgroupname = input("Subtargetgroupname: ")
+    targetgroupname = input("Targetgroupname: ")
+
+    return {"<subtargetgroupname>": subtargetgroupname,
+            "<targetgroupname>": targetgroupname}
+
+def addtargetgroup(param):
+    """Format param to add a targetgroup"""
+    return {"subtargetgroupname": param["<subtargetgroupname>"],
+            "targetgroupname": param["<targetgroupname>"]}
+
+def prompt_rmtargetgroup():
+    """Prompt user to obtain data to remove a targetgroup"""
+    subtargetgroupname = input("Subtargetgroupname: ")
+    targetgroupname = input("Targetgroupname: ")
+
+    return {"<subtargetgroupname>": subtargetgroupname,
+            "<targetgroupname>": targetgroupname}
+
+def rmtargetgroup(param):
+    """Format param to remove a targetgroup"""
+    return {"subtargetgroupname": param["<subtargetgroupname>"],
+            "targetgroupname": param["<targetgroupname>"]}

@@ -17,8 +17,8 @@ def targetgroup_list():
     """Return the targetgroup list of database"""
     result = []
     query = db.session.query(
-        targetgroup.Targetgroup.targetgroupname).order_by(
-        targetgroup.Targetgroup.targetgroupname)
+        targetgroup.Targetgroup.name).order_by(
+        targetgroup.Targetgroup.name)
 
     for row in query.all():
         result.append(str(row[0]))
@@ -35,8 +35,8 @@ def targetgroup_search(pattern):
     """Return a list of targetgroups that match the given pattern"""
     result = []
     query = db.session.query(
-        targetgroup.Targetgroup.targetgroupname) .filter(
-        targetgroup.Targetgroup.targetgroupname.like(
+        targetgroup.Targetgroup.name) .filter(
+        targetgroup.Targetgroup.name.like(
             "%" +
             pattern +
             "%"))
@@ -51,14 +51,14 @@ def targetgroup_search(pattern):
     return "\n".join(result), 200, {"Content-Type": "text/plain"}
 
 
-@app.route("/targetgroup/show/<targetgroupname>")
-def targetgroup_show(targetgroupname):
+@app.route("/targetgroup/show/<name>")
+def targetgroup_show(name):
     """Return all data about a targetgroup"""
     targetgroup_data = targetgroup.Targetgroup.query.filter_by(
-        targetgroupname=targetgroupname).first()
+        name=name).first()
 
     if targetgroup_data is None:
-        return 'ERROR: No targetgroup with the name "' + targetgroupname + \
+        return 'ERROR: No targetgroup with the name "' + name + \
             '" in the database.', 417, {"Content-Type": "text/plain"}
 
     return str(targetgroup_data), 200, {"Content-Type": "text/plain"}
@@ -73,27 +73,27 @@ def targetgroup_create():
             "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    targetgroupname = request.form["targetgroupname"]
+    name = request.form["name"]
     comment = request.form["comment"]
 
     # Check for mandatory fields
-    if not targetgroupname:
-        return "ERROR: The targetgruopname is required ", 417, {
+    if not name:
+        return "ERROR: The name is required ", 417, {
             "Content-Type": "text/plain"}
 
-    # Check unicity for targetgroupname
-    query = db.session.query(targetgroup.Targetgroup.targetgroupname)\
-        .filter(targetgroup.Targetgroup.targetgroupname.like(targetgroupname))
+    # Check unicity for name
+    query = db.session.query(targetgroup.Targetgroup.name)\
+        .filter(targetgroup.Targetgroup.name.like(name))
 
     # Normally only one row
     for row in query.all():
-        if str(row[0]) == targetgroupname:
-            return 'ERROR: The targetgroupname "' + targetgroupname + \
+        if str(row[0]) == name:
+            return 'ERROR: The name "' + name + \
                 '" is already used by another targetgroup ', \
                 417, {"Content-Type": "text/plain"}
 
     t = targetgroup.Targetgroup(
-        targetgroupname=targetgroupname,
+        name=name,
         comment=comment)
     db.session.add(t)
 
@@ -101,11 +101,10 @@ def targetgroup_create():
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + targetgroupname + '" -> ' + \
+        return 'ERROR: "' + name + '" -> ' + \
             e.message, 409, {"Content-Type": "text/plain"}
 
-    return 'OK: "' + targetgroupname + '" -> created' + \
-        "\n", 200, {"Content-Type": "text/plain"}
+    return 'OK: "' + name + '" -> created', 200, {"Content-Type": "text/plain"}
 
 
 @app.route("/targetgroup/edit", methods=["POST"])
@@ -117,62 +116,140 @@ def targetgroup_edit():
             "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    targetgroupname = request.form["targetgroupname"]
-    new_targetgroupname = request.form["new_targetgroupname"]
+    name = request.form["name"]
+    new_name = request.form["new_name"]
     new_comment = request.form["new_comment"]
 
     toupdate = db.session.query(
         targetgroup.Targetgroup).filter_by(
-        targetgroupname=targetgroupname)
+        name=name)
 
     # Let's modify only relevent fields
     if new_comment:
         toupdate.update({"comment": str(new_comment)})
-    if new_targetgroupname:
+    if new_name:
         toupdate.update(
-            {"targetgroupname": str(new_targetgroupname)})
+            {"name": str(new_name)})
 
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        return 'ERROR: "' + name + '" -> ' + \
+            e.message, 409, {"Content-Type": "text/plain"}
+
+    return 'OK: "' + name + '" -> edited' + \
+        "\n", 200, {"Content-Type": "text/plain"}
+
+
+@app.route("/targetgroup/delete/<name>")
+def targetgroup_delete(name):
+    """Delete a targetgroup in the database"""
+    if not name:
+        return "ERROR: The name is required ", 417, {
+            "Content-Type": "text/plain"}
+
+    # Check if the name exists
+    query = db.session.query(targetgroup.Targetgroup.name)\
+        .filter(targetgroup.Targetgroup.name.like(name))
+
+    # Normally only one row
+    for row in query.all():
+        if str(row[0]) == name:
+            db.session.query(
+                targetgroup.Targetgroup).filter(
+                targetgroup.Targetgroup.name == name)\
+                .delete()
+
+            try:
+                db.session.commit()
+            except exc.SQLAlchemyError:
+                return 'ERROR: "' + name + '" -> ' + \
+                    e.message, 409, {"Content-Type": "text/plain"}
+
+            return 'OK: "' + name + '" -> deleted', 200, {
+                "Content-Type": "text/plain"}
+
+    return 'ERROR: No targetgroup with the name "' + name + \
+        '" in the database.', 417, {"Content-Type": "text/plain"}
+
+@app.route("/targetgroup/adduser", methods=["POST"])
+def targetgroup_adduser():
+    """Add a user in the targetgroup in the database"""
+    # Only POST data are handled
+    if request.method != 'POST':
+        return "ERROR: POST method is required ", 405, {
+            "Content-Type": "text/plain"}
+
+    # Simplification for the reading
+    targetgroupname = request.form["targetgroupname"]
+    username = request.form["username"]
+
+    # Check for required fields
+    if not targetgroupname or not username:
+        return "ERROR: The targetgroupname and username are required ", 417, {
+            "Content-Type": "text/plain"}
+
+    # Targetgroup and user have to exist in database
+    tg = get_targetgroup(targetgroupname)
+    if not tg:
+        return 'ERROR: no targetgroup "' + targetgroupname + \
+            '" in the database ', 417, {"Content-Type": "text/plain"}
+
+    u = get_user(username)
+    if not u:
+        return 'ERROR: no user "' + username + \
+            '" in the database ', 417, {"Content-Type": "text/plain"}
+
+    # Now we can add the user
+    tg.adduser(u)
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
         return 'ERROR: "' + targetgroupname + '" -> ' + \
             e.message, 409, {"Content-Type": "text/plain"}
 
-    return 'OK: "' + targetgroupname + '" -> edited' + \
-        "\n", 200, {"Content-Type": "text/plain"}
+    return 'OK: "' + username + '" added to "' + targetgroupname + \
+        '"', 200, {"Content-Type": "text/plain"}
 
 
-@app.route("/targetgroup/del/<targetgroupname>")
-def targetgroup_del(targetgroupname):
-    """Delete a targetgroup in the database"""
-    if not targetgroupname:
-        return "ERROR: The targetgroupname is required ", 417, {
+@app.route("/targetgroup/rmuser", methods=["POST"])
+def targetgroup_rmuser():
+    """Remove a user from the targetgroup in the database"""
+    # Only POST data are handled
+    if request.method != 'POST':
+        return "ERROR: POST method is required ", 405, {
             "Content-Type": "text/plain"}
 
-    # Check if the targetname exists
-    query = db.session.query(targetgroup.Targetgroup.targetgroupname)\
-        .filter(targetgroup.Targetgroup.targetgroupname.like(targetgroupname))
+    # Simplification for the reading
+    targetgroupname = request.form["targetgroupname"]
+    username = request.form["username"]
 
-    # Normally only one row
-    for row in query.all():
-        if str(row[0]) == targetgroupname:
-            db.session.query(
-                targetgroup.Targetgroup).filter(
-                targetgroup.Targetgroup.targetgroupname == targetgroupname)\
-                .delete()
+    # Check for required fields
+    if not targetgroupname or not username:
+        return "ERROR: The targetgroupname and username are required ", 417, {
+            "Content-Type": "text/plain"}
 
-            try:
-                db.session.commit()
-            except exc.SQLAlchemyError:
-                return 'ERROR: "' + targetgroupname + '" -> ' + \
-                    e.message, 409, {"Content-Type": "text/plain"}
+    # Targetgroup and user have to exist in database
+    tg = get_targetgroup(targetgroupname)
+    if not tg:
+        return 'ERROR: no targetgroup "' + targetgroupname + \
+            '" in the database ', 417, {"Content-Type": "text/plain"}
 
-            return 'OK: "' + targetgroupname + '" -> deleted', 200, {
-                "Content-Type": "text/plain"}
+    u = get_user(username)
+    if not u:
+        return 'ERROR: no user "' + username + \
+            '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    return 'ERROR: No targetgroup with the name "' + targetgroupname + \
-        '" in the database.', 417, {"Content-Type": "text/plain"}
+    # Now we can remove the user
+    tg.rmuser(u)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        return 'ERROR: "' + targetgroupname + '" -> ' + \
+            e.message, 409, {"Content-Type": "text/plain"}
 
+    return 'OK: "' + username + '" removed from "' + \
+        targetgroupname + '"', 200, {"Content-Type": "text/plain"}
 
 @app.route("/targetgroup/addtarget", methods=["POST"])
 def targetgroup_addtarget():
@@ -243,7 +320,7 @@ def targetgroup_rmtarget():
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
     # Check if the given target is a member of the given targetgroup
-    if not tg.name_in_targetgroup(targetname):
+    if not tg.targetname_in_targetgroup(targetname):
         return 'ERROR: The target "' + target + \
             '" is not a member of the targetgroup "' + \
             targetgroupname + '" ', 417, {"Content-Type": "text/plain"}
@@ -258,87 +335,6 @@ def targetgroup_rmtarget():
 
     return 'OK: "' + targetname + '" removed from "' + \
         targetgroupname + '"', 200, {"Content-Type": "text/plain"}
-
-
-@app.route("/targetgroup/adduser", methods=["POST"])
-def targetgroup_adduser():
-    """Add a user in the targetgroup in the database"""
-    # Only POST data are handled
-    if request.method != 'POST':
-        return "ERROR: POST method is required ", 405, {
-            "Content-Type": "text/plain"}
-
-    # Simplification for the reading
-    targetgroupname = request.form["targetgroupname"]
-    name = request.form["name"]
-
-    # Check for required fields
-    if not targetgroupname or not name:
-        return "ERROR: The targetgroupname and name are required ", 417, {
-            "Content-Type": "text/plain"}
-
-    # Targetgroup and user have to exist in database
-    tg = get_targetgroup(targetgroupname)
-    if not tg:
-        return 'ERROR: no targetgroup "' + targetgroupname + \
-            '" in the database ', 417, {"Content-Type": "text/plain"}
-
-    u = get_user(name)
-    if not u:
-        return 'ERROR: no user "' + name + \
-            '" in the database ', 417, {"Content-Type": "text/plain"}
-
-    # Now we can add the user
-    tg.adduser(u)
-    try:
-        db.session.commit()
-    except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + targetgroupname + '" -> ' + \
-            e.message, 409, {"Content-Type": "text/plain"}
-
-    return 'OK: "' + name + '" added to "' + targetgroupname + \
-        '"', 200, {"Content-Type": "text/plain"}
-
-
-@app.route("/targetgroup/rmuser", methods=["POST"])
-def targetgroup_rmuser():
-    """Remove a user from the targetgroup in the database"""
-    # Only POST data are handled
-    if request.method != 'POST':
-        return "ERROR: POST method is required ", 405, {
-            "Content-Type": "text/plain"}
-
-    # Simplification for the reading
-    targetgroupname = request.form["targetgroupname"]
-    name = request.form["name"]
-
-    # Check for required fields
-    if not targetgroupname or not name:
-        return "ERROR: The targetgroupname and name are required ", 417, {
-            "Content-Type": "text/plain"}
-
-    # Targetgroup and user have to exist in database
-    tg = get_targetgroup(targetgroupname)
-    if not tg:
-        return 'ERROR: no targetgroup "' + targetgroupname + \
-            '" in the database ', 417, {"Content-Type": "text/plain"}
-
-    u = get_user(name)
-    if not u:
-        return 'ERROR: no user "' + name + \
-            '" in the database ', 417, {"Content-Type": "text/plain"}
-
-    # Now we can remove the user
-    tg.rmuser(u)
-    try:
-        db.session.commit()
-    except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + targetgroupname + '" -> ' + \
-            e.message, 409, {"Content-Type": "text/plain"}
-
-    return 'OK: "' + name + '" removed from "' + \
-        targetgroupname + '"', 200, {"Content-Type": "text/plain"}
-
 
 @app.route("/targetgroup/addusergroup", methods=["POST"])
 def targetgroup_addusergroup():
@@ -504,30 +500,6 @@ def targetgroup_rmtargetgroup():
         targetgroupname + '"', 200, {"Content-Type": "text/plain"}
 
 # Utils
-def get_target(targetname):
-    """Return the target with the given targetname"""
-    t = db.session.query(target.Target).filter(
-        target.Target.targetname == targetname).all()
-
-    # Target must exist in database
-    if t:
-        return t[0]
-    else:
-        return False
-
-
-def get_targetgroup(targetgroupname):
-    """Return the targetgroup with the given targetgroupname"""
-    tg = db.session.query(targetgroup.Targetgroup).filter(
-        targetgroup.Targetgroup.targetgroupname == targetgroupname).all()
-
-    # Targetgroup must exist in database
-    if tg:
-        return tg[0]
-    else:
-        return False
-
-
 def get_user(name):
     """Return the user with the given name"""
     u = db.session.query(user.User).filter(
@@ -540,13 +512,37 @@ def get_user(name):
         return False
 
 
-def get_usergroup(usergroupname):
+def get_usergroup(name):
     """Return the usergroup with the given usergroupname"""
     ug = db.session.query(usergroup.Usergroup).filter(
-        usergroup.Usergroup.usergroupname == usergroupname).all()
+        usergroup.Usergroup.name == name).all()
 
     # Usergroup must exist in database
     if ug:
         return ug[0]
+    else:
+        return False
+
+
+def get_target(name):
+    """Return the target with the given name"""
+    t = db.session.query(target.Target).filter(
+        target.Target.name == name).all()
+
+    # Target must exist in database
+    if t:
+        return t[0]
+    else:
+        return False
+
+
+def get_targetgroup(name):
+    """Return the targetgroup with the given name"""
+    tg = db.session.query(targetgroup.Targetgroup).filter(
+        targetgroup.Targetgroup.name == name).all()
+
+    # Targetgroup must exist in database
+    if tg:
+        return tg[0]
     else:
         return False

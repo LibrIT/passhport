@@ -27,7 +27,7 @@ Usage:
     passhport-admin usergroup (adduser|rmuser) [<username> <usergroupname>]
     passhport-admin usergroup (addusergroup|rmusergroup) [<subusergroupname> <usergroupname>]
     passhport-admin targetgroup list
-    passhport-admin targetgroup search <pattern>
+    passhport-admin targetgroup search [<pattern>]
     passhport-admin targetgroup (show|delete) [<name>]
     passhport-admin targetgroup create [<name> [--comment=<comment>]]
     passhport-admin targetgroup edit [<name> [--newname=<name>] [--newcomment=<comment>]]

@@ -285,7 +285,7 @@ def target_rmuser():
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
     # Check if the given user is a member of the given target
-    if not t.name_in_target(username):
+    if not t.username_in_target(username):
         return 'ERROR: The user "' + username + \
             '" is not a member of the target "' + \
             targetname + '" ', 417, {"Content-Type": "text/plain"}
@@ -388,18 +388,6 @@ def target_rmusergroup():
         targetname + '"', 200, {"Content-Type": "text/plain"}
 
 # Utils
-def get_target(targetname):
-    """Return the target with the given targetname"""
-    t = db.session.query(target.Target).filter(
-        target.Target.name == targetname).all()
-
-    # Target must exist in database
-    if t:
-        return t[0]
-    else:
-        return False
-
-
 def get_user(name):
     """Return the user with the given name"""
     u = db.session.query(user.User).filter(
@@ -412,10 +400,22 @@ def get_user(name):
         return False
 
 
-def get_usergroup(usergroupname):
-    """Return the usergroup with the given usergroupname"""
+def get_target(name):
+    """Return the target with the given name"""
+    t = db.session.query(target.Target).filter(
+        target.Target.name == name).all()
+
+    # Target must exist in database
+    if t:
+        return t[0]
+    else:
+        return False
+
+
+def get_usergroup(name):
+    """Return the usergroup with the given name"""
     g = db.session.query(usergroup.Usergroup).filter(
-        usergroup.Usergroup.usergroupname == usergroupname).all()
+        usergroup.Usergroup.name == name).all()
 
     # Usergroup must exist in database
     if g:

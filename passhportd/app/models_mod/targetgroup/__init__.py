@@ -29,7 +29,7 @@ class Targetgroup(db.Model):
     """
     __tablename__ = "targetgroup"
     id = db.Column(db.Integer, primary_key=True)
-    targetgroupname = db.Column(db.String(256), index=True, unique=True)
+    name = db.Column(db.String(256), index=True, unique=True)
     comment = db.Column(db.String(500), index=True, unique=False)
 
     # Relations
@@ -48,7 +48,7 @@ class Targetgroup(db.Model):
         output = []
 
         output.append(
-            "Targetgroupname: {}".format(self.targetgroupname))
+            "Name: {}".format(self.name))
         output.append("Comment: {}".format(self.comment))
         output.append("User list:")
 
@@ -63,18 +63,18 @@ class Targetgroup(db.Model):
         output.append("Usergroup list:")
 
         for usergroup in self.gmembers:
-            output.append(usergroup.show_usergroupname())
+            output.append(usergroup.show_name())
 
         output.append("Targetgroup list:")
 
         for targetgroup in self.tgmembers:
-            output.append(targetgroup.show_targetgroupname())
+            output.append(targetgroup.show_name())
 
         return "\n".join(output)
 
-    def show_targetgroupname(self):
+    def show_name(self):
         """Return a string containing the targetgroup’s name"""
-        return self.targetgroupname
+        return self.name
 
     # Target management
     def is_tmembers(self, target):
@@ -83,7 +83,7 @@ class Targetgroup(db.Model):
         """
         return target in self.tmembers
 
-    def name_in_targetgroup(self, targetname):
+    def targetname_in_targetgroup(self, targetname):
         """Return true if the given targetname belongs to a member
         of the targetgroup
         """

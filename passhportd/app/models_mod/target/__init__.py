@@ -46,7 +46,7 @@ class Target(db.Model):
         output.append("Usergroup list:")
 
         for usergroup in self.gmembers:
-            output.append(usergroup.show_usergroupname())
+            output.append(usergroup.show_name())
 
         return "\n".join(output)
 
@@ -75,12 +75,12 @@ class Target(db.Model):
         """
         return user in self.members
 
-    def name_in_target(self, name):
-        """Return true if the given name belongs to a member
+    def username_in_target(self, username):
+        """Return true if the given username belongs to a member
         of the target
         """
         for user in self.members:
-            if user.show_name() == name:
+            if user.show_name() == username:
                 return True
 
         return False
@@ -111,7 +111,7 @@ class Target(db.Model):
         of the target
         """
         for usergroup in self.gmembers:
-            if usergroup.show_usergroupname() == usergroupname:
+            if usergroup.show_name() == usergroupname:
                 return True
 
         return False

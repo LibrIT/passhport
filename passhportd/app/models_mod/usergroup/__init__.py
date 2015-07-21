@@ -29,7 +29,7 @@ class Usergroup(db.Model):
     """
     __tablename__ = "usergroup"
     id = db.Column(db.Integer, primary_key=True)
-    usergroupname = db.Column(db.String(256), index=True, unique=True)
+    name = db.Column(db.String(256), index=True, unique=True)
     comment = db.Column(db.String(500), index=True, unique=False)
 
     # Relations
@@ -46,7 +46,7 @@ class Usergroup(db.Model):
         output = []
 
         output.append(
-            "Usergroupname: {}".format(self.usergroupname))
+            "Name: {}".format(self.name))
         output.append("Comment: {}".format(self.comment))
         output.append("User list:")
 
@@ -56,13 +56,13 @@ class Usergroup(db.Model):
         output.append("Usergroup list: ")
 
         for usergroup in self.gmembers:
-            output.append(usergroup.show_usergroupname())
+            output.append(usergroup.show_name())
 
         return "\n".join(output)
 
-    def show_usergroupname(self):
+    def show_name(self):
         """Return a string containing the usergroup's name"""
-        return self.usergroupname
+        return self.name
 
     def show_users(self):
         """Show user list of the usergroup"""
@@ -96,12 +96,12 @@ class Usergroup(db.Model):
 
         return self
 
-    def name_in_usergroup(self, name):
-        """Return true if the given name belongs to a member
+    def username_in_usergroup(self, username):
+        """Return true if the given username belongs to a member
         of the usergroup
         """
         for user in self.members:
-            if user.show_name() == name:
+            if user.show_name() == username:
                 return True
 
         return False

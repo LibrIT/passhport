@@ -37,7 +37,7 @@ def show(obj):
 def delete(obj):
     """Ask arguments for deleting an existing object"""
     name = input("Name: ")
-    return req.delete({"<name>": name})
+    return req.delete(obj, {"<name>": name})
 
 
 def create(obj):
@@ -72,7 +72,6 @@ def adduser(obj):
 
     return None
 
-
 def rmuser(obj):
     """Ask arguments for removing a user from an object"""
     objects = {"target": target, "usergroup": usergroup,
@@ -84,6 +83,25 @@ def rmuser(obj):
 
     return None
 
+def addtarget(obj):
+    """Ask arguments for adding a target to an object"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_addtarget")()
+
+    if data:
+        return req.addtarget(obj, data)
+
+    return None
+
+def rmtarget(obj):
+    """Ask arguments for removing a target from an object"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_rmtarget")()
+
+    if data:
+        return req.rmtarget(obj, data)
+
+    return None
 
 def addusergroup(obj):
     """Ask arguments for adding a usergroup to an object"""
@@ -104,5 +122,25 @@ def rmusergroup(obj):
 
     if data:
         return req.rmusergroup(obj, data)
+
+    return None
+
+def addtargetgroup(obj):
+    """Ask arguments for adding a targetgroup to an object"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_addtargetgroup")()
+
+    if data:
+        return req.addtargetgroup(obj, data)
+
+    return None
+
+def rmtargetgroup(obj):
+    """Ask arguments for removing a targetgroup from an object"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_rmtargetgroup")()
+
+    if data:
+        return req.rmtargetgroup(obj, data)
 
     return None

@@ -105,6 +105,21 @@ def rmuser(obj, param):
 
     return post(url, data)
 
+def addtarget(obj, param):
+    """Add a target to an object on passhportd via API"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "addtarget")(param)
+    url = url_passhport + obj + "/addtarget"
+
+    return post(url, data)
+
+def rmtarget(obj, param):
+    """Remove a target from an object on passhportd via API"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "rmtarget")(param)
+    url = url_passhport + obj + "/rmtarget"
+
+    return post(url, data)
 
 def addusergroup(obj, param):
     """Add a usergroup to an object on passhportd via API"""
@@ -122,5 +137,21 @@ def rmusergroup(obj, param):
             "targetgroup": targetgroup}
     data = getattr(objects[obj], "rmusergroup")(param)
     url = url_passhport + obj + "/rmusergroup"
+
+    return post(url, data)
+
+def addtargetgroup(obj, param):
+    """Add a targetgroup to an object on passhportd via API"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "addtargetgroup")(param)
+    url = url_passhport + obj + "/addtargetgroup"
+
+    return post(url, data)
+
+def rmtargetgroup(obj, param):
+    """Remove a targetgroup from an object on passhportd via API"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "rmtargetgroup")(param)
+    url = url_passhport + obj + "/rmtargetgroup"
 
     return post(url, data)
