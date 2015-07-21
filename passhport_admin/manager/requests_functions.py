@@ -114,3 +114,13 @@ def addusergroup(obj, param):
     url = url_passhport + obj + "/addusergroup"
 
     return post(url, data)
+
+
+def rmusergroup(obj, param):
+    """Remove a usergroup from an object on passhportd via API"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "rmusergroup")(param)
+    url = url_passhport + obj + "/rmusergroup"
+
+    return post(url, data)

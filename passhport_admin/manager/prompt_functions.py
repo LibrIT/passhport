@@ -84,6 +84,7 @@ def rmuser(obj):
 
     return None
 
+
 def addusergroup(obj):
     """Ask arguments for adding a usergroup to an object"""
     objects = {"target": target, "usergroup": usergroup,
@@ -92,5 +93,17 @@ def addusergroup(obj):
 
     if data:
         return req.addusergroup(obj, data)
+
+    return None
+
+
+def rmusergroup(obj):
+    """Ask arguments for removing a usergroup from an object"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_rmusergroup")()
+
+    if data:
+        return req.rmusergroup(obj, data)
 
     return None
