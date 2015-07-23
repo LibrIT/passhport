@@ -147,13 +147,14 @@ def user_edit():
             "Content-Type": "text/plain"}
 
     # Check if the name exists in the database
-    query_check = db.session.query(user.User).filter_by(name=name).first()
+    query_check = db.session.query(user.User).filter_by(
+        name=name).first()
 
     if query_check is None:
         return 'ERROR: No user with the name "' + name + \
             '" in the database.', 417, {"Content-Type": "text/plain"}
 
-    to_update = db.session.query(user.User).filter_by(name=name)
+    to_update = db.session.query(user.User.name).filter_by(name=name)
 
     # Let's modify only relevent fields
     # Strangely the order is important, have to investigate why
@@ -233,8 +234,8 @@ def user_delete(name):
         return 'ERROR: No user with the name "' + name + \
             '" in the database.', 417, {"Content-Type": "text/plain"}
 
-    warning = ""
     # Delete the SSH key from the file authorized_keys
+    warning = ""
     try:
         with open(config.SSH_KEY_FILE, "r+", encoding="utf8") as \
             authorized_keys_file:

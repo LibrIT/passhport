@@ -126,3 +126,13 @@ class Usergroup(db.Model):
             self.gmembers.remove(usergroup)
 
         return self
+
+    def subusergroupname_in_usergroup(self, subusergroupname):
+        """Return true if the given subusergroupname belongs to a member
+        of the usergroup
+        """
+        for subusergroup in self.gmembers:
+            if subusergroup.show_name() == subusergroupname:
+                return True
+
+        return False

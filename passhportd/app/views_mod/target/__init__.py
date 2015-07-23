@@ -143,28 +143,28 @@ def target_edit():
             "Content-Type": "text/plain"}
 
     # Check if the name exists in the database
-    query = db.session.query(target.Target)\
+    query = db.session.query(target.Target.name)\
         .filter_by(name=name).first()
 
     if query is None:
         return 'ERROR: No target with the name "' + name + \
             '" in the database.', 417, {"Content-Type": "text/plain"}
 
-    toupdate = db.session.query(target.Target).filter_by(name=name)
+    to_update = db.session.query(target.Target.name).filter_by(name=name)
 
     # Let's modify only relevent fields
     if new_sshoptions:
-        toupdate.update({"sshoptions": new_sshoptions})
+        to_update.update({"sshoptions": new_sshoptions})
     if new_servertype:
-        toupdate.update({"servertype": new_servertype})
+        to_update.update({"servertype": new_servertype})
     if new_autocommand:
-        toupdate.update({"autocommand": new_autocommand})
+        to_update.update({"autocommand": new_autocommand})
     if new_comment:
-        toupdate.update({"comment": new_comment})
+        to_update.update({"comment": new_comment})
     if new_port:
-        toupdate.update({"port": new_port})
+        to_update.update({"port": new_port})
     if new_hostname:
-        toupdate.update({"hostname": new_hostname})
+        to_update.update({"hostname": new_hostname})
     if new_name:
         # Check unicity for name
         query = db.session.query(target.Target.name)\
@@ -175,7 +175,7 @@ def target_edit():
                 '" is already used by another target ', \
                 417, {"Content-Type": "text/plain"}
 
-        toupdate.update({"name": new_name})
+        to_update.update({"name": new_name})
 
     try:
         db.session.commit()
@@ -183,8 +183,7 @@ def target_edit():
         return 'ERROR: "' + name + '" -> ' + e.message, 409, {
             "Content-Type": "text/plain"}
 
-    return 'OK: "' + name + '" -> edited', 200, {
-        "Content-Type": "text/plain"}
+    return 'OK: "' + name + '" -> edited', 200, {"Content-Type": "text/plain"}
 
 
 @app.route("/target/delete/<name>")
@@ -208,7 +207,7 @@ def target_delete(name):
 
     try:
         db.session.commit()
-    except exc.SQLAlchemyError:
+    except exc.SQLAlchemyError as e:
         return 'ERROR: "' + name + '" -> ' + e.message, 409, {
             "Content-Type": "text/plain"}
 
@@ -225,23 +224,23 @@ def target_adduser():
             "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    targetname = request.form["targetname"]
     username = request.form["username"]
+    targetname = request.form["targetname"]
 
-    # Check for mandatory fields
-    if not targetname or not username:
-        return "ERROR: The targetname and username are required ", 417, {
+    # Check for required fields
+    if not username or not targetname:
+        return "ERROR: The username and targetname are required ", 417, {
             "Content-Type": "text/plain"}
 
-    # Target and user have to exist in database
-    t = get_target(targetname)
-    if not t:
-        return 'ERROR: no target "' + targetname + \
-            '" in the database ', 417, {"Content-Type": "text/plain"}
-
+    # User and target have to exist in database
     u = get_user(username)
     if not u:
         return 'ERROR: no user "' + username + \
+            '" in the database ', 417, {"Content-Type": "text/plain"}
+
+    t = get_target(targetname)
+    if not t:
+        return 'ERROR: no target "' + targetname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
     # Now we can add the user
@@ -265,23 +264,23 @@ def target_rmuser():
             "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    targetname = request.form["targetname"]
     username = request.form["username"]
+    targetname = request.form["targetname"]
 
-    # Check for mandatory fields
-    if not targetname or not username:
-        return "ERROR: The targetname and name are required ", 417, {
+    # Check for required fields
+    if not username or not targetname:
+        return "ERROR: The username and targetname are required ", 417, {
             "Content-Type": "text/plain"}
 
-    # Target and user have to exist in database
-    t = get_target(targetname)
-    if not t:
-        return 'ERROR: No target "' + targetname + \
-            '" in the database ', 417, {"Content-Type": "text/plain"}
-
+    # User and target have to exist in database
     u = get_user(username)
     if not u:
         return 'ERROR: No user "' + username + \
+            '" in the database ', 417, {"Content-Type": "text/plain"}
+
+    t = get_target(targetname)
+    if not t:
+        return 'ERROR: No target "' + targetname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
     # Check if the given user is a member of the given target
@@ -311,27 +310,27 @@ def target_addusergroup():
             "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    targetname = request.form["targetname"]
     usergroupname = request.form["usergroupname"]
+    targetname = request.form["targetname"]
 
-    # Check for mandatory fields
-    if not targetname or not usergroupname:
-        return "ERROR: The targetname and usergroupname are required ", 417, {
+    # Check for required fields
+    if not usergroupname or not targetname:
+        return "ERROR: The usergroupname and targetname are required ", 417, {
             "Content-Type": "text/plain"}
 
-    # Target and user have to exist in database
+    # Usergroup and target have to exist in database
+    ug = get_usergroup(usergroupname)
+    if not ug:
+        return 'ERROR: no usergroup "' + usergroupname + \
+            '" in the database ', 417, {"Content-Type": "text/plain"}
+
     t = get_target(targetname)
     if not t:
         return 'ERROR: no target "' + targetname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    g = get_usergroup(usergroupname)
-    if not g:
-        return 'ERROR: no usergroup "' + usergroupname + \
-            '" in the database ', 417, {"Content-Type": "text/plain"}
-
     # Now we can add the user
-    t.addusergroup(g)
+    t.addusergroup(ug)
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
@@ -351,23 +350,23 @@ def target_rmusergroup():
             "Content-Type": "text/plain"}
 
     # Simplification for the reading
-    targetname = request.form["targetname"]
     usergroupname = request.form["usergroupname"]
+    targetname = request.form["targetname"]
 
-    # Check for mandatory fields
-    if not targetname or not usergroupname:
-        return "ERROR: The targetname and usergroupname are required ", 417, {
+    # Check for required fields
+    if not usergroupname or not targetname:
+        return "ERROR: The usergroupname and targetname are required ", 417, {
             "Content-Type": "text/plain"}
 
-    # Target and user have to exist in database
+    # Usergroup and target have to exist in database
+    ug = get_usergroup(usergroupname)
+    if not ug:
+        return 'ERROR: No usergroup "' + usergroupname + \
+            '" in the database ', 417, {"Content-Type": "text/plain"}
+
     t = get_target(targetname)
     if not t:
         return 'ERROR: No target "' + targetname + \
-            '" in the database ', 417, {"Content-Type": "text/plain"}
-
-    u = get_usergroup(usergroupname)
-    if not u:
-        return 'ERROR: No usergroup "' + usergroupname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
     # Check if the given usergroup is a member of the given target
@@ -377,7 +376,7 @@ def target_rmusergroup():
             targetname + '" ', 417, {"Content-Type": "text/plain"}
 
     # Now we can remove the usergroup
-    t.rmusergroup(u)
+    t.rmusergroup(ug)
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
@@ -414,11 +413,11 @@ def get_target(name):
 
 def get_usergroup(name):
     """Return the usergroup with the given name"""
-    g = db.session.query(usergroup.Usergroup).filter(
+    ug = db.session.query(usergroup.Usergroup).filter(
         usergroup.Usergroup.name == name).all()
 
     # Usergroup must exist in database
-    if g:
-        return g[0]
+    if ug:
+        return ug[0]
     else:
         return False

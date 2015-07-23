@@ -128,6 +128,16 @@ class Targetgroup(db.Model):
 
         return self
 
+    def username_in_targetgroup(self, username):
+        """Return true if the given username belongs to a member
+        of the targetgroup
+        """
+        for user in self.members:
+            if user.show_name() == username:
+                return True
+
+        return False
+
     # Usergroup management
     def is_gmembers(self, usergroup):
         """Return true if the given usergroup is a member
@@ -149,6 +159,16 @@ class Targetgroup(db.Model):
 
         return self
 
+    def usergroupname_in_targetgroup(self, usergroupname):
+        """Return true if the given usergroupname belongs to a member
+        of the targetgroup
+        """
+        for usergroup in self.gmembers:
+            if usergroup.show_name() == usergroupname:
+                return True
+
+        return False
+
     # Targetgroup anagement
     def is_tgmembers(self, targetgroup):
         """Return true if the given targetgroup is a member
@@ -169,3 +189,13 @@ class Targetgroup(db.Model):
             self.tgmembers.remove(targetgroup)
 
         return self
+
+    def subtargetgroupname_in_targetgroup(self, subtargetgroupname):
+        """Return true if the given subtargetgroupname belongs to a member
+        of the targetgroup
+        """
+        for subtargetgroup in self.tgmembers:
+            if subtargetgroup.show_name() == subtargetgroupname:
+                return True
+
+        return False
