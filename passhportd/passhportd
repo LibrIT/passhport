@@ -5,6 +5,13 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import os
+from config import SQLALCHEMY_DATABASE_DIR
+
 """Server side using flask"""
 from app import app
-app.run(debug=True)
+
+if not os.path.exists(SQLALCHEMY_DATABASE_DIR):
+    print("ERROR: Database connection failed")
+else:
+    app.run(debug=True)
