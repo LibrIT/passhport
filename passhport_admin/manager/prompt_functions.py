@@ -17,6 +17,19 @@ from . import usergroup as usergroup
 from . import targetgroup as targetgroup
 
 
+def ask_confirmation(prompt_confirmation):
+    """Same as input() but check if user key in a correct input"""
+    confirmation = input(prompt_confirmation)
+
+    # Loop until user types [Y/n]
+    while confirmation.upper() != "Y" and confirmation.upper() != "N":
+        print("You didn't type 'Y' or 'N', please try again.")
+        print(confirmation)
+        print(confirmation.upper())
+        confirmation = input(prompt_confirmation)
+
+    return confirmation
+
 def list(obj):
     """List all object of this type"""
     return req.list(obj)
@@ -37,7 +50,15 @@ def show(obj):
 def delete(obj):
     """Ask arguments for deleting an existing object"""
     name = input("Name: ")
-    return req.delete(obj, {"<name>": name})
+    confirmation = ask_confirmation("Are you sure you want to delete " + \
+        name + "? [Y/n] ")
+
+    if confirmation.upper() == "Y":
+        return req.delete(obj, {"<name>": name})
+    else:
+        print("Operation aborted.")
+
+        return None
 
 
 def create(obj):
