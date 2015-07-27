@@ -9,10 +9,9 @@ from flask import request
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 from app import app, db
-from app.models_mod import target
-from app.models_mod import user
-from app.models_mod import usergroup
+from app.models_mod import user, usergroup
 
+from .. import utilities as utils
 
 @app.route("/usergroup/list")
 def usergroup_list():
@@ -209,12 +208,12 @@ def usergroup_adduser():
             "Content-Type": "text/plain"}
 
     # User and usergroup have to exist in database
-    u = get_user(username)
+    u = utils.get_user(username)
     if not u:
         return 'ERROR: no user "' + username + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    ug = get_usergroup(usergroupname)
+    ug = utils.get_usergroup(usergroupname)
     if not ug:
         return 'ERROR: no usergroup "' + usergroupname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
@@ -249,12 +248,12 @@ def usergroup_rmuser():
             "Content-Type": "text/plain"}
 
     # User and usergroup have to exist in database
-    u = get_user(username)
+    u = utils.get_user(username)
     if not u:
         return 'ERROR: No user "' + username + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    ug = get_usergroup(usergroupname)
+    ug = utils.get_usergroup(usergroupname)
     if not ug:
         return 'ERROR: No usergroup "' + usergroupname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
@@ -295,12 +294,12 @@ def usergroup_addusergroup():
             417, {"Content-Type": "text/plain"}
 
     # Subsergroup and usergroup have to exist in database
-    sug = get_usergroup(subusergroupname)
+    sug = utils.get_usergroup(subusergroupname)
     if not sug:
         return 'ERROR: no usergroup "' + subusergroupname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    ug = get_usergroup(usergroupname)
+    ug = utils.get_usergroup(usergroupname)
     if not ug:
         return 'ERROR: no usergroup "' + usergroupname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
@@ -335,12 +334,12 @@ def usergroup_rmusergroup():
         417, {"Content-Type": "text/plain"}
 
     # Usergroup and subusergroup have to exist in database
-    ug = get_usergroup(usergroupname)
+    ug = utils.get_usergroup(usergroupname)
     if not ug:
         return 'ERROR: no usergroup "' + usergroupname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    sug = get_usergroup(subusergroupname)
+    sug = utils.get_usergroup(subusergroupname)
     if not sug:
         return 'ERROR: no usergroup "' + subusergroupname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
@@ -361,27 +360,3 @@ def usergroup_rmusergroup():
 
     return 'OK: "' + subusergroupname + '" removed from "' + \
         usergroupname + '"', 200, {"Content-Type": "text/plain"}
-
-# Utils
-def get_user(name):
-    """Return the user with the given name"""
-    u = db.session.query(user.User).filter(
-        user.User.name == name).all()
-
-    # User must exist in database
-    if u:
-        return u[0]
-    else:
-        return False
-
-
-def get_usergroup(name):
-    """Return the usergroup with the given name"""
-    ug = db.session.query(usergroup.Usergroup).filter(
-        usergroup.Usergroup.name == name).all()
-
-    # Usergroup must exist in database
-    if ug:
-        return ug[0]
-    else:
-        return False

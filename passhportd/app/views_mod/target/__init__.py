@@ -9,8 +9,9 @@ from flask import request
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 from app import app, db
-from app.models_mod import target, user, usergroup
+from app.models_mod import user, target, usergroup
 
+from .. import utilities as utils
 
 @app.route("/target/list")
 def target_list():
@@ -233,12 +234,12 @@ def target_adduser():
             "Content-Type": "text/plain"}
 
     # User and target have to exist in database
-    u = get_user(username)
+    u = utils.get_user(username)
     if not u:
         return 'ERROR: no user "' + username + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    t = get_target(targetname)
+    t = utils.get_target(targetname)
     if not t:
         return 'ERROR: no target "' + targetname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
@@ -273,12 +274,12 @@ def target_rmuser():
             "Content-Type": "text/plain"}
 
     # User and target have to exist in database
-    u = get_user(username)
+    u = utils.get_user(username)
     if not u:
         return 'ERROR: No user "' + username + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    t = get_target(targetname)
+    t = utils.get_target(targetname)
     if not t:
         return 'ERROR: No target "' + targetname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
@@ -319,12 +320,12 @@ def target_addusergroup():
             "Content-Type": "text/plain"}
 
     # Usergroup and target have to exist in database
-    ug = get_usergroup(usergroupname)
+    ug = utils.get_usergroup(usergroupname)
     if not ug:
         return 'ERROR: no usergroup "' + usergroupname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    t = get_target(targetname)
+    t = utils.get_target(targetname)
     if not t:
         return 'ERROR: no target "' + targetname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
@@ -359,12 +360,12 @@ def target_rmusergroup():
             "Content-Type": "text/plain"}
 
     # Usergroup and target have to exist in database
-    ug = get_usergroup(usergroupname)
+    ug = utils.get_usergroup(usergroupname)
     if not ug:
         return 'ERROR: No usergroup "' + usergroupname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
 
-    t = get_target(targetname)
+    t = utils.get_target(targetname)
     if not t:
         return 'ERROR: No target "' + targetname + \
             '" in the database ', 417, {"Content-Type": "text/plain"}
@@ -385,39 +386,3 @@ def target_rmusergroup():
 
     return 'OK: "' + usergroupname + '" removed from "' + \
         targetname + '"', 200, {"Content-Type": "text/plain"}
-
-# Utils
-def get_user(name):
-    """Return the user with the given name"""
-    u = db.session.query(user.User).filter(
-        user.User.name == name).all()
-
-    # User must exist in database
-    if u:
-        return u[0]
-    else:
-        return False
-
-
-def get_target(name):
-    """Return the target with the given name"""
-    t = db.session.query(target.Target).filter(
-        target.Target.name == name).all()
-
-    # Target must exist in database
-    if t:
-        return t[0]
-    else:
-        return False
-
-
-def get_usergroup(name):
-    """Return the usergroup with the given name"""
-    ug = db.session.query(usergroup.Usergroup).filter(
-        usergroup.Usergroup.name == name).all()
-
-    # Usergroup must exist in database
-    if ug:
-        return ug[0]
-    else:
-        return False
