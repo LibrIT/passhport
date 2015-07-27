@@ -64,17 +64,6 @@ class Usergroup(db.Model):
         """Return a string containing the usergroup's name"""
         return self.name
 
-    def show_users(self):
-        """Show user list of the usergroup"""
-        output = []
-
-        output.append("User list:")
-
-        for user in self.members:
-            output.append(user.show_name())
-
-        return "\n".join(output)
-
     # User management
     def is_member(self, user):
         """Return true if the given user is a member of the usergroup,

@@ -55,6 +55,12 @@ class Target(db.Model):
         return self.name
 
     # User management
+    def is_member(self, user):
+        """Return true if the given user is a member of the target,
+        false otherwise
+        """
+        return user in self.members
+
     def adduser(self, user):
         """Add a user to the relation table"""
         if not self.is_member(user):
@@ -69,12 +75,6 @@ class Target(db.Model):
 
         return self
 
-    def is_member(self, user):
-        """Return true if the given user is a member of the target,
-        false otherwise
-        """
-        return user in self.members
-
     def username_in_target(self, username):
         """Return true if the given username belongs to a member
         of the target
@@ -86,6 +86,12 @@ class Target(db.Model):
         return False
 
     # Usergroup management
+    def is_gmember(self, usergroup):
+        """Return true if the given usergroup is a member
+        of the target, false otherwise
+        """
+        return usergroup in self.gmembers
+
     def addusergroup(self, usergroup):
         """Add a usergroup to the relation table"""
         if not self.is_gmember(usergroup):
@@ -99,12 +105,6 @@ class Target(db.Model):
             self.gmembers.remove(usergroup)
 
         return self
-
-    def is_gmember(self, usergroup):
-        """Return true if the given usergroup is a member
-        of the target, false otherwise
-        """
-        return usergroup in self.gmembers
 
     def usergroupname_in_target(self, usergroupname):
         """Return true if the given usergroupname belongs to a member

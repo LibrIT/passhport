@@ -76,37 +76,6 @@ class Targetgroup(db.Model):
         """Return a string containing the targetgroup’s name"""
         return self.name
 
-    # Target management
-    def is_tmembers(self, target):
-        """Return true if the given target is a member
-        of the targetgroup, false otherwise
-        """
-        return target in self.tmembers
-
-    def targetname_in_targetgroup(self, targetname):
-        """Return true if the given targetname belongs to a member
-        of the targetgroup
-        """
-        for target in self.tmembers:
-            if target.show_name() == targetname:
-                return True
-
-        return False
-
-    def addtarget(self, target):
-        """Add a target to the relation table"""
-        if not self.is_tmembers(target):
-            self.tmembers.append(target)
-
-        return self
-
-    def rmtarget(self, target):
-        """Remove a target from the relation table"""
-        if self.is_tmembers(target):
-            self.tmembers.remove(target)
-
-        return self
-
     # User management
     def is_members(self, user):
         """Return true if the given user is a member
@@ -134,6 +103,37 @@ class Targetgroup(db.Model):
         """
         for user in self.members:
             if user.show_name() == username:
+                return True
+
+        return False
+
+    # Target management
+    def is_tmembers(self, target):
+        """Return true if the given target is a member
+        of the targetgroup, false otherwise
+        """
+        return target in self.tmembers
+
+    def addtarget(self, target):
+        """Add a target to the relation table"""
+        if not self.is_tmembers(target):
+            self.tmembers.append(target)
+
+        return self
+
+    def rmtarget(self, target):
+        """Remove a target from the relation table"""
+        if self.is_tmembers(target):
+            self.tmembers.remove(target)
+
+        return self
+
+    def targetname_in_targetgroup(self, targetname):
+        """Return true if the given targetname belongs to a member
+        of the targetgroup
+        """
+        for target in self.tmembers:
+            if target.show_name() == targetname:
                 return True
 
         return False
