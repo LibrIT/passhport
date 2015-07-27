@@ -4,57 +4,71 @@
 """
 Usage:
     passhport-admin (-i | --interactive)
+    passhport-admin (-h | --version)
     passhport-admin user list
     passhport-admin user search [<pattern>]
     passhport-admin user (show|delete) [<name>]
-    passhport-admin user create [((<name> <sshkey>) [--comment=<comment>])]
-    passhport-admin user edit [<name> [--newname=<name>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
+    passhport-admin user create [((<name> <sshkey>) \
+        [--comment=<comment>])]
+    passhport-admin user edit [<name> [--newname=<name>] \
+        [--newsshkey=<sshkey>] [--newcomment=<comment>]]
     passhport-admin user delete -f <name>
     passhport-admin target list
     passhport-admin target search [<pattern>]
     passhport-admin target (show|delete) [<name>]
-    passhport-admin target create [((<name> <hostname>) [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] [--servretype=<servertype>] [--autocommand=<autocommand>])]
+    passhport-admin target create [((<name> <hostname>) \
+        [--comment=<comment>] [--sshoptions=<sshoptions>] \
+        [--port=<port>] [--servretype=<servertype>] \
+        [--autocommand=<autocommand>])]
     passhport-admin target edit [<name> [--newname=<name>] \
-[--newhostname=<hostname>] [--newcomment=<comment>] \
-[--newsshoptions=<sshoptions>] [--newport=<port>] \
-[--newservertype=<servertype>] [--newautocommand=<autocommand>]]
+        [--newhostname=<hostname>] [--newcomment=<comment>] \
+        [--newsshoptions=<sshoptions>] [--newport=<port>] \
+        [--newservertype=<servertype>] \
+        [--newautocommand=<autocommand>]]
     passhport-admin target delete -f <name>
     passhport-admin target (adduser|rmuser) [<username> <targetname>]
-    passhport-admin target (addusergroup|rmusergroup) [<usergroupname> <targetname>]
+    passhport-admin target (addusergroup|rmusergroup) \
+        [<usergroupname> <targetname>]
     passhport-admin usergroup list
     passhport-admin usergroup search [<pattern>]
     passhport-admin usergroup (show|delete) [<name>]
     passhport-admin usergroup create [<name> [--comment=<comment>]]
-    passhport-admin usergroup edit [<name> [--newname=<name>] [--newcomment=<comment>]]
+    passhport-admin usergroup edit [<name> [--newname=<name>] \
+        [--newcomment=<comment>]]
     passhport-admin usergroup delete -f <name>
-    passhport-admin usergroup (adduser|rmuser) [<username> <usergroupname>]
-    passhport-admin usergroup (addusergroup|rmusergroup) [<subusergroupname> <usergroupname>]
+    passhport-admin usergroup (adduser|rmuser) \
+        [<username> <usergroupname>]
+    passhport-admin usergroup (addusergroup|rmusergroup) \
+        [<subusergroupname> <usergroupname>]
     passhport-admin targetgroup list
     passhport-admin targetgroup search [<pattern>]
     passhport-admin targetgroup (show|delete) [<name>]
     passhport-admin targetgroup create [<name> [--comment=<comment>]]
-    passhport-admin targetgroup edit [<name> [--newname=<name>] [--newcomment=<comment>]]
+    passhport-admin targetgroup edit [<name> [--newname=<name>] \
+        [--newcomment=<comment>]]
     passhport-admin targetgroup delete -f <name>
-    passhport-admin targetgroup (adduser|rmuser) [<username> <targetgroupname>]
-    passhport-admin targetgroup (addtarget|rmtarget) [<targetname> <targetgroupname>]
-    passhport-admin targetgroup (addusergroup|rmusergroup) [<usergroupname> <targetgroupname>]
-    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) [<subtargetgroupname> <targetgroupname>]
-    passhport-admin (-h | --version)
+    passhport-admin targetgroup (adduser|rmuser) \
+        [<username> <targetgroupname>]
+    passhport-admin targetgroup (addtarget|rmtarget) \
+        [<targetname> <targetgroupname>]
+    passhport-admin targetgroup (addusergroup|rmusergroup) \
+        [<usergroupname> <targetgroupname>]
+    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) \
+        [<subtargetgroupname> <targetgroupname>]
 
 Arguments:
-    pattern         SQL search pattern
-    email           An email to identify a user
-    passhport-admin (-h | --version)
-    comment         A comment
-    sshkey          A SSH key to authenticate a user
-    target          A target is a combinaison of a server and a port
-    groupname       A group is a combinason of users and targets. A user in a group can access all the targets in it
-    subusergroupname        Any group can be added to another group (take care to the cycles)
-    targetname      The name of a target
-    targetgroup     A group of targets
-    targetgroupname The name of a targetgroup
-    subtargetgroup  A group of targets can be added to any group of targets
-    targetname      The name of a target
+    pattern          SQL search pattern
+    name             The name of the object
+    comment          A comment
+    sshkey           A SSH key to authenticate a user
+    target           A target is a combinaison of a server and a port
+    groupname        A group is a combinason of users and targets. A user in a group can access all the targets in it
+    subusergroupname Any group can be added to another group (take care to the cycles)
+    targetname       The name of a target
+    targetgroup      A group of targets
+    targetgroupname  The name of a targetgroup
+    subtargetgroup   A group of targets can be added to any group of targets
+    targetname       The name of a target
 
 Options:
     user                manage users data
@@ -93,7 +107,7 @@ def docopt_cmd(func):
             return
 
         except SystemExit:
-            # passhport-admin target (adduser|rmuser) [<username> <targetname>]The SystemExit exception prints the usage for --help
+            # The SystemExit exception prints the usage for --help
             # We do not need to do the print here.
             return
 

@@ -45,8 +45,7 @@ class Usergroup(db.Model):
         """Return main data of the usergroup as a string"""
         output = []
 
-        output.append(
-            "Name: {}".format(self.name))
+        output.append("Name: {}".format(self.name))
         output.append("Comment: {}".format(self.comment))
         output.append("User list:")
 
@@ -118,7 +117,7 @@ class Usergroup(db.Model):
 
     def subusergroupname_in_usergroup(self, subusergroupname):
         """Return true if the given subusergroupname belongs to a member
-        of the usergroup
+        of the usergroup, false otherwise
         """
         for subusergroup in self.gmembers:
             if subusergroup.show_name() == subusergroupname:

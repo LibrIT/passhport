@@ -47,8 +47,7 @@ class Targetgroup(db.Model):
         """Return main data of the targetgroup as a string"""
         output = []
 
-        output.append(
-            "Name: {}".format(self.name))
+        output.append("Name: {}".format(self.name))
         output.append("Comment: {}".format(self.comment))
         output.append("User list:")
 
@@ -192,7 +191,7 @@ class Targetgroup(db.Model):
 
     def subtargetgroupname_in_targetgroup(self, subtargetgroupname):
         """Return true if the given subtargetgroupname belongs to a member
-        of the targetgroup
+        of the targetgroup, false otherwise
         """
         for subtargetgroup in self.tgmembers:
             if subtargetgroup.show_name() == subtargetgroupname:
