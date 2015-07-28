@@ -121,8 +121,9 @@ def docopt_cmd(func):
         except DocoptExit as e:
             # The DocoptExit is thrown when the args do not match.
             # We print a message to the user and the usage block.
-            print("Invalid Command!")
+            print("Invalid command!")
             print(e)
+
             return None
 
         except SystemExit:
@@ -138,7 +139,7 @@ def docopt_cmd(func):
 
     return fn
 
-class MyInteractive (cmd.Cmd):
+class MyInteractive(cmd.Cmd):
     intro = "Welcome to interactive program" \
         + " (type help for a list of commands)!"
     prompt = "(passhport) "
@@ -163,14 +164,24 @@ Arguments:
     sshkey   The SSH key used to authenticate the user.
 
 Options:
-    -f, --force  Force deletion without asking confirmation.
-    --comment=<comment>             Set a comment to the object.
-    --newname=<name>                Set the new name of the object.
-    --newcomment=<comment>          Set the new comment of the object.
-    --newsshkey=<sshkey>            Set the new SSH key of the user.
+    -f, --force             Force deletion without asking confirmation.
+    --comment=<comment>     Set a comment to the object.
+    --newname=<name>        Set the new name of the object.
+    --newcomment=<comment>  Set the new comment of the object.
+    --newsshkey=<sshkey>    Set the new SSH key of the user.
         """
-        # TODO
-        print(arg)
+        #methods = {"list", "search", "show", "delete", "create", "edit"}
+        #param = {}
+
+        #for key, value in arg.items():
+        #    if value:
+        #        method = key
+        #    else:
+        #        param[key] = value
+
+        # Need more info, lets prompt user
+        #module = prompt_functions
+        #getattr(module, method)("user")
 
     @docopt_cmd
     def do_target(self, arg):
@@ -191,20 +202,21 @@ Usage:
 [(<usergroupname> <targetname>)]
 
 Arguments:
-    name                The name of the object.
-    username            The name of the user.
-    targetname          The name of the target.
-    usergroupname       The name of the usergroup.
-    comment             A comment about the object.
-    pattern             A SQL search pattern.
-    hostname            The name of the server of the target.
-    sshoptions          ???
-    port                The port used to connect with SSH.
-    servertype          The server's type of the target.
-    autocommand         ???
+    name           The name of the object.
+    username       The name of the user.
+    targetname     The name of the target.
+    usergroupname  The name of the usergroup.
+    comment        A comment about the object.
+    pattern        A SQL search pattern.
+    hostname       The name of the server of the target.
+    sshoptions     ???
+    port           The port used to connect with SSH.
+    servertype     The server's type of the target.
+    autocommand    ???
 
 Options:
-    -f, --force        Force deletion without asking confirmation.
+    -f, --force                     Force deletion without asking \
+confirmation.
     --comment=<comment>             Set a comment to the object.
     --sshoptions=<sshoptions>       Set SSH options to the target.
     --port=<port>                   Set port used to connect with \
@@ -240,18 +252,18 @@ Usage:
 [(<subusergroupname> <usergroupname>)]
 
 Arguments:
-    name                The name of the object.
-    username            The name of the user.
-    usergroupname       The name of the usergroup.
-    subusergroupname    The name of the subusergroup.
-    comment             A comment about the object.
-    pattern             A SQL search pattern.
+    name              The name of the object.
+    username          The name of the user.
+    usergroupname     The name of the usergroup.
+    subusergroupname  The name of the subusergroup.
+    comment           A comment about the object.
+    pattern           A SQL search pattern.
 
 Options:
-    -f, --force        Force deletion without asking confirmation.
-    --comment=<comment>             Set a comment to the object.
-    --newname=<name>                Set the new name of the object.
-    --newcomment=<comment>          Set the new comment of the object.
+    -f, --force             Force deletion without asking confirmation.
+    --comment=<comment>     Set a comment to the object.
+    --newname=<name>        Set the new name of the object.
+    --newcomment=<comment>  Set the new comment of the object.
         """
         # TODO
         print(arg)
@@ -286,10 +298,10 @@ Arguments:
     pattern             A SQL search pattern.
 
 Options:
-    -f, --force        Force deletion without asking confirmation.
-    --comment=<comment>             Set a comment to the object.
-    --newname=<name>                Set the new name of the object.
-    --newcomment=<comment>          Set the new comment of the object.
+    -f, --force             Force deletion without asking confirmation.
+    --comment=<comment>     Set a comment to the object.
+    --newname=<name>        Set the new name of the object.
+    --newcomment=<comment>  Set the new comment of the object.
         """
         # TODO
         print(arg)
