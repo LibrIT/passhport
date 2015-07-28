@@ -59,7 +59,7 @@ def show(obj, param):
 
 def delete(obj, param):
     """Deletion on passhportd via API"""
-    if "-f" in param:
+    if "-f" in param or "--force" in param:
         return get(url_passhport + obj + "/delete/" + param["<name>"])
     else:
         confirmation = ask_confirmation(
@@ -70,7 +70,7 @@ def delete(obj, param):
         else:
             print("Operation aborted.")
 
-            return None
+    return None
 
 def post(url, data):
     """Send the POST request to the server and print a result"""

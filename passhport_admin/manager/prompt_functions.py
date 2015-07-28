@@ -40,11 +40,11 @@ def delete(obj):
         name + "? [Y/n] ")
 
     if confirmation.upper() == "Y":
-        return req.delete(obj, {"<name>": name})
+        return req.get(req.url_passhport + obj + "/delete/" + name)
     else:
         print("Operation aborted.")
 
-        return None
+    return None
 
 
 def create(obj):
