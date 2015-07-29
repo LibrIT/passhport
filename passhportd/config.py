@@ -1,11 +1,14 @@
-"""
-    Configuration file
-"""
+# -*-coding:Utf-8 -*-
+
+"""Configuration file"""
+
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import os
 
-"""
-    Database (sqlite by default)
-"""
+"""Database (sqlite by default)"""
 basedir = os.path.expanduser('~')
 datadir = os.path.join(basedir, 'var')
 

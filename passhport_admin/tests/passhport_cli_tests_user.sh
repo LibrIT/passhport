@@ -41,7 +41,7 @@ echo "[user] edit   1/2: " ${r/1/ERROR}
 
 # DEL 1/2
 PATTERN="ERROR: No user with the name \"${USERNAME}\" in the database."
-${CMD} delete ${USERNAME} | grep "${PATTERN}"  &> /dev/null
+${CMD} delete -f ${USERNAME} | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] del    1/2: " ${r/1/ERROR}
 
@@ -79,6 +79,6 @@ echo "[user] edit   2/2: " ${r/1/ERROR}
 
 # DEL 2/2
 PATTERN="OK: \"new_${USERNAME}\" -> deleted"
-${CMD} delete new_${USERNAME} | grep "${PATTERN}"  &> /dev/null
+${CMD} delete -f new_${USERNAME} | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[user] del    2/2: " ${r/1/ERROR}

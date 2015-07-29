@@ -16,7 +16,6 @@ from . import target as target
 from . import usergroup as usergroup
 from . import targetgroup as targetgroup
 
-
 def list(obj):
     """List all object of this type"""
     return req.list(obj)
@@ -35,13 +34,21 @@ def show(obj):
 
 
 def delete(obj):
-    """Ask arguments for deleting an existing user"""
+    """Ask arguments for deleting an existing object"""
     name = input("Name: ")
-    return req.delete({"<name>": name})
+    confirmation = req.ask_confirmation("Are you sure you want to delete " + \
+        name + "? [Y/n] ")
+
+    if confirmation.upper() == "Y":
+        return req.get(req.url_passhport + obj + "/delete/" + name)
+    else:
+        print("Operation aborted.")
+
+    return None
 
 
 def create(obj):
-    """Ask arguments for user creation"""
+    """Ask arguments for object creation"""
     objects = {"user": user, "target": target, "usergroup": usergroup,
             "targetgroup": targetgroup}
     data = getattr(objects[obj], "prompt_create")()
@@ -57,5 +64,90 @@ def edit(obj):
 
     if data:
         return req.edit(obj, data)
+
+    return None
+
+
+def adduser(obj):
+    """Ask arguments for adding a user to an object"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_adduser")()
+
+    if data:
+        return req.adduser(obj, data)
+
+    return None
+
+def rmuser(obj):
+    """Ask arguments for removing a user from an object"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_rmuser")()
+
+    if data:
+        return req.rmuser(obj, data)
+
+    return None
+
+def addtarget(obj):
+    """Ask arguments for adding a target to an object"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_addtarget")()
+
+    if data:
+        return req.addtarget(obj, data)
+
+    return None
+
+def rmtarget(obj):
+    """Ask arguments for removing a target from an object"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_rmtarget")()
+
+    if data:
+        return req.rmtarget(obj, data)
+
+    return None
+
+def addusergroup(obj):
+    """Ask arguments for adding a usergroup to an object"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_addusergroup")()
+
+    if data:
+        return req.addusergroup(obj, data)
+
+    return None
+
+def rmusergroup(obj):
+    """Ask arguments for removing a usergroup from an object"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_rmusergroup")()
+
+    if data:
+        return req.rmusergroup(obj, data)
+
+    return None
+
+def addtargetgroup(obj):
+    """Ask arguments for adding a targetgroup to an object"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_addtargetgroup")()
+
+    if data:
+        return req.addtargetgroup(obj, data)
+
+    return None
+
+def rmtargetgroup(obj):
+    """Ask arguments for removing a targetgroup from an object"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "prompt_rmtargetgroup")()
+
+    if data:
+        return req.rmtargetgroup(obj, data)
 
     return None

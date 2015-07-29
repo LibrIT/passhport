@@ -5,6 +5,7 @@
 # Compatibility 2.7-3.4
 from __future__ import absolute_import
 from __future__ import unicode_literals
+from builtins import input
 
 import requests
 
@@ -15,6 +16,16 @@ from . import targetgroup as targetgroup
 
 url_passhport = "http://127.0.0.1:5000/"
 
+def ask_confirmation(prompt_confirmation):
+    """Same as input() but check if user key in a correct input"""
+    confirmation = input(prompt_confirmation)
+
+    # Loop until user types [Y/n]
+    while confirmation.upper() != "Y" and confirmation.upper() != "N":
+        print("You didn't type 'Y' or 'N', please try again.")
+        confirmation = input(prompt_confirmation)
+
+    return confirmation
 
 def get(url):
     """Send the GET request to the server and print a result"""
@@ -48,8 +59,18 @@ def show(obj, param):
 
 def delete(obj, param):
     """Deletion on passhportd via API"""
-    return get(url_passhport + obj + "/delete/" + param["<name>"])
+    if "-f" in param or "--force" in param:
+        return get(url_passhport + obj + "/delete/" + param["<name>"])
+    else:
+        confirmation = ask_confirmation(
+            "Are you sure you want to delete " + param["<name>"] + "? [Y/n] ")
 
+        if confirmation.upper() == "Y":
+            return get(url_passhport + obj + "/delete/" + param["<name>"])
+        else:
+            print("Operation aborted.")
+
+    return None
 
 def post(url, data):
     """Send the POST request to the server and print a result"""
@@ -82,5 +103,76 @@ def edit(obj, param):
             "targetgroup": targetgroup}
     data = getattr(objects[obj], "edit")(param)
     url = url_passhport + obj + "/edit"
+
+    return post(url, data)
+
+
+def adduser(obj, param):
+    """Add a user to an object on passhportd via API"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "adduser")(param)
+    url = url_passhport + obj + "/adduser"
+
+    return post(url, data)
+
+
+def rmuser(obj, param):
+    """Remove a user from an object on passhportd via API"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "rmuser")(param)
+    url = url_passhport + obj + "/rmuser"
+
+    return post(url, data)
+
+def addtarget(obj, param):
+    """Add a target to an object on passhportd via API"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "addtarget")(param)
+    url = url_passhport + obj + "/addtarget"
+
+    return post(url, data)
+
+def rmtarget(obj, param):
+    """Remove a target from an object on passhportd via API"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "rmtarget")(param)
+    url = url_passhport + obj + "/rmtarget"
+
+    return post(url, data)
+
+def addusergroup(obj, param):
+    """Add a usergroup to an object on passhportd via API"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "addusergroup")(param)
+    url = url_passhport + obj + "/addusergroup"
+
+    return post(url, data)
+
+
+def rmusergroup(obj, param):
+    """Remove a usergroup from an object on passhportd via API"""
+    objects = {"target": target, "usergroup": usergroup,
+            "targetgroup": targetgroup}
+    data = getattr(objects[obj], "rmusergroup")(param)
+    url = url_passhport + obj + "/rmusergroup"
+
+    return post(url, data)
+
+def addtargetgroup(obj, param):
+    """Add a targetgroup to an object on passhportd via API"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "addtargetgroup")(param)
+    url = url_passhport + obj + "/addtargetgroup"
+
+    return post(url, data)
+
+def rmtargetgroup(obj, param):
+    """Remove a targetgroup from an object on passhportd via API"""
+    objects = {"targetgroup": targetgroup}
+    data = getattr(objects[obj], "rmtargetgroup")(param)
+    url = url_passhport + obj + "/rmtargetgroup"
 
     return post(url, data)

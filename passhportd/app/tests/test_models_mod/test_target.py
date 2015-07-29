@@ -1,4 +1,9 @@
 # -*-coding:Utf-8 -*-
+
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import os
 
 from nose.tools import *
@@ -70,7 +75,7 @@ class TestTarget:
         user_list.append(u)
 
         ug = usergroup.Usergroup(
-             usergroupname=usergroupname,
+             name=usergroupname,
              comment=comment_usergroup)
         usergroup_list.append(ug)
 
@@ -129,7 +134,7 @@ class TestTarget:
         user_list.append(u)
 
         ug = usergroup.Usergroup(
-             usergroupname=usergroupname,
+             name=usergroupname,
              comment=comment_usergroup)
         usergroup_list.append(ug)
 
@@ -205,7 +210,7 @@ class TestTarget:
         user_list.append(u)
 
         ug = usergroup.Usergroup(
-             usergroupname=usergroupname,
+             name=usergroupname,
              comment=comment_usergroup)
         usergroup_list.append(ug)
 
@@ -229,7 +234,7 @@ class TestTarget:
         user_list.append(u)
 
         ug = usergroup.Usergroup(
-            usergroupname=usergroupname2,
+            name=usergroupname2,
             comment=comment_usergroup2)
         usergroup_list.append(ug)
 
@@ -822,7 +827,7 @@ class TestTarget:
             comment=comment)
 
         ug = usergroup.Usergroup(
-            usergroupname=usergroupname,
+            name=usergroupname,
             comment=comment_usergroup)
 
         db.session.add(t)
@@ -862,7 +867,7 @@ class TestTarget:
             comment=comment)
 
         ug = usergroup.Usergroup(
-            usergroupname=usergroupname,
+            name=usergroupname,
             comment=comment_usergroup)
 
         db.session.add(t)
@@ -903,7 +908,7 @@ class TestTarget:
             comment=comment)
 
         ug = usergroup.Usergroup(
-            usergroupname=usergroupname,
+            name=usergroupname,
             comment=comment_usergroup)
 
         db.session.add(t)
@@ -948,11 +953,11 @@ class TestTarget:
             comment=comment)
 
         ug = usergroup.Usergroup(
-            usergroupname=usergroupname,
+            name=usergroupname,
             comment=comment_usergroup)
 
         ug2 = usergroup.Usergroup(
-            usergroupname=usergroupname2,
+            name=usergroupname2,
             comment=comment_usergroup2)
 
         db.session.add(t)

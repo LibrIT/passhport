@@ -1,59 +1,103 @@
 #!/usr/bin/env python
 # -*-coding:Utf-8 -*-
 
-"""
+"""paSSHport-admin
+
 Usage:
-    passhport-admin (-i | --interactive)
-    passhport-admin user (list|delete)
+    passhport-admin -i | --interactive
+    passhport-admin -h | --help
+    passhport-admin user list
     passhport-admin user search [<pattern>]
-    passhport-admin user (show|delete) [<name>]
-    passhport-admin user create [((<name> <sshkey>) [--comment=<comment>])]
-    passhport-admin user edit [<name> [--newname=<name>] [--newsshkey=<sshkey>] [--newcomment=<comment>]]
+    passhport-admin user show [<name>]
+    passhport-admin user create [((<name> <sshkey>) \
+[--comment=<comment>])]
+    passhport-admin user edit [(<name> [--newname=<name> \
+--newsshkey=<sshkey> --newcomment=<comment>])]
+    passhport-admin user delete [([-f | --force] <name>)]
     passhport-admin target list
-    passhport-admin target search <pattern>
-    passhport-admin target (show|delete) [<name>]
-    passhport-admin target create [((<name> <hostname>) [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] [--servretype=<servertype>] [--autocommand=<autocommand>])]
-    passhport-admin target edit [<name> [--newname=<name>] \
-[--newhostname=<hostname>] [--newcomment=<comment>] \
-[--newsshoptions=<sshoptions>] [--newport=<port>] \
-[--newservertype=<servertype>] [--newautocommand=<autocommand>]]
-    passhport-admin target (adduser|rmuser) [<username> <targetname>]
+    passhport-admin target search [<pattern>]
+    passhport-admin target show [<name>]
+    passhport-admin target create [((<name> <hostname>) \
+[--comment=<comment> --sshoptions=<sshoptions> --port=<port> \
+--servertype=<servertype> --autocommand=<autocommand>])]
+    passhport-admin target edit [(<name> [--newname=<name> \
+--newhostname=<hostname> --newcomment=<comment> \
+--newsshoptions=<sshoptions> --newport=<port> \
+--newservertype=<servertype> --newautocommand=<autocommand>])]
+    passhport-admin target delete [([-f | --force] <name>)]
+    passhport-admin target (adduser | rmuser) \
+[(<username> <targetname>)]
+    passhport-admin target (addusergroup | rmusergroup) \
+[(<usergroupname> <targetname>)]
     passhport-admin usergroup list
-    passhport-admin usergroup search <pattern>
-    passhport-admin usergroup (show|create|edit|del)
-    passhport-admin usergroup (adduser|rmuser) <username> <usergroupname>
-    passhport-admin usergroup (addusergroup|rmusergroup) <subusergroupname> <usergroupname>
+    passhport-admin usergroup search [<pattern>]
+    passhport-admin usergroup show [<name>]
+    passhport-admin usergroup create [(<name> [--comment=<comment>])]
+    passhport-admin usergroup edit [(<name> [--newname=<name> \
+--newcomment=<comment>])]
+    passhport-admin usergroup delete [([-f | --force] <name>)]
+    passhport-admin usergroup (adduser | rmuser) \
+[(<username> <usergroupname>)]
+    passhport-admin usergroup (addusergroup | rmusergroup) \
+[(<subusergroupname> <usergroupname>)]
     passhport-admin targetgroup list
-    passhport-admin targetgroup search <pattern>
-    passhport-admin targetgroup (show|create|edit|del)
-    passhport-admin targetgroup (addtarget|rmtarget) <targetname> <targetgroupname>
-    passhport-admin targetgroup (addtargetgroup|rmtargetgroup) <subtargetgroupname> <targetgroupname>
-    passhport-admin targetgroup (adduser|rmuser) <username> <targetgroupname>
-    passhport-admin targetgroup (addusergroup|rmusergroup) <usergroupname> <targetgroupname>
-    passhport-admin (-h | --version)
+    passhport-admin targetgroup search [<pattern>]
+    passhport-admin targetgroup show [<name>]
+    passhport-admin targetgroup create [(<name> [--comment=<comment>])]
+    passhport-admin targetgroup edit [(<name> [--newname=<name>] \
+[--newcomment=<comment>])]
+    passhport-admin targetgroup delete [([-f | --force] <name>)]
+    passhport-admin targetgroup (adduser | rmuser) \
+[(<username> <targetgroupname>)]
+    passhport-admin targetgroup (addtarget | rmtarget) \
+[(<targetname> <targetgroupname>)]
+    passhport-admin targetgroup (addusergroup | rmusergroup) \
+[(<usergroupname> <targetgroupname>)]
+    passhport-admin targetgroup (addtargetgroup | rmtargetgroup) \
+[(<subtargetgroupname> <targetgroupname>)]
 
 Arguments:
-    pattern         SQL search pattern
-    email           An email to identify a user
-    passhport-admin (-h | --version)
-    comment         A comment
-    sshkey          A SSH key to authenticate a user
-    target          A target is a combinaison of a server and a port
-    groupname       A group is a combinason of users and targets. A user in a group can access all the targets in it
-    subusergroupname        Any group can be added to another group (take care to the cycles)
-    targetname      The name of a target
-    targetgroup     A group of targets
-    targetgroupname The name of a targetgroup
-    subtargetgroup  A group of targets can be added to any group of targets
-    targetname      The name of a target
+    name                The name of the object.
+    username            The name of the user.
+    targetname          The name of the target.
+    usergroupname       The name of the usergroup.
+    subusergroupname    The name of the subusergroup.
+    targetgroupname     The name of the targetgroup.
+    subtargetgroupname  The name of the subtargetgroup.
+    comment             A comment about the object.
+    pattern             A SQL search pattern.
+    sshkey              The SSH key used to authenticate the user.
+    hostname            The name of the server of the target.
+    sshoptions          ???
+    port                The port used to connect with the target.
+    servertype          The server's type of the target.
+    autocommand         ???
 
 Options:
-    user                manage users data
-    usergroup           manage group of users
-    -i, --interactive   Interactive Mode
-    -h, --help          Show this screen and exit.
+    -i, --interactive               Interactive mode.
+    -h, --help                      Show this screen and exit.
+    -f, --force                     Force deletion without asking \
+confirmation.
+    --comment=<comment>             Set a comment to the object.
+    --sshoptions=<sshoptions>       Set SSH options to the target.
+    --port=<port>                   Set port used to connect with \
+the target.
+    --servertype=<servertype>       Set server's type of the target.
+    --autocommand=<autocommand>     Set ???.
+    --newname=<name>                Set the new name of the object.
+    --newcomment=<comment>          Set the new comment of the object.
+    --newsshkey=<sshkey>            Set the new SSH key of the user.
+    --newhostname=<hostname>        Set the new hostname of the target.
+    --newsshoptions=<sshoptions>    Set the new SSH options \
+of the target.
+    --newport=<port>                Set the new port used \
+with the target.
+    --newservertype=<servertype>    Set the new server's type \
+of the target.
+    --newautocommand=<autocommand>  Set the new ???
 """
 
+# Compatibility 2.7-3.4
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -64,7 +108,6 @@ from manager import (prompt_functions, requests_functions, user, target,
 usergroup, targetgroup)
 
 from docopt import docopt, DocoptExit
-
 
 def docopt_cmd(func):
     """This decorator is used to simplify the try/except block and pass
@@ -78,27 +121,28 @@ def docopt_cmd(func):
         except DocoptExit as e:
             # The DocoptExit is thrown when the args do not match.
             # We print a message to the user and the usage block.
-            print('Invalid Command!')
+            print("Invalid command!")
             print(e)
-            return
+
+            return None
 
         except SystemExit:
             # The SystemExit exception prints the usage for --help
             # We do not need to do the print here.
-            return
+            return None
 
         return func(self, opt)
 
     fn.__name__ = func.__name__
     fn.__doc__ = func.__doc__
     fn.__dict__.update(func.__dict__)
+
     return fn
 
-
-class MyInteractive (cmd.Cmd):
-    intro = 'Welcome to interactive program!' \
-        + ' (type help for a list of commands)'
-    prompt = '(passhport) '
+class MyInteractive(cmd.Cmd):
+    intro = "Welcome to the interactive program" + \
+        " (type help for a list of commands)!"
+    prompt = "(passhport) "
     file = None
 
     @docopt_cmd
@@ -106,138 +150,302 @@ class MyInteractive (cmd.Cmd):
         """
 Usage:
     user list
-    user search <pattern>
-    user (show|create|edit|delete)
-    user show <email>
-    user create <email> <comment> <sshkey>
-    user edit <email> <new_email> <comment> <sshkey>
-    user delete <email>
+    user search [<pattern>]
+    user show [<name>]
+    user create [((<name> <sshkey>) [--comment=<comment>])]
+    user edit [(<name> [--newname=<name> --newsshkey=<sshkey> \
+--newcomment=<comment>])]
+    user delete [([-f | --force] <name>)]
 
 Arguments:
-    pattern         SQL search pattern
+    name     The name of the object.
+    comment  A comment about the object.
+    pattern  A SQL search pattern.
+    sshkey   The SSH key used to authenticate the user.
 
 Options:
-    list            List all users (use with care on huge installations)
-    search          Search a user following the SQL pattern given
-    show            Show all the data of a user
-    create          Launch the interactive user creation
-    edit            Launch the interactive user modification
-    delete             Delete permanently the user entry"""
-
-        # TODO
-        print(arg)
-
-    @docopt_cmd
-    def do_usergroup(self, arg):
+    -f, --force             Force deletion without asking confirmation.
+    --comment=<comment>     Set a comment to the object.
+    --newname=<name>        Set the new name of the object.
+    --newcomment=<comment>  Set the new comment of the object.
+    --newsshkey=<sshkey>    Set the new SSH key of the user.
         """
-Usage:
-    usergroup list
-    usergroup search <pattern>
-    usergroup (show|create|edit|del)
-    usergroup (adduser|rmuser) <email> <groupname>
-    usergroup (addusergroup|rmusergroup) <subusergroupname> <groupname>
+        commands = {"list", "search", "show", "create", "edit", "delete"}
+        arguments = {"<name>", "<pattern>", "<sshkey>"}
+        options = {
+            "--force",
+            "--comment",
+            "--newname",
+            "--newcomment",
+            "--newsshkey"}
+        method = ""
+        param = {}
 
-Arguments:
-    pattern         SQL search pattern
-    username        Often the login
-    target          A target is a combinaison of a server and a port
-    groupname       A group is a combinaison of users and targets. A user in a group can access all the targets in it
-    subusergroupname        Any group can be added to another group (take care to the cycles)
+        for key, value in arg.items():
+            if value:
+                if key in commands:
+                    method = key
+                else:
+                    param[key] = value
 
-Options:
-    list            List all groups
-    search          Search a group name following the SQL pattern given
-    show            Show all the data of a group, including the users/target in it
-    create          Launch the interactive group creation
-    edit            Launch the interactive group modification
-    delete             Delete permanently the group entry
-    adduser         Add a user in a group
-    rmuser          Remove a user from a group
-    addgroup        Add a group of users/targets to another group
-    rmgroup         Remove a group of user target from another group
-    """
-        # TODO
-        print(arg)
+        if param:
+            getattr(requests_functions, method)("user", param)
+        else:
+            getattr(prompt_functions, method)("user")
 
     @docopt_cmd
     def do_target(self, arg):
         """
 Usage:
     target list
-    target search <pattern>
-    target (show|create|edit|del)
-    target editcommand <command> <targetname>
-    target (adduser|rmuser) <email> <targetname>
-    target (addusergroup|rmusergroup) <groupname> <targetname>
+    target search [<pattern>]
+    target show [<name>]
+    target create [((<name> <hostname>) \
+[--comment=<comment> --sshoptions=<sshoptions> --port=<port> \
+--servertype=<servertype> --autocommand=<autocommand>])]
+    target edit [(<name> [--newname=<name> --newhostname=<hostname> \
+--newcomment=<comment> --newsshoptions=<sshoptions> --newport=<port> \
+--newservertype=<servertype> --newautocommand=<autocommand>])]
+    target delete [([-f | --force] <name>)]
+    target (adduser | rmuser) [(<username> <targetname>)]
+    target (addusergroup | rmusergroup) \
+[(<usergroupname> <targetname>)]
 
 Arguments:
-    pattern         SQL search pattern
-    email           The email of a user
-    targetname      Often a hostname
-    groupname       A passhport group name
-    command         A unix command that will be triggered instead of classical ssh connexion
+    name           The name of the object.
+    username       The name of the user.
+    targetname     The name of the target.
+    usergroupname  The name of the usergroup.
+    comment        A comment about the object.
+    pattern        A SQL search pattern.
+    hostname       The name of the server of the target.
+    sshoptions     ???
+    port           The port used to connect with SSH.
+    servertype     The server's type of the target.
+    autocommand    ???
 
-Options
-    list            List all targets
-    search          Search a target name following the SQL pattern given
-    show            Show all the data of a target
-    create          Launch the interactive target creation
-    edit            Launch the interactive target modification
-    delete             Delete permanently the target entry
-    editcommand     Edit the command line launched instead of a classical ssh connexion.
-    adduser         Add a user rights on target
-    rmuser          Remove a user rights from target
-    addusergroup    Add rights to a group of users on this target
-    rmusergroup     Remove rights from a group of users on this target
-    """
+Options:
+    -f, --force                     Force deletion without asking \
+confirmation.
+    --comment=<comment>             Set a comment to the object.
+    --sshoptions=<sshoptions>       Set SSH options to the target.
+    --port=<port>                   Set port used to connect with \
+the target.
+    --servertype=<servertype>       Set server's type of the target.
+    --autocommand=<autocommand>     Set ???.
+    --newname=<name>                Set the new name of the object.
+    --newcomment=<comment>          Set the new comment of the object.
+    --newhostname=<hostname>        Set the new hostname of the target.
+    --newsshoptions=<sshoptions>    Set the new SSH options \
+of the target.
+    --newport=<port>                Set the new port used \
+with the target.
+    --newservertype=<servertype>    Set the new server's type \
+of the target.
+    --newautocommand=<autocommand>  Set the new ???
+        """
+        commands = {
+            "list",
+            "search",
+            "show",
+            "create",
+            "edit",
+            "delete",
+            "adduser",
+            "rmuser",
+            "addusergroup",
+            "rmusergroup"}
+        arguments = {
+            "<name>",
+            "<username>",
+            "<targetname>",
+            "<usergroupname>",
+            "<pattern>",
+            "<hostname>"}
+        options = {
+            "--force",
+            "--comment",
+            "--sshoptions",
+            "--port",
+            "--servertype",
+            "--autocommand",
+            "--newname",
+            "--newcomment",
+            "--newhostname",
+            "--newsshoptions",
+            "--newport",
+            "--newservertype",
+            "--newautocommand"}
+        method = ""
+        param = {}
+
+        for key, value in arg.items():
+            if value:
+                if key in commands:
+                    method = key
+                else:
+                    param[key] = value
+
+        if param:
+            getattr(requests_functions, method)("target", param)
+        else:
+            getattr(prompt_functions, method)("target")
+
+    @docopt_cmd
+    def do_usergroup(self, arg):
+        """
+Usage:
+    usergroup list
+    usergroup search [<pattern>]
+    usergroup show [<name>]
+    usergroup create [(<name> [--comment=<comment>])]
+    usergroup edit [(<name> [--newname=<name> --newcomment=<comment>])]
+    usergroup delete [([-f | --force] <name>)]
+    usergroup (adduser | rmuser) [(<username> <usergroupname>)]
+    usergroup (addusergroup | rmusergroup) \
+[(<subusergroupname> <usergroupname>)]
+
+Arguments:
+    name              The name of the object.
+    username          The name of the user.
+    usergroupname     The name of the usergroup.
+    subusergroupname  The name of the subusergroup.
+    comment           A comment about the object.
+    pattern           A SQL search pattern.
+
+Options:
+    -f, --force             Force deletion without asking confirmation.
+    --comment=<comment>     Set a comment to the object.
+    --newname=<name>        Set the new name of the object.
+    --newcomment=<comment>  Set the new comment of the object.
+        """
+        commands = {
+            "list",
+            "search",
+            "show",
+            "create",
+            "edit",
+            "delete",
+            "adduser",
+            "rmuser",
+            "addusergroup",
+            "rmusergroup"}
+        arguments = {
+            "<name>",
+            "<username>",
+            "<usergroupname",
+            "<subusergroupname>",
+            "<pattern>"}
+        options = {
+            "--force",
+            "--comment",
+            "--newname",
+            "--newcomment"}
+        method = ""
+        param = {}
+
+        for key, value in arg.items():
+            if value:
+                if key in commands:
+                    method = key
+                else:
+                    param[key] = value
+
+        if param:
+            getattr(requests_functions, method)("usergroup", param)
+        else:
+            getattr(prompt_functions, method)("usergroup")
 
     @docopt_cmd
     def do_targetgroup(self, arg):
         """
 Usage:
     targetgroup list
-    targetgroup search <pattern>
-    targetgroup (show|create|edit|del)
-    targetgroup (addtarget|rmtarget) <targetname>  <targetgroupname>
-    targetgroup (addtargetgroup|rmtargetgroup) <subtargetgroupname> <targetgroupname>
-    targetgroup (adduser|rmuser) <email> <targetgroupname>
-    targetgroup (addusergroup|rmusergroup) <groupname> <targetgroupname>
+    targetgroup search [<pattern>]
+    targetgroup show [<name>]
+    targetgroup create [(<name> [--comment=<comment>])]
+    targetgroup edit [(<name> [--newname=<name>] \
+[--newcomment=<comment>])]
+    targetgroup delete [([-f | --force] <name>)]
+    targetgroup (adduser | rmuser) [(<username> <targetgroupname>)]
+    targetgroup (addtarget | rmtarget) \
+[(<targetname> <targetgroupname>)]
+    targetgroup (addusergroup | rmusergroup) \
+[(<usergroupname> <targetgroupname>)]
+    targetgroup (addtargetgroup | rmtargetgroup) \
+[(<subtargetgroupname> <targetgroupname>)]
 
 Arguments:
-    pattern         SQL search pattern
-    username        Often the login
-    targetname      Often a hostname
-    targetgroupname A group of targets already existing
-    groupname       A passhport group name
+    name                The name of the object.
+    username            The name of the user.
+    targetname          The name of the target.
+    usergroupname       The name of the usergroup.
+    targetgroupname     The name of the targetgroup.
+    subtargetgroupname  The name of the subtargetgroup.
+    comment             A comment about the object.
+    pattern             A SQL search pattern.
 
-Options
-    list            List all targetgroups
-    search          Search a targetgroup name following the SQL pattern given
-    show            Show all the data of a targetgroup
-    create          Launch the interactive targetgroup creation
-    edit            Launch the interactive targetgroup modification
-    delete             Delete permanently the targetgroup entry
-    adduser         Add a user rights on targetgroup (including all the targets in it)
-    rmuser          Remove a user rights from targetgroup
-    addusergroup    Add rights to a group of users on this targetgroup
-    rmusergroup     Remove rights from a group of users on this targetgroup
-    addtargetgroup  Add a group of targets on this group
-    rmtargetgroup   Remove a group of target from this group
-    """
+Options:
+    -f, --force             Force deletion without asking confirmation.
+    --comment=<comment>     Set a comment to the object.
+    --newname=<name>        Set the new name of the object.
+    --newcomment=<comment>  Set the new comment of the object.
+        """
+        commands = {
+            "list",
+            "search",
+            "show",
+            "create",
+            "edit",
+            "delete",
+            "adduser",
+            "rmuser",
+            "addtarget",
+            "rmtarget",
+            "addusergroup",
+            "rmusergroup",
+            "addtargetgroup",
+            "rmtargetgroup"}
+        arguments = {
+            "<name>",
+            "<username>",
+            "<targetname>",
+            "<usergroupname>",
+            "<targetgroupname>",
+            "<subtargetgroupname>",
+            "<pattern>"}
+        options = {
+            "--force",
+            "--comment",
+            "--newname",
+            "--newcomment"}
+        method = ""
+        param = {}
+
+        for key, value in arg.items():
+            if value:
+                if key in commands:
+                    method = key
+                else:
+                    param[key] = value
+
+        if param:
+            getattr(requests_functions, method)("targetgroup", param)
+        else:
+            getattr(prompt_functions, method)("targetgroup")
 
     def do_quit(self, arg):
-        """Quits out of Interactive Mode."""
-
-        print('Good Bye!')
+        """Quit Interactive Mode."""
+        print("Goodbye!")
         exit()
 
 
 def requests_object_method(opt):
     """Call the right method depending of the object type"""
     objects = {"user", "target", "usergroup", "targetgroup"}
-    methods = {'list', 'search', 'show', 'delete', 'create', 'edit',
-               'adduser', 'rmuser', 'addusergroup', 'rmusergroup',
-               'addtarget', 'rmtarget', 'addtargetgroup', 'rmtargetgroup'}
+    methods = {"list", "search", "show", "delete", "create", "edit",
+               "adduser", "rmuser", "addusergroup", "rmusergroup",
+               "addtarget", "rmtarget", "addtargetgroup", "rmtargetgroup"}
     param = {}
 
     # Determine which object/method to use
@@ -252,17 +460,15 @@ def requests_object_method(opt):
 
     if param:
         # All info are here nothing to ask to the user
-        module = requests_functions
-        getattr(module, method)(obj,param)
+        getattr(requests_functions, method)(obj, param)
     else:
         # Need more info, lets prompt user
-        module = prompt_functions
-        getattr(module, method)(obj)
+        getattr(prompt_functions, method)(obj)
 
 
 opt = docopt(__doc__, sys.argv[1:])
-if __name__ == '__main__':
-    if opt['--interactive']:
+if __name__ == "__main__":
+    if opt["--interactive"]:
         MyInteractive().cmdloop()
     else:
         # We don't need the False options to call the method

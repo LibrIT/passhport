@@ -28,7 +28,7 @@ def ask_port(prompt_text):
 
 
 def prompt_create():
-    """Prompt user to obtain data to request"""
+    """Prompt user to obtain data to create a target"""
     name = input("Name: ")
     hostname = input("Hostname: ")
     port = ask_port("Port: ")
@@ -79,7 +79,7 @@ def create(param):
 
 
 def prompt_edit():
-    """Prompt user to obtain data to request"""
+    """Prompt user to obtain data to edit a target"""
     name = input("Name of the target you want to modify: ")
 
     if req.show("target", {"<name>": name}) == 0:
@@ -134,3 +134,61 @@ def edit(param):
             "new_servertype": new_servertype,
             "new_autocommand": new_autocommand,
             "new_comment": new_comment}
+
+def prompt_adduser():
+    """Prompt user to obtain data to add a user"""
+    username = input("Username: ")
+    targetname = input("Targetname: ")
+
+    return {"<username>": username,
+            "<targetname>": targetname}
+
+def adduser(param):
+    """Format param to add a user"""
+    return {"username": param["<username>"],
+            "targetname": param["<targetname>"]}
+
+
+def prompt_rmuser():
+    """Prompt user to obtain data to remove a user"""
+    username = input("Username: ")
+    targetname = input("Targetname: ")
+
+    return {"<username>": username,
+            "<targetname>": targetname}
+
+
+def rmuser(param):
+    """Format param to remove a user"""
+    return {"username": param["<username>"],
+            "targetname": param["<targetname>"]}
+
+
+def prompt_addusergroup():
+    """Prompt user to obtain data to add a usergroup"""
+    usergroupname = input("Usergroupname: ")
+    targetname = input("Targetname: ")
+
+    return {"<usergroupname>": usergroupname,
+            "<targetname>": targetname}
+
+
+def addusergroup(param):
+    """Format param to add a usergroup"""
+    return {"usergroupname": param["<usergroupname>"],
+            "targetname": param["<targetname>"]}
+
+
+def prompt_rmusergroup():
+    """Prompt user to obtain data to remove a usergroup"""
+    usergroupname = input("Usergroupname: ")
+    targetname = input("Targetname: ")
+
+    return {"<usergroupname>": usergroupname,
+            "<targetname>": targetname}
+
+
+def rmusergroup(param):
+    """Format param to remove a usergroup"""
+    return {"usergroupname": param["<usergroupname>"],
+            "targetname": param["<targetname>"]}

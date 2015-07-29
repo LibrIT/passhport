@@ -1,11 +1,16 @@
 # -*-coding:Utf-8 -*-
 
-from app import db
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
-"""Target defines information for every server accessible through passhport"""
+from app import db
 
 
 class Target(db.Model):
+    """Target defines information for every server accessible
+    through passhport
+    """
     __tablename__ = "target"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), index=True, unique=True)
@@ -41,7 +46,7 @@ class Target(db.Model):
         output.append("Usergroup list:")
 
         for usergroup in self.gmembers:
-            output.append(usergroup.show_usergroupname())
+            output.append(usergroup.show_name())
 
         return "\n".join(output)
 
@@ -50,6 +55,12 @@ class Target(db.Model):
         return self.name
 
     # User management
+    def is_member(self, user):
+        """Return true if the given user is a member of the target,
+        false otherwise
+        """
+        return user in self.members
+
     def adduser(self, user):
         """Add a user to the relation table"""
         if not self.is_member(user):
@@ -64,19 +75,23 @@ class Target(db.Model):
 
         return self
 
-    def is_member(self, user):
-        """Return true if the given user is a member of the target, false otherwise"""
-        return user in self.members
-
-    def name_in_target(self, name):
-        """Return true if the given name belongs to a member of the target"""
+    def username_in_target(self, username):
+        """Return true if the given username belongs to a member
+        of the target
+        """
         for user in self.members:
-            if user.show_name() == name:
+            if user.show_name() == username:
                 return True
 
         return False
 
     # Usergroup management
+    def is_gmember(self, usergroup):
+        """Return true if the given usergroup is a member
+        of the target, false otherwise
+        """
+        return usergroup in self.gmembers
+
     def addusergroup(self, usergroup):
         """Add a usergroup to the relation table"""
         if not self.is_gmember(usergroup):
@@ -91,14 +106,12 @@ class Target(db.Model):
 
         return self
 
-    def is_gmember(self, usergroup):
-        """Return true if the given usergroup is a member of the target, false otherwise"""
-        return usergroup in self.gmembers
-
     def usergroupname_in_target(self, usergroupname):
-        """Return true if the given usergroupname belongs to a member of the target"""
+        """Return true if the given usergroupname belongs to a member
+        of the target
+        """
         for usergroup in self.gmembers:
-            if usergroup.show_usergroupname() == usergroupname:
+            if usergroup.show_name() == usergroupname:
                 return True
 
         return False

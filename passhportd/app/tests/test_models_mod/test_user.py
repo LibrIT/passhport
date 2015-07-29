@@ -1,4 +1,9 @@
 # -*-coding:Utf-8 -*-
+
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import os
 
 from nose.tools import *
@@ -47,9 +52,9 @@ class TestUser:
         output  = """Name: john@example.com\nSSH key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdH3Dwen9fNgBxZ+QrR3wt9TSQt1+kizp9uz6heudbZ9J6+xghvDnTmwhcm7MROLXG9FMHPtDXNviVmwa/Pj/EQp/2390XT8BLy9/yYpfMrbYSSJEcnchd7EA1U1txjc5mQbWTxiXFcM6UifwF1cjJrOda0OZpR+BdoEkpLrkyuTOWgdV5zoVu0pLrSJNdHAFEtPZ0yaTuX3ufk3ScSeIdXyj4qaX/T0mIuXmfP89yy0ipFMiimXvi/D2Q+MMDAjbDQuW1YlX730hgKJTZD+X5RkNHFHpggTLpvvRDffhqxuBvQNNgUk0hPQ6gFgQIgVIgjIiJkM/j0Ayig+k+4hT john@example.com\nComment: This is a great comment"""
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
         db.session.add(u)
         db.session.commit()
 
@@ -71,16 +76,16 @@ class TestUser:
         comment = "A random comment man"
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
         db.session.add(u)
         db.session.commit()
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey="""Another sshkey""".encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey="""Another sshkey""",
+            comment=comment)
         db.session.add(u)
         db.session.commit()
 
@@ -93,16 +98,16 @@ class TestUser:
         comment = "An awesome comment man"
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
         db.session.add(u)
         db.session.commit()
 
         u = user.User(
-            name="smith@example.com".encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name="smith@example.com",
+            sshkey=sshkey,
+            comment=comment)
         db.session.add(u)
         db.session.commit()
 
@@ -124,26 +129,26 @@ class TestUser:
         new_comment = "A new comment"
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
 
         db.session.add(u)
         db.session.commit()
 
         user_to_edit = db.session.query(
             user.User).filter_by(
-            name="example@test.org".encode("utf8"))
+            name="example@test.org")
         updated_rows = user_to_edit.update(
             {
-                "name": new_name.encode("utf8"),
-                "sshkey": new_sshkey.encode("utf8"),
-                "comment": new_comment.encode("utf8")})
+                "name": new_name,
+                "sshkey": new_sshkey,
+                "comment": new_comment})
         db.session.commit()
 
         u_edit = db.session.query(
             user.User).filter_by(
-            name=new_name.encode("utf8")).first()
+            name=new_name).first()
 
         assert_equal(updated_rows, 1)
         assert_equal(u.id, u_edit.id)
@@ -157,9 +162,9 @@ class TestUser:
         """
         u = db.session.query(
             user.User).filter_by(
-            name="random@alea.info".encode("utf8"))
-        updated_rows = u.update({"name": "bat@man.com".encode(
-            "utf8"), "sshkey": "batmobile".encode("utf8"), "comment": "So d4rk".encode("utf8")})
+            name="random@alea.info")
+        updated_rows = u.update({"name": "bat@man.com",
+            "sshkey": "batmobile", "comment": "So d4rk"})
 
         assert_equal(updated_rows, 0)
 
@@ -177,21 +182,21 @@ class TestUser:
         comment2 = "slow"
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
         u2 = user.User(
-            name=name2.encode("utf8"),
-            sshkey=sshkey2.encode("utf8"),
-            comment=comment2.encode("utf8"))
+            name=name2,
+            sshkey=sshkey2,
+            comment=comment2)
 
         db.session.add(u)
         db.session.commit()
         db.session.add(u2)
         db.session.commit()
 
-        u2 = db.session.query(user.User).filter_by(name=name2.encode("utf8"))
-        updated_rows = u2.update({"name": name.encode("utf8")})
+        u2 = db.session.query(user.User).filter_by(name=name2)
+        updated_rows = u2.update({"name": name})
 
         db.session.commit()
 
@@ -208,21 +213,21 @@ class TestUser:
         comment2 = "slow"
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
         u2 = user.User(
-            name=name2.encode("utf8"),
-            sshkey=sshkey2.encode("utf8"),
-            comment=comment2.encode("utf8"))
+            name=name2,
+            sshkey=sshkey2,
+            comment=comment2)
 
         db.session.add(u)
         db.session.commit()
         db.session.add(u2)
         db.session.commit()
 
-        u2 = db.session.query(user.User).filter_by(name=name2.encode("utf8"))
-        updated_rows = u2.update({"sshkey": sshkey.encode("utf8")})
+        u2 = db.session.query(user.User).filter_by(name=name2)
+        updated_rows = u2.update({"sshkey": sshkey})
 
         db.session.commit()
 
@@ -233,14 +238,14 @@ class TestUser:
         comment = "unusual comment"
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
         db.session.add(u)
         db.session.commit()
 
         user_data = user.User.query.filter_by(
-            name=name.encode("utf8")).first()
+            name=name).first()
 
         assert_equal(name, user_data.name)
         assert_equal(sshkey, user_data.sshkey)
@@ -251,7 +256,7 @@ class TestUser:
         (but doesn't raise error)
         """
         user_data = user.User.query.filter_by(
-            name="the@mail.net".encode("utf8")).first()
+            name="the@mail.net").first()
 
         assert_is_none(user_data)
 
@@ -262,9 +267,9 @@ class TestUser:
         comment = "This is a great comment"
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
         db.session.add(u)
         db.session.commit()
 
@@ -273,7 +278,7 @@ class TestUser:
 
         u_db = db.session.query(
             user.User).filter_by(
-            name="john@example.com".encode("utf8")).first()
+            name="john@example.com").first()
 
         assert_is_none(u_db)
 
@@ -285,9 +290,9 @@ class TestUser:
         comment = "Nice comment"
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
         db.session.delete(u)
         db.session.commit()
 
@@ -307,9 +312,9 @@ class TestUser:
         user_list = []
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
         db.session.add(u)
         db.session.commit()
 
@@ -335,13 +340,13 @@ class TestUser:
         res_list = []
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
         u2 = user.User(
-            name=name2.encode("utf8"),
-            sshkey=sshkey2.encode("utf8"),
-            comment=comment2.encode("utf8"))
+            name=name2,
+            sshkey=sshkey2,
+            comment=comment2)
         db.session.add(u)
         db.session.add(u2)
         db.session.commit()
@@ -374,13 +379,13 @@ class TestUser:
         res_list = []
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
         u2 = user.User(
-            name=name2.encode("utf8"),
-            sshkey=sshkey2.encode("utf8"),
-            comment=comment2.encode("utf8"))
+            name=name2,
+            sshkey=sshkey2,
+            comment=comment2)
 
         db.session.add(u)
         db.session.add(u2)
@@ -411,9 +416,9 @@ class TestUser:
         res_list = []
 
         u = user.User(
-            name=name.encode("utf8"),
-            sshkey=sshkey.encode("utf8"),
-            comment=comment.encode("utf8"))
+            name=name,
+            sshkey=sshkey,
+            comment=comment)
 
         db.session.add(u)
         db.session.commit()

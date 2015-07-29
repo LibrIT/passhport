@@ -1,11 +1,14 @@
 # -*-coding:Utf-8 -*-
 
-from app import db
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
-"""User defines information for every adminsys using passhport"""
+from app import db
 
 
 class User(db.Model):
+    """User defines information for every adminsys using passhport"""
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), index=True, unique=True, nullable=False)
@@ -31,4 +34,4 @@ class User(db.Model):
 
     def show_name(self):
         """Return a string containing the user's name"""
-        return self.name.encode("utf8")
+        return self.name
