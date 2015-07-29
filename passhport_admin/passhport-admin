@@ -173,8 +173,8 @@ Options:
         commands = {"list", "search", "show", "create", "edit", "delete"}
         arguments = {"<name>", "<pattern>", "<sshkey>"}
         options = {
-            "--comment",
             "--force",
+            "--comment",
             "--newname",
             "--newcomment",
             "--newsshkey"}
@@ -244,8 +244,52 @@ with the target.
 of the target.
     --newautocommand=<autocommand>  Set the new ???
         """
-        # TODO
-        print(arg)
+        commands = {
+            "list",
+            "search",
+            "show",
+            "create",
+            "edit",
+            "delete",
+            "adduser",
+            "rmuser",
+            "addusergroup",
+            "rmusergroup"}
+        arguments = {
+            "<name>",
+            "<username>",
+            "<targetname>",
+            "<usergroupname>",
+            "<pattern>",
+            "<hostname>"}
+        options = {
+            "--force",
+            "--comment",
+            "--sshoptions",
+            "--port",
+            "--servertype",
+            "--autocommand",
+            "--newname",
+            "--newcomment",
+            "--newhostname",
+            "--newsshoptions",
+            "--newport",
+            "--newservertype",
+            "--newautocommand"}
+        method = ""
+        param = {}
+
+        for key, value in arg.items():
+            if value:
+                if key in commands:
+                    method = key
+                else:
+                    param[key] = value
+
+        if param:
+            getattr(requests_functions, method)("target", param)
+        else:
+            getattr(prompt_functions, method)("target")
 
     @docopt_cmd
     def do_usergroup(self, arg):
@@ -275,8 +319,42 @@ Options:
     --newname=<name>        Set the new name of the object.
     --newcomment=<comment>  Set the new comment of the object.
         """
-        # TODO
-        print(arg)
+        commands = {
+            "list",
+            "search",
+            "show",
+            "create",
+            "edit",
+            "delete",
+            "adduser",
+            "rmuser",
+            "addusergroup",
+            "rmusergroup"}
+        arguments = {
+            "<name>",
+            "<username>",
+            "<usergroupname",
+            "<subusergroupname>",
+            "<pattern>"}
+        options = {
+            "--force",
+            "--comment",
+            "--newname",
+            "--newcomment"}
+        method = ""
+        param = {}
+
+        for key, value in arg.items():
+            if value:
+                if key in commands:
+                    method = key
+                else:
+                    param[key] = value
+
+        if param:
+            getattr(requests_functions, method)("usergroup", param)
+        else:
+            getattr(prompt_functions, method)("usergroup")
 
     @docopt_cmd
     def do_targetgroup(self, arg):
@@ -313,12 +391,52 @@ Options:
     --newname=<name>        Set the new name of the object.
     --newcomment=<comment>  Set the new comment of the object.
         """
-        # TODO
-        print(arg)
+        commands = {
+            "list",
+            "search",
+            "show",
+            "create",
+            "edit",
+            "delete",
+            "adduser",
+            "rmuser",
+            "addtarget",
+            "rmtarget",
+            "addusergroup",
+            "rmusergroup",
+            "addtargetgroup",
+            "rmtargetgroup"}
+        arguments = {
+            "<name>",
+            "<username>",
+            "<targetname>",
+            "<usergroupname>",
+            "<targetgroupname>",
+            "<subtargetgroupname>",
+            "<pattern>"}
+        options = {
+            "--force",
+            "--comment",
+            "--newname",
+            "--newcomment"}
+        method = ""
+        param = {}
+
+        for key, value in arg.items():
+            if value:
+                if key in commands:
+                    method = key
+                else:
+                    param[key] = value
+
+        if param:
+            getattr(requests_functions, method)("targetgroup", param)
+        else:
+            getattr(prompt_functions, method)("targetgroup")
 
     def do_quit(self, arg):
-        """Quits out of Interactive Mode."""
-        print("Good Bye!")
+        """Quit Interactive Mode."""
+        print("Goodbye!")
         exit()
 
 
