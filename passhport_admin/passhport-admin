@@ -140,8 +140,8 @@ def docopt_cmd(func):
     return fn
 
 class MyInteractive(cmd.Cmd):
-    intro = "Welcome to interactive program" \
-        + " (type help for a list of commands)!"
+    intro = "Welcome to the interactive program" + \
+        " (type help for a list of commands)!"
     prompt = "(passhport) "
     file = None
 
@@ -170,18 +170,28 @@ Options:
     --newcomment=<comment>  Set the new comment of the object.
     --newsshkey=<sshkey>    Set the new SSH key of the user.
         """
-        #methods = {"list", "search", "show", "delete", "create", "edit"}
-        #param = {}
+        commands = {"list", "search", "show", "create", "edit", "delete"}
+        arguments = {"<name>", "<pattern>", "<sshkey>"}
+        options = {
+            "--comment",
+            "--force",
+            "--newname",
+            "--newcomment",
+            "--newsshkey"}
+        method = ""
+        param = {}
 
-        #for key, value in arg.items():
-        #    if value:
-        #        method = key
-        #    else:
-        #        param[key] = value
+        for key, value in arg.items():
+            if value:
+                if key in commands:
+                    method = key
+                else:
+                    param[key] = value
 
-        # Need more info, lets prompt user
-        #module = prompt_functions
-        #getattr(module, method)("user")
+        if param:
+            getattr(requests_functions, method)("user", param)
+        else:
+            getattr(prompt_functions, method)("user")
 
     @docopt_cmd
     def do_target(self, arg):
@@ -332,12 +342,10 @@ def requests_object_method(opt):
 
     if param:
         # All info are here nothing to ask to the user
-        module = requests_functions
-        getattr(module, method)(obj, param)
+        getattr(requests_functions, method)(obj, param)
     else:
         # Need more info, lets prompt user
-        module = prompt_functions
-        getattr(module, method)(obj)
+        getattr(prompt_functions, method)(obj)
 
 
 opt = docopt(__doc__, sys.argv[1:])
