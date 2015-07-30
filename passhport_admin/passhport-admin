@@ -98,6 +98,7 @@ of the target.
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import signal
 import sys
 import cmd
 
@@ -105,6 +106,10 @@ from manager import (prompt_functions, requests_functions, user, target,
 usergroup, targetgroup)
 
 from docopt import docopt, DocoptExit
+
+def signal_handler(signal, frame):
+    print "\nExiting at your own sweet will."
+    sys.exit(0)
 
 def docopt_cmd(func):
     """This decorator is used to simplify the try/except block and pass
@@ -457,9 +462,10 @@ def requests_object_method(opt):
         # Need more info, lets prompt user
         getattr(prompt_functions, method)(obj)
 
-
 opt = docopt(__doc__, sys.argv[1:])
 if __name__ == "__main__":
+    signal.signal(signal.SIGINT, signal_handler)
+
     if opt["--interactive"]:
         MyInteractive().cmdloop()
     else:
