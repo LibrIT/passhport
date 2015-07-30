@@ -27,7 +27,7 @@ def create(param):
             "comment": comment}
 
 
-def prompt_edit():
+def prompt_edit(req):
     """Prompt user to obtain data to request"""
     name = input("Name of the user you want to modify: ")
 

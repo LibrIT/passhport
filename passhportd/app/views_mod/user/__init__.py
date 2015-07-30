@@ -183,7 +183,8 @@ def user_edit():
                         if line != (query_check.sshkey + "\n"):
                             authorized_keys_file.write(line)
                         else:
-                            authorized_keys_file.write(query.sshkey + "\n")
+                            authorized_keys_file.write(
+                            query_check.sshkey + "\n")
                             line_edited = True
                     else:
                         if line == (query_check.sshkey + "\n"):
