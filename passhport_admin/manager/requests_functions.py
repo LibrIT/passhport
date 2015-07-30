@@ -17,15 +17,21 @@ from . import targetgroup as targetgroup
 url_passhport = "http://127.0.0.1:5000/"
 
 def ask_confirmation(prompt_confirmation):
-    """Same as input() but check if user key in a correct input"""
+    """Same as input() but check if user key in a correct input,
+    return True if the user confirms, false otherwise.
+    """
     confirmation = input(prompt_confirmation)
 
-    # Loop until user types [Y/n]
-    while confirmation.upper() != "Y" and confirmation.upper() != "N":
+    # Loop until user types [y/N]
+    while confirmation.upper() != "Y" and confirmation.upper() != "N" and \
+    confirmation.upper():
         print("You didn't type 'Y' or 'N', please try again.")
         confirmation = input(prompt_confirmation)
 
-    return confirmation
+    if confirmation.upper() == "Y":
+        return True
+
+    return False
 
 def get(url):
     """Send the GET request to the server and print a result"""
@@ -62,10 +68,10 @@ def delete(obj, param):
     if "-f" in param or "--force" in param:
         return get(url_passhport + obj + "/delete/" + param["<name>"])
     else:
-        confirmation = ask_confirmation(
-            "Are you sure you want to delete " + param["<name>"] + "? [Y/n] ")
+        confirmed = ask_confirmation(
+            "Are you sure you want to delete " + param["<name>"] + "? [y/N] ")
 
-        if confirmation.upper() == "Y":
+        if confirmed:
             return get(url_passhport + obj + "/delete/" + param["<name>"])
         else:
             print("Operation aborted.")

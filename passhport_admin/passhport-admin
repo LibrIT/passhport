@@ -4,49 +4,48 @@
 """paSSHport-admin
 
 Usage:
-    passhport-admin -i | --interactive
-    passhport-admin -h | --help
+    passhport-admin (-i | --interactive)
+    passhport-admin (-h | --help)
     passhport-admin user list
     passhport-admin user search [<pattern>]
     passhport-admin user show [<name>]
     passhport-admin user create [((<name> <sshkey>) \
 [--comment=<comment>])]
-    passhport-admin user edit [(<name> [--newname=<name> \
---newsshkey=<sshkey> --newcomment=<comment>])]
+    passhport-admin user edit [(<name> [--newname=<name>] \
+[--newsshkey=<sshkey>] [--newcomment=<comment>])]
     passhport-admin user delete [([-f | --force] <name>)]
     passhport-admin target list
     passhport-admin target search [<pattern>]
     passhport-admin target show [<name>]
     passhport-admin target create [((<name> <hostname>) \
-[--comment=<comment> --sshoptions=<sshoptions> --port=<port> \
---servertype=<servertype> --autocommand=<autocommand>])]
-    passhport-admin target edit [(<name> [--newname=<name> \
---newhostname=<hostname> --newcomment=<comment> \
---newsshoptions=<sshoptions> --newport=<port> \
---newservertype=<servertype> --newautocommand=<autocommand>])]
-    passhport-admin target delete [([-f | --force] <name>)]
+[--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] \
+[--servertype=<servertype>])]
+    passhport-admin target edit [(<name> [--newname=<name>] \
+[--newhostname=<hostname>] [--newcomment=<comment>] \
+[--newsshoptions=<sshoptions>] [--newport=<port>] \
+[--newservertype=<servertype>])]
     passhport-admin target (adduser | rmuser) \
 [(<username> <targetname>)]
     passhport-admin target (addusergroup | rmusergroup) \
 [(<usergroupname> <targetname>)]
+    passhport-admin target delete [([-f | --force] <name>)]
     passhport-admin usergroup list
     passhport-admin usergroup search [<pattern>]
     passhport-admin usergroup show [<name>]
     passhport-admin usergroup create [(<name> [--comment=<comment>])]
-    passhport-admin usergroup edit [(<name> [--newname=<name> \
---newcomment=<comment>])]
-    passhport-admin usergroup delete [([-f | --force] <name>)]
+    passhport-admin usergroup edit [(<name> [--newname=<name>] \
+[--newcomment=<comment>])]
     passhport-admin usergroup (adduser | rmuser) \
 [(<username> <usergroupname>)]
     passhport-admin usergroup (addusergroup | rmusergroup) \
 [(<subusergroupname> <usergroupname>)]
+    passhport-admin usergroup delete [([-f | --force] <name>)]
     passhport-admin targetgroup list
     passhport-admin targetgroup search [<pattern>]
     passhport-admin targetgroup show [<name>]
     passhport-admin targetgroup create [(<name> [--comment=<comment>])]
     passhport-admin targetgroup edit [(<name> [--newname=<name>] \
 [--newcomment=<comment>])]
-    passhport-admin targetgroup delete [([-f | --force] <name>)]
     passhport-admin targetgroup (adduser | rmuser) \
 [(<username> <targetgroupname>)]
     passhport-admin targetgroup (addtarget | rmtarget) \
@@ -55,6 +54,7 @@ Usage:
 [(<usergroupname> <targetgroupname>)]
     passhport-admin targetgroup (addtargetgroup | rmtargetgroup) \
 [(<subtargetgroupname> <targetgroupname>)]
+    passhport-admin targetgroup delete [([-f | --force] <name>)]
 
 Arguments:
     name                The name of the object.
@@ -71,7 +71,6 @@ Arguments:
     sshoptions          ???
     port                The port used to connect with the target.
     servertype          The server's type of the target.
-    autocommand         ???
 
 Options:
     -i, --interactive               Interactive mode.
@@ -83,7 +82,6 @@ confirmation.
     --port=<port>                   Set port used to connect with \
 the target.
     --servertype=<servertype>       Set server's type of the target.
-    --autocommand=<autocommand>     Set ???.
     --newname=<name>                Set the new name of the object.
     --newcomment=<comment>          Set the new comment of the object.
     --newsshkey=<sshkey>            Set the new SSH key of the user.
@@ -94,7 +92,6 @@ of the target.
 with the target.
     --newservertype=<servertype>    Set the new server's type \
 of the target.
-    --newautocommand=<autocommand>  Set the new ???
 """
 
 # Compatibility 2.7-3.4
@@ -153,8 +150,8 @@ Usage:
     user search [<pattern>]
     user show [<name>]
     user create [((<name> <sshkey>) [--comment=<comment>])]
-    user edit [(<name> [--newname=<name> --newsshkey=<sshkey> \
---newcomment=<comment>])]
+    user edit [(<name> [--newname=<name>] [--newsshkey=<sshkey>] \
+[--newcomment=<comment>])]
     user delete [([-f | --force] <name>)]
 
 Arguments:
@@ -201,15 +198,15 @@ Usage:
     target search [<pattern>]
     target show [<name>]
     target create [((<name> <hostname>) \
-[--comment=<comment> --sshoptions=<sshoptions> --port=<port> \
---servertype=<servertype> --autocommand=<autocommand>])]
-    target edit [(<name> [--newname=<name> --newhostname=<hostname> \
---newcomment=<comment> --newsshoptions=<sshoptions> --newport=<port> \
---newservertype=<servertype> --newautocommand=<autocommand>])]
-    target delete [([-f | --force] <name>)]
+[--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] \
+[--servertype=<servertype>])]
+    target edit [(<name> [--newname=<name>] [--newhostname=<hostname>] \
+[--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>] \
+[--newservertype=<servertype>])]
     target (adduser | rmuser) [(<username> <targetname>)]
     target (addusergroup | rmusergroup) \
 [(<usergroupname> <targetname>)]
+    target delete [([-f | --force] <name>)]
 
 Arguments:
     name           The name of the object.
@@ -222,7 +219,6 @@ Arguments:
     sshoptions     ???
     port           The port used to connect with SSH.
     servertype     The server's type of the target.
-    autocommand    ???
 
 Options:
     -f, --force                     Force deletion without asking \
@@ -232,7 +228,6 @@ confirmation.
     --port=<port>                   Set port used to connect with \
 the target.
     --servertype=<servertype>       Set server's type of the target.
-    --autocommand=<autocommand>     Set ???.
     --newname=<name>                Set the new name of the object.
     --newcomment=<comment>          Set the new comment of the object.
     --newhostname=<hostname>        Set the new hostname of the target.
@@ -242,7 +237,6 @@ of the target.
 with the target.
     --newservertype=<servertype>    Set the new server's type \
 of the target.
-    --newautocommand=<autocommand>  Set the new ???
         """
         commands = {
             "list",
@@ -268,14 +262,12 @@ of the target.
             "--sshoptions",
             "--port",
             "--servertype",
-            "--autocommand",
             "--newname",
             "--newcomment",
             "--newhostname",
             "--newsshoptions",
             "--newport",
-            "--newservertype",
-            "--newautocommand"}
+            "--newservertype"}
         method = ""
         param = {}
 
@@ -299,11 +291,11 @@ Usage:
     usergroup search [<pattern>]
     usergroup show [<name>]
     usergroup create [(<name> [--comment=<comment>])]
-    usergroup edit [(<name> [--newname=<name> --newcomment=<comment>])]
-    usergroup delete [([-f | --force] <name>)]
+    usergroup edit [(<name> [--newname=<name>] [--newcomment=<comment>])]
     usergroup (adduser | rmuser) [(<username> <usergroupname>)]
     usergroup (addusergroup | rmusergroup) \
 [(<subusergroupname> <usergroupname>)]
+    usergroup delete [([-f | --force] <name>)]
 
 Arguments:
     name              The name of the object.
@@ -366,7 +358,6 @@ Usage:
     targetgroup create [(<name> [--comment=<comment>])]
     targetgroup edit [(<name> [--newname=<name>] \
 [--newcomment=<comment>])]
-    targetgroup delete [([-f | --force] <name>)]
     targetgroup (adduser | rmuser) [(<username> <targetgroupname>)]
     targetgroup (addtarget | rmtarget) \
 [(<targetname> <targetgroupname>)]
@@ -374,6 +365,7 @@ Usage:
 [(<usergroupname> <targetgroupname>)]
     targetgroup (addtargetgroup | rmtargetgroup) \
 [(<subtargetgroupname> <targetgroupname>)]
+    targetgroup delete [([-f | --force] <name>)]
 
 Arguments:
     name                The name of the object.

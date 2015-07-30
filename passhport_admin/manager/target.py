@@ -34,7 +34,6 @@ def prompt_create():
     port = ask_port("Port: ")
     sshoptions = input("SSH Options: ")
     servertype = input("Server type: ")
-    autocommand = input("Autocommand: ")
     comment = input("Comment: ")
 
     return {"<name>": name,
@@ -42,7 +41,6 @@ def prompt_create():
         "--sshoptions": sshoptions,
         "--port": port,
         "--servertype": servertype,
-        "--autocommand": autocommand,
         "--comment": comment}
 
 
@@ -51,7 +49,6 @@ def create(param):
     port = ""
     sshoptions = ""
     servertype = ""
-    autocommand = ""
     comment = ""
 
     if "--port" in param:
@@ -64,8 +61,6 @@ def create(param):
         sshoptions = param["--sshoptions"]
     if "--servertype" in param:
         servertype = param["--servertype"]
-    if "--autocommand" in param:
-        autocommand = param["--autocommand"]
     if "--comment" in param:
         comment = param["--comment"]
 
@@ -74,7 +69,6 @@ def create(param):
             "port": port,
             "sshoptions": sshoptions,
             "servertype": servertype,
-            "autocommand": autocommand,
             "comment": comment}
 
 
@@ -88,7 +82,6 @@ def prompt_edit():
         new_port = ask_port("New port: ")
         new_sshoptions = input("New SSH options: ")
         new_servertype = input("New server type: ")
-        new_autocommand = input("New autocommand: ")
         new_comment = input("New comment: ")
 
     return {"<name>": name,
@@ -97,7 +90,6 @@ def prompt_edit():
             "--newport": new_port,
             "--newsshoptions": new_sshoptions,
             "--newservertype": new_servertype,
-            "--newautocommand": new_autocommand,
             "--newcomment": new_comment}
 
 
@@ -108,7 +100,6 @@ def edit(param):
     new_port = ""
     new_sshoptions = ""
     new_servertype = ""
-    new_autocommand = ""
     new_comment = ""
 
     if "--newname" in param:
@@ -121,8 +112,6 @@ def edit(param):
         new_sshoptions = param["--newsshoptions"]
     if "--newservertype" in param:
         new_servertype = param["--newservertype"]
-    if "--newautocommand" in param:
-        new_autocommand = param["--newautocommand"]
     if "--newcomment" in param:
         new_comment = param["--newcomment"]
 
@@ -132,7 +121,6 @@ def edit(param):
             "new_port": new_port,
             "new_sshoptions": new_sshoptions,
             "new_servertype": new_servertype,
-            "new_autocommand": new_autocommand,
             "new_comment": new_comment}
 
 def prompt_adduser():

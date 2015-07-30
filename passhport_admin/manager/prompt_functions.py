@@ -36,10 +36,10 @@ def show(obj):
 def delete(obj):
     """Ask arguments for deleting an existing object"""
     name = input("Name: ")
-    confirmation = req.ask_confirmation("Are you sure you want to delete " + \
-        name + "? [Y/n] ")
+    confirmed = req.ask_confirmation("Are you sure you want to delete " + \
+        name + "? [y/N] ")
 
-    if confirmation.upper() == "Y":
+    if confirmed:
         return req.get(req.url_passhport + obj + "/delete/" + name)
     else:
         print("Operation aborted.")
