@@ -72,7 +72,7 @@ def create(param):
             "comment": comment}
 
 
-def prompt_edit():
+def prompt_edit(req):
     """Prompt user to obtain data to edit a target"""
     name = input("Name of the target you want to modify: ")
 

@@ -25,7 +25,7 @@ def create(param):
             "comment": comment}
 
 
-def prompt_edit():
+def prompt_edit(req):
     """Prompt usergroup to obtain data to request"""
     name = input("Name of the usergroup you want to modify: ")
 
