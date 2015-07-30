@@ -24,29 +24,28 @@ Usage:
 [--newhostname=<hostname>] [--newcomment=<comment>] \
 [--newsshoptions=<sshoptions>] [--newport=<port>] \
 [--newservertype=<servertype>] [--newautocommand=<autocommand>])]
-    passhport-admin target delete [([-f | --force] <name>)]
     passhport-admin target (adduser | rmuser) \
 [(<username> <targetname>)]
     passhport-admin target (addusergroup | rmusergroup) \
 [(<usergroupname> <targetname>)]
+    passhport-admin target delete [([-f | --force] <name>)]
     passhport-admin usergroup list
     passhport-admin usergroup search [<pattern>]
     passhport-admin usergroup show [<name>]
     passhport-admin usergroup create [(<name> [--comment=<comment>])]
     passhport-admin usergroup edit [(<name> [--newname=<name>] \
 [--newcomment=<comment>])]
-    passhport-admin usergroup delete [([-f | --force] <name>)]
     passhport-admin usergroup (adduser | rmuser) \
 [(<username> <usergroupname>)]
     passhport-admin usergroup (addusergroup | rmusergroup) \
 [(<subusergroupname> <usergroupname>)]
+    passhport-admin usergroup delete [([-f | --force] <name>)]
     passhport-admin targetgroup list
     passhport-admin targetgroup search [<pattern>]
     passhport-admin targetgroup show [<name>]
     passhport-admin targetgroup create [(<name> [--comment=<comment>])]
     passhport-admin targetgroup edit [(<name> [--newname=<name>] \
 [--newcomment=<comment>])]
-    passhport-admin targetgroup delete [([-f | --force] <name>)]
     passhport-admin targetgroup (adduser | rmuser) \
 [(<username> <targetgroupname>)]
     passhport-admin targetgroup (addtarget | rmtarget) \
@@ -55,6 +54,7 @@ Usage:
 [(<usergroupname> <targetgroupname>)]
     passhport-admin targetgroup (addtargetgroup | rmtargetgroup) \
 [(<subtargetgroupname> <targetgroupname>)]
+    passhport-admin targetgroup delete [([-f | --force] <name>)]
 
 Arguments:
     name                The name of the object.
@@ -206,10 +206,10 @@ Usage:
     target edit [(<name> [--newname=<name>] [--newhostname=<hostname>] \
 [--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>] \
 [--newservertype=<servertype>] [--newautocommand=<autocommand>])]
-    target delete [([-f | --force] <name>)]
     target (adduser | rmuser) [(<username> <targetname>)]
     target (addusergroup | rmusergroup) \
 [(<usergroupname> <targetname>)]
+    target delete [([-f | --force] <name>)]
 
 Arguments:
     name           The name of the object.
@@ -300,10 +300,10 @@ Usage:
     usergroup show [<name>]
     usergroup create [(<name> [--comment=<comment>])]
     usergroup edit [(<name> [--newname=<name>] [--newcomment=<comment>])]
-    usergroup delete [([-f | --force] <name>)]
     usergroup (adduser | rmuser) [(<username> <usergroupname>)]
     usergroup (addusergroup | rmusergroup) \
 [(<subusergroupname> <usergroupname>)]
+    usergroup delete [([-f | --force] <name>)]
 
 Arguments:
     name              The name of the object.
@@ -366,7 +366,6 @@ Usage:
     targetgroup create [(<name> [--comment=<comment>])]
     targetgroup edit [(<name> [--newname=<name>] \
 [--newcomment=<comment>])]
-    targetgroup delete [([-f | --force] <name>)]
     targetgroup (adduser | rmuser) [(<username> <targetgroupname>)]
     targetgroup (addtarget | rmtarget) \
 [(<targetname> <targetgroupname>)]
@@ -374,6 +373,7 @@ Usage:
 [(<usergroupname> <targetgroupname>)]
     targetgroup (addtargetgroup | rmtargetgroup) \
 [(<subtargetgroupname> <targetgroupname>)]
+    targetgroup delete [([-f | --force] <name>)]
 
 Arguments:
     name                The name of the object.
