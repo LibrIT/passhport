@@ -17,7 +17,6 @@ class Target(db.Model):
     hostname = db.Column(db.String(120), index=True, nullable=False)
     port = db.Column(db.Integer, index=False)
     sshoptions = db.Column(db.String(500), index=True)
-    servertype = db.Column(db.String(64), index=True)
     comment = db.Column(db.String(500), index=True)
 
     # Relations
@@ -32,7 +31,6 @@ class Target(db.Model):
         output.append("Hostname: {}".format(self.hostname))
         output.append("Port: {}".format(str(self.port)))
         output.append("SSH options: {}".format(self.sshoptions))
-        output.append("Servertype: {}".format(self.servertype))
         output.append("Comment: {}".format(self.comment))
         output.append("User list:")
 

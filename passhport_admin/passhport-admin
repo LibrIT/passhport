@@ -18,12 +18,10 @@ Usage:
     passhport-admin target search [<pattern>]
     passhport-admin target show [<name>]
     passhport-admin target create [((<name> <hostname>) \
-[--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] \
-[--servertype=<servertype>])]
+[--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]
     passhport-admin target edit [(<name> [--newname=<name>] \
 [--newhostname=<hostname>] [--newcomment=<comment>] \
-[--newsshoptions=<sshoptions>] [--newport=<port>] \
-[--newservertype=<servertype>])]
+[--newsshoptions=<sshoptions>] [--newport=<port>])]
     passhport-admin target (adduser | rmuser) \
 [(<username> <targetname>)]
     passhport-admin target (addusergroup | rmusergroup) \
@@ -70,7 +68,6 @@ Arguments:
     hostname            The name of the server of the target.
     sshoptions          ???
     port                The port used to connect with the target.
-    servertype          The server's type of the target.
 
 Options:
     -i, --interactive               Interactive mode.
@@ -81,7 +78,6 @@ confirmation.
     --sshoptions=<sshoptions>       Set SSH options to the target.
     --port=<port>                   Set port used to connect with \
 the target.
-    --servertype=<servertype>       Set server's type of the target.
     --newname=<name>                Set the new name of the object.
     --newcomment=<comment>          Set the new comment of the object.
     --newsshkey=<sshkey>            Set the new SSH key of the user.
@@ -90,8 +86,6 @@ the target.
 of the target.
     --newport=<port>                Set the new port used \
 with the target.
-    --newservertype=<servertype>    Set the new server's type \
-of the target.
 """
 
 # Compatibility 2.7-3.4
@@ -203,11 +197,10 @@ Usage:
     target search [<pattern>]
     target show [<name>]
     target create [((<name> <hostname>) \
-[--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] \
-[--servertype=<servertype>])]
-    target edit [(<name> [--newname=<name>] [--newhostname=<hostname>] \
-[--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>] \
-[--newservertype=<servertype>])]
+[--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]
+    target edit [(<name> [--newname=<name>] \
+[--newhostname=<hostname>] [--newcomment=<comment>] \
+[--newsshoptions=<sshoptions>] \[--newport=<port>])]
     target (adduser | rmuser) [(<username> <targetname>)]
     target (addusergroup | rmusergroup) \
 [(<usergroupname> <targetname>)]
@@ -223,7 +216,6 @@ Arguments:
     hostname       The name of the server of the target.
     sshoptions     ???
     port           The port used to connect with SSH.
-    servertype     The server's type of the target.
 
 Options:
     -f, --force                     Force deletion without asking \
@@ -232,7 +224,6 @@ confirmation.
     --sshoptions=<sshoptions>       Set SSH options to the target.
     --port=<port>                   Set port used to connect with \
 the target.
-    --servertype=<servertype>       Set server's type of the target.
     --newname=<name>                Set the new name of the object.
     --newcomment=<comment>          Set the new comment of the object.
     --newhostname=<hostname>        Set the new hostname of the target.
@@ -240,8 +231,6 @@ the target.
 of the target.
     --newport=<port>                Set the new port used \
 with the target.
-    --newservertype=<servertype>    Set the new server's type \
-of the target.
         """
         commands = {
             "list",
@@ -266,13 +255,11 @@ of the target.
             "--comment",
             "--sshoptions",
             "--port",
-            "--servertype",
             "--newname",
             "--newcomment",
             "--newhostname",
             "--newsshoptions",
-            "--newport",
-            "--newservertype"}
+            "--newport"}
         method = ""
         param = {}
 
@@ -296,7 +283,8 @@ Usage:
     usergroup search [<pattern>]
     usergroup show [<name>]
     usergroup create [(<name> [--comment=<comment>])]
-    usergroup edit [(<name> [--newname=<name>] [--newcomment=<comment>])]
+    usergroup edit [(<name> [--newname=<name>] \
+[--newcomment=<comment>])]
     usergroup (adduser | rmuser) [(<username> <usergroupname>)]
     usergroup (addusergroup | rmusergroup) \
 [(<subusergroupname> <usergroupname>)]
