@@ -18,7 +18,6 @@ class Target(db.Model):
     port = db.Column(db.Integer, index=False)
     sshoptions = db.Column(db.String(500), index=True)
     servertype = db.Column(db.String(64), index=True)
-    autocommand = db.Column(db.String(128), index=True)
     comment = db.Column(db.String(500), index=True)
 
     # Relations
@@ -34,9 +33,6 @@ class Target(db.Model):
         output.append("Port: {}".format(str(self.port)))
         output.append("SSH options: {}".format(self.sshoptions))
         output.append("Servertype: {}".format(self.servertype))
-        output.append(
-            "Autocommand: {}".format(
-                self.autocommand))
         output.append("Comment: {}".format(self.comment))
         output.append("User list:")
 

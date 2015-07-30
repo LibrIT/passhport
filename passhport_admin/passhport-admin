@@ -19,11 +19,11 @@ Usage:
     passhport-admin target show [<name>]
     passhport-admin target create [((<name> <hostname>) \
 [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] \
-[--servertype=<servertype>] [--autocommand=<autocommand>])]
+[--servertype=<servertype>])]
     passhport-admin target edit [(<name> [--newname=<name>] \
 [--newhostname=<hostname>] [--newcomment=<comment>] \
 [--newsshoptions=<sshoptions>] [--newport=<port>] \
-[--newservertype=<servertype>] [--newautocommand=<autocommand>])]
+[--newservertype=<servertype>])]
     passhport-admin target (adduser | rmuser) \
 [(<username> <targetname>)]
     passhport-admin target (addusergroup | rmusergroup) \
@@ -71,7 +71,6 @@ Arguments:
     sshoptions          ???
     port                The port used to connect with the target.
     servertype          The server's type of the target.
-    autocommand         ???
 
 Options:
     -i, --interactive               Interactive mode.
@@ -83,7 +82,6 @@ confirmation.
     --port=<port>                   Set port used to connect with \
 the target.
     --servertype=<servertype>       Set server's type of the target.
-    --autocommand=<autocommand>     Set ???.
     --newname=<name>                Set the new name of the object.
     --newcomment=<comment>          Set the new comment of the object.
     --newsshkey=<sshkey>            Set the new SSH key of the user.
@@ -94,7 +92,6 @@ of the target.
 with the target.
     --newservertype=<servertype>    Set the new server's type \
 of the target.
-    --newautocommand=<autocommand>  Set the new ???
 """
 
 # Compatibility 2.7-3.4
@@ -202,10 +199,10 @@ Usage:
     target show [<name>]
     target create [((<name> <hostname>) \
 [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>] \
-[--servertype=<servertype>] [--autocommand=<autocommand>])]
+[--servertype=<servertype>])]
     target edit [(<name> [--newname=<name>] [--newhostname=<hostname>] \
 [--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>] \
-[--newservertype=<servertype>] [--newautocommand=<autocommand>])]
+[--newservertype=<servertype>])]
     target (adduser | rmuser) [(<username> <targetname>)]
     target (addusergroup | rmusergroup) \
 [(<usergroupname> <targetname>)]
@@ -222,7 +219,6 @@ Arguments:
     sshoptions     ???
     port           The port used to connect with SSH.
     servertype     The server's type of the target.
-    autocommand    ???
 
 Options:
     -f, --force                     Force deletion without asking \
@@ -232,7 +228,6 @@ confirmation.
     --port=<port>                   Set port used to connect with \
 the target.
     --servertype=<servertype>       Set server's type of the target.
-    --autocommand=<autocommand>     Set ???.
     --newname=<name>                Set the new name of the object.
     --newcomment=<comment>          Set the new comment of the object.
     --newhostname=<hostname>        Set the new hostname of the target.
@@ -242,7 +237,6 @@ of the target.
 with the target.
     --newservertype=<servertype>    Set the new server's type \
 of the target.
-    --newautocommand=<autocommand>  Set the new ???
         """
         commands = {
             "list",
@@ -268,14 +262,12 @@ of the target.
             "--sshoptions",
             "--port",
             "--servertype",
-            "--autocommand",
             "--newname",
             "--newcomment",
             "--newhostname",
             "--newsshoptions",
             "--newport",
-            "--newservertype",
-            "--newautocommand"}
+            "--newservertype"}
         method = ""
         param = {}
 

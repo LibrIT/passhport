@@ -79,7 +79,6 @@ def target_create():
     port = request.form["port"]
     sshoptions = request.form["sshoptions"]
     servertype = request.form["servertype"]
-    autocommand = request.form["autocommand"]
     comment = request.form["comment"]
 
     # Check for required fields
@@ -105,7 +104,6 @@ def target_create():
         port=port,
         sshoptions=sshoptions,
         servertype=servertype,
-        autocommand=autocommand,
         comment=comment)
     db.session.add(t)
 
@@ -135,7 +133,6 @@ def target_edit():
     new_port = request.form["new_port"]
     new_sshoptions = request.form["new_sshoptions"]
     new_servertype = request.form["new_servertype"]
-    new_autocommand = request.form["new_autocommand"]
     new_comment = request.form["new_comment"]
 
     # Check required fields
@@ -158,8 +155,6 @@ def target_edit():
         to_update.update({"sshoptions": new_sshoptions})
     if new_servertype:
         to_update.update({"servertype": new_servertype})
-    if new_autocommand:
-        to_update.update({"autocommand": new_autocommand})
     if new_comment:
         to_update.update({"comment": new_comment})
     if new_port:
