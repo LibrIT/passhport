@@ -54,9 +54,8 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
-        output      = """Name: clever_server\nHostname: 127.0.0.1\nPort: 54\nSSH options: --zap\nServertype: Bodhi\nComment: Magnificent target\nUser list:\nrocket@man.net\nUsergroup list:\nChevaliers_du_zodiaque"""
+        output      = """Name: clever_server\nHostname: 127.0.0.1\nPort: 54\nSSH options: --zap\nComment: Magnificent target\nUser list:\nrocket@man.net\nUsergroup list:\nChevaliers_du_zodiaque"""
 
         username = "rocket@man.net"
         sshkey = "railway"
@@ -83,7 +82,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment,
             members=user_list,
             gmembers=usergroup_list)
@@ -98,7 +96,6 @@ class TestTarget:
         assert_equal(t_db.hostname, hostname)
         assert_equal(t_db.port, port)
         assert_equal(t_db.sshoptions, sshoptions)
-        assert_equal(t_db.servertype, servertype)
         assert_equal(t_db.comment, comment)
         assert_equal(repr(t_db), output)
 
@@ -111,7 +108,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         name = "rocket@man.net"
@@ -139,7 +135,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment,
             members=user_list,
             gmembers=usergroup_list)
@@ -151,7 +146,6 @@ class TestTarget:
             hostname="a great host",
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment,
             members=user_list,
             gmembers=usergroup_list)
@@ -172,13 +166,11 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
         new_targetname = "cleverer_super_server"
         new_hostname    = "192.135.23.54"
         new_port        = 80
         new_sshoptions  = "--plop"
-        new_servertype  = "Elive"
         new_comment     = "Marvellous target"
 
         username = "rocket@man.net"
@@ -211,7 +203,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment,
             members=user_list,
             gmembers=usergroup_list)
@@ -238,7 +229,6 @@ class TestTarget:
                 "hostname": new_hostname,
                 "port": new_port,
                 "sshoptions": new_sshoptions,
-                "servertype": new_servertype,
                 "comment": new_comment})
         db.session.commit()
 
@@ -252,7 +242,6 @@ class TestTarget:
         assert_equal(t_edit.hostname, new_hostname)
         assert_equal(t_edit.port, new_port)
         assert_equal(t_edit.sshoptions, new_sshoptions)
-        assert_equal(t_edit.servertype, new_servertype)
         assert_equal(t_edit.comment, new_comment)
 
     def test_edit_non_existing_target(self):
@@ -268,7 +257,6 @@ class TestTarget:
                 "hostname": "batmobile",
                 "port": 42,
                 "sshoptions": "-p",
-                "servertype": "Trisquel",
                 "comment": "So d4rk"})
 
         assert_equal(updated_rows, 0)
@@ -284,13 +272,11 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
         name2  = "bad_server"
         hostname2    = "127.0.0.3"
         port2        = 55
         sshoptions2  = "--zapel"
-        servertype2  = "Gentoo"
         comment2     = "Worse target"
 
         t = target.Target(
@@ -298,14 +284,12 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
         t2 = target.Target(
             name=name2,
             hostname=hostname2,
             port=port2,
             sshoptions=sshoptions2,
-            servertype=servertype2,
             comment=comment2)
 
         db.session.add(t)
@@ -326,7 +310,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         t = target.Target(
@@ -334,7 +317,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
         db.session.add(t)
         db.session.commit()
@@ -346,7 +328,6 @@ class TestTarget:
         assert_equal(hostname, target_data.hostname)
         assert_equal(port, target_data.port)
         assert_equal(sshoptions, target_data.sshoptions)
-        assert_equal(servertype, target_data.servertype)
         assert_equal(comment, target_data.comment)
 
     def test_show_non_existing_target(self):
@@ -364,7 +345,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         t = target.Target(
@@ -372,7 +352,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
         db.session.add(t)
         db.session.commit()
@@ -393,7 +372,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         t = target.Target(
@@ -401,7 +379,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
         db.session.delete(t)
         db.session.commit()
@@ -420,7 +397,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
         target_list = []
 
@@ -429,7 +405,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
         db.session.add(t)
         db.session.commit()
@@ -452,13 +427,11 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
         name2  = "bad_server"
         hostname2    = "127.0.0.3"
         port2        = 55
         sshoptions2  = "--zapel"
-        servertype2  = "Gentoo"
         comment2     = "Worse target"
         res_list     = []
 
@@ -467,14 +440,12 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
         t2 = target.Target(
             name=name2,
             hostname=hostname2,
             port=port2,
             sshoptions=sshoptions2,
-            servertype=servertype2,
             comment=comment2)
 
         db.session.add(t)
@@ -503,13 +474,11 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
         name2  = "bad_server"
         hostname2    = "127.0.0.3"
         port2        = 55
         sshoptions2  = "--zapel"
-        servertype2  = "Gentoo"
         comment2     = "Worse target"
         res_list     = []
 
@@ -518,14 +487,12 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
         t2 = target.Target(
             name=name2,
             hostname=hostname2,
             port=port2,
             sshoptions=sshoptions2,
-            servertype=servertype2,
             comment=comment2)
 
         db.session.add(t)
@@ -555,7 +522,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
         res_list = []
 
@@ -564,7 +530,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
 
         db.session.add(t)
@@ -591,7 +556,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         name = "rasta@populos.museum"
@@ -603,7 +567,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
 
         u = user.User(
@@ -631,7 +594,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         name = "rasta@populos.museum"
@@ -643,7 +605,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
 
         u = user.User(
@@ -672,7 +633,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         name = "rasta@populos.museum"
@@ -684,7 +644,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
 
         u = user.User(
@@ -715,7 +674,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         name = "rasta@populos.museum"
@@ -730,7 +688,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
 
         u = user.User(
@@ -768,7 +725,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         usergroupname = "VVVVVV"
@@ -779,7 +735,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
 
         ug = usergroup.Usergroup(
@@ -806,7 +761,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         usergroupname = "VVVVVV"
@@ -817,7 +771,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
 
         ug = usergroup.Usergroup(
@@ -845,7 +798,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         usergroupname = "VVVVVV"
@@ -856,7 +808,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
 
         ug = usergroup.Usergroup(
@@ -886,7 +837,6 @@ class TestTarget:
         hostname    = "127.0.0.1"
         port        = 54
         sshoptions  = "--zap"
-        servertype  = "Bodhi"
         comment     = "Magnificent target"
 
         usergroupname = "VVVVVV"
@@ -899,7 +849,6 @@ class TestTarget:
             hostname=hostname,
             port=port,
             sshoptions=sshoptions,
-            servertype=servertype,
             comment=comment)
 
         ug = usergroup.Usergroup(
