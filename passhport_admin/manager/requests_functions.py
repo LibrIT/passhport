@@ -59,6 +59,9 @@ def search(obj, param):
 
 def show(obj, param):
     """Get data of the given object"""
+    if isinstance(param["<name>"], bytes):
+        param["<name>"] = param["<name>"].decode("utf8")
+
     return get(url_passhport + obj + "/show/" + param["<name>"])
 
 def delete(obj, param):

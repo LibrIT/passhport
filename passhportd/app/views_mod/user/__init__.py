@@ -61,7 +61,7 @@ def user_show(name):
         return 'ERROR: No user with the name "' + name + \
             '" in the database.', 417
 
-    return repr(user_data), 200
+    return unicode(user_data), 200
 
 
 @app.route("/user/create", methods=["POST"])
@@ -152,42 +152,44 @@ def user_edit():
         to_update.update({"comment": new_comment})
     if new_sshkey:
         # Check unicity for SSH key
-        query = db.session.query(user.User.sshkey)\
+        query = db.session.query(user.User)\
             .filter_by(sshkey=new_sshkey).first()
 
-        if query is not None and new_sshkey != query.sshkey:
+        if query != query_check and query is not None:
             return 'ERROR: The SSH key "' + new_sshkey + \
                 '" is already used by another user ', 417
 
-        # Edit the SSH key in the file authorized_keys
-        try:
-            with open(config.SSH_KEY_FILE, "r+", encoding="utf8") as \
-                authorized_keys_file:
-                line_edited = False
-                content = authorized_keys_file.readlines()
-                authorized_keys_file.seek(0)
+        if new_sshkey != query_check.sshkey:
+            # Edit the SSH key in the file authorized_keys
+            try:
+                with open(config.SSH_KEY_FILE, "r+", encoding="utf8") as \
+                    authorized_keys_file:
+                    line_edited = False
+                    content = authorized_keys_file.readlines()
+                    authorized_keys_file.seek(0)
 
-                for line in content:
-                    if not line_edited:
-                        if line != (query_check.sshkey + "\n"):
-                            authorized_keys_file.write(line)
+                    for line in content:
+                        if not line_edited:
+                            if line != (query_check.sshkey + "\n"):
+                                authorized_keys_file.write(line)
+                            else:
+                                authorized_keys_file.write(
+                                query_check.sshkey + "\n")
+                                line_edited = True
                         else:
-                            authorized_keys_file.write(
-                            query_check.sshkey + "\n")
-                            line_edited = True
-                    else:
-                        if line == (query_check.sshkey + "\n"):
-                            warning = ("WARNING: There is more than one line "
-                                "with the sshkey " + query_check.sshkey + \
-                                ", probably added manually. "
+                            if line == (query_check.sshkey + "\n"):
+                                warning = ("WARNING: There is more " + \
+                                "than one line with the sshkey " + \
+                                query_check.sshkey + \
+                                ", probably added manually. " + \
                                 "You should edit it manually")
-                        authorized_keys_file.write(line)
+                                authorized_keys_file.write(line)
 
-                authorized_keys_file.truncate()
-        except IOError:
-            return 'ERROR: cannot write in the file "authorized_keys"', 500
+                    authorized_keys_file.truncate()
+            except IOError:
+                return 'ERROR: cannot write in the file "authorized_keys"', 500
 
-        to_update.update({"sshkey": new_sshkey})
+            to_update.update({"sshkey": new_sshkey})
 
     if new_name:
         # Check unicity for name
