@@ -20,7 +20,7 @@ def ask_port(prompt_text):
     """Same as input() but check if user enter an integer"""
     port = input(prompt_text)
 
-    while port and not is_int(port):  # Loop until user enter a real number
+    while port and not is_int(port): # Loop until user enter a real number
         print("You didn't enter a number, please try again.")
         port = input(prompt_text)
 

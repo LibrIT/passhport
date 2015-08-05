@@ -102,7 +102,7 @@ usergroup, targetgroup)
 from docopt import docopt, DocoptExit
 
 def signal_handler(signal, frame):
-    print "\nExiting at your own sweet will."
+    print("\nExiting at your own sweet will.")
     sys.exit(0)
 
 def docopt_cmd(func):
