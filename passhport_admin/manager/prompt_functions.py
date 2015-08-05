@@ -36,13 +36,15 @@ def show(obj):
 def delete(obj):
     """Ask arguments for deleting an existing object"""
     name = input("Name: ")
-    confirmed = req.ask_confirmation("Are you sure you want to delete " + \
-        name + "? [y/N] ")
 
-    if confirmed:
-        return req.get(req.url_passhport + obj + "/delete/" + name)
-    else:
-        print("Operation aborted.")
+    if req.show(obj, {"<name>": name}) == 0:
+        confirmed = req.ask_confirmation("Are you sure you want to delete " + \
+            name + "? [y/N] ")
+
+        if confirmed:
+            return req.get(req.url_passhport + obj + "/delete/" + name)
+        else:
+            print("Operation aborted.")
 
     return None
 
@@ -60,7 +62,11 @@ def edit(obj):
     """Ask arguments for editing an existing object"""
     objects = {"user": user, "target": target, "usergroup": usergroup,
             "targetgroup": targetgroup}
-    data = getattr(objects[obj], "prompt_edit")()
+    # We send the module requests_functions as an object
+    # to the function prompt_edit to avoid circular import.
+    # prompt_edit() needs the function req.show() to check
+    # if the object to edit does exist.
+    data = getattr(objects[obj], "prompt_edit")(req)
 
     if data:
         return req.edit(obj, data)

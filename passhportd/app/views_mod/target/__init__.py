@@ -78,7 +78,6 @@ def target_create():
     hostname = request.form["hostname"]
     port = request.form["port"]
     sshoptions = request.form["sshoptions"]
-    servertype = request.form["servertype"]
     comment = request.form["comment"]
 
     # Check for required fields
@@ -103,7 +102,6 @@ def target_create():
         hostname=hostname,
         port=port,
         sshoptions=sshoptions,
-        servertype=servertype,
         comment=comment)
     db.session.add(t)
 
@@ -132,7 +130,6 @@ def target_edit():
     new_hostname = request.form["new_hostname"]
     new_port = request.form["new_port"]
     new_sshoptions = request.form["new_sshoptions"]
-    new_servertype = request.form["new_servertype"]
     new_comment = request.form["new_comment"]
 
     # Check required fields
@@ -153,8 +150,6 @@ def target_edit():
     # Let's modify only relevent fields
     if new_sshoptions:
         to_update.update({"sshoptions": new_sshoptions})
-    if new_servertype:
-        to_update.update({"servertype": new_servertype})
     if new_comment:
         to_update.update({"comment": new_comment})
     if new_port:

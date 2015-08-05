@@ -20,7 +20,7 @@ def ask_port(prompt_text):
     """Same as input() but check if user enter an integer"""
     port = input(prompt_text)
 
-    while port and not is_int(port):  # Loop until user enter a real number
+    while port and not is_int(port): # Loop until user enter a real number
         print("You didn't enter a number, please try again.")
         port = input(prompt_text)
 
@@ -33,14 +33,12 @@ def prompt_create():
     hostname = input("Hostname: ")
     port = ask_port("Port: ")
     sshoptions = input("SSH Options: ")
-    servertype = input("Server type: ")
     comment = input("Comment: ")
 
     return {"<name>": name,
         "<hostname>": hostname,
         "--sshoptions": sshoptions,
         "--port": port,
-        "--servertype": servertype,
         "--comment": comment}
 
 
@@ -48,7 +46,6 @@ def create(param):
     """Format param for target creation"""
     port = ""
     sshoptions = ""
-    servertype = ""
     comment = ""
 
     if "--port" in param:
@@ -59,8 +56,6 @@ def create(param):
 
     if "--sshoptions" in param:
         sshoptions = param["--sshoptions"]
-    if "--servertype" in param:
-        servertype = param["--servertype"]
     if "--comment" in param:
         comment = param["--comment"]
 
@@ -68,11 +63,10 @@ def create(param):
             "hostname": param["<hostname>"],
             "port": port,
             "sshoptions": sshoptions,
-            "servertype": servertype,
             "comment": comment}
 
 
-def prompt_edit():
+def prompt_edit(req):
     """Prompt user to obtain data to edit a target"""
     name = input("Name of the target you want to modify: ")
 
@@ -81,7 +75,6 @@ def prompt_edit():
         new_hostname = input("New hostname: ")
         new_port = ask_port("New port: ")
         new_sshoptions = input("New SSH options: ")
-        new_servertype = input("New server type: ")
         new_comment = input("New comment: ")
 
     return {"<name>": name,
@@ -89,7 +82,6 @@ def prompt_edit():
             "--newhostname": new_hostname,
             "--newport": new_port,
             "--newsshoptions": new_sshoptions,
-            "--newservertype": new_servertype,
             "--newcomment": new_comment}
 
 
@@ -99,7 +91,6 @@ def edit(param):
     new_hostname = ""
     new_port = ""
     new_sshoptions = ""
-    new_servertype = ""
     new_comment = ""
 
     if "--newname" in param:
@@ -110,8 +101,6 @@ def edit(param):
         new_port = param["--newport"]
     if "--newsshoptions" in param:
         new_sshoptions = param["--newsshoptions"]
-    if "--newservertype" in param:
-        new_servertype = param["--newservertype"]
     if "--newcomment" in param:
         new_comment = param["--newcomment"]
 
@@ -120,7 +109,6 @@ def edit(param):
             "new_hostname": new_hostname,
             "new_port": new_port,
             "new_sshoptions": new_sshoptions,
-            "new_servertype": new_servertype,
             "new_comment": new_comment}
 
 def prompt_adduser():

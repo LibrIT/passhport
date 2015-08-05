@@ -47,7 +47,6 @@ def get(url):
 
     return 1
 
-
 def list(obj):
     """Get the list of all objects of this type"""
     return get(url_passhport + obj + "/list")
@@ -62,19 +61,21 @@ def show(obj, param):
     """Get data of the given object"""
     return get(url_passhport + obj + "/show/" + param["<name>"])
 
-
 def delete(obj, param):
     """Deletion on passhportd via API"""
-    if "-f" in param or "--force" in param:
-        return get(url_passhport + obj + "/delete/" + param["<name>"])
-    else:
-        confirmed = ask_confirmation(
-            "Are you sure you want to delete " + param["<name>"] + "? [y/N] ")
-
-        if confirmed:
+    if show(obj, {"<name>": param["<name>"]}) == 0:
+        if "-f" in param or "--force" in param:
             return get(url_passhport + obj + "/delete/" + param["<name>"])
         else:
-            print("Operation aborted.")
+            confirmed = ask_confirmation(
+                "Are you sure you want to delete " + \
+                param["<name>"] + "? [y/N] ")
+
+            if confirmed:
+                return get(url_passhport + obj + "/delete/" + \
+                    param["<name>"])
+            else:
+                print("Operation aborted.")
 
     return None
 
