@@ -57,6 +57,9 @@ class Usergroup(db.Model):
         for usergroup in self.gmembers:
             output.append(usergroup.show_name())
 
+        output.append(" ".join(self.all_user_list()))
+        output.append(" ".join(self.all_usergroup_list()))
+
         return "\n".join(output)
 
     def show_name(self):
@@ -94,6 +97,29 @@ class Usergroup(db.Model):
 
         return False
 
+    def user_list(self):
+        """Return users in the usergroup"""
+        users = []
+        for user in self.members:
+            users.append(user.show_name())
+
+        return users
+
+    def all_user_list(self,parsed_groups = []):
+        """Return all users in the usergroup and sub-usergroups"""
+        users = self.user_list()
+        # Recursive on groups: 
+        # we list all users but we never parse a group twice
+        # To avoid cirular issues.
+        for group in self.gmembers:
+            if group not in parsed_groups:
+                parsed_groups.append(group)
+                for user in group.all_user_list(parsed_groups):
+                    if user not in users:
+                        users.append(user)
+
+        return users
+
     # Usergroup management
     def is_gmember(self, usergroup):
         """Return true if the given usergroup is a member
@@ -124,3 +150,27 @@ class Usergroup(db.Model):
                 return True
 
         return False
+
+    def usergroup_list(self):
+        """Return usergroups in the usergroup"""
+        usergroups = []
+        for usergroup in self.gmembers:
+            usergroups.append(usergroup.show_name())
+
+        return usergroups
+
+    def all_usergroup_list(self, parsed_usergroups = []):
+        """Return all users in the usergroup and sub-usergroups"""
+        usergroups = self.usergroup_list() # ["G1","G2"]
+        # Recursive on groups: 
+        # we list all usergroups but we never parse a group twice
+        # To avoid cirular issues.
+        for subgroup in self.gmembers:
+            if subgroup not in parsed_usergroups:
+                parsed_usergroups.append(subgroup) # [G1,G2]
+                for subsubgroup in subgroup.all_usergroup_list(parsed_usergroups):
+                    if subsubgroup not in usergroups:
+                        usergroups.append(subsubgroup)
+
+        return usergroups
+

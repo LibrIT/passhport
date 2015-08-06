@@ -69,6 +69,11 @@ class Targetgroup(db.Model):
         for targetgroup in self.tgmembers:
             output.append(targetgroup.show_name())
 
+        output.append("All users: " + " ".join(self.all_user_list()))
+        output.append("All targets: " + " ".join(self.all_target_list()))
+        output.append("All usergroups: " + " ".join(self.all_usergroup_list()))
+        output.append("All targetgroups: " + " ".join(self.all_targetgroup_list()))
+        
         return "\n".join(output)
 
     def show_name(self):
@@ -198,3 +203,94 @@ class Targetgroup(db.Model):
                 return True
 
         return False
+
+    def targetgroup_list(self):
+        """Return targetgroups directly linked with the targetgroup"""
+        targetgroups = []
+        for targetgroup in self.tgmembers:
+            targetgroups.append(targetgroup.show_name())
+
+        return targetgroups
+
+    def all_targetgroup_list(self, parsed_targetgroups = []):
+        """Return a list with all the targetgroups of this targetgroup"""
+        targetgroups = self.targetgroup_list()
+        for targetgroup in self.tgmembers:
+            if targetgroup not in parsed_targetgroups:
+                parsed_targetgroups.append(targetgroup)
+                for subtargetgroup in targetgroup.all_targetgroup_list(parsed_targetgroups):
+                    if subtargetgroup not in targetgroups:
+                        targetgroups.append(subtargetgroup)
+
+        return targetgroups
+
+    def usergroup_list(self):
+        """Return usergroups directly linked with the targetgroup"""
+        usergroups = []
+        for usergroup in self.gmembers:
+            usergroups.append(usergroup.show_name())
+
+        return usergroups
+
+
+    def all_usergroup_list(self, parsed_usergroups = []):
+        """Return a list with all the usergroups of this targetgroup"""
+        usergroups = self.usergroup_list()
+
+        for usergroup in self.gmembers:
+            if usergroup not in parsed_usergroups:
+                parsed_usergroups.append(usergroup)
+                for subusergroup in usergroup.all_usergroup_list(parsed_usergroups):
+                    if subusergroup not in usergroups:
+                        usergroups.append(subusergroup)
+
+        return usergroups
+
+
+    def target_list(self):
+        """Return targets directly linked with the targetgroup"""
+        targets = []
+        for target in self.tmembers:
+            targets.append(target.show_name())
+
+        return targets
+
+
+    def all_target_list(self, parsed_targetgroups = []):
+        """Return a list with all the targets of this targetgroup"""
+        targets = self.target_list()
+
+        for targetgroup in self.tgmembers:
+            if targetgroup not in parsed_targetgroups:
+                parsed_targetgroups.append(targetgroup)
+                for subtarget in targetgroup.all_target_list(parsed_targetgroups):
+                    if subtarget not in targets:
+                        targets.append(subtarget)
+
+        return targets
+
+    
+    def user_list(self):
+        """Return direct users"""
+        users = []
+        for user in self.members:
+            users.append(user.show_name())
+
+        return users
+
+
+    def all_user_list(self, parsed_usergroups = []):
+        """Return all users allowed to access the targetgroup"""
+        users = self.user_list()
+
+        # The only users allowed are those on usergroups. Not in targets or 
+        # targetgroups
+        for usergroup in self.gmembers:
+            if usergroup not in parsed_usergroups:
+                parsed_usergroups.append(usergroup)
+                for user in usergroup.all_user_list(parsed_usergroups):
+                    if user not in users:
+                        users.append(user)
+
+        return users
+
