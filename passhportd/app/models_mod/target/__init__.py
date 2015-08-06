@@ -32,16 +32,11 @@ class Target(db.Model):
         output.append("Port: {}".format(str(self.port)))
         output.append("SSH options: {}".format(self.sshoptions))
         output.append("Comment: {}".format(self.comment))
-        output.append("User list:")
+        output.append("User list: " + " ".join(self.user_list()))
+        output.append("Usergroup list: " + " ".join(self.usergroup_list()))
 
-        for user in self.members:
-            output.append(user.show_name())
-
-        output.append("Usergroup list:")
-
-        for usergroup in self.gmembers:
-            output.append(usergroup.show_name())
-
+        output.append("All users: " + " ".join(self.list_all_users()))
+        output.append("All usergroups: " + " ".join(self.list_all_usergroups()))
         return "\n".join(output)
 
     def show_name(self):
@@ -79,6 +74,22 @@ class Target(db.Model):
 
         return False
 
+    def user_list(self):
+        """Return all the direct users from the target"""
+        users = []
+        for user in self.members:
+            users.append(user.show_name())
+
+        return users
+
+    def user_object_list(self):
+        """Return all the direct users from the target"""
+        users = []
+        for user in self.members:
+            users.append(user)
+
+        return users
+
     # Usergroup management
     def is_gmember(self, usergroup):
         """Return true if the given usergroup is a member
@@ -109,3 +120,50 @@ class Target(db.Model):
                 return True
 
         return False
+
+    def usergroups_users(self):
+        """Return all the users from the target usergroups"""
+        Users = {}
+        return USers
+
+    def usergroup_list(self):
+        """Return all the direct usergroups from the target"""
+        usergroups = []
+        for usergroup in self.gmembers:
+            usergroups.append(usergroup.show_name())
+
+        return usergroups
+    
+    def usergroup_object_list(self):
+        """Return all the direct usergroups objects from the target"""
+        usergroups = []
+        for usergroup in self.gmembers:
+            usergroups.append(usergroup)
+
+        return usergroups
+       
+    # Access management
+    def list_all_users(self):
+        """Return a list with all the user who can access
+        this target
+        """
+        users = self.user_list()
+        for group in self.usergroup_object_list():
+            for user in group.all_user_list():
+                if user not in users:
+                   users.append(user)
+
+        return users
+
+    def list_all_usergroups(self):
+        """Return a list with all the usergroup who can access
+        this target
+        """
+        usergroups = self.usergroup_list()
+        for group in self.usergroup_object_list():
+            for subgroup in group.all_usergroup_list():
+                if subgroup not in usergroups:
+                   usergroups.append(subgroup)
+
+        return usergroups
+
