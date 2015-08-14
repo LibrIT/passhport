@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from builtins import input
 
+
 def is_int(port):
     """Check if port is an integer"""
     try:
@@ -56,6 +57,7 @@ def create(param):
 
     if "--sshoptions" in param:
         sshoptions = param["--sshoptions"]
+
     if "--comment" in param:
         comment = param["--comment"]
 
@@ -95,12 +97,16 @@ def edit(param):
 
     if "--newname" in param:
         new_name = param["--newname"]
+
     if "--newhostname" in param:
         new_hostname = param["--newhostname"]
+
     if "--newport" in param:
         new_port = param["--newport"]
+
     if "--newsshoptions" in param:
         new_sshoptions = param["--newsshoptions"]
+
     if "--newcomment" in param:
         new_comment = param["--newcomment"]
 
@@ -111,6 +117,7 @@ def edit(param):
             "new_sshoptions": new_sshoptions,
             "new_comment": new_comment}
 
+
 def prompt_adduser():
     """Prompt user to obtain data to add a user"""
     username = input("Username: ")
@@ -118,6 +125,7 @@ def prompt_adduser():
 
     return {"<username>": username,
             "<targetname>": targetname}
+
 
 def adduser(param):
     """Format param to add a user"""

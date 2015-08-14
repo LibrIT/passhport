@@ -5,9 +5,9 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from app import app
-from .views_mod import user, usergroup, target, targetgroup
+from .views_mod import user, target, usergroup, targetgroup
 
 
-@app.route('/')
+@app.route("/")
 def imalive():
     return """Passhport is running, gratz!"""

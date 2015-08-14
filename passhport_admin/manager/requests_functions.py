@@ -20,18 +20,18 @@ def ask_confirmation(prompt_confirmation):
     """Same as input() but check if user key in a correct input,
     return True if the user confirms, false otherwise.
     """
-    confirmation = input(prompt_confirmation)
+    confirmation = str.upper(input(prompt_confirmation))
 
     # Loop until user types [y/N]
-    while confirmation.upper() != "Y" and confirmation.upper() != "N" and \
-    confirmation.upper():
+    while confirmation != "Y" and confirmation != "N" and confirmation:
         print("You didn't type 'Y' or 'N', please try again.")
-        confirmation = input(prompt_confirmation)
+        confirmation = str.upper(input(prompt_confirmation))
 
-    if confirmation.upper() == "Y":
+    if confirmation == "Y":
         return True
 
     return False
+
 
 def get(url):
     """Send the GET request to the server and print a result"""
@@ -47,6 +47,7 @@ def get(url):
 
     return 1
 
+
 def list(obj):
     """Get the list of all objects of this type"""
     return get(url_passhport + obj + "/list")
@@ -54,6 +55,9 @@ def list(obj):
 
 def search(obj, param):
     """Get the list of objects matching the pattern"""
+    if isinstance(param["<pattern>"], bytes):
+        param["<pattern>"] = param["<pattern>"].decode("utf8")
+
     return get(url_passhport + obj + "/search/" + param["<pattern>"])
 
 
@@ -64,8 +68,12 @@ def show(obj, param):
 
     return get(url_passhport + obj + "/show/" + param["<name>"])
 
+
 def delete(obj, param):
     """Deletion on passhportd via API"""
+    if isinstance(param["<name>"], bytes):
+        param["<name>"] = param["<name>"].decode("utf8")
+
     if show(obj, {"<name>": param["<name>"]}) == 0:
         if "-f" in param or "--force" in param:
             return get(url_passhport + obj + "/delete/" + param["<name>"])
@@ -81,6 +89,7 @@ def delete(obj, param):
                 print("Operation aborted.")
 
     return None
+
 
 def post(url, data):
     """Send the POST request to the server and print a result"""
@@ -136,6 +145,7 @@ def rmuser(obj, param):
 
     return post(url, data)
 
+
 def addtarget(obj, param):
     """Add a target to an object on passhportd via API"""
     objects = {"targetgroup": targetgroup}
@@ -144,6 +154,7 @@ def addtarget(obj, param):
 
     return post(url, data)
 
+
 def rmtarget(obj, param):
     """Remove a target from an object on passhportd via API"""
     objects = {"targetgroup": targetgroup}
@@ -151,6 +162,7 @@ def rmtarget(obj, param):
     url = url_passhport + obj + "/rmtarget"
 
     return post(url, data)
+
 
 def addusergroup(obj, param):
     """Add a usergroup to an object on passhportd via API"""
@@ -171,6 +183,7 @@ def rmusergroup(obj, param):
 
     return post(url, data)
 
+
 def addtargetgroup(obj, param):
     """Add a targetgroup to an object on passhportd via API"""
     objects = {"targetgroup": targetgroup}
@@ -178,6 +191,7 @@ def addtargetgroup(obj, param):
     url = url_passhport + obj + "/addtargetgroup"
 
     return post(url, data)
+
 
 def rmtargetgroup(obj, param):
     """Remove a targetgroup from an object on passhportd via API"""

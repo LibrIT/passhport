@@ -6,9 +6,10 @@ from __future__ import unicode_literals
 
 from app import db
 
+
 # Table to handle the self-referencing many-to-many relationship
 # for the Usergroup class:
-# First column holds the containers, the second the subgroups.
+# First column holds the containers, the second the subusergroups.
 group_of_group = db.Table(
     "group_of_group",
     db.Column(
@@ -41,30 +42,27 @@ class Usergroup(db.Model):
         secondaryjoin=id == group_of_group.c.subgroup_id,
         backref="containedin")
 
+
     def __repr__(self):
         """Return main data of the usergroup as a string"""
         output = []
 
         output.append("Name: {}".format(self.name))
         output.append("Comment: {}".format(self.comment))
-        output.append("User list:")
+        output.append("User list: " + " ".join(self.username_list()))
+        output.append("Usergroup list: " + " ".join(self.usergroupname_list()))
 
-        for user in self.members:
-            output.append(user.show_name())
-
-        output.append("Usergroup list: ")
-
-        for usergroup in self.gmembers:
-            output.append(usergroup.show_name())
-
-        output.append(" ".join(self.all_user_list()))
-        output.append(" ".join(self.all_usergroup_list()))
+        output.append("All users: " + " ".join(self.all_username_list()))
+        output.append("All usergroups: " + \
+            " ".join(self.all_usergroupname_list()))
 
         return "\n".join(output)
+
 
     def show_name(self):
         """Return a string containing the usergroup's name"""
         return self.name
+
 
     # User management
     def is_member(self, user):
@@ -97,28 +95,35 @@ class Usergroup(db.Model):
 
         return False
 
-    def user_list(self):
-        """Return users in the usergroup"""
-        users = []
+    def username_list(self):
+        """Return usernames which belong to users in the usergroup"""
+        usernames = []
+
         for user in self.members:
-            users.append(user.show_name())
+            usernames.append(user.show_name())
 
-        return users
+        return usernames
 
-    def all_user_list(self,parsed_groups = []):
-        """Return all users in the usergroup and sub-usergroups"""
-        users = self.user_list()
+
+    def all_username_list(self, parsed_usergroups = []):
+        """Return all usernames which belong to users
+        in the usergroup and subusergroups
+        """
+        usernames = self.username_list()
+
         # Recursive on groups: 
-        # we list all users but we never parse a group twice
-        # To avoid cirular issues.
-        for group in self.gmembers:
-            if group not in parsed_groups:
-                parsed_groups.append(group)
-                for user in group.all_user_list(parsed_groups):
-                    if user not in users:
-                        users.append(user)
+        # we list all usernames but we never parse a group twice
+        # to avoid cirular issues.
+        for usergroup in self.gmembers:
+            if usergroup not in parsed_usergroups:
+                parsed_usergroups.append(usergroup)
 
-        return users
+                for username in usergroup.all_username_list(parsed_usergroups):
+                    if username not in usernames:
+                        usernames.append(username)
+
+        return usernames
+
 
     # Usergroup management
     def is_gmember(self, usergroup):
@@ -127,6 +132,7 @@ class Usergroup(db.Model):
         """
         return usergroup in self.gmembers
 
+
     def addusergroup(self, usergroup):
         """Add a usergroup to the relation table"""
         if not self.is_gmember(usergroup):
@@ -134,12 +140,14 @@ class Usergroup(db.Model):
 
         return self
 
+
     def rmusergroup(self, usergroup):
         """Remove a usergroup from the relation table"""
         if self.is_gmember(usergroup):
             self.gmembers.remove(usergroup)
 
         return self
+
 
     def subusergroupname_in_usergroup(self, subusergroupname):
         """Return true if the given subusergroupname belongs to a member
@@ -151,26 +159,34 @@ class Usergroup(db.Model):
 
         return False
 
-    def usergroup_list(self):
-        """Return usergroups in the usergroup"""
-        usergroups = []
+
+    def usergroupname_list(self):
+        """Return usergroupnames which belong to subusergroups
+        in the usergroup
+        """
+        usergroupnames = []
+
         for usergroup in self.gmembers:
-            usergroups.append(usergroup.show_name())
+            usergroupnames.append(usergroup.show_name())
 
-        return usergroups
+        return usergroupnames
 
-    def all_usergroup_list(self, parsed_usergroups = []):
-        """Return all users in the usergroup and sub-usergroups"""
-        usergroups = self.usergroup_list() # ["G1","G2"]
-        # Recursive on groups: 
+
+    def all_usergroupname_list(self, parsed_usergroups = []):
+        """Return all usergroupnames which belong to subusergroups
+        in the usergroup
+        """
+        usergroupnames = self.usergroupname_list() # ["G1","G2"]
+ 
+        # Recursive on usergroups:
         # we list all usergroups but we never parse a group twice
-        # To avoid cirular issues.
-        for subgroup in self.gmembers:
-            if subgroup not in parsed_usergroups:
-                parsed_usergroups.append(subgroup) # [G1,G2]
-                for subsubgroup in subgroup.all_usergroup_list(parsed_usergroups):
-                    if subsubgroup not in usergroups:
-                        usergroups.append(subsubgroup)
+        # to avoid cirular issues.
+        for subusergroup in self.gmembers:
+            if subusergroup not in parsed_usergroups:
+                parsed_usergroups.append(subusergroup) # [G1,G2]
 
-        return usergroups
+                for subsubusergroupname in subusergroup.all_usergroupname_list(parsed_usergroups):
+                    if subsubusergroupname not in usergroupnames:
+                        usergroupnames.append(subsubusergroupname)
 
+        return usergroupnames

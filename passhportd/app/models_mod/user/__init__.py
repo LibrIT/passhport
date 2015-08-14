@@ -22,6 +22,7 @@ class User(db.Model):
     # Relations
     targets = db.relationship("Target", secondary="target_user")
 
+
     def __repr__(self):
         """Return main data of the user as a string"""
         output = []
@@ -31,6 +32,7 @@ class User(db.Model):
         output.append("Comment: {}".format(self.comment))
 
         return "\n".join(output)
+
 
     def show_name(self):
         """Return a string containing the user's name"""

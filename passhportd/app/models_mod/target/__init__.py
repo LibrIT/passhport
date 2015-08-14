@@ -23,6 +23,7 @@ class Target(db.Model):
     members = db.relationship("User", secondary="target_user")
     gmembers = db.relationship("Usergroup", secondary="target_group")
 
+
     def __repr__(self):
         """Return main data of the target as a string"""
         output = []
@@ -32,16 +33,19 @@ class Target(db.Model):
         output.append("Port: {}".format(str(self.port)))
         output.append("SSH options: {}".format(self.sshoptions))
         output.append("Comment: {}".format(self.comment))
-        output.append("User list: " + " ".join(self.user_list()))
-        output.append("Usergroup list: " + " ".join(self.usergroup_list()))
+        output.append("User list: " + " ".join(self.username_list()))
+        output.append("Usergroup list: " + " ".join(self.usergroupname_list()))
 
-        output.append("All users: " + " ".join(self.list_all_users()))
-        output.append("All usergroups: " + " ".join(self.list_all_usergroups()))
+        output.append("All users: " + " ".join(self.list_all_usernames()))
+        output.append("All usergroups: " + " ".join(self.list_all_usergroupnames()))
+
         return "\n".join(output)
+
 
     def show_name(self):
         """Return a string containing the target's name"""
         return self.name
+
 
     # User management
     def is_member(self, user):
@@ -50,6 +54,7 @@ class Target(db.Model):
         """
         return user in self.members
 
+
     def adduser(self, user):
         """Add a user to the relation table"""
         if not self.is_member(user):
@@ -57,12 +62,14 @@ class Target(db.Model):
 
         return self
 
+
     def rmuser(self, user):
         """Remove a user from the relation table"""
         if self.is_member(user):
             self.members.remove(user)
 
         return self
+
 
     def username_in_target(self, username):
         """Return true if the given username belongs to a member
@@ -74,17 +81,21 @@ class Target(db.Model):
 
         return False
 
-    def user_list(self):
-        """Return all the direct users from the target"""
-        users = []
+
+    def username_list(self):
+        """Return all the direct users' names of the target"""
+        usernames = []
+
         for user in self.members:
-            users.append(user.show_name())
+            usernames.append(user.show_name())
 
-        return users
+        return usernames
 
-    def user_object_list(self):
-        """Return all the direct users from the target"""
+
+    def user_list(self):
+        """Return all the direct users of the target"""
         users = []
+
         for user in self.members:
             users.append(user)
 
@@ -97,6 +108,7 @@ class Target(db.Model):
         """
         return usergroup in self.gmembers
 
+
     def addusergroup(self, usergroup):
         """Add a usergroup to the relation table"""
         if not self.is_gmember(usergroup):
@@ -104,12 +116,14 @@ class Target(db.Model):
 
         return self
 
+
     def rmusergroup(self, usergroup):
         """Remove a usergroup to the relation table"""
         if self.is_gmember(usergroup):
             self.gmembers.remove(usergroup)
 
         return self
+
 
     def usergroupname_in_target(self, usergroupname):
         """Return true if the given usergroupname belongs to a member
@@ -121,49 +135,58 @@ class Target(db.Model):
 
         return False
 
+
     def usergroups_users(self):
-        """Return all the users from the target usergroups"""
+        """Return all the users of the target's usergroups"""
         Users = {}
-        return USers
 
-    def usergroup_list(self):
-        """Return all the direct usergroups from the target"""
-        usergroups = []
+        return Users
+
+
+    def usergroupname_list(self):
+        """Return all the direct usergroups' names of the target"""
+        usergroupnames = []
+
         for usergroup in self.gmembers:
-            usergroups.append(usergroup.show_name())
+            usergroupnames.append(usergroup.show_name())
 
-        return usergroups
+        return usergroupnames
+
     
-    def usergroup_object_list(self):
-        """Return all the direct usergroups objects from the target"""
+    def usergroup_list(self):
+        """Return all the direct usergroups of the target"""
         usergroups = []
+
         for usergroup in self.gmembers:
             usergroups.append(usergroup)
 
         return usergroups
+
        
     # Access management
-    def list_all_users(self):
-        """Return a list with all the user who can access
+    def list_all_usernames(self):
+        """Return a list with all the users who can access
         this target
         """
-        users = self.user_list()
-        for group in self.usergroup_object_list():
-            for user in group.all_user_list():
-                if user not in users:
-                   users.append(user)
+        usernames = self.username_list()
 
-        return users
+        for usergroup in self.usergroup_list():
+            for username in usergroup.all_username_list():
+                if username not in usernames:
+                   usernames.append(username)
 
-    def list_all_usergroups(self):
-        """Return a list with all the usergroup who can access
+        return usernames
+
+
+    def list_all_usergroupnames(self):
+        """Return a list with all the usergroups who can access
         this target
         """
-        usergroups = self.usergroup_list()
-        for group in self.usergroup_object_list():
-            for subgroup in group.all_usergroup_list():
-                if subgroup not in usergroups:
-                   usergroups.append(subgroup)
+        usergroupnames = self.usergroupname_list()
 
-        return usergroups
+        for usergroup in self.usergroup_list():
+            for subusergroupname in usergroup.all_usergroupname_list():
+                if subusergroupname not in usergroupnames:
+                   usergroupnames.append(subusergroupname)
 
+        return usergroupnames
