@@ -21,7 +21,6 @@ def ask_confirmation(prompt_confirmation):
     """Same as input() but check if user key in a correct input,
     return True if the user confirms, false otherwise.
     """
-<<<<<<< HEAD
     # Hack for the sake of compatibility between 2.7 and 3.4
     sys.stdout.write(prompt_confirmation)
     confirmation = str.upper(input(""))
@@ -32,14 +31,6 @@ def ask_confirmation(prompt_confirmation):
             print("You didn't type 'Y' or 'N', please try again.")
             sys.stdout.write(prompt_confirmation)
             confirmation = input("")
-=======
-    confirmation = str.upper(input(prompt_confirmation))
-
-    # Loop until user types [y/N]
-    while confirmation != "Y" and confirmation != "N" and confirmation:
-        print("You didn't type 'Y' or 'N', please try again.")
-        confirmation = str.upper(input(prompt_confirmation))
->>>>>>> 611fb2f2edd440621d6736f5437dbc196108344b
 
     if confirmation == "Y":
         return True
