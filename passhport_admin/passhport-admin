@@ -101,9 +101,11 @@ usergroup, targetgroup)
 
 from docopt import docopt, DocoptExit
 
+
 def signal_handler(signal, frame):
     print("\nExiting at your own sweet will.")
     sys.exit(0)
+
 
 def docopt_cmd(func):
     """This decorator is used to simplify the try/except block and pass
@@ -135,11 +137,13 @@ def docopt_cmd(func):
 
     return fn
 
+
 class MyInteractive(cmd.Cmd):
     intro = "Welcome to the interactive program" + \
         " (type help for a list of commands)!"
     prompt = "(passhport) "
     file = None
+
 
     @docopt_cmd
     def do_user(self, arg):
@@ -188,6 +192,7 @@ Options:
             getattr(requests_functions, method)("user", param)
         else:
             getattr(prompt_functions, method)("user")
+
 
     @docopt_cmd
     def do_target(self, arg):
@@ -275,6 +280,7 @@ with the target.
         else:
             getattr(prompt_functions, method)("target")
 
+
     @docopt_cmd
     def do_usergroup(self, arg):
         """
@@ -340,6 +346,7 @@ Options:
             getattr(requests_functions, method)("usergroup", param)
         else:
             getattr(prompt_functions, method)("usergroup")
+
 
     @docopt_cmd
     def do_targetgroup(self, arg):
@@ -419,6 +426,7 @@ Options:
         else:
             getattr(prompt_functions, method)("targetgroup")
 
+
     def do_quit(self, arg):
         """Quit Interactive Mode."""
         print("Goodbye!")
@@ -450,7 +458,9 @@ def requests_object_method(opt):
         # Need more info, lets prompt user
         getattr(prompt_functions, method)(obj)
 
+
 opt = docopt(__doc__, sys.argv[1:])
+
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
 

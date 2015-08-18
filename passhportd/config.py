@@ -8,7 +8,8 @@ from __future__ import unicode_literals
 
 import os
 
-"""Database (sqlite by default)"""
+
+"""Database (SQLite by default)"""
 basedir = os.path.expanduser("~")
 datadir = os.path.join(basedir, "var")
 

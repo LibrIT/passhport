@@ -78,7 +78,7 @@ ${CMD} search ${TARGETNAME} | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[target] search  2/2: " ${r/1/ERROR}
 
-# SHOW 2/3
+# SHOW 2/2
 PATTERN="Name: ${USERNAME}
 SSH key: ${SSHKEY}
 Port: ${PORT}
@@ -86,7 +86,7 @@ SSH options: ${SSHOPTIONS}
 Comment: ${COMMENT}
 User list:
 Usergroup list:"
-${CMD} show ${TARGETNAME} | grep "${PATTERN}" | wc -l | grep 7  &> /dev/null
+${CMD} show ${TARGETNAME} | grep "${PATTERN}" | wc -l | grep 7 &> /dev/null
 r=${?/0/OK}
 echo "[target] show   2/2: " ${r/1/ERROR}
 

@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from builtins import input
 
+
 def prompt_create():
     """Prompt user to obtain data for request"""
     name = input("Name: ")
@@ -42,6 +43,7 @@ def prompt_edit(req):
                 "--newcomment": new_comment}
 
     return None
+
 
 def edit(param):
     """Format param for user edition"""

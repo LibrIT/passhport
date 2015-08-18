@@ -8,8 +8,10 @@ from __future__ import unicode_literals
 import os
 from config import SQLALCHEMY_DATABASE_DIR
 
+
 """Server side using flask"""
 from app import app
+
 
 if not os.path.exists(SQLALCHEMY_DATABASE_DIR):
     print("ERROR: Database connection failed")

@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from builtins import input
 
+
 def prompt_create():
     """Prompt user to obtain data for request"""
     name = input("Name: ")
@@ -39,6 +40,7 @@ def prompt_edit(req):
 
     return None
 
+
 def edit(param):
     """Format param for usergroup edition"""
     new_name = ""
@@ -46,12 +48,14 @@ def edit(param):
 
     if "--newname" in param:
         new_name = param["--newname"]
+
     if "--newcomment" in param:
         new_comment = param["--newcomment"]
 
     return {"name": param["<name>"],
             "new_name": new_name,
             "new_comment": new_comment}
+
 
 def prompt_adduser():
     """Prompt user to obtain data to add a user"""
@@ -61,10 +65,12 @@ def prompt_adduser():
     return {"<username>": username,
             "<usergroupname>": usergroupname}
 
+
 def adduser(param):
     """Format param to add a user"""
     return {"username": param["<username>"],
             "usergroupname": param["<usergroupname>"]}
+
 
 def prompt_rmuser():
     """Prompt user to obtain data to remove a user"""
@@ -74,10 +80,12 @@ def prompt_rmuser():
     return {"<username>": username,
             "<usergroupname>": usergroupname}
 
+
 def rmuser(param):
     """Format param to remove a user"""
     return {"username": param["<username>"],
             "usergroupname": param["<usergroupname>"]}
+
 
 def prompt_addusergroup():
     """Prompt user to obtain data to add a usergroup"""
@@ -87,10 +95,12 @@ def prompt_addusergroup():
     return {"<subusergroupname>": subusergroupname,
             "<usergroupname>": usergroupname}
 
+
 def addusergroup(param):
     """Format param to add a usergroup"""
     return {"subusergroupname": param["<subusergroupname>"],
             "usergroupname": param["<usergroupname>"]}
+
 
 def prompt_rmusergroup():
     """Prompt user to obtain data to remove a usergroup"""
@@ -99,6 +109,7 @@ def prompt_rmusergroup():
 
     return {"<subusergroupname>": subusergroupname,
             "<usergroupname>": usergroupname}
+
 
 def rmusergroup(param):
     """Format param to remove a usergroup"""
