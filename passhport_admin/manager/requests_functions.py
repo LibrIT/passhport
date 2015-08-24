@@ -26,11 +26,10 @@ def ask_confirmation(prompt_confirmation):
     confirmation = str.upper(input(""))
 
     # Loop until user types [y/N]
-    while :
-        if confirmation != "Y" and confirmation != "N" and confirmation:
-            print("You didn't type 'Y' or 'N', please try again.")
-            sys.stdout.write(prompt_confirmation)
-            confirmation = input("")
+    while confirmation != "Y" and confirmation != "N" and confirmation:
+        print("You didn't type 'Y' or 'N', please try again.")
+        sys.stdout.write(prompt_confirmation)
+        confirmation = input("")
 
     if confirmation == "Y":
         return True
