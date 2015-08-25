@@ -170,7 +170,13 @@ Options:
     --newcomment=<comment>  Set the new comment of the object.
     --newsshkey=<sshkey>    Set the new SSH key of the user.
         """
-        commands = {"list", "search", "show", "create", "edit", "delete"}
+        commands = {
+            "list",
+            "search",
+            "show",
+            "create",
+            "edit",
+            "delete"}
         arguments = {"<name>", "<pattern>", "<sshkey>"}
         options = {
             "--force",

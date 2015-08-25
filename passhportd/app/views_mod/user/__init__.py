@@ -12,7 +12,7 @@ from flask import request
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 from app import app, db
-from app.models_mod import user
+from app.models_mod import user, target
 
 
 @app.route("/user/list")
@@ -66,7 +66,7 @@ def user_show(name):
             '" in the database.', 417, \
             {"content-type": "text/plain; charset=utf-8"}
 
-    return unicode(user_data), 200, \
+    return user_data.__repr__(), 200, \
         {"content-type": "text/plain; charset=utf-8"}
 
 

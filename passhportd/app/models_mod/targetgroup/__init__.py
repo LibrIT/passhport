@@ -60,7 +60,7 @@ class Targetgroup(db.Model):
         output.append("All targets: " + " ".join(self.all_targetname_list()))
         output.append("All usergroups: " + " ".join(self.all_usergroupname_list()))
         output.append("All targetgroups: " + " ".join(self.all_targetgroupname_list()))
-        
+
         return "\n".join(output)
 
 
@@ -118,7 +118,7 @@ class Targetgroup(db.Model):
         """Return all users allowed to access the targetgroup"""
         usernames = self.username_list()
 
-        # The only users allowed are those on usergroups. Not in targets or 
+        # The only users allowed are those on usergroups. Not in targets or
         # targetgroups
         for usergroup in self.gmembers:
             if usergroup not in parsed_usergroups:
@@ -178,7 +178,10 @@ class Targetgroup(db.Model):
 
     def all_targetname_list(self, parsed_targetgroups = []):
         """Return a list with all the targets of this targetgroup"""
-        targetnames = self.target_list()
+        targetnames = self.targetname_list()
+        print(self.tgmembers)
+        print("totoetrauiteluidateauidltesruiteitudetépvcevduceiuea")
+        print(self.tgmembers)
 
         for targetgroup in self.tgmembers:
             if targetgroup not in parsed_targetgroups:
