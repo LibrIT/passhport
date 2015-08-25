@@ -57,7 +57,7 @@ class Targetgroup(db.Model):
         output.append("Targetgroup list: " + " ".join(self.targetgroupname_list()))
 
         output.append("All users: " + " ".join(self.all_username_list()))
-        output.append("All targets: " + " ".join(self.all_targetname_list([])))
+        output.append("All targets: " + " ".join(self.all_targetname_list()))
         output.append("All usergroups: " + " ".join(self.all_usergroupname_list()))
         output.append("All targetgroups: " + " ".join(self.all_targetgroupname_list()))
 
@@ -114,8 +114,11 @@ class Targetgroup(db.Model):
         return usernames
 
 
-    def all_username_list(self, parsed_usergroups = []):
+    def all_username_list(self, parsed_usergroups = None):
         """Return all users allowed to access the targetgroup"""
+        if parsed_usergroups is None : 
+            parsed_usergroups = []
+
         usernames = self.username_list()
 
         # The only users allowed are those on usergroups. Not in targets or
@@ -176,8 +179,10 @@ class Targetgroup(db.Model):
         return targetnames
 
 
-    def all_targetname_list(self, parsed_targetgroups):
+    def all_targetname_list(self, parsed_targetgroups = None):
         """Return a list with all the targets of this targetgroup"""
+        if parsed_targetgroups is None :
+            parsed_targetgroups = []
         targetnames = self.targetname_list()
 
         for targetgroup in self.tgmembers:
@@ -235,8 +240,10 @@ class Targetgroup(db.Model):
         return usergroupnames
 
 
-    def all_usergroupname_list(self, parsed_usergroups = []):
+    def all_usergroupname_list(self, parsed_usergroups = None):
         """Return a list with all the usergroups of this targetgroup"""
+        if parsed_usergroups is None:
+            parsed_usergroups = []
         usergroupnames = self.usergroupname_list()
 
         for usergroup in self.gmembers:
@@ -295,8 +302,11 @@ class Targetgroup(db.Model):
         return targetgroupnames
 
 
-    def all_targetgroupname_list(self, parsed_targetgroups = []):
+    def all_targetgroupname_list(self, parsed_targetgroups = None):
         """Return a list with all the targetgroups of this targetgroup"""
+        if parsed_targetgroups is None:
+            parsed_targetgroups = []
+
         targetgroupnames = self.targetgroupname_list()
 
         for subtargetgroup in self.tgmembers:
