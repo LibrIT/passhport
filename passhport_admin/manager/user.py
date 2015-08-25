@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from builtins import input
 
+
 def prompt_create():
     """Prompt user to obtain data for request"""
     name = input("Name: ")
@@ -33,30 +34,31 @@ def prompt_edit(req):
 
     if req.show("user", {"<name>": name}) == 0:
         new_name = input("New name: ")
-        new_comment = input("New comment: ")
         new_sshkey = input("New SSH key: ")
+        new_comment = input("New comment: ")
 
         return {"<name>": name,
                 "--newname": new_name,
-                "--newcomment": new_comment,
-                "--newsshkey": new_sshkey}
+                "--newsshkey": new_sshkey,
+                "--newcomment": new_comment}
 
     return None
+
 
 def edit(param):
     """Format param for user edition"""
     new_name = ""
-    new_comment = ""
     new_sshkey = ""
+    new_comment = ""
 
     if "--newname" in param:
         new_name = param["--newname"]
-    if "--newcomment" in param:
-        new_comment = param["--newcomment"]
     if "--newsshkey" in param:
         new_sshkey = param["--newsshkey"]
+    if "--newcomment" in param:
+        new_comment = param["--newcomment"]
 
     return {"name": param["<name>"],
             "new_name": new_name,
-            "new_comment": new_comment,
-            "new_sshkey": new_sshkey}
+            "new_sshkey": new_sshkey,
+            "new_comment": new_comment}

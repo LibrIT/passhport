@@ -16,6 +16,7 @@ from . import target as target
 from . import usergroup as usergroup
 from . import targetgroup as targetgroup
 
+
 def list(obj):
     """List all object of this type"""
     return req.list(obj)
@@ -85,6 +86,7 @@ def adduser(obj):
 
     return None
 
+
 def rmuser(obj):
     """Ask arguments for removing a user from an object"""
     objects = {"target": target, "usergroup": usergroup,
@@ -96,6 +98,7 @@ def rmuser(obj):
 
     return None
 
+
 def addtarget(obj):
     """Ask arguments for adding a target to an object"""
     objects = {"targetgroup": targetgroup}
@@ -106,6 +109,7 @@ def addtarget(obj):
 
     return None
 
+
 def rmtarget(obj):
     """Ask arguments for removing a target from an object"""
     objects = {"targetgroup": targetgroup}
@@ -115,6 +119,7 @@ def rmtarget(obj):
         return req.rmtarget(obj, data)
 
     return None
+
 
 def addusergroup(obj):
     """Ask arguments for adding a usergroup to an object"""
@@ -127,6 +132,7 @@ def addusergroup(obj):
 
     return None
 
+
 def rmusergroup(obj):
     """Ask arguments for removing a usergroup from an object"""
     objects = {"target": target, "usergroup": usergroup,
@@ -138,6 +144,7 @@ def rmusergroup(obj):
 
     return None
 
+
 def addtargetgroup(obj):
     """Ask arguments for adding a targetgroup to an object"""
     objects = {"targetgroup": targetgroup}
@@ -147,6 +154,7 @@ def addtargetgroup(obj):
         return req.addtargetgroup(obj, data)
 
     return None
+
 
 def rmtargetgroup(obj):
     """Ask arguments for removing a targetgroup from an object"""

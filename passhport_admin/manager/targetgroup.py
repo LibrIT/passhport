@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from builtins import input
 
+
 def prompt_create():
     """Prompt user to obtain data for request"""
     name = input("Name: ")
@@ -39,6 +40,7 @@ def prompt_edit(req):
 
     return None
 
+
 def edit(param):
     """Format param for targetgroup edition"""
     new_name = ""
@@ -46,6 +48,7 @@ def edit(param):
 
     if "--newname" in param:
         new_name = param["--newname"]
+
     if "--newcomment" in param:
         new_comment = param["--newcomment"]
 
@@ -61,10 +64,12 @@ def prompt_adduser():
     return {"<username>": username,
             "<targetgroupname>": targetgroupname}
 
+
 def adduser(param):
     """Format param to add a user"""
     return {"username": param["<username>"],
             "targetgroupname": param["<targetgroupname>"]}
+
 
 def prompt_rmuser():
     """Prompt user to obtain data to remove a user"""
@@ -74,10 +79,12 @@ def prompt_rmuser():
     return {"<username>": username,
             "<targetgroupname>": targetgroupname}
 
+
 def rmuser(param):
     """Format param to remove a user"""
     return {"username": param["<username>"],
             "targetgroupname": param["<targetgroupname>"]}
+
 
 def prompt_addtarget():
     """Prompt user to obtain data to add a target"""
@@ -87,10 +94,12 @@ def prompt_addtarget():
     return {"<targetname>": targetname,
             "<targetgroupname>": targetgroupname}
 
+
 def addtarget(param):
     """Format param to add a target"""
     return {"targetname": param["<targetname>"],
             "targetgroupname": param["<targetgroupname>"]}
+
 
 def prompt_rmtarget():
     """Prompt user to obtain data to remove a target"""
@@ -100,10 +109,12 @@ def prompt_rmtarget():
     return {"<targetname>": targetname,
             "<targetgroupname>": targetgroupname}
 
+
 def rmtarget(param):
     """Format param to remove a target"""
     return {"targetname": param["<targetname>"],
             "targetgroupname": param["<targetgroupname>"]}
+
 
 def prompt_addusergroup():
     """Prompt user to obtain data to add a usergroup"""
@@ -113,10 +124,12 @@ def prompt_addusergroup():
     return {"<usergroupname>": usergroupname,
             "<targetgroupname>": targetgroupname}
 
+
 def addusergroup(param):
     """Format param to add a usergroup"""
     return {"usergroupname": param["<usergroupname>"],
             "targetgroupname": param["<targetgroupname>"]}
+
 
 def prompt_rmusergroup():
     """Prompt user to obtain data to remove a usergroup"""
@@ -126,10 +139,12 @@ def prompt_rmusergroup():
     return {"<usergroupname>": usergroupname,
             "<targetgroupname>": targetgroupname}
 
+
 def rmusergroup(param):
     """Format param to remove a usergroup"""
     return {"usergroupname": param["<usergroupname>"],
             "targetgroupname": param["<targetgroupname>"]}
+
 
 def prompt_addtargetgroup():
     """Prompt user to obtain data to add a targetgroup"""
@@ -139,10 +154,12 @@ def prompt_addtargetgroup():
     return {"<subtargetgroupname>": subtargetgroupname,
             "<targetgroupname>": targetgroupname}
 
+
 def addtargetgroup(param):
     """Format param to add a targetgroup"""
     return {"subtargetgroupname": param["<subtargetgroupname>"],
             "targetgroupname": param["<targetgroupname>"]}
+
 
 def prompt_rmtargetgroup():
     """Prompt user to obtain data to remove a targetgroup"""
@@ -151,6 +168,7 @@ def prompt_rmtargetgroup():
 
     return {"<subtargetgroupname>": subtargetgroupname,
             "<targetgroupname>": targetgroupname}
+
 
 def rmtargetgroup(param):
     """Format param to remove a targetgroup"""

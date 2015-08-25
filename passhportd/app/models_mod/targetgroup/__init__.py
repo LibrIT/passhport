@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 
 from app import db
 
+
 # Table to handle the self-referencing many-to-many relationship
 # for the Targetgroup class:
 # First column holds the containers, the second the subgroups.
@@ -43,42 +44,30 @@ class Targetgroup(db.Model):
         secondaryjoin=id == tgroup_of_tgroup.c.subtargetgroup_id,
         backref="containedin")
 
+
     def __repr__(self):
         """Return main data of the targetgroup as a string"""
         output = []
 
         output.append("Name: {}".format(self.name))
         output.append("Comment: {}".format(self.comment))
-        output.append("User list:")
+        output.append("User list: " + " ".join(self.username_list()))
+        output.append("Target list: " + " ".join(self.targetname_list()))
+        output.append("Usergroup list: " + " ".join(self.usergroupname_list()))
+        output.append("Targetgroup list: " + " ".join(self.targetgroupname_list()))
 
-        for user in self.members:
-            output.append(user.show_name())
-
-        output.append("Target list:")
-
-        for target in self.tmembers:
-            output.append(target.show_name())
-
-        output.append("Usergroup list:")
-
-        for usergroup in self.gmembers:
-            output.append(usergroup.show_name())
-
-        output.append("Targetgroup list:")
-
-        for targetgroup in self.tgmembers:
-            output.append(targetgroup.show_name())
-
-        output.append("All users: " + " ".join(self.all_user_list()))
-        output.append("All targets: " + " ".join(self.all_target_list()))
-        output.append("All usergroups: " + " ".join(self.all_usergroup_list()))
-        output.append("All targetgroups: " + " ".join(self.all_targetgroup_list()))
+        output.append("All users: " + " ".join(self.all_username_list()))
+        output.append("All targets: " + " ".join(self.all_targetname_list()))
+        output.append("All usergroups: " + " ".join(self.all_usergroupname_list()))
+        output.append("All targetgroups: " + " ".join(self.all_targetgroupname_list()))
         
         return "\n".join(output)
+
 
     def show_name(self):
         """Return a string containing the targetgroup’s name"""
         return self.name
+
 
     # User management
     def is_members(self, user):
@@ -87,6 +76,7 @@ class Targetgroup(db.Model):
         """
         return user in self.members
 
+
     def adduser(self, user):
         """Add a user to the relaton table"""
         if not self.is_members(user):
@@ -94,12 +84,14 @@ class Targetgroup(db.Model):
 
         return self
 
+
     def rmuser(self, user):
         """Remove a user from the relation table"""
         if self.is_members(user):
             self.members.remove(user)
 
         return self
+
 
     def username_in_targetgroup(self, username):
         """Return true if the given username belongs to a member
@@ -111,12 +103,41 @@ class Targetgroup(db.Model):
 
         return False
 
+
+    def username_list(self):
+        """Return usernames which belong to users in the targetgroup"""
+        usernames = []
+
+        for user in self.members:
+            usernames.append(user.show_name())
+
+        return usernames
+
+
+    def all_username_list(self, parsed_usergroups = []):
+        """Return all users allowed to access the targetgroup"""
+        usernames = self.username_list()
+
+        # The only users allowed are those on usergroups. Not in targets or 
+        # targetgroups
+        for usergroup in self.gmembers:
+            if usergroup not in parsed_usergroups:
+                parsed_usergroups.append(usergroup)
+
+                for username in usergroup.all_username_list(parsed_usergroups):
+                    if username not in usernames:
+                        usernames.append(username)
+
+        return usernames
+
+
     # Target management
     def is_tmembers(self, target):
         """Return true if the given target is a member
         of the targetgroup, false otherwise
         """
         return target in self.tmembers
+
 
     def addtarget(self, target):
         """Add a target to the relation table"""
@@ -125,12 +146,14 @@ class Targetgroup(db.Model):
 
         return self
 
+
     def rmtarget(self, target):
         """Remove a target from the relation table"""
         if self.is_tmembers(target):
             self.tmembers.remove(target)
 
         return self
+
 
     def targetname_in_targetgroup(self, targetname):
         """Return true if the given targetname belongs to a member
@@ -142,12 +165,39 @@ class Targetgroup(db.Model):
 
         return False
 
+
+    def targetname_list(self):
+        """Return targets directly linked with the targetgroup"""
+        targetnames = []
+
+        for target in self.tmembers:
+            targetnames.append(target.show_name())
+
+        return targetnames
+
+
+    def all_targetname_list(self, parsed_targetgroups = []):
+        """Return a list with all the targets of this targetgroup"""
+        targetnames = self.target_list()
+
+        for targetgroup in self.tgmembers:
+            if targetgroup not in parsed_targetgroups:
+                parsed_targetgroups.append(targetgroup)
+
+                for targetname in targetgroup.all_targetname_list(parsed_targetgroups):
+                    if targetname not in targetnames:
+                        targetnames.append(targetname)
+
+        return targetnames
+
+
     # Usergroup management
     def is_gmembers(self, usergroup):
         """Return true if the given usergroup is a member
         of the targetgroup, false otherwise
         """
         return usergroup in self.gmembers
+
 
     def addusergroup(self, usergroup):
         """Add a usergroup to the relaton table"""
@@ -156,12 +206,14 @@ class Targetgroup(db.Model):
 
         return self
 
+
     def rmusergroup(self, usergroup):
         """Remove a usergroup from the relation table"""
         if self.is_gmembers(usergroup):
             self.gmembers.remove(usergroup)
 
         return self
+
 
     def usergroupname_in_targetgroup(self, usergroupname):
         """Return true if the given usergroupname belongs to a member
@@ -173,12 +225,38 @@ class Targetgroup(db.Model):
 
         return False
 
+
+    def usergroupname_list(self):
+        """Return usergroups directly linked with the targetgroup"""
+        usergroupnames = []
+        for usergroup in self.gmembers:
+            usergroupnames.append(usergroup.show_name())
+
+        return usergroupnames
+
+
+    def all_usergroupname_list(self, parsed_usergroups = []):
+        """Return a list with all the usergroups of this targetgroup"""
+        usergroupnames = self.usergroupname_list()
+
+        for usergroup in self.gmembers:
+            if usergroup not in parsed_usergroups:
+                parsed_usergroups.append(usergroup)
+
+                for usergroupname in usergroup.all_usergroupname_list(parsed_usergroups):
+                    if usergroupname not in usergroupnames:
+                        usergroupnames.append(usergroupname)
+
+        return usergroupnames
+
+
     # Targetgroup anagement
     def is_tgmembers(self, targetgroup):
         """Return true if the given targetgroup is a member
         of the targetgroup, false otherwise
         """
         return targetgroup in self.tgmembers
+
 
     def addtargetgroup(self, targetgroup):
         """Add a targetgroup to the relaton table"""
@@ -187,12 +265,14 @@ class Targetgroup(db.Model):
 
         return self
 
+
     def rmtargetgroup(self, targetgroup):
         """Remove a targetgroup from the relaton table"""
         if self.is_tgmembers(targetgroup):
             self.tgmembers.remove(targetgroup)
 
         return self
+
 
     def subtargetgroupname_in_targetgroup(self, subtargetgroupname):
         """Return true if the given subtargetgroupname belongs to a member
@@ -204,93 +284,27 @@ class Targetgroup(db.Model):
 
         return False
 
-    def targetgroup_list(self):
+
+    def targetgroupname_list(self):
         """Return targetgroups directly linked with the targetgroup"""
-        targetgroups = []
+        targetgroupnames = []
+
         for targetgroup in self.tgmembers:
-            targetgroups.append(targetgroup.show_name())
+            targetgroupnames.append(targetgroup.show_name())
 
-        return targetgroups
+        return targetgroupnames
 
-    def all_targetgroup_list(self, parsed_targetgroups = []):
+
+    def all_targetgroupname_list(self, parsed_targetgroups = []):
         """Return a list with all the targetgroups of this targetgroup"""
-        targetgroups = self.targetgroup_list()
-        for targetgroup in self.tgmembers:
-            if targetgroup not in parsed_targetgroups:
-                parsed_targetgroups.append(targetgroup)
-                for subtargetgroup in targetgroup.all_targetgroup_list(parsed_targetgroups):
-                    if subtargetgroup not in targetgroups:
-                        targetgroups.append(subtargetgroup)
+        targetgroupnames = self.targetgroupname_list()
 
-        return targetgroups
+        for subtargetgroup in self.tgmembers:
+            if subtargetgroup not in parsed_targetgroups:
+                parsed_targetgroups.append(subtargetgroup)
 
-    def usergroup_list(self):
-        """Return usergroups directly linked with the targetgroup"""
-        usergroups = []
-        for usergroup in self.gmembers:
-            usergroups.append(usergroup.show_name())
+                for subtargetgroupname in subtargetgroup.all_targetgroupname_list(parsed_targetgroups):
+                    if subtargetgroupname not in targetgroupnames:
+                        targetgroupnames.append(subtargetgroupname)
 
-        return usergroups
-
-
-    def all_usergroup_list(self, parsed_usergroups = []):
-        """Return a list with all the usergroups of this targetgroup"""
-        usergroups = self.usergroup_list()
-
-        for usergroup in self.gmembers:
-            if usergroup not in parsed_usergroups:
-                parsed_usergroups.append(usergroup)
-                for subusergroup in usergroup.all_usergroup_list(parsed_usergroups):
-                    if subusergroup not in usergroups:
-                        usergroups.append(subusergroup)
-
-        return usergroups
-
-
-    def target_list(self):
-        """Return targets directly linked with the targetgroup"""
-        targets = []
-        for target in self.tmembers:
-            targets.append(target.show_name())
-
-        return targets
-
-
-    def all_target_list(self, parsed_targetgroups = []):
-        """Return a list with all the targets of this targetgroup"""
-        targets = self.target_list()
-
-        for targetgroup in self.tgmembers:
-            if targetgroup not in parsed_targetgroups:
-                parsed_targetgroups.append(targetgroup)
-                for subtarget in targetgroup.all_target_list(parsed_targetgroups):
-                    if subtarget not in targets:
-                        targets.append(subtarget)
-
-        return targets
-
-    
-    def user_list(self):
-        """Return direct users"""
-        users = []
-        for user in self.members:
-            users.append(user.show_name())
-
-        return users
-
-
-    def all_user_list(self, parsed_usergroups = []):
-        """Return all users allowed to access the targetgroup"""
-        users = self.user_list()
-
-        # The only users allowed are those on usergroups. Not in targets or 
-        # targetgroups
-        for usergroup in self.gmembers:
-            if usergroup not in parsed_usergroups:
-                parsed_usergroups.append(usergroup)
-                for user in usergroup.all_user_list(parsed_usergroups):
-                    if user not in users:
-                        users.append(user)
-
-        return users
-
+        return targetgroupnames

@@ -7,7 +7,9 @@ from __future__ import unicode_literals
 from app import app, db
 from app.models_mod import user, target, usergroup, targetgroup
 
+
 """Get the object which has the given name"""
+
 
 def get_user(name):
     """Return the user with the given name"""
@@ -31,6 +33,7 @@ def get_target(name):
         return t[0]
     else:
         return False
+
 
 def get_usergroup(name):
     """Return the usergroup with the given usergroupname"""
