@@ -57,7 +57,7 @@ class Targetgroup(db.Model):
         output.append("Targetgroup list: " + " ".join(self.targetgroupname_list()))
 
         output.append("All users: " + " ".join(self.all_username_list()))
-        output.append("All targets: " + " ".join(self.all_targetname_list()))
+        output.append("All targets: " + " ".join(self.all_targetname_list([])))
         output.append("All usergroups: " + " ".join(self.all_usergroupname_list()))
         output.append("All targetgroups: " + " ".join(self.all_targetgroupname_list()))
 
@@ -176,12 +176,9 @@ class Targetgroup(db.Model):
         return targetnames
 
 
-    def all_targetname_list(self, parsed_targetgroups = []):
+    def all_targetname_list(self, parsed_targetgroups):
         """Return a list with all the targets of this targetgroup"""
         targetnames = self.targetname_list()
-        print(self.tgmembers)
-        print("totoetrauiteluidateauidltesruiteitudetépvcevduceiuea")
-        print(self.tgmembers)
 
         for targetgroup in self.tgmembers:
             if targetgroup not in parsed_targetgroups:
