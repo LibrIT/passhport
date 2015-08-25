@@ -179,7 +179,7 @@ class Target(db.Model):
             targetgroup.Targetgroup.name).all()
 
         for each_targetgroup in query:
-            if self.name in each_targetgroup.all_targetname_list():
+            if self.name in each_targetgroup.all_targetname_list([]):
                 targetgroups.append(each_targetgroup)
 
         return targetgroups
@@ -230,7 +230,7 @@ class Target(db.Model):
             targetgroup.Targetgroup.name).all()
 
         for each_targetgroup in query:
-            if self.name in each_targetgroup.all_targetname_list():
+            if self.name in each_targetgroup.all_targetname_list([]):
                 targetgroupnames.append(each_targetgroup.show_name())
 
         return targetgroupnames
