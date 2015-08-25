@@ -4,7 +4,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from app import db
+from app import app, db
+from app.models_mod import target
 
 
 class User(db.Model):
@@ -30,6 +31,8 @@ class User(db.Model):
         output.append("Name: {}".format(self.name))
         output.append("SSH key: {}".format(self.sshkey))
         output.append("Comment: {}".format(self.comment))
+        output.append("Accessible target list: " + \
+            " ".join(self.accessible_targetname_list()))
 
         return "\n".join(output)
 
@@ -37,3 +40,18 @@ class User(db.Model):
     def show_name(self):
         """Return a string containing the user's name"""
         return self.name
+
+
+    def accessible_targetname_list(self):
+        """Return target names which are accessible to the user"""
+        targetnames = []
+
+        query = db.session.query(
+            target.Target).order_by(
+            target.Target.name).all()
+
+        for each_target in query:
+            if self.name in each_target.list_all_usernames():
+                targetnames.append(each_target.show_name())
+
+        return targetnames

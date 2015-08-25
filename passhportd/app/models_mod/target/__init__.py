@@ -4,7 +4,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from app import db
+from app import app, db
+from app.models_mod import targetgroup
 
 
 class Target(db.Model):
@@ -33,11 +34,13 @@ class Target(db.Model):
         output.append("Port: {}".format(str(self.port)))
         output.append("SSH options: {}".format(self.sshoptions))
         output.append("Comment: {}".format(self.comment))
-        output.append("User list: " + " ".join(self.username_list()))
+        output.append("Attached users: " + " ".join(self.username_list()))
         output.append("Usergroup list: " + " ".join(self.usergroupname_list()))
 
-        output.append("All users: " + " ".join(self.list_all_usernames()))
+        output.append("Users who can access this target: " + " ".join(self.list_all_usernames()))
         output.append("All usergroups: " + " ".join(self.list_all_usergroupnames()))
+
+        output.append("Member of the following targetgroups: " + " ".join(self.list_all_targetgroupnames()))
 
         return "\n".join(output)
 
@@ -83,7 +86,7 @@ class Target(db.Model):
 
 
     def username_list(self):
-        """Return all the direct users' names of the target"""
+        """Return all the direct users names of the target"""
         usernames = []
 
         for user in self.members:
@@ -122,6 +125,7 @@ class Target(db.Model):
         if self.is_gmember(usergroup):
             self.gmembers.remove(usergroup)
 
+        return usernames
         return self
 
 
@@ -152,7 +156,7 @@ class Target(db.Model):
 
         return usergroupnames
 
-    
+
     def usergroup_list(self):
         """Return all the direct usergroups of the target"""
         usergroups = []
@@ -162,7 +166,25 @@ class Target(db.Model):
 
         return usergroups
 
-       
+
+    # Targetgroup management
+    def targetgroup_list(self):
+        """Return a list of all targetgroups which contain
+        this target
+        """
+        targetgroups = []
+
+        query = db.session.query(
+            targetgroup.Targetgroup).order_by(
+            targetgroup.Targetgroup.name).all()
+
+        for each_targetgroup in query:
+            if self.name in each_targetgroup.all_targetname_list():
+                targetgroups.append(each_targetgroup)
+
+        return targetgroups
+
+
     # Access management
     def list_all_usernames(self):
         """Return a list with all the users who can access
@@ -174,6 +196,11 @@ class Target(db.Model):
             for username in usergroup.all_username_list():
                 if username not in usernames:
                    usernames.append(username)
+
+        for targetgroup in self.targetgroup_list():
+            for username in targetgroup.all_username_list():
+                if username not in usernames:
+                    usernames.append(username)
 
         return usernames
 
@@ -190,3 +217,20 @@ class Target(db.Model):
                    usergroupnames.append(subusergroupname)
 
         return usergroupnames
+
+
+    def list_all_targetgroupnames(self):
+        """Return a list with all the targetgroups which contain
+        this target
+        """
+        targetgroupnames = []
+
+        query = db.session.query(
+            targetgroup.Targetgroup).order_by(
+            targetgroup.Targetgroup.name).all()
+
+        for each_targetgroup in query:
+            if self.name in each_targetgroup.all_targetname_list():
+                targetgroupnames.append(each_targetgroup.show_name())
+
+        return targetgroupnames
