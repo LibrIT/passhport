@@ -125,7 +125,6 @@ class Target(db.Model):
         if self.is_gmember(usergroup):
             self.gmembers.remove(usergroup)
 
-        return usernames
         return self
 
 
