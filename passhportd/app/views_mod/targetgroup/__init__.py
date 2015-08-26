@@ -67,7 +67,7 @@ def targetgroup_show(name):
             '" in the database.', 417, \
             {"content-type": "text/plain; charset=utf-8"}
 
-    return str(targetgroup_data), 200, \
+    return targetgroup_data.__repr__(), 200, \
         {"content-type": "text/plain; charset=utf-8"}
 
 

@@ -179,9 +179,6 @@ class Targetgroup(db.Model):
     def all_targetname_list(self, parsed_targetgroups = []):
         """Return a list with all the targets of this targetgroup"""
         targetnames = self.targetname_list()
-        print(self.tgmembers)
-        print("totoetrauiteluidateauidltesruiteitudetépvcevduceiuea")
-        print(self.tgmembers)
 
         for targetgroup in self.tgmembers:
             if targetgroup not in parsed_targetgroups:
