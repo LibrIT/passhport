@@ -50,6 +50,11 @@ class Target(db.Model):
         return self.name
 
 
+    def show_hostname(self):
+        """Return a string containing the target's hostname"""
+        return self.hostname
+
+
     # User management
     def is_member(self, user):
         """Return true if the given user is a member of the target,

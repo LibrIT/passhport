@@ -85,7 +85,14 @@ def user_accessible_targets(name):
             '" in the database.', 417, \
             {"content-type": "text/plain; charset=utf-8"}
 
-    return user_data.accessible_targetname_list(), 200, \
+    target_list = user_data.accessible_target_list()
+    formatted_target_list = []
+
+    for each_target in target_list:
+        formatted_target_list.append(each_target.show_name() + " " + \
+        each_target.show_hostname())
+
+    return "\n".join(formatted_target_list), 200, \
         {"content-type": "text/plain; charset=utf-8"}
 
 
