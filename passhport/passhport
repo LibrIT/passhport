@@ -1,7 +1,29 @@
+#!/usr/bin/env python
 # -*- coding:Utf-8 -*-
 
 # Compatibility 2.7-3.4
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-print("Hello {}".format(sys.argv[1]))
+import sys, requests
+
+def get(url):
+    """Send the GET request to the server and print a result"""
+    try:
+        r = requests.get(url)
+    except requests.RequestException as e:
+        print("ERROR: " + str(e.message))
+    else:
+        if r.status_code == requests.codes.ok:
+            return r.content
+
+    print("toto")
+    return 1
+
+url_passhport = "http://127.0.0.1:5000/"
+target_list = get(url_passhport + "user" + "/accessible_targets/" + \
+    sys.argv[1])
+print(target_list)
+
+print("Welcome {}.".format(sys.argv[1]))
+print("Here is the list of servers you can access:")

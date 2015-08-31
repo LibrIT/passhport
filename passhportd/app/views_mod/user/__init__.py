@@ -70,6 +70,25 @@ def user_show(name):
         {"content-type": "text/plain; charset=utf-8"}
 
 
+@app.route("/user/accessible_targets/<name>")
+def user_accessible_targets(name):
+    """Return the list of targets that the user can access"""
+    # Check for required fields
+    if not name:
+        return "ERROR: The name is required ", 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    user_data = user.User.query.filter_by(name=name).first()
+
+    if user_data is None:
+        return 'ERROR: No user with the name "' + name + \
+            '" in the database.', 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    return user_data.accessible_targetname_list(), 200, \
+        {"content-type": "text/plain; charset=utf-8"}
+
+
 @app.route("/user/create", methods=["POST"])
 def user_create():
     """Add a user in the database"""
