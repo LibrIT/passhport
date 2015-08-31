@@ -1,4 +1,4 @@
-# -*-coding:Utf-8 -*-
+# -*- coding:Utf-8 -*-
 
 # Compatibility 2.7-3.4
 from __future__ import absolute_import
@@ -110,8 +110,8 @@ def user_create():
     try:
         with open(config.SSH_KEY_FILE, "a", encoding="utf8") as \
             authorized_keys_file:
-            authorized_keys_file.write(config.PASSHPORT_PATH + \
-            " " + name + " " + sshkey + "\n")
+            authorized_keys_file.write('command="' + config.PASSHPORT_PATH + \
+            '" ' + name + " " + sshkey + "\n")
     except IOError:
         return 'ERROR: cannot write in the file "authorized_keys"', 500, \
             {"content-type": "text/plain; charset=utf-8"}
@@ -189,8 +189,8 @@ def user_edit():
 
                     for line in content:
                         if not line_edited:
-                            if line != (config.PASSHPORT_PATH + \
-                            " " + name + " " + query_check.sshkey + "\n"):
+                            if line != ('command="' + config.PASSHPORT_PATH + \
+                            '" ' + name + " " + query_check.sshkey + "\n"):
                                 authorized_keys_file.write(line)
                             else:
                                 authorized_keys_file.write(
@@ -198,8 +198,8 @@ def user_edit():
                                 " " + new_name + " " + new_sshkey + "\n")
                                 line_edited = True
                         else:
-                            if line == (config.PASSHPORT_PATH + \
-                            " " + name + " " + query_check.sshkey + "\n"):
+                            if line == ('command="' + config.PASSHPORT_PATH + \
+                            '" ' + name + " " + query_check.sshkey + "\n"):
                                 warning = ("WARNING: There is more " + \
                                 "than one line with the sshkey " + \
                                 query_check.sshkey + \
