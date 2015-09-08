@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+# -*- coding:Utf-8 -*-
+
+# Compatibility 2.7-3.4
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from builtins import input
+
+import os, sys, locale, requests
+
+def get(url):
+    """Send the GET request to the server and print a result"""
+    try:
+        r = requests.get(url)
+    except requests.RequestException as e:
+        print("ERROR: " + str(e.message))
+    else:
+        if r.status_code == requests.codes.ok:
+            return r.text
+
+    return 1
+
+username = sys.argv[1]
+url_passhport = "http://127.0.0.1:5000/"
+target_list = get(url_passhport + "user" + "/accessible_targets/" + \
+    username).split("\n")
+indexed_target_list = []
+number = 1
+
+print("Welcome {}.".format(username))
+print("Here is the list of servers you can access:")
+
+for each_target in target_list:
+    indexed_target_list.append(str(number) + " " + each_target)
+    number = number + 1
+
+print("\n".join(indexed_target_list))
+
+sys.stdout.write("Type the number, name or hostname of the server you want to connect to. ")
+choice = input("")
+valid_input = False
+
+for line in indexed_target_list:
+    item_list = line.split(" ")
+    if choice in item_list:
+        os.system("ssh " + item_list[2])
+        valid_input = True
+
+while not valid_input:
+    print("You didn't type correctly, please try again.")
+    sys.stdout.write("Type the number, name or hostname of the server you want to connect to. ")
+    choice = input("")
+
+    for line in indexed_target_list:
+        item_list = line.split(" ")
+        if choice in item_list:
+            os.system("ssh " + item_list[2])
+            valid_input = True

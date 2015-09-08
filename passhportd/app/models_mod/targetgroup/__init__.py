@@ -116,7 +116,7 @@ class Targetgroup(db.Model):
 
     def all_username_list(self, parsed_usergroups = None):
         """Return all users allowed to access the targetgroup"""
-        if parsed_usergroups is None : 
+        if parsed_usergroups is None :
             parsed_usergroups = []
 
         usernames = self.username_list()
@@ -183,6 +183,7 @@ class Targetgroup(db.Model):
         """Return a list with all the targets of this targetgroup"""
         if parsed_targetgroups is None :
             parsed_targetgroups = []
+
         targetnames = self.targetname_list()
 
         for targetgroup in self.tgmembers:
@@ -244,6 +245,7 @@ class Targetgroup(db.Model):
         """Return a list with all the usergroups of this targetgroup"""
         if parsed_usergroups is None:
             parsed_usergroups = []
+
         usergroupnames = self.usergroupname_list()
 
         for usergroup in self.gmembers:
