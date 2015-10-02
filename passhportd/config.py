@@ -1,6 +1,6 @@
 # -*-coding:Utf-8 -*-
 
-"""Configuration file"""
+"""Configuration file for database and directories"""
 
 # Compatibility 2.7-3.4
 from __future__ import absolute_import
