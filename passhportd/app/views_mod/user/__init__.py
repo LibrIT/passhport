@@ -1,4 +1,4 @@
-# -*-coding:Utf-8 -*-
+# -*- coding:Utf-8 -*-
 
 # Compatibility 2.7-3.4
 from __future__ import absolute_import
@@ -70,6 +70,32 @@ def user_show(name):
         {"content-type": "text/plain; charset=utf-8"}
 
 
+@app.route("/user/accessible_targets/<name>")
+def user_accessible_targets(name):
+    """Return the list of targets that the user can access"""
+    # Check for required fields
+    if not name:
+        return "ERROR: The name is required ", 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    user_data = user.User.query.filter_by(name=name).first()
+
+    if user_data is None:
+        return 'ERROR: No user with the name "' + name + \
+            '" in the database.', 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    target_list = user_data.accessible_target_list()
+    formatted_target_list = []
+
+    for each_target in target_list:
+        formatted_target_list.append(each_target.show_name() + " " + \
+        each_target.show_hostname())
+
+    return "\n".join(formatted_target_list), 200, \
+        {"content-type": "text/plain; charset=utf-8"}
+
+
 @app.route("/user/create", methods=["POST"])
 def user_create():
     """Add a user in the database"""
@@ -110,7 +136,8 @@ def user_create():
     try:
         with open(config.SSH_KEY_FILE, "a", encoding="utf8") as \
             authorized_keys_file:
-            authorized_keys_file.write(sshkey + "\n")
+            authorized_keys_file.write('command=python"' + config.PASSHPORT_PATH + \
+            " " + name + '" ' + sshkey + "\n")
     except IOError:
         return 'ERROR: cannot write in the file "authorized_keys"', 500, \
             {"content-type": "text/plain; charset=utf-8"}
@@ -172,7 +199,7 @@ def user_edit():
         query = db.session.query(user.User)\
             .filter_by(sshkey=new_sshkey).first()
 
-        if  query is not None and query != query_check:
+        if query is not None and query != query_check:
             return 'ERROR: The SSH key "' + new_sshkey + \
                 '" is already used by another user ', 417, \
                 {"content-type": "text/plain; charset=utf-8"}
@@ -188,23 +215,23 @@ def user_edit():
 
                     for line in content:
                         if not line_edited:
-                            if line != (query_check.sshkey + "\n"):
+                            if line != ('command=python"' + config.PASSHPORT_PATH + \
+                            " " + name + '" ' + query_check.sshkey + "\n"):
                                 authorized_keys_file.write(line)
                             else:
                                 authorized_keys_file.write(
-                                query_check.sshkey + "\n")
+                                config.PASSHPORT_PATH + \
+                                " " + new_name + '" ' + new_sshkey + "\n")
                                 line_edited = True
                         else:
-                            authorized_keys_file.write(
-                            query_check.sshkey + "\n")
-                            line_edited = True
-                    else:
-                        if line == (query_check.sshkey + "\n"):
-                            warning = ("WARNING: There is more " + \
-                            "than one line with the sshkey " + \
-                            query_check.sshkey + \
-                            ", probably added manually. " + \
-                            "You should edit it manually")
+                            if line == ('command=python"' + config.PASSHPORT_PATH + \
+                            " " + name + '" ' + query_check.sshkey + "\n"):
+                                warning = ("WARNING: There is more " + \
+                                "than one line with the sshkey " + \
+                                query_check.sshkey + \
+                                ", probably added manually. " + \
+                                "You should edit it manually")
+
                             authorized_keys_file.write(line)
 
                     authorized_keys_file.truncate()
@@ -262,15 +289,18 @@ def user_delete(name):
 
             for line in content:
                 if not line_deleted:
-                    if line != (query.sshkey + "\n"):
+                    if line != ('command=python"' + config.PASSHPORT_PATH + \
+                    " " + name + '" ' + query.sshkey + "\n"):
                         authorized_keys_file.write(line)
                     else:
                         line_deleted = True
                 else:
-                    if line == (query.sshkey + "\n"):
+                    if line == ('command=python"' + config.PASSHPORT_PATH + \
+                    " " + name + '" ' + query.sshkey + "\n"):
                         warning = ("\nWARNING: There is more than one line "
                             "with the sshkey " + query.sshkey + ", probably "
                             "added manually. You should delete it manually")
+
                     authorized_keys_file.write(line)
 
             authorized_keys_file.truncate()

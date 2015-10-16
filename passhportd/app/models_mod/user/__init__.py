@@ -55,3 +55,17 @@ class User(db.Model):
                 targetnames.append(each_target.show_name())
 
         return targetnames
+
+    def accessible_target_list(self):
+        """Return target objects which are accessible to the user"""
+        targets = []
+
+        query = db.session.query(
+            target.Target).order_by(
+            target.Target.name).all()
+
+        for each_target in query:
+            if self.name in each_target.list_all_usernames():
+                targets.append(each_target)
+
+        return targets

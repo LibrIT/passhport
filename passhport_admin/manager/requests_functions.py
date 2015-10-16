@@ -29,7 +29,7 @@ def ask_confirmation(prompt_confirmation):
     while confirmation != "Y" and confirmation != "N" and confirmation:
         print("You didn't type 'Y' or 'N', please try again.")
         sys.stdout.write(prompt_confirmation)
-        confirmation = input("")
+        confirmation = str.upper(input(""))
 
     if confirmation == "Y":
         return True

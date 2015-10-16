@@ -55,7 +55,7 @@ class TestTarget:
         port        = 54
         sshoptions  = "--zap"
         comment     = "Magnificent target"
-        output      = """Name: clever_server\nHostname: 127.0.0.1\nPort: 54\nSSH options: --zap\nComment: Magnificent target\nUser list: rocket@man.net\nUsergroup list: Chevaliers_du_zodiaque\nAll users: rocket@man.net\nAll usergroups: Chevaliers_du_zodiaque"""
+        output      = """Name: clever_server\nHostname: 127.0.0.1\nPort: 54\nSSH options: --zap\nComment: Magnificent target\nAttached users: rocket@man.net\nUsergroup list: Chevaliers_du_zodiaque\nUsers who can access this target: rocket@man.net\nAll usergroups: Chevaliers_du_zodiaque\nMember of the following targetgroups: """
 
         username = "rocket@man.net"
         sshkey = "railway"
