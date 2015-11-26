@@ -1,6 +1,6 @@
 # -*-coding:Utf-8 -*-
 
-"""Configuration file for database and directories"""
+"""Configuration file"""
 
 # Compatibility 2.7-3.4
 from __future__ import absolute_import
@@ -18,5 +18,5 @@ SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(datadir, "app.db")
 SQLALCHEMY_MIGRATE_REPO = os.path.join(datadir, "db_repository")
 
 SSH_KEY_FILE = os.environ["HOME"] + "/.ssh/authorized_keys"
-PASSHPORT_PATH = os.environ["HOME"] + \
-    "/Documents/PaSSHport/passhport/passhport/passhport"
+
+PASSHPORT_PATH="/home/elegall/Dev/passhport/passhport/passhport"

@@ -216,7 +216,7 @@ def user_edit():
 
                     for line in content:
                         if not line_edited:
-                            if line != ('command=python"' + config.PASSHPORT_PATH + \
+                            if line != ('command="python ' + config.PASSHPORT_PATH + \
                             " " + name + '" ' + query_check.sshkey + "\n"):
                                 authorized_keys_file.write(line)
                             else:
@@ -225,7 +225,7 @@ def user_edit():
                                 " " + new_name + '" ' + new_sshkey + "\n")
                                 line_edited = True
                         else:
-                            if line == ('command=python"' + config.PASSHPORT_PATH + \
+                            if line == ('command="python ' + config.PASSHPORT_PATH + \
                             " " + name + '" ' + query_check.sshkey + "\n"):
                                 warning = ("WARNING: There is more " + \
                                 "than one line with the sshkey " + \
@@ -290,13 +290,13 @@ def user_delete(name):
 
             for line in content:
                 if not line_deleted:
-                    if line != ('command=python"' + config.PASSHPORT_PATH + \
+                    if line != ('command="python ' + config.PASSHPORT_PATH + \
                     " " + name + '" ' + query.sshkey + "\n"):
                         authorized_keys_file.write(line)
                     else:
                         line_deleted = True
                 else:
-                    if line == ('command=python"' + config.PASSHPORT_PATH + \
+                    if line == ('command="python ' + config.PASSHPORT_PATH + \
                     " " + name + '" ' + query.sshkey + "\n"):
                         warning = ("\nWARNING: There is more than one line "
                             "with the sshkey " + query.sshkey + ", probably "
