@@ -30,9 +30,9 @@ def checkandconnect(indexed_target_list, choice, username):
         item_list = line.split(" ")
         if choice in item_list:
             os.system("script -q --timing=" + SCRIPT_LOGS_PATH +
-                      "/$(date +%Y%m%d%H%M%S)-" + item_list[2] + '-' + 
+                      "/$(date +%Y%m%dT%H%M%S)-" + item_list[2] + '-' + 
                       username + ".timing " + SCRIPT_LOGS_PATH + 
-                      "/$(date +%Y%m%d%H%M%S)-" + item_list[2] + '-' + 
+                      "/$(date +%Y%m%dT%H%M%S)-" + item_list[2] + '-' + 
                       username + ' -c "ssh root@' + item_list[2]+'"')
             return True
     return False
@@ -40,6 +40,7 @@ def checkandconnect(indexed_target_list, choice, username):
 ### MAIN ###
 username = sys.argv[1]
 url_passhport = "http://127.0.0.1:5000/"
+print get(url_passhport + "user" + "/accessible_targets/" + username)
 target_list = get(url_passhport + "user" + "/accessible_targets/" + \
                   username).split("\n")
 indexed_target_list = []
