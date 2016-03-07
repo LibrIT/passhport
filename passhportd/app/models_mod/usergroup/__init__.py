@@ -5,6 +5,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from app import db
+from app.models_mod import target,targetgroup
 
 
 # Table to handle the self-referencing many-to-many relationship
@@ -190,3 +191,93 @@ class Usergroup(db.Model):
                         usergroupnames.append(subsubusergroupname)
 
         return usergroupnames
+
+    #List infos
+    def list_direct_targets(self):
+        """Return all the targets with this group as a direct member"""
+        targets = []
+
+        query = db.session.query(
+            target.Target).order_by(
+            target.Target.name).all()
+
+        for each_target in query:
+            if self in each_target.usergroup_list():
+                targets.append(each_target.name)
+
+        return targets
+
+
+    def list_direct_targetgroups(self):
+        """Return all the targetgroups with this group as a direct member"""
+        targetgroups = []
+
+        query = db.session.query(
+            targetgroup.Targetgroup).order_by(
+            targetgroup.Targetgroup.name).all()
+
+        for each_targetgroup in query:
+            if self in each_targetgroup.usergroup_list():
+                targetgroups.append(each_targetgroup)
+
+        return targetgroups
+
+
+    def list_direct_usergroups(self):
+        """Return all the usergroups with this group as a direct member"""
+        usergroups = []
+
+        query = db.session.query(
+            Usergroup).order_by(
+            Usergroup.name).all()
+
+        for each_usergroup in query:
+            if self in each_usergroup.gmembers:
+                usergroups.append(each_usergroup)
+
+        return usergroups
+
+
+    def show_targets(self, indentation):
+        """Return all targets the group gives access
+        First the targets with this group attached
+        Then targets from targetgroups with this group attached
+        Then targets from groups with this group attached 
+        Finally We relaunch this on the groups with this groups attached
+        """
+        listing = []
+        indent = ""
+        for i in range(indentation):
+            indent = indent + "    "
+
+        #We add the group only if he contains targets else it hard to read
+        direct_targets = self.list_direct_targets()
+        if direct_targets:
+            listing.append(indent + "Access via " + self.name + ": \n" + \
+                indent + "    Targets: " + \
+                " ".join(direct_targets) + "\n")
+
+        #And for the groups
+        direct_usergroups = self.list_direct_usergroups()
+        if direct_usergroups:
+            #Print the name of the usergroup followed by target allowed
+            for each_usergroup in direct_usergroups:
+                group_targets = each_usergroup.show_targets(indentation + 1)
+                if group_targets:
+                    listing.append(indent + "    " + self.name + \
+                            " member of " + each_usergroup.name + "\n")
+                    listing.append(indent + \
+                            "\n".join(group_targets))
+
+        #Same for targetgroups
+        direct_targetgroups = self.list_direct_targetgroups()
+        if direct_targetgroups:
+            for each_targetgroup in direct_targetgroups:
+                targetgroups = each_targetgroup.show_targets(indentation + 1)
+                if targetgroups:
+                    listing.append(indent + "    " + self.name + \
+                            " member of " + each_targetgroup.name + "\n")
+                    listing.append(indent + \
+                            "\n".join(targetgroups))
+
+        return listing
