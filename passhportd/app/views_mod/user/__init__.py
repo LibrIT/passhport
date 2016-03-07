@@ -91,7 +91,6 @@ def user_accessible_targets(name):
     for each_target in target_list:
         formatted_target_list.append(each_target.show_name() + " " + \
         each_target.show_hostname())
-
     return "\n".join(formatted_target_list), 200, \
         {"content-type": "text/plain; charset=utf-8"}
 
