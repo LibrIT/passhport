@@ -6,7 +6,6 @@ from __future__ import unicode_literals
 
 from app import db
 
-
 # Table to handle the self-referencing many-to-many relationship
 # for the Targetgroup class:
 # First column holds the containers, the second the subgroups.
@@ -233,10 +232,19 @@ class Targetgroup(db.Model):
 
 
     def usergroupname_list(self):
-        """Return usergroups directly linked with the targetgroup"""
+        """Return names of usergroups directly linked with the targetgroup"""
         usergroupnames = []
         for usergroup in self.gmembers:
             usergroupnames.append(usergroup.show_name())
+
+        return usergroupnames
+
+
+    def usergroup_list(self):
+        """Return usergroups directly linkked with the targetgroup"""
+        usergroupnames = []
+        for usergroup in self.gmembers:
+            usergroupnames.append(usergroup)
 
         return usergroupnames
 
@@ -320,3 +328,29 @@ class Targetgroup(db.Model):
                         targetgroupnames.append(subtargetgroupname)
 
         return targetgroupnames
+
+    def show_targets(self, indentation):
+        """Return a formated list of the targets that the targetgroup 
+        provides
+        """
+        listing = []
+        
+        indent = ""
+        for i in range(indentation):
+            indent = indent + "    "
+
+        #Adding direct targets
+        if self.tmembers:
+            toappend = indent + "Access via " + self.name + ": \n" + \
+                    indent + "    Targets: "
+            for target in self.tmembers:
+                toappend = toappend + target.name  + "\n"
+            listing.append(toappend)
+
+
+        #Recusrsivity on targetgroups
+        if self.tgmembers:
+            for targetgroup in self.tgmembers:
+                listing.append(targetgroup.show_targets(indentation + 1))
+
+        return listing
