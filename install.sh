@@ -23,7 +23,7 @@ fi
 DISTRIBUTIONS="Debian GNU/Linux 7 Debian GNU/Linux 8"
 #Python includes needed for the work
 PYTHON_BIN=`which python`
-DEPENDENCIES=( 'from docopt import docopt' 'from flask import Flask' 'from flask.ext.sqlalchemy import SQLAlchemy' 'from migrate.versioning import api' 'from builtins import input' )
+DEPENDENCIES=( 'from docopt import docopt' 'from flask import Flask' 'from flask.ext.sqlalchemy import SQLAlchemy' 'from migrate.versioning import api' 'from builtins import input' 'import requests')
 USERNAME="passhport"
 GROUPNAME="${USERNAME}"
 HOMEDIR="/home/${USERNAME}"
@@ -87,7 +87,10 @@ do
          DIST_PACKAGE_LIST="python-migrate ${DIST_PACKAGE_LIST}"
       elif [ "${MISSING_PYTHON_MODULE}" == "builtins" ]
       then
-         DIST_PACKAGE_LIST="python2-future python-requests ${DIST_PACKAGE_LIST}"
+         DIST_PACKAGE_LIST="python2-future ${DIST_PACKAGE_LIST}"
+      elif [ "${MISSING_PYTHON_MODULE}" == "requests" ]
+      then
+         DIST_PACKAGE_LIST="python-requests ${DIST_PACKAGE_LIST}"
       fi
    fi
 done
@@ -97,9 +100,10 @@ then
    echo "You're missing ${MISSED_DEPENDENCIE_COUNT} dependencies."
    echo "Maybe you have librairies for python 3 and you're using python 2.7"
    echo "Check your environnement to knows the default python version on your distribution".
+   echo ""
    echo "You may use this commande to install those package (enable EPEL repo on redhat/centos/fedora) :"
-   echo "For RPM based distribution : yum install python-docopt python-flask python-flask-sqlalchemy python-migrate"
-   echo "For DEB based distribution : apt-get install python-docopt python-flask python-flask-sqlalchemy python-migrate"
+   echo "For RPM based distribution : yum install epel-release && yum install ${DIST_PACKAGE_LIST}"
+   echo "For DEB based distribution : apt-get install ${DIST_PACKAGE_LIST}"
    echo "Try to install those dependencies and launch this install process again."
    exit 126
 fi
