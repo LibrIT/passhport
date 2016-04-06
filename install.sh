@@ -300,10 +300,15 @@ if [ $? -ne 0 ]
 then
 	echo -n "Do you want this script install all the missing dependencies ? [Y/n]"
 	read USER_RESPONSE
-	if [ "${USER_RESPONSE}" == 'Y' ]
+	if [ "${USER_RESPONSE}" == 'Y' ] || [ "${USER_RESPONSE}" == '' ]
 	then
 		if $(which yum > /dev/null 2>&1) 
 		then
+			if ! ( rpm -ql epel-release >/dev/null 2>&1)
+			then
+				echo "First, we need to install epel-release package to get epel repos"
+				yum install epel-release
+			fi
 			yum install ${DIST_PACKAGE_LIST}
 		else
 			apt-get install ${DIST_PACKAGE_LIST}
@@ -311,13 +316,14 @@ then
 	else
 		echo 'No problem ! Try to install those dependencies manually, then try to run this installer script again.'
 		echo 'Bye ! :)'
+		exit 1
 	fi
 	test_python_dependencies
 	if [ $? -ne 0 ]
 	then
 		echo "Couldn't install the dependency… To bad. Try to install those dependencies manually."
 		echo "Python dependency : ${MISSED_DEPENDENCIE_LIST}"
-		return 1
+		exit 1
 	fi
 fi
 
