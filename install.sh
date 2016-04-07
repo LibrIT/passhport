@@ -7,14 +7,11 @@
 # Initialize the database
 # Create the first admin
 
-
 # First of all: must be launched as root
 if [ $EUID -ne 0 ]; then
    echo "This script must be run as root" 1>&2
    exit 1
 fi
-
-
 
 ############
 # Variables
@@ -29,6 +26,7 @@ GROUPNAME="${USERNAME}"
 HOMEDIR="/home/${USERNAME}"
 ADMINBINDIR="${HOMEDIR}/adminbin"
 SERVERBINDIR="${HOMEDIR}/serverbin"
+PASSHPORTBINDIR="${HOMEDIR}/passhport"
 DATADIR="${HOMEDIR}/var"
 PASSWORD="$(openssl passwd -crypt $( < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8))" #crypted
 DIRNAME="$(dirname $0)"
@@ -60,7 +58,6 @@ function test_basic_dependencies {
    echo -n "Currently using "
    python --version
 }
-
 
 ###########################
 # Check Python dependencies
@@ -106,9 +103,6 @@ function test_python_dependencies {
       echo "You're missing ${MISSED_DEPENDENCIE_COUNT} dependencies."
       echo "Maybe you have librairies for python 3 and you're using python 2.7"
       echo "Check your environnement to knows the default python version on your distribution".
-      echo ""
-      echo "You may use this commande to install those package (enable EPEL repo on redhat/centos/fedora) :"
-      echo "For RPM based distribution : yum install epel-release && yum install ${DIST_PACKAGE_LIST}"
       echo "For DEB based distribution : apt-get install ${DIST_PACKAGE_LIST}"
       return 1
    else
@@ -171,7 +165,6 @@ function check_if_passhport_database_already_exists {
       return 0
    fi
 }
-   
 
 #################
 # Create the user
@@ -193,6 +186,7 @@ function add_passhport_system_user_and_group {
 # Install binaries
 ##################
 function install_binaries {
+   cd "${DIRNAME}"
    echo -n "Installing server-side binaries... "
    mkdir -p "${SERVERBINDIR}"
    cp -r passhportd/* "${SERVERBINDIR}/."
@@ -216,10 +210,21 @@ function install_binaries {
       exit 126   
    fi
    chown -R ${USERNAME}:${GROUPNAME} "${ADMINBINDIR}"
+
+   echo -n "Installing passhport binarie... "
+   mkdir "${PASSHPORTBINDIR}"
+   cp -r passhport/* "${PASSHPORTBINDIR}/."
+   if [ $? -eq 0 ]
+   then
+      echo "done."
+   else
+      echo "Error while copying passhport binary."
+      exit 126   
+   fi
+   chown -R ${USERNAME}:${GROUPNAME} "${PASSHPORTBINDIR}"
    return 0
 }   
  
-
 #####################
 # Initialize database
 #####################
@@ -236,6 +241,13 @@ function database_initialization {
    fi
 }
 
+#####################
+# Configure passhport
+#####################
+function passhport_configuration {
+   echo -n "Configuring passhport..."
+   sed -i -e "s#PASSHPORT_PATH=.*#PASSHPORT_PATH=\"${PASSHPORTBINDIR}/passhport\"#" "${SERVERBINDIR}/config.py"
+}
 
 #####################
 # Initialize passhport ssh-keys
@@ -334,4 +346,5 @@ add_passhport_system_user_and_group
 install_binaries
 database_initialization
 passhport_ssh_keys_initialization
+passhport_configuration
 display_finish_info

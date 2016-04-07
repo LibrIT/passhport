@@ -5,7 +5,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from io import open
 
-import os
+import os, sys, stat
 import config
 
 from flask import request
@@ -13,7 +13,6 @@ from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 from app import app, db
 from app.models_mod import user, target
-
 
 @app.route("/user/list")
 def user_list():
@@ -141,6 +140,9 @@ def user_create():
     except IOError:
         return 'ERROR: cannot write in the file "authorized_keys"', 500, \
             {"content-type": "text/plain; charset=utf-8"}
+    
+    # set correct read/write permissions
+    os.chmod(config.SSH_KEY_FILE, stat.S_IRUSR | stat.S_IWUSR)
 
     u = user.User(
         name=name,
