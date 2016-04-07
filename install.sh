@@ -199,7 +199,6 @@ function install_binaries {
    if [ $? -eq 0 ]
    then
       echo "done."
-      return 0
    else
       echo "Error while copying server-side binaries."
       exit 126   
@@ -212,12 +211,12 @@ function install_binaries {
    if [ $? -eq 0 ]
    then
       echo "done."
-      return 0
    else
       echo "Error while copying admin binaries."
       exit 126   
    fi
    chown -R ${USERNAME}:${GROUPNAME} "${ADMINBINDIR}"
+   return 0
 }   
  
 
