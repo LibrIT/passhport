@@ -27,8 +27,8 @@ DEPENDENCIES=( 'from docopt import docopt' 'from flask import Flask' 'from flask
 USERNAME="passhport"
 GROUPNAME="${USERNAME}"
 HOMEDIR="/home/${USERNAME}"
-ADMINBINDIR="${HOMEDIR}/adminbin/"
-SERVERBINDIR="${HOMEDIR}/serverbin/"
+ADMINBINDIR="${HOMEDIR}/adminbin"
+SERVERBINDIR="${HOMEDIR}/serverbin"
 DATADIR="${HOMEDIR}/var"
 PASSWORD="$(openssl passwd -crypt $( < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8))" #crypted
 DIRNAME="$(dirname $0)"
@@ -223,5 +223,8 @@ echo "==> Great ! All actions finished successfully !"
 echo "INFO : Server scripts directory is \"${SERVERBINDIR}\""
 echo "INFO : Administration scripts directory is \"${ADMINBINDIR}\""
 echo "INFO : Database directory is : \"${DATADIR}\""
-
-
+echo ""
+echo "Next thing you should do : "
+echo " - create a database \"${SERVERBINDIR}/db_create.py\""
+echo " - launch passhportd daemon \"${SERVERBINDIR}/passhportd\""
+echo " - create your first user \"${ADMINBINDIR}/passhport-admin user create\""
