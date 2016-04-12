@@ -16,4 +16,4 @@ from app import app
 if not os.path.exists(SQLALCHEMY_DATABASE_DIR):
     print("ERROR: Database connection failed")
 else:
-    app.run(debug=True)
+    app.run()
