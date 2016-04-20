@@ -19,4 +19,4 @@ SQLALCHEMY_MIGRATE_REPO = os.path.join(datadir, "db_repository")
 
 SSH_KEY_FILE = os.environ["HOME"] + "/.ssh/authorized_keys"
 
-PASSHPORT_PATH="/home/elegall/Dev/passhport/passhport/passhport"
+PASSHPORT_PATH="to_replace_with_passhport_path"
