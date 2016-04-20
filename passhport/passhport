@@ -29,7 +29,7 @@ def checkandconnect(indexed_target_list, choice, username):
        then log everything and connect him"""
     for line in indexed_target_list:
         item_list = line.split(" ")
-        if choice in item_list:
+        if choice in item_list and len(item_list) > 2:
             pathlog = SCRIPT_LOGS_PATH + "/" + item_list[2] + "/"
             isodate = datetime.now().isoformat().replace(":",""). \
                       replace("-","").split('.')[0]
@@ -45,13 +45,16 @@ def checkandconnect(indexed_target_list, choice, username):
 ### MAIN ###
 username = sys.argv[1]
 url_passhport = "http://127.0.0.1:5000/"
-print get(url_passhport + "user" + "/accessible_targets/" + username)
 target_list = get(url_passhport + "user" + "/accessible_targets/" + \
                   username).split("\n")
 indexed_target_list = []
 number = 1
 
-# Welcome the user
+# If the user can't access any target
+if len(target_list) < 2:
+    sys.exit("Sorry you can't access any server") 
+     
+# Else, welcome the user
 print("Welcome {}.".format(username))
 print("Here is the list of servers you can access:")
 
@@ -69,5 +72,3 @@ while not checkandconnect(indexed_target_list, choice, username):
     print("You didn't type correctly, please try again.")
     sys.stdout.write("Type the number, name or hostname of the server you want to connect to. ")
     choice = input("")
-
-
