@@ -45,7 +45,6 @@ def checkandconnect(indexed_target_list, choice, username):
 ### MAIN ###
 username = sys.argv[1]
 url_passhport = "http://127.0.0.1:5000/"
-#print get(url_passhport + "user" + "/accessible_targets/" + username)
 target_list = get(url_passhport + "user" + "/accessible_targets/" + \
                   username).split("\n")
 indexed_target_list = []
