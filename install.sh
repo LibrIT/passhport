@@ -27,6 +27,7 @@ HOMEDIR="/home/${USERNAME}"
 ADMINBINDIR="${HOMEDIR}/adminbin"
 SERVERBINDIR="${HOMEDIR}/serverbin"
 PASSHPORTBINDIR="${HOMEDIR}/passhport"
+PASSHPORTLOGDIR="/var/log/passhport"
 DATADIR="${HOMEDIR}/var"
 PASSWORD="$(openssl passwd -crypt $( < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c8))" #crypted
 DIRNAME="$(dirname $0)"
@@ -242,6 +243,19 @@ function database_initialization {
 }
 
 #####################
+# Create passhport log directory
+#####################
+function create_passhport_log_dir {
+   echo -n "Creating passhport log directory..."
+   if [ ! -e "${PASSHPORTLOGDIR}" ]
+   then
+      mkdir -p "${PASSHPORTLOGDIR}"
+   fi
+   chown ${USERNAME} "${PASSHPORTLOGDIR}"
+   echo "done."
+   return 0
+}
+#####################
 # Configure passhport
 #####################
 function passhport_configuration {
@@ -345,6 +359,7 @@ check_if_passhport_database_already_exists
 add_passhport_system_user_and_group
 install_binaries
 database_initialization
+create_passhport_log_dir
 passhport_ssh_keys_initialization
 passhport_configuration
 display_finish_info
