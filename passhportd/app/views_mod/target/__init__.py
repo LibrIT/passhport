@@ -53,7 +53,7 @@ def target_search(pattern):
 
 @app.route("/target/show/<name>")
 def target_show(name):
-    """Return all data about a user"""
+    """Return all data about a target"""
     # Check for required fields
     if not name:
         return "ERROR: The name is required ", 417, \
@@ -67,6 +67,25 @@ def target_show(name):
             {"content-type": "text/plain; charset=utf-8"}
 
     return str(target_data), 200, \
+        {"content-type": "text/plain; charset=utf-8"}
+
+
+@app.route("/target/sshoptions/<name>")
+def target_options(name):
+    """Return options related to a target"""
+    # Check for required fields
+    if not name:
+        return "ERROR: The name is required ", 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    target_data = target.Target.query.filter_by(name=name).first()
+
+    if target_data is None:
+        return 'ERROR: No target with the name "' + name + \
+            '" in the database.', 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    return str(target_data.sshoptions), 200, \
         {"content-type": "text/plain; charset=utf-8"}
 
 
