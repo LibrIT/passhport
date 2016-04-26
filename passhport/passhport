@@ -42,9 +42,6 @@ def checkandconnect(indexed_target_list, choice, username):
                 # Get the options to pass during connection 
                 sshoptions = get(url_passhport + "target" + "/sshoptions/" + \
                         item_list[1])
-                print("script -q --timing=" + pathlog + filelog + \
-                        ".timing " + pathlog + filelog + ' -c "ssh root@' + \
-                        item_list[2] + ' ' + sshoptions +'"')
                 os.system("script -q --timing=" + pathlog + filelog + \
                         ".timing " + pathlog + filelog + ' -c "ssh root@' + \
                         item_list[2] + ' ' + sshoptions +'"')
