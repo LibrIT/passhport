@@ -13,10 +13,12 @@ import os
 basedir = os.path.expanduser("~")
 datadir = os.path.join(basedir, "var")
 
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+
 SQLALCHEMY_DATABASE_DIR = datadir
 SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(datadir, "app.db")
 SQLALCHEMY_MIGRATE_REPO = os.path.join(datadir, "db_repository")
 
 SSH_KEY_FILE = os.environ["HOME"] + "/.ssh/authorized_keys"
 
-PASSHPORT_PATH="/home/elegall/Dev/passhport/passhport/passhport"
+PASSHPORT_PATH= os.environ["HOME"] + "/passhport/passhport/passhport"
