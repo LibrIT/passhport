@@ -135,8 +135,9 @@ def user_create():
     try:
         with open(config.SSH_KEY_FILE, "a", encoding="utf8") as \
             authorized_keys_file:
-            authorized_keys_file.write('command="python ' + \
-                                       config.PASSHPORT_PATH + \
+            authorized_keys_file.write('command="' + \
+				       config.PYTHON_PATH + \
+                                       " " + config.PASSHPORT_PATH + \
                                        " " + name + '" ' + sshkey + "\n")
     except IOError:
         return 'ERROR: cannot write in the file "authorized_keys"', 500, \

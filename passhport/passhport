@@ -58,6 +58,13 @@ target_list = get(url_passhport + "user" + "/accessible_targets/" + \
 indexed_target_list = []
 number = 1
 
+#TODO Add a support to scp and rsync
+if os.environ.get('SSH_ORIGINAL_COMMAND'):
+    sys.exit("SCP not yet supported")
+    #TODO 1. parse the line (rsync/scp and server)
+    #     2. Check if the user has the rights to access the server
+    #     3. Fin a way to take and send the file(s)
+
 # If the user can't access any target
 if target_list == [u'']:
     sys.exit("Sorry you can't access any server") 
@@ -70,7 +77,7 @@ print("Here is the list of servers you can access:")
 for each_target in target_list:
     indexed_target_list.append(str(number) + " " + each_target)
     number = number + 1
-print("\n".join(indexed_target_list))
+    print(str(number) + " " + each_target.replace(" "," \t\t"))
 
 sys.stdout.write("Type the number, name or hostname of the server you want to connect to. ")
 choice = input("")
