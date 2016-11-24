@@ -7,9 +7,11 @@ from __future__ import unicode_literals
 from builtins import input
 from datetime import datetime
 
-import os, sys, locale, requests
+import os, sys, locale, requests, random, crypt
 
 SCRIPT_LOGS_PATH="/var/log/passhport"
+PWD_RST_AFTER_SESSION=False
+PWD_FILE_DIR="/home/passhport/.access_codes"
 
 def get(url):
     """Send the GET request to the server and print a result.
@@ -23,6 +25,60 @@ def get(url):
             return r.text
 
     return 1
+
+
+def pwgen():
+    """ Generate a random password
+        interactivepython.org
+        /runestone/static/everyday/2013/01/3_password.html """
+    alphabet = "abcdefghijklmnopqrstuvwxyz.&(-_)#{[]}@=+"
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    upperalphabet = alphabet.upper()
+    pw_len = 12
+    pwlist = []
+    
+    for i in range(pw_len//3):
+        pwlist.append(alphabet[random.randrange(len(alphabet))])
+        pwlist.append(upperalphabet[random.randrange(len(upperalphabet))])
+        pwlist.append(str(random.randrange(10)))
+
+    for i in range(pw_len-len(pwlist)):
+        pwlist.append(alphabet[random.randrange(len(alphabet))])
+
+    random.shuffle(pwlist)
+    pwstring = "".join(pwlist)
+
+    return pwstring
+
+
+def passwordreset(server, sshoptions):
+    """After a session, we reset the user password
+       and store the password in a local file"""
+    if PWD_RST_AFTER_SESSION:
+        # 1. Generate random passowrd
+        pwdstring = pwgen()
+
+        # 2. Define username
+        useroption = sshoptions.split("-l")[-1].split(' ')
+        if useroption[0]:
+            user = useroption[0]
+        elif useroption[1]:
+            user = useroption[1]
+        else:          
+            user = "root"
+
+        # 3. Propage password
+        os.system("ssh root@" + server + ' ' + sshoptions + ' -l root \'echo "'
+                    + user + ':' + pwdstring + '" | chpasswd\'')
+
+        # 4. Sore it locally
+        if not os.path.exists(PWD_FILE_DIR):
+            os.mkdir(PWD_FILE_DIR)
+
+        file = open(PWD_FILE_DIR + '/' + server + "_" + user, 'w')
+        file.write(user + " : " + pwdstring)
+        file.close()
+
 
 def checkandconnect(indexed_target_list, choice, username):
     """Check if the user have entered an accessible target
@@ -42,13 +98,19 @@ def checkandconnect(indexed_target_list, choice, username):
                 # Get the options to pass during connection 
                 sshoptions = get(url_passhport + "target" + "/sshoptions/" + \
                         item_list[1])
+                # Connect
                 os.system("script -q --timing=" + pathlog + filelog + \
                         ".timing " + pathlog + filelog + ' -c "ssh root@' + \
                         item_list[2] + ' ' + sshoptions +'"')
+                # Change password on the target
+                if PWD_RST_AFTER_SESSION:
+                    passwordreset(item_list[1], sshoptions)
+
                 return True
             else:
                 print("Error on target definition")
     return False
+
 
 ### MAIN ###
 username = sys.argv[1]
@@ -57,6 +119,13 @@ target_list = get(url_passhport + "user" + "/accessible_targets/" + \
                   username).split("\n")
 indexed_target_list = []
 number = 1
+
+#TODO Add a support to scp and rsync
+if os.environ.get('SSH_ORIGINAL_COMMAND'):
+    sys.exit("SCP not yet supported")
+    #TODO 1. parse the line (rsync/scp and server)
+    #     2. Check if the user has the rights to access the server
+    #     3. Fin a way to take and send the file(s)
 
 # If the user can't access any target
 if target_list == [u'']:
@@ -69,8 +138,8 @@ print("Here is the list of servers you can access:")
 # Print servers the user can access
 for each_target in target_list:
     indexed_target_list.append(str(number) + " " + each_target)
+    print(str(number) + " " + each_target.replace(" "," \t\t"))
     number = number + 1
-print("\n".join(indexed_target_list))
 
 sys.stdout.write("Type the number, name or hostname of the server you want to connect to. ")
 choice = input("")
