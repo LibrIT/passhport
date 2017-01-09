@@ -218,16 +218,19 @@ def user_edit():
 
                     for line in content:
                         if not line_edited:
-                            if line != ('command="python ' + config.PASSHPORT_PATH + \
+                            if line != ('command="' + config.PYTHON_PATH + \
+                            " " + config.PASSHPORT_PATH + \
                             " " + name + '" ' + query_check.sshkey + "\n"):
                                 authorized_keys_file.write(line)
                             else:
                                 authorized_keys_file.write(
-                                config.PASSHPORT_PATH + \
+                                'command="' + config.PYTHON_PATH + \
+                                " " + config.PASSHPORT_PATH + \
                                 " " + new_name + '" ' + new_sshkey + "\n")
                                 line_edited = True
                         else:
-                            if line == ('command="python ' + config.PASSHPORT_PATH + \
+                            if line == ('command="' + config.PYTHON_PATH + \
+                            " " + config.PASSHPORT_PATH + \
                             " " + name + '" ' + query_check.sshkey + "\n"):
                                 warning = ("WARNING: There is more " + \
                                 "than one line with the sshkey " + \
@@ -268,7 +271,10 @@ def user_edit():
 
 @app.route("/user/delete/<name>")
 def user_delete(name):
-    """Delete a user in the database"""
+    """Delete a user in the database
+       in the authorizedkey file
+       in the associated targets
+       and in the associated groups"""
     if not name:
         return "ERROR: The name is required ", 417, \
             {"content-type": "text/plain; charset=utf-8"}
@@ -292,13 +298,15 @@ def user_delete(name):
 
             for line in content:
                 if not line_deleted:
-                    if line != ('command="python ' + config.PASSHPORT_PATH + \
+                    if line != ('command="' + config.PYTHON_PATH + \
+                    " " + config.PASSHPORT_PATH + \
                     " " + name + '" ' + query.sshkey + "\n"):
                         authorized_keys_file.write(line)
                     else:
                         line_deleted = True
                 else:
-                    if line == ('command="python ' + config.PASSHPORT_PATH + \
+                    if line == ('command="' + config.PYTHON_PATH + \
+                    " " + config.PASSHPORT_PATH + \
                     " " + name + '" ' + query.sshkey + "\n"):
                         warning = ("\nWARNING: There is more than one line "
                             "with the sshkey " + query.sshkey + ", probably "
@@ -311,6 +319,24 @@ def user_delete(name):
         return 'ERROR: cannot write in the file "authorized_keys"', 500, \
             {"content-type": "text/plain; charset=utf-8"}
 
+    # Delete the user from the associated targets
+    user_data = user.User.query.filter_by(name=name).first()
+ 
+    target_list = user_data.accessible_target_list()
+    for each_target in target_list:
+        each_target.rmuser(user_data)
+
+    # Delete the user form the associated usergroups
+    usergroup_list = user_data.direct_usergroups()
+    for each_usergroup in usergroup_list:
+        each_usergroup.rmuser(user_data)
+
+    # Delete the user form the associated targetgroups
+    targetgroup_list = user_data.direct_targetgroups()
+    for each_targetgroup in targetgroup_list:
+        each_targetgroup.rmuser(user_data)
+
+    # Finally delet the user from the db
     db.session.query(
         user.User).filter(
         user.User.name == name).delete()
