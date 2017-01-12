@@ -70,6 +70,30 @@ def target_show(name):
         {"content-type": "text/plain; charset=utf-8"}
 
 
+@app.route("/target/login/<name>")
+def target_login(name):
+    """Return login related to a target"""
+    # Check for required fields
+    if not name:
+        return "ERROR: The name is required ", 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    target_data = target.Target.query.filter_by(name=name).first()
+
+    if target_data is None:
+        return 'ERROR: No target with the name "' + name + \
+            '" in the database.', 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    # If there is no user declared, we assume it's root
+    login = str(target_data.login)
+    if not login:
+        login = "root"
+    
+    return "root", 200, \
+        {"content-type": "text/plain; charset=utf-8"}
+
+
 @app.route("/target/sshoptions/<name>")
 def target_options(name):
     """Return options related to a target"""
@@ -100,6 +124,7 @@ def target_create():
     # Simplification for the reading
     name = request.form["name"]
     hostname = request.form["hostname"]
+    login = request.form["login"]
     port = request.form["port"]
     sshoptions = request.form["sshoptions"]
     comment = request.form["comment"]
@@ -108,6 +133,9 @@ def target_create():
     if not name or not hostname:
         return "ERROR: The name and hostname are required ", 417, \
             {"content-type": "text/plain; charset=utf-8"}
+
+    if not login:
+        login = "root"
 
     if not port:
         port = 22
@@ -152,6 +180,7 @@ def target_edit():
     name = request.form["name"]
     new_name = request.form["new_name"]
     new_hostname = request.form["new_hostname"]
+    new_login = request.form["new_login"]
     new_port = request.form["new_port"]
     new_sshoptions = request.form["new_sshoptions"]
     new_comment = request.form["new_comment"]
@@ -173,6 +202,9 @@ def target_edit():
     to_update = db.session.query(target.Target.name).filter_by(name=name)
 
     # Let's modify only relevent fields
+    if new_login:
+        to_update.update({"login": new_login})
+
     if new_sshoptions:
         to_update.update({"sshoptions": new_sshoptions})
 

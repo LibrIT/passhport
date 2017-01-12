@@ -17,10 +17,10 @@ Usage:
     passhport-admin target list
     passhport-admin target search [<pattern>]
     passhport-admin target show [<name>]
-    passhport-admin target create [((<name> <hostname>) \
+    passhport-admin target create [((<name> <hostname>) [--login=<login>] \
 [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]
     passhport-admin target edit [(<name> [--newname=<name>] \
-[--newhostname=<hostname>] [--newcomment=<comment>] \
+[--newhostname=<hostname>] [--newlogin=<login>] [--newcomment=<comment>] \
 [--newsshoptions=<sshoptions>] [--newport=<port>])]
     passhport-admin target (adduser | rmuser) \
 [(<username> <targetname>)]
@@ -66,7 +66,8 @@ Arguments:
     pattern             A SQL search pattern.
     sshkey              The SSH key used to authenticate the user.
     hostname            The name of the server of the target.
-    sshoptions          ???
+    login               Login used to log on the target.
+    sshoptions          Options used in the case of a scp or ssh connection.
     port                The port used to connect with the target.
 
 Options:
@@ -82,6 +83,7 @@ the target.
     --newcomment=<comment>          Set the new comment of the object.
     --newsshkey=<sshkey>            Set the new SSH key of the user.
     --newhostname=<hostname>        Set the new hostname of the target.
+    --newlogin=<login>              Set the new login of the target.
     --newsshoptions=<sshoptions>    Set the new SSH options \
 of the target.
     --newport=<port>                Set the new port used \
@@ -207,10 +209,10 @@ Usage:
     target list
     target search [<pattern>]
     target show [<name>]
-    target create [((<name> <hostname>) \
+    target create [((<name> <hostname>) [--login=<login>] \
 [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]
     target edit [(<name> [--newname=<name>] \
-[--newhostname=<hostname>] [--newcomment=<comment>] \
+[--newhostname=<hostname>] [--newlogin=<login>] [--newcomment=<comment>] \
 [--newsshoptions=<sshoptions>] \[--newport=<port>])]
     target (adduser | rmuser) [(<username> <targetname>)]
     target (addusergroup | rmusergroup) \
@@ -225,7 +227,8 @@ Arguments:
     comment        A comment about the object.
     pattern        A SQL search pattern.
     hostname       The name of the server of the target.
-    sshoptions     ???
+    login          Login used to log on the target.
+    sshoptions     Options used to connect via ssh or scp.
     port           The port used to connect with SSH.
 
 Options:
@@ -238,6 +241,7 @@ the target.
     --newname=<name>                Set the new name of the object.
     --newcomment=<comment>          Set the new comment of the object.
     --newhostname=<hostname>        Set the new hostname of the target.
+    --newlogin=<login>              Set the new login of the target.
     --newsshoptions=<sshoptions>    Set the new SSH options \
 of the target.
     --newport=<port>                Set the new port used \
@@ -264,11 +268,13 @@ with the target.
         options = {
             "--force",
             "--comment",
+            "--login",
             "--sshoptions",
             "--port",
             "--newname",
             "--newcomment",
             "--newhostname",
+            "--newlogin",
             "--newsshoptions",
             "--newport"}
         method = ""

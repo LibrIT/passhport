@@ -9,7 +9,7 @@ from builtins import input
 
 def prompt_create():
     """Prompt user to obtain data for request"""
-    name = input("Name: ")
+    name = input("Email (user name): ")
     sshkey = input("SSH Key: ")
     comment = input("Comment: ")
 
