@@ -16,6 +16,7 @@ class Target(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), index=True, unique=True)
     hostname = db.Column(db.String(120), index=True, nullable=False)
+    login = db.Column(db.String(120), index=True)
     port = db.Column(db.Integer, index=False)
     sshoptions = db.Column(db.String(500), index=True)
     comment = db.Column(db.String(500), index=True)
@@ -31,6 +32,7 @@ class Target(db.Model):
 
         output.append("Name: {}".format(self.name))
         output.append("Hostname: {}".format(self.hostname))
+        output.append("Login: {}".format(self.login))
         output.append("Port: {}".format(str(self.port)))
         output.append("SSH options: {}".format(self.sshoptions))
         output.append("Comment: {}".format(self.comment))

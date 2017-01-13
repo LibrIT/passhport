@@ -28,7 +28,7 @@ class User(db.Model):
         """Return main data of the user as a string"""
         output = []
 
-        output.append("Name: {}".format(self.name))
+        output.append("Email: {}".format(self.name))
         output.append("SSH key: {}".format(self.sshkey))
         output.append("Comment: {}".format(self.comment))
         output.append("Accessible target list: " + \

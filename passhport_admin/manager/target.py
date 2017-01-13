@@ -32,6 +32,7 @@ def prompt_create():
     """Prompt user to obtain data to create a target"""
     name = input("Name: ")
     hostname = input("Hostname: ")
+    login = input("Login (default is root):")
     port = ask_port("Port: ")
     sshoptions = input("SSH Options: ")
     comment = input("Comment: ")
@@ -45,6 +46,7 @@ def prompt_create():
 
 def create(param):
     """Format param for target creation"""
+    login = ""
     port = ""
     sshoptions = ""
     comment = ""
@@ -61,8 +63,12 @@ def create(param):
     if "--comment" in param:
         comment = param["--comment"]
 
+    if "--login" in param:
+        login = param["--login"]
+
     return {"name": param["<name>"],
             "hostname": param["<hostname>"],
+            "login": login,
             "port": port,
             "sshoptions": sshoptions,
             "comment": comment}
@@ -71,10 +77,13 @@ def create(param):
 def prompt_edit(req):
     """Prompt user to obtain data to edit a target"""
     name = input("Name of the target you want to modify: ")
+    if not name:
+        return False
 
     if req.show("target", {"<name>": name}) == 0:
         new_name = input("New name: ")
         new_hostname = input("New hostname: ")
+        new_login = input("New Login: ")
         new_port = ask_port("New port: ")
         new_sshoptions = input("New SSH options: ")
         new_comment = input("New comment: ")
@@ -82,6 +91,7 @@ def prompt_edit(req):
     return {"<name>": name,
             "--newname": new_name,
             "--newhostname": new_hostname,
+            "--newlogin": new_login,
             "--newport": new_port,
             "--newsshoptions": new_sshoptions,
             "--newcomment": new_comment}
@@ -91,6 +101,7 @@ def edit(param):
     """Format param for target edition"""
     new_name = ""
     new_hostname = ""
+    new_login = ""
     new_port = ""
     new_sshoptions = ""
     new_comment = ""
@@ -100,6 +111,9 @@ def edit(param):
 
     if "--newhostname" in param:
         new_hostname = param["--newhostname"]
+
+    if "--newlogin" in param:
+        new_login = param["--newlogin"]
 
     if "--newport" in param:
         new_port = param["--newport"]
@@ -113,6 +127,7 @@ def edit(param):
     return {"name": param["<name>"],
             "new_name": new_name,
             "new_hostname": new_hostname,
+            "new_login": new_login,
             "new_port": new_port,
             "new_sshoptions": new_sshoptions,
             "new_comment": new_comment}

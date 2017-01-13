@@ -7,7 +7,11 @@ from __future__ import unicode_literals
 from builtins import input
 from datetime import datetime
 
-import os, sys, locale, requests, random, crypt
+import os, sys, locale, requests, random, crypt, re
+
+from connections_utils import ssh
+from connections_utils import scp
+from connections_utils import password
 
 SCRIPT_LOGS_PATH="/var/log/passhport"
 PWD_RST_AFTER_SESSION=False
@@ -27,128 +31,105 @@ def get(url):
     return 1
 
 
-def pwgen():
-    """ Generate a random password
-        interactivepython.org
-        /runestone/static/everyday/2013/01/3_password.html """
-    alphabet = "abcdefghijklmnopqrstuvwxyz.&(-_)#{[]}@=+"
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    upperalphabet = alphabet.upper()
-    pw_len = 12
-    pwlist = []
-    
-    for i in range(pw_len//3):
-        pwlist.append(alphabet[random.randrange(len(alphabet))])
-        pwlist.append(upperalphabet[random.randrange(len(upperalphabet))])
-        pwlist.append(str(random.randrange(10)))
-
-    for i in range(pw_len-len(pwlist)):
-        pwlist.append(alphabet[random.randrange(len(alphabet))])
-
-    random.shuffle(pwlist)
-    pwstring = "".join(pwlist)
-
-    return pwstring
-
-
-def passwordreset(server, sshoptions):
-    """After a session, we reset the user password
-       and store the password in a local file"""
-    if PWD_RST_AFTER_SESSION:
-        # 1. Generate random passowrd
-        pwdstring = pwgen()
-
-        # 2. Define username
-        useroption = sshoptions.split("-l")[-1].split(' ')
-        if useroption[0]:
-            user = useroption[0]
-        elif useroption[1]:
-            user = useroption[1]
-        else:          
-            user = "root"
-
-        # 3. Propage password
-        os.system("ssh root@" + server + ' ' + sshoptions + ' -l root \'echo "'
-                    + user + ':' + pwdstring + '" | chpasswd\'')
-
-        # 4. Sore it locally
-        if not os.path.exists(PWD_FILE_DIR):
-            os.mkdir(PWD_FILE_DIR)
-
-        file = open(PWD_FILE_DIR + '/' + server + "_" + user, 'w')
-        file.write(user + " : " + pwdstring)
-        file.close()
-
-
-def checkandconnect(indexed_target_list, choice, username):
+def checkandconnect(indexed_target_list, choice, username, originalcmd):
     """Check if the user have entered an accessible target
-       then log everything and connect him"""
+       then check target type and launch the action"""
+
+    # Check the target access and access type
     for line in indexed_target_list:
         item_list = line.split(" ")
         if choice in item_list:
             if len(item_list) > 2:
-                pathlog = SCRIPT_LOGS_PATH + "/" + item_list[2] + "/"
+                target = item_list[2]
+                pathlog = SCRIPT_LOGS_PATH + "/" + target + "/"
                 isodate = datetime.now().isoformat().replace(":",""). \
                           replace("-","").split('.')[0]
-                filelog = isodate + "-" + str(os.getpid()) + "-" + item_list[2] + username
-                # Create a log directory for each target
+                filelog = pathlog + isodate + "-" + str(os.getpid()) + "-" + \
+                          target + "-" + username
+                login = get(url_passhport + "target" + "/login/" +  
+                        item_list[1])
+                sshoptions = get(url_passhport + "target" + "/sshoptions/" + \
+                             item_list[1])
+
+                # Create a log directory for this target
                 if not os.path.exists(pathlog):
                     os.mkdir(pathlog)
 
-                # Get the options to pass during connection 
-                sshoptions = get(url_passhport + "target" + "/sshoptions/" + \
-                        item_list[1])
-                # Connect
-                os.system("script -q --timing=" + pathlog + filelog + \
-                        ".timing " + pathlog + filelog + ' -c "ssh root@' + \
-                        item_list[2] + ' ' + sshoptions +'"')
+                # It's SCP if originalcmd is set, else ssh.
+                if originalcmd: 
+                    scp.connect(target, filelog, login, sshoptions, originalcmd)
+                else:
+                    ssh.connect(target, filelog, login, sshoptions)
+
                 # Change password on the target
                 if PWD_RST_AFTER_SESSION:
-                    passwordreset(item_list[1], sshoptions)
+                    password.reset(target, login, sshoptions)
 
                 return True
             else:
                 print("Error on target definition")
+        
     return False
 
 
+def build_target_list(target_list, tabulations=0):
+    """Print the targets list in a readable listed numbered list format"""
+    indexed_target_list = []
+    number = 1
+    for each_target in target_list:
+        if not tabulations:
+            indexed_target_list.append(str(number) + " " + each_target)
+        else:
+            indexed_target_list.append(str(number) + " " + \
+                                each_target.replace(" "," \t\t"))
+        number = number + 1
+
+    return indexed_target_list
+
+
 ### MAIN ###
-username = sys.argv[1]
-url_passhport = "http://127.0.0.1:5000/"
-target_list = get(url_passhport + "user" + "/accessible_targets/" + \
+if __name__ == '__main__':
+    username = sys.argv[1]
+    url_passhport = "http://127.0.0.1:5000/"
+    target_list = get(url_passhport + "user" + "/accessible_targets/" + \
                   username).split("\n")
-indexed_target_list = []
-number = 1
+    originalcmd = os.environ.get('SSH_ORIGINAL_COMMAND')
+    choice = 0
+ 
+    # If the user can't access any target
+    if target_list == [u'']:
+        sys.exit("Sorry you can't access any server") 
 
-#TODO Add a support to scp and rsync
-if os.environ.get('SSH_ORIGINAL_COMMAND'):
-    sys.exit("SCP not yet supported")
-    #print(os.environ.get('SSH_ORIGINAL_COMMAND'))
-    #TODO 1. parse the line (rsync/scp and server)
-    #     2. Check if the user has the rights to access the server
-    #     3. Fin a way to take and send the file(s)
+    #Construct the indexted targets list
+    indexed_target_list = build_target_list(target_list)
 
-# If the user can't access any target
-if target_list == [u'']:
-    sys.exit("Sorry you can't access any server") 
-     
-# Else, welcome the user
-print("Welcome {}.".format(username))
-print("Here is the list of servers you can access:")
+    # Check if it's pure ssh or another type of connection:
+    if originalcmd:
+        # In case the SSH_ORIGINAL_COMMAND is set,
+        # it should be scp/rsync (according to sshd manpage)
+        # Determine the target parsing the originalcmd
+        parsedcommand = scp.parse(originalcmd)
+        if len(parsedcommand) > 1:
+            choice = parsedcommand[0] # the target
+            command = parsedcommand[1] # the rewrited command
+            checkandconnect(indexed_target_list, choice, username, command)
+        else:
+            sys.exit("Syntax error on the command.")
+    else:
+        # We handle the ssh connection
+        print("Welcome {}.".format(username))
+        print("Here is the list of servers you can access:")
 
-# Print servers the user can access
-for each_target in target_list:
-    indexed_target_list.append(str(number) + " " + each_target)
-    print(str(number) + " " + each_target.replace(" "," \t\t"))
-    number = number + 1
+        # Print servers the user can access, with a blank line between each entry
+        print(*build_target_list(target_list, tabulations=1), sep='\n')
 
-# Let the use chose his server
-sys.stdout.write("Type the number, name or hostname of the server you want to connect to. ")
-choice = input("")
-valid_input = False
+        # Let the use chose his server
+        sys.stdout.write("Type the number, name or hostname of the server you want to connect to. ")
+        choice = input("")
+        valid_input = False
 
-# Try to connect the user to the server he choosed or ask to re-type
-while not checkandconnect(indexed_target_list, choice, username):
-    print("You didn't type correctly, please try again.")
-    sys.stdout.write("Type the number, name or hostname of the server you want to connect to. ")
-    choice = input("")
+        # Try to connect the user to the server he choosed or ask to re-type
+        while not checkandconnect(indexed_target_list, choice, username, originalcmd):
+            print("You didn't type correctly, please try again.")
+            sys.stdout.write("Type the number, name or hostname of the server you want to connect to. ")
+            choice = input("")
