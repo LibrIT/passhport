@@ -57,7 +57,7 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd):
 
                 # It's SCP if originalcmd is set, else ssh.
                 if originalcmd: 
-                    scp.connect(filelog, login, sshoptions, originalcmd)
+                    scp.connect(target, filelog, login, sshoptions, originalcmd)
                 else:
                     ssh.connect(target, filelog, login, sshoptions)
 

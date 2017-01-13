@@ -16,27 +16,32 @@ def parse(originalcmd):
     # or
     # scp [option] user@bastion:targetname//path/on/destination/file /local/path
     # and we should obtain the target name a line like
-    # scp -t @targetname:path/on/destination/file /local/path
+    # scp -t /path/on/destination/file 
+    # scp -f /path/on/destination/file /local/path
     target = re.findall("(\w*)//", originalcmd)
     if target:
         target = target[0]
 
-    cmd = re.sub("\w*//", "@" + target + ":/", originalcmd)
+    cmd = re.sub("\w*//", "/", originalcmd)
 
     return [target, cmd]
     
     
 
-def connect(filelog, login, sshoptions, originalcmd):
+def connect(target, filelog, login, sshoptions, originalcmd):
     """ Simply launch the scp connection """
 
-    cmd = re.sub("scp -t ", "scp -q -t " + sshoptions + " " + login, 
-                 originalcmd)
-    print(cmd)
+    # The final command should be like
+    # ssh -q -t login@target scp -t /path/to/target
+    # or to receive
+    # ssh -q -t login@target scp -f /path/to/target /local/path/
+    # and ssh/scp do magic after that
+    cmd = re.sub("scp -(.) ", "ssh -q -t " + login + "@" + target + 
+                 " scp -\\1 ", originalcmd )  
     os.system(cmd)
     
     # Print the command on a logfile
     filelog = open(filelog + "-scp.log", "a")
-    filelog.write(originalcmd)
+    filelog.write("Original command: " + originalcmd + " - " + "cmd: " + cmd)
     filelog.close()
 
