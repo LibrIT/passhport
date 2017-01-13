@@ -85,13 +85,15 @@ def target_login(name):
             '" in the database.', 417, \
             {"content-type": "text/plain; charset=utf-8"}
 
-    login = str(target_data.login).replace(" ","")
+    login = target_data.login
 
     # If there is no user declared, we assume it's root
-    if not login:
+    if login is None:
         print("No login set on " + name + ", root is used")
         login = "root"
-
+    else:
+        login = str(login).replace(" ","")
+    
     return login, 200, \
         {"content-type": "text/plain; charset=utf-8"}
 
