@@ -6,7 +6,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-import os, random, crypt, re
+import os, re
 
 def parse(originalcmd):
     """Parse the original scp command written by the user.
@@ -18,11 +18,11 @@ def parse(originalcmd):
     # and we should obtain the target name a line like
     # scp -t /path/on/destination/file 
     # scp -f /path/on/destination/file /local/path
-    target = re.findall("(\w*)//", originalcmd)
+    target = re.findall("([^\s]*)//", originalcmd)
     if target:
         target = target[0]
 
-    cmd = re.sub("\w*//", "/", originalcmd)
+    cmd = re.sub("\[^\s]*//", "/", originalcmd)
 
     return [target, cmd]
     
