@@ -22,7 +22,7 @@ def parse(originalcmd):
     if target:
         target = target[0]
 
-    cmd = re.sub("\[^\s]*//", "/", originalcmd)
+    cmd = re.sub("[^\s]*//", "/", originalcmd)
 
     return [target, cmd]
     
