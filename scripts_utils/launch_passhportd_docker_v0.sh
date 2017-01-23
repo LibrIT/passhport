@@ -14,4 +14,4 @@ fi
 
 
 # Launch the passhportd in the virtualenv
-"${VIRTUAL_ENV_PYTHON}" /home/passhport/passhport/passhportd/passhportd >> /var/log/passhport/passhportd &
+"${VIRTUAL_ENV_PYTHON}" /home/passhport/passhport/passhportd/passhportd
