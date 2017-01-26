@@ -7,6 +7,8 @@ from __future__ import unicode_literals
 
 import os
 from config import SQLALCHEMY_DATABASE_DIR
+from config import SSL_CONTEXT
+from config import HOST
 
 
 """Server side using flask"""
@@ -16,4 +18,7 @@ from app import app
 if not os.path.exists(SQLALCHEMY_DATABASE_DIR):
     print("ERROR: Database connection failed")
 else:
-    app.run()
+    if SSL_CONTEXT == False:
+        app.run()
+    else:
+        app.run(host = HOST, ssl_context = SSL_CONTEXT)

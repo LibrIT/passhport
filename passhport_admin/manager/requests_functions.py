@@ -8,14 +8,13 @@ from __future__ import unicode_literals
 from builtins import input
 
 import sys, locale
-import requests
+import requests, re
 
 from . import user as user
 from . import target as target
 from . import usergroup as usergroup
 from . import targetgroup as targetgroup
-
-from config import url_passhport
+from . import config as conf
 
 def ask_confirmation(prompt_confirmation):
     """Same as input() but check if user key in a correct input,
@@ -54,7 +53,7 @@ def get(url):
 
 def list(obj):
     """Get the list of all objects of this type"""
-    return get(url_passhport + obj + "/list")
+    return get(conf.url_passhport + obj + "/list")
 
 
 def search(obj, param):
@@ -62,7 +61,7 @@ def search(obj, param):
     if isinstance(param["<pattern>"], bytes):
         param["<pattern>"] = param["<pattern>"].decode("utf8")
 
-    return get(url_passhport + obj + "/search/" + param["<pattern>"])
+    return get(conf.url_passhport + obj + "/search/" + param["<pattern>"])
 
 
 def show(obj, param):
@@ -70,7 +69,7 @@ def show(obj, param):
     if isinstance(param["<name>"], bytes):
         param["<name>"] = param["<name>"].decode("utf8")
 
-    return get(url_passhport + obj + "/show/" + param["<name>"])
+    return get(conf.url_passhport + obj + "/show/" + param["<name>"])
 
 
 def delete(obj, param):
@@ -80,14 +79,14 @@ def delete(obj, param):
 
     if show(obj, {"<name>": param["<name>"]}) == 0:
         if "-f" in param or "--force" in param:
-            return get(url_passhport + obj + "/delete/" + param["<name>"])
+            return get(conf.url_passhport + obj + "/delete/" + param["<name>"])
         else:
             confirmed = ask_confirmation(
                 "Are you sure you want to delete " + \
                 param["<name>"] + "? [y/N] ")
 
             if confirmed:
-                return get(url_passhport + obj + "/delete/" + \
+                return get(conf.url_passhport + obj + "/delete/" + \
                     param["<name>"])
             else:
                 print("Operation aborted.")
@@ -105,7 +104,15 @@ def post(url, data):
         print(r.text)
 
         if r.status_code == requests.codes.ok:
+            # Copy sshkey on new targets
+            if re.findall("\/target\/create", url) and AUTO_DEPLOY_SSHKEY:
+                print("Trying to deploy sshkey")
             return 0
+        #TODO first connection to a target to deploy a key
+        # if url  content target
+        # ask_user_if_first_connection
+        # connect / prompt pass
+        # done => print result.
 
     return 1
 
@@ -115,7 +122,7 @@ def create(obj, param):
     objects = {"user": user, "target": target, "usergroup": usergroup,
             "targetgroup": targetgroup}
     data = getattr(objects[obj], "create")(param)
-    url = url_passhport + obj + "/create"
+    url = conf.url_passhport + obj + "/create"
 
     return post(url, data)
 
@@ -125,7 +132,7 @@ def edit(obj, param):
     objects = {"user": user, "target": target, "usergroup": usergroup,
             "targetgroup": targetgroup}
     data = getattr(objects[obj], "edit")(param)
-    url = url_passhport + obj + "/edit"
+    url = conf.url_passhport + obj + "/edit"
 
     return post(url, data)
 
@@ -135,7 +142,7 @@ def adduser(obj, param):
     objects = {"target": target, "usergroup": usergroup,
             "targetgroup": targetgroup}
     data = getattr(objects[obj], "adduser")(param)
-    url = url_passhport + obj + "/adduser"
+    url = conf.url_passhport + obj + "/adduser"
 
     return post(url, data)
 
@@ -145,7 +152,7 @@ def rmuser(obj, param):
     objects = {"target": target, "usergroup": usergroup,
             "targetgroup": targetgroup}
     data = getattr(objects[obj], "rmuser")(param)
-    url = url_passhport + obj + "/rmuser"
+    url = conf.url_passhport + obj + "/rmuser"
 
     return post(url, data)
 
@@ -154,7 +161,7 @@ def addtarget(obj, param):
     """Add a target to an object on passhportd via API"""
     objects = {"targetgroup": targetgroup}
     data = getattr(objects[obj], "addtarget")(param)
-    url = url_passhport + obj + "/addtarget"
+    url = conf.url_passhport + obj + "/addtarget"
 
     return post(url, data)
 
@@ -163,7 +170,7 @@ def rmtarget(obj, param):
     """Remove a target from an object on passhportd via API"""
     objects = {"targetgroup": targetgroup}
     data = getattr(objects[obj], "rmtarget")(param)
-    url = url_passhport + obj + "/rmtarget"
+    url = conf.url_passhport + obj + "/rmtarget"
 
     return post(url, data)
 
@@ -173,7 +180,7 @@ def addusergroup(obj, param):
     objects = {"target": target, "usergroup": usergroup,
             "targetgroup": targetgroup}
     data = getattr(objects[obj], "addusergroup")(param)
-    url = url_passhport + obj + "/addusergroup"
+    url = conf.url_passhport + obj + "/addusergroup"
 
     return post(url, data)
 
@@ -183,7 +190,7 @@ def rmusergroup(obj, param):
     objects = {"target": target, "usergroup": usergroup,
             "targetgroup": targetgroup}
     data = getattr(objects[obj], "rmusergroup")(param)
-    url = url_passhport + obj + "/rmusergroup"
+    url = conf.url_passhport + obj + "/rmusergroup"
 
     return post(url, data)
 
@@ -192,7 +199,7 @@ def addtargetgroup(obj, param):
     """Add a targetgroup to an object on passhportd via API"""
     objects = {"targetgroup": targetgroup}
     data = getattr(objects[obj], "addtargetgroup")(param)
-    url = url_passhport + obj + "/addtargetgroup"
+    url = conf.url_passhport + obj + "/addtargetgroup"
 
     return post(url, data)
 
@@ -201,6 +208,6 @@ def rmtargetgroup(obj, param):
     """Remove a targetgroup from an object on passhportd via API"""
     objects = {"targetgroup": targetgroup}
     data = getattr(objects[obj], "rmtargetgroup")(param)
-    url = url_passhport + obj + "/rmtargetgroup"
+    url = conf.url_passhport + obj + "/rmtargetgroup"
 
     return post(url, data)
