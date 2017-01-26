@@ -8,14 +8,15 @@ from __future__ import unicode_literals
 from builtins import input
 
 import sys, locale
-import requests
+import requests, re
 
 from . import user as user
 from . import target as target
 from . import usergroup as usergroup
 from . import targetgroup as targetgroup
 
-url_passhport = "http://127.0.0.1:5000/"
+url_passhport = "https://127.0.0.1:5000/"
+AUTO_DEPLOY_SSH_KEY = True
 
 def ask_confirmation(prompt_confirmation):
     """Same as input() but check if user key in a correct input,
@@ -105,7 +106,15 @@ def post(url, data):
         print(r.text)
 
         if r.status_code == requests.codes.ok:
+            # Copy sshkey on new targets
+            if re.findall("\/target\/create", url) and AUTO_DEPLOY_SSHKEY:
+                print("Trying to deploy sshkey")
             return 0
+        #TODO first connection to a target to deploy a key
+        # if url  content target
+        # ask_user_if_first_connection
+        # connect / prompt pass
+        # done => print result.
 
     return 1
 
