@@ -79,7 +79,8 @@ def delete(obj, param):
 
     if show(obj, {"<name>": param["<name>"]}) == 0:
         if "-f" in param or "--force" in param:
-            return get(config.url_passhport + obj + "/delete/" + param["<name>"])
+            return get(config.url_passhport + obj + "/delete/" + \
+/bin/bash: q : commande introuvable
         else:
             confirmed = ask_confirmation(
                 "Are you sure you want to delete " + \
