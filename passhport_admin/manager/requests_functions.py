@@ -15,7 +15,7 @@ from . import target as target
 from . import usergroup as usergroup
 from . import targetgroup as targetgroup
 
-url_passhport = "http://127.0.0.1:5000/"
+from config import url_passhport
 
 def ask_confirmation(prompt_confirmation):
     """Same as input() but check if user key in a correct input,
