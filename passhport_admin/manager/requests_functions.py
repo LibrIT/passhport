@@ -15,12 +15,7 @@ from . import target as target
 from . import usergroup as usergroup
 from . import targetgroup as targetgroup
 
-<<<<<<< HEAD
-url_passhport = "https://127.0.0.1:5000/"
-AUTO_DEPLOY_SSH_KEY = True
-=======
 from config import url_passhport
->>>>>>> 65f5c2620cb2d563d03e9a2ae79921b212f4c19a
 
 def ask_confirmation(prompt_confirmation):
     """Same as input() but check if user key in a correct input,
