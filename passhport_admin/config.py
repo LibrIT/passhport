@@ -8,4 +8,4 @@ from __future__ import unicode_literals
 
 import os
 
-url_passhport = "http://172.16.0.1:5000/"
+url_passhport = "http://127.0.0.1:5000/"
