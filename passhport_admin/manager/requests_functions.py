@@ -39,7 +39,6 @@ def ask_confirmation(prompt_confirmation):
 def get(url):
     """Send the GET request to the server and print a result"""
     try:
-        print(url + " " + config.certificate_path)
         r = requests.get(url, verify=config.certificate_path)
     except requests.RequestException as e:
         print("ERROR: " + str(e.message))

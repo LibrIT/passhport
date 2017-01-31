@@ -8,5 +8,5 @@ from __future__ import unicode_literals
 
 import os
 
-url_passhport = "https://127.0.0.1:5000/"
+url_passhport = "https://localhost:5000/"
 certificate_path = "/home/passhport/certs/cert.pem"
