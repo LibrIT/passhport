@@ -39,7 +39,8 @@ def ask_confirmation(prompt_confirmation):
 def get(url):
     """Send the GET request to the server and print a result"""
     try:
-        r = requests.get(url)
+        print(url + " " + config.certificate_path)
+        r = requests.get(url, verify=config.certificate_path)
     except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
@@ -80,7 +81,7 @@ def delete(obj, param):
     if show(obj, {"<name>": param["<name>"]}) == 0:
         if "-f" in param or "--force" in param:
             return get(config.url_passhport + obj + "/delete/" + \
-/bin/bash: q : commande introuvable
+                       param["<name>"])
         else:
             confirmed = ask_confirmation(
                 "Are you sure you want to delete " + \
@@ -98,7 +99,7 @@ def delete(obj, param):
 def post(url, data):
     """Send the POST request to the server and print a result"""
     try:
-        r = requests.post(url, data = data)
+        r = requests.post(url, data = data, verify=config.certificate_path)
     except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
