@@ -27,7 +27,7 @@ PASSHPORT_PATH= os.environ["HOME"] + "/passhport/passhport/passhport"
 PYTHON_PATH= os.environ["HOME"] + "/passhport-run-env/bin/python3"
 
 """ Server configuration """
-HOST = '127.0.0.1'
+HOST = '0.0.0.0'
 
 
 """ SSL Configuration """
