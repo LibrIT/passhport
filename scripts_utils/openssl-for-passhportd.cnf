@@ -1,0 +1,13 @@
+[ req ]
+distinguished_name	= req_distinguished_name
+req_extensions		= v3_req
+
+[v3_req]
+keyUsage		= digitalSignature, keyEncipherment
+subjectAltName		= @alternate_names
+
+[req_distinguished_name]
+
+[ alternate_names ]
+DNS.1 = 127.0.0.1
+DNS.2 = passhport
