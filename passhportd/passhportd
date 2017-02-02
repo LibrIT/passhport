@@ -21,6 +21,9 @@ if not os.path.exists(SQLALCHEMY_DATABASE_DIR):
     print("ERROR: Database connection failed")
 else:
     if SSL == False:
+        if HOST is not "127.0.0.1":
+            print("WARNING: Run unsecure mode (no SSL), force use of" + \
+                  " 127.0.0.1.")
         app.run()
     else:
         SSL_CONTEXT  = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
