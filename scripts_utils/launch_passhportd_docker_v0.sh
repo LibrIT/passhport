@@ -22,12 +22,12 @@ then
 	su - passhport -c "chmod 700 /home/passhport/certs"
 fi
 
-if [ ! -r "/home/passhport/certs/key.pem ]
+if [ ! -r "/home/passhport/certs/key.pem" ]
 then
 	openssl genrsa -out /home/passhport/certs/key.pem 4096
 fi
 
-if [ ! -r "/home/passhport/certs/cert.pem ]
+if [ ! -r "/home/passhport/certs/cert.pem" ]
 then
 	su - passhport -c "openssl req -new -key \"/home/passhport/certs/key.pem\" \
 				-config \"/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf\" \
