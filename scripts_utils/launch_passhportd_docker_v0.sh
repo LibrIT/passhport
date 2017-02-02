@@ -29,6 +29,8 @@ fi
 
 if [ ! -r "/home/passhport/certs/cert.pem" ]
 then
+	IP_GATEWAY=`/sbin/ip route|awk '/default/ { print $3 }'`
+	echo "DNS.3 = ${IP_GATEWAY}" >> "/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf" 
 	su - passhport -c "openssl req -new -key \"/home/passhport/certs/key.pem\" \
 				-config \"/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf\" \
 				-out \"/home/passhport/certs/cert.pem\" \
