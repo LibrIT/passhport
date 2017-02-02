@@ -24,7 +24,7 @@ fi
 
 if [ ! -r "/home/passhport/certs/key.pem" ]
 then
-	openssl genrsa -out /home/passhport/certs/key.pem 4096
+	su - passhport -c "openssl genrsa -out \"/home/passhport/certs/key.pem\" 4096"
 fi
 
 if [ ! -r "/home/passhport/certs/cert.pem" ]
