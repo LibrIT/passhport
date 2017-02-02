@@ -7,7 +7,6 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import os
-import ssl
 
 """Database (SQLite by default)"""
 basedir = os.path.expanduser("~")
