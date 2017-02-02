@@ -5,10 +5,12 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-import os
+import os,ssl
 from config import SQLALCHEMY_DATABASE_DIR
-from config import SSL_CONTEXT
+from config import SSL_CERTIFICAT
+from config import SSL_KEY
 from config import HOST
+from config import SSL
 
 
 """Server side using flask"""
@@ -18,7 +20,9 @@ from app import app
 if not os.path.exists(SQLALCHEMY_DATABASE_DIR):
     print("ERROR: Database connection failed")
 else:
-    if SSL_CONTEXT == False:
+    if SSL == False:
         app.run()
     else:
+        SSL_CONTEXT  = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        SSL_CONTEXT.load_cert_chain(SSL_CERTIFICAT, SSL_KEY)
         app.run(host = HOST, ssl_context = SSL_CONTEXT)

@@ -7,7 +7,6 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import os
-import ssl
 
 """Database (SQLite by default)"""
 basedir = os.path.expanduser("~")
@@ -31,10 +30,8 @@ HOST = '127.0.0.1'
 
 
 """ SSL Configuration """
-SSL_CONTEXT    = False
+SSL            = False
 SSL_CERTIFICAT = os.environ["HOME"] + "/certs/cert.pem"
 SSL_KEY        = os.environ["HOME"] + "/certs/key.pem"
-SSL_CONTEXT    = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-SSL_CONTEXT.load_cert_chain(SSL_CERTIFICAT, SSL_KEY)
 
 
