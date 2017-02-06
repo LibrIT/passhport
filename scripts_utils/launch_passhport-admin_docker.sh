@@ -1,8 +1,6 @@
 #!/bin/bash -e
 VIRTUAL_ENV_PYTHON="$1"
 
-LIST_OF_ARGS=
-
 if [ ! -e "/home/passhport/certs" ]
 then
 	echo "Certificate directory does not exist, please install certificates (/home/passhport/certs should exist, did you share it correctly ?) !"
@@ -32,5 +30,7 @@ fi
 
 shift
 
+LIST_OF_ARGS=$@
+
 # Launch the passhportd in the virtualenv
-su - passhport -c "\"${VIRTUAL_ENV_PYTHON}\" /home/passhport/passhport/passhport_admin/passhport-admin $@"
+su - passhport -c "\"${VIRTUAL_ENV_PYTHON}\" /home/passhport/passhport/passhport_admin/passhport-admin ${LIST_OF_ARGS}"
