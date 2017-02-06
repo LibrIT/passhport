@@ -54,7 +54,7 @@ then
 				-config \"/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf\" \
 				-out \"/home/passhport/certs/cert.pem\" \
 				-subj '/C=FR/ST=Ile De France/L=Ivry sur Seine/O=LibrIT/OU=DSI/CN=${PASSHPORTD_HOSTNAME}' \
-				-x509 -days 365 \
+				-x509 -days 365 -sha256\
 				-extensions v3_req"
 fi
 

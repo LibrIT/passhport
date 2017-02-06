@@ -1,13 +1,14 @@
-[CA]
-basicConstraints=CA:TRUE
-
-[ req ]
+[req]
 distinguished_name	= req_distinguished_name
 req_extensions		= v3_req
+subjectKeyIdentifier	= hash
+authorityKeyIdentifier	= keyid:always,issuer
 
 [v3_req]
-keyUsage		= digitalSignature, keyEncipherment
 subjectAltName		= @alternate_names
+basicConstraints	= CA:TRUE
+subjectKeyIdentifier	= hash
+authorityKeyIdentifier	= keyid:always,issuer
 
 [req_distinguished_name]
 
