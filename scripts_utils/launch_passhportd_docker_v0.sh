@@ -21,7 +21,11 @@ fi
 if [ ! -e "/home/passhport/var/app.db" ]
 then
 	echo "Passhportd database does not exist. Creating database…"
-	su - passhport -c "mkdir /home/passhport/var &>/dev/null"
+	if [ ! -e "/home/passhport/var" ]
+	then
+		su - passhport -c "mkdir \"/home/passhport/var\""
+	fi
+	chown -R passhport:passhport "/home/passhport/var"
 	su - passhport -c "\"${VIRTUAL_ENV_PYTHON}\" /home/passhport/passhport/passhportd/db_create.py"
 fi
 
