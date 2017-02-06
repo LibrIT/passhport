@@ -1,3 +1,6 @@
+[CA]
+basicConstraints=CA:TRUE
+
 [ req ]
 distinguished_name	= req_distinguished_name
 req_extensions		= v3_req

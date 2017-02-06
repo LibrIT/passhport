@@ -37,7 +37,7 @@ then
 	IS_HOSTNAME_VALID=0
 	while [ ${IS_HOSTNAME_VALID} -eq 0 ]
 	do
-		echo "What will be the hostname of passhportd ?"
+		echo "What will be the hostname of passhportd ? (to generate a pseudo-valid certificat)"
 		read PASSHPORTD_HOSTNAME
 		echo "${PASSHPORTD_HOSTNAME}" | perl -pe 'exit 0 if /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/; exit 1'
 		if [ $? -eq 0 ]
