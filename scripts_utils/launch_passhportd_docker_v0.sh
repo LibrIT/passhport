@@ -18,21 +18,29 @@ then
 	su - passhport -c "/usr/bin/ssh-keygen -t ecdsa -b 521 -N \"\" -f \"/home/passhport/.ssh/id_ecdsa\""
 fi
 
-
+if [ ! -e "/home/passhport/var/app.db" ]
+then
+	echo "Passhportd database does not exist. Creating database…"
+	su - passhport -c "mkdir /home/passhport/var &>/dev/null"
+	su - passhport -c "\"${VIRTUAL_ENV_PYTHON}\" /home/passhport/passhport/passhportd/db_create.py"
+fi
 
 if [ ! -e "/home/passhport/certs" ]
 then
+	echo "Certification directory does not exist. Creating them…"
 	su - passhport -c "mkdir /home/passhport/certs"
 	su - passhport -c "chmod 700 /home/passhport/certs"
 fi
 
 if [ ! -r "/home/passhport/certs/key.pem" ]
 then
+	echo "Generating passhportd web API key…"
 	su - passhport -c "openssl genrsa -out \"/home/passhport/certs/key.pem\" 4096"
 fi
 
 if [ ! -r "/home/passhport/certs/cert.pem" ]
 then
+	echo "Creating passhportd web API certificate…"
 	# Certificat generation assistant
 	IS_HOSTNAME_VALID=0
 	while [ ${IS_HOSTNAME_VALID} -eq 0 ]
