@@ -27,7 +27,7 @@ else
 	PASSHPORTD_HOSTNAME=`openssl x509 -in /home/passhport/certs/cert.pem -noout -text | grep -e "Subject:.*CN=" | perl -l -p -e 's/.*CN=([^,\s]+)[,\s]*.*$/\1/'`
 	IP_GATEWAY=`/sbin/ip route|awk '/default/ { print $3 }'`
 	echo "${IP_GATEWAY} ${PASSHPORTD_HOSTNAME}" >> /etc/hosts
-	su - passhport -c "sed -i -e 's#^url_passhport =.*#url_passhport = \"https://${IP_GATEWAY}:5000/\"#' /home/passhport/passhport/passhport_admin/config.py"
+	su - passhport -c "sed -i -e 's#^url_passhport =.*#url_passhport = \"https://${PASSHPORTD_HOSTNAME}:5000/\"#' /home/passhport/passhport/passhport_admin/config.py"
 fi
 
 shift
