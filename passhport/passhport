@@ -21,7 +21,7 @@ def get(url):
     """Send the GET request to the server and print a result.
        This is used to connect to passhportd, to check access"""
     try:
-        r = requests.get(url)
+        r = requests.get(url, verify='/home/passhport/certs/cert.pem')
     except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
@@ -92,7 +92,7 @@ if __name__ == '__main__':
     username = sys.argv[1]
     url_passhport = "http://127.0.0.1:5000/"
     target_list = get(url_passhport + "user" + "/accessible_targets/" + \
-                  username, verify='/home/passhport/certs/cert.pem').split("\n")
+                  username).split("\n")
     originalcmd = os.environ.get('SSH_ORIGINAL_COMMAND')
     choice = 0
  
