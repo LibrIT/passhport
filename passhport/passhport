@@ -92,7 +92,7 @@ if __name__ == '__main__':
     username = sys.argv[1]
     url_passhport = "http://127.0.0.1:5000/"
     target_list = get(url_passhport + "user" + "/accessible_targets/" + \
-                  username).split("\n")
+                  username, verify="/home/passhport/certs/cert.pem").split("\n")
     originalcmd = os.environ.get('SSH_ORIGINAL_COMMAND')
     choice = 0
  
