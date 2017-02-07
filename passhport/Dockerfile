@@ -15,6 +15,5 @@ RUN su - passhport -c "/home/passhport/passhport-run-env/bin/pip install pymysql
 RUN mkdir -p /var/log/passhport/; chown passhport:passhport /var/log/passhport/
 RUN mkdir -p /home/passhport/.ssh/; chown passhport:passhport /home/passhport/.ssh/
 RUN su - passhport -c "git clone http://github.org/raphux/passhport.git"
-RUN sed -ie 's#url_passhport =.*#url_passhport = "https://172.17.0.1:5000/"#' /home/passhport/passhport/passhport/passhport
-CMD ["/usr/sbin/sshd"]
+CMD ["/home/passhport/passhport/scripts_utils/launch_passhport_docker.sh"]
 EXPOSE 22
