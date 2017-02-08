@@ -70,6 +70,34 @@ def target_show(name):
         {"content-type": "text/plain; charset=utf-8"}
 
 
+@app.route("/target/port/<name>")
+def target_port(name):
+    """Return port related to a target"""
+    # Check for required fields
+    if not name:
+        return "ERROR: The name is required ", 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    target_data = target.Target.query.filter_by(name=name).first()
+
+    if target_data is None:
+        return 'ERROR: No target with the name "' + name + \
+            '" in the database.', 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    port = target_data.port
+
+    # If there is no port declared, we assume it's 22
+    if port is None:
+        print("No port set on " + name + ", 22 is used")
+        port = "22"
+    else:
+        port = str(port).replace(" ","")
+    
+    return port, 200, \
+        {"content-type": "text/plain; charset=utf-8"}
+
+
 @app.route("/target/login/<name>")
 def target_login(name):
     """Return login related to a target"""
@@ -156,6 +184,7 @@ def target_create():
     t = target.Target(
         name=name,
         hostname=hostname,
+        login=login,
         port=port,
         sshoptions=sshoptions,
         comment=comment)

@@ -21,7 +21,7 @@ def get(url):
     """Send the GET request to the server and print a result.
        This is used to connect to passhportd, to check access"""
     try:
-        r = requests.get(url)
+        r = requests.get(url, verify="/home/passhport/certs/cert.pem")
     except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
@@ -48,6 +48,8 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd):
                           target + "-" + username
                 login = get(url_passhport + "target" + "/login/" +  
                         item_list[1])
+                port = get(url_passhport + "target" + "/port/" +  
+                        item_list[1])
                 sshoptions = get(url_passhport + "target" + "/sshoptions/" + \
                              item_list[1])
 
@@ -59,7 +61,7 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd):
                 if originalcmd: 
                     scp.connect(target, filelog, login, sshoptions, originalcmd)
                 else:
-                    ssh.connect(target, filelog, login, sshoptions)
+                    ssh.connect(target, filelog, login, port, sshoptions)
 
                 # Change password on the target
                 if PWD_RST_AFTER_SESSION:
@@ -90,7 +92,7 @@ def build_target_list(target_list, tabulations=0):
 ### MAIN ###
 if __name__ == '__main__':
     username = sys.argv[1]
-    url_passhport = "http://127.0.0.1:5000/"
+    url_passhport = "https://localhost:5000/"
     target_list = get(url_passhport + "user" + "/accessible_targets/" + \
                   username).split("\n")
     originalcmd = os.environ.get('SSH_ORIGINAL_COMMAND')
