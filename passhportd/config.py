@@ -30,7 +30,7 @@ HOST = '127.0.0.1'
 
 
 """ SSL Configuration """
-SSL            = False
+SSL            = True
 SSL_CERTIFICAT = os.environ["HOME"] + "/certs/cert.pem"
 SSL_KEY        = os.environ["HOME"] + "/certs/key.pem"
 
