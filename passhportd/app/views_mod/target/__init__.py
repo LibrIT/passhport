@@ -156,6 +156,7 @@ def target_create():
     t = target.Target(
         name=name,
         hostname=hostname,
+        login=login,
         port=port,
         sshoptions=sshoptions,
         comment=comment)
