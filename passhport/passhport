@@ -13,6 +13,10 @@ from connections_utils import ssh
 from connections_utils import scp
 from connections_utils import password
 
+#Set a default conf file if there is not on etc
+sys.path.insert(0, "/etc/passhport/")
+import passhportconf as conf
+
 SCRIPT_LOGS_PATH="/var/log/passhport"
 PWD_RST_AFTER_SESSION=False
 PWD_FILE_DIR="/home/passhport/.access_codes"
@@ -92,7 +96,8 @@ def build_target_list(target_list, tabulations=0):
 ### MAIN ###
 if __name__ == '__main__':
     username = sys.argv[1]
-    url_passhport = "https://localhost:5000/"
+    url_passhport = "http" + conf.SSL*"s" + "://" + conf.HOST + ":" + \
+                    conf.PORT + "/"
     target_list = get(url_passhport + "user" + "/accessible_targets/" + \
                   username).split("\n")
     originalcmd = os.environ.get('SSH_ORIGINAL_COMMAND')
