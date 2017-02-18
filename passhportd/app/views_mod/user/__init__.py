@@ -244,6 +244,9 @@ def user_edit():
     # Let's modify only relevent fields
     # Strangely the order is important, have to investigate why
     if new_comment:
+        # This specific string allows admins to remove old comments of the user
+        if new_comment == "PASSHPORTREMOVECOMMENT":
+            new_comment = ""
         to_update.update({"comment": new_comment})
 
     if new_sshkey:
@@ -258,7 +261,8 @@ def user_edit():
 
         if new_sshkey != query_check.sshkey:
             # Edit the SSH key in the file authorized_keys
-            result = update_authorized_keys(name, query_check.sshkey, new_name, new_sshkey)
+            result = update_authorized_keys(name, query_check.sshkey, \
+                     new_name, new_sshkey)
             if result != "OK":
                 return result
        
@@ -276,7 +280,8 @@ def user_edit():
         
         if new_name != name:
             # Edit the SSH key in the file authorized_keys
-            result = update_authorized_keys(name, query_check.sshkey, new_name, new_sshkey)
+            result = update_authorized_keys(name, query_check.sshkey, \
+                     new_name, new_sshkey)
             if result != "OK":
                 return result
 

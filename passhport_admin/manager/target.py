@@ -87,6 +87,10 @@ def prompt_edit(req):
         new_port = ask_port("New port: ")
         new_sshoptions = input("New SSH options: ")
         new_comment = input("New comment: ")
+        if len(new_comment.strip()) == 0:
+            answer = input("Remove original comment? [y/N]")
+            if answer == "y":
+                new_comment = "PASSHPORTREMOVECOMMENT"
 
     return {"<name>": name,
             "--newname": new_name,
