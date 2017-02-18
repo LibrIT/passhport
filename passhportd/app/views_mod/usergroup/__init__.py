@@ -145,6 +145,9 @@ def usergroup_edit():
     # Let's modify only relevent fields
     # Strangely the order is important, have to investigate why
     if new_comment:
+        # This specific string allows admins to remove old comments
+        if new_comment == "PASSHPORTREMOVECOMMENT":
+            new_comment = ""
         to_update.update({"comment": new_comment})
     if new_name:
         # Check unicity for name
