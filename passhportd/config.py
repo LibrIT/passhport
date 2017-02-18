@@ -25,7 +25,6 @@ SQLALCHEMY_DATABASE_URI = conf.get("Database", \
                                 "SQLALCHEMY_DATABASE_URI")
 SQLALCHEMY_MIGRATE_REPO = conf.get("Database", \
                                 "SQLALCHEMY_MIGRATE_REPO")
-
 """ SSH Keyfile """
 SSH_KEY_FILE = conf.get("Environment", "SSH_KEY_FILE")
 
