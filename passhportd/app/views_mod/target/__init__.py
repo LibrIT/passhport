@@ -9,6 +9,7 @@ from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 from app import app, db
 from app.models_mod import user, target, usergroup
+import os
 
 from .. import utilities as utils
 
@@ -45,6 +46,57 @@ def target_search(pattern):
 
     if not result:
         return 'No target matching the pattern "' + pattern + \
+            '" found.', 200, {"content-type": "text/plain; charset=utf-8"}
+
+    return "\n".join(result), 200, \
+        {"content-type": "text/plain; charset=utf-8"}
+
+
+@app.route("/target/checkaccess/<pattern>")
+def target_checkaccess(pattern):
+    """Check SSH connection for each target with a name or hostname that 
+       match the pattern. And return the result for each target"""
+    result = []
+    query  = db.session.query(target.Target) \
+        .filter(target.Target.hostname.like("%" + pattern + "%") | \
+        target.Target.name.like("%" + pattern + "%")) \
+        .order_by(target.Target.name).all()
+
+    for targetobj in query:
+        hostname = targetobj.hostname
+        login = targetobj.login
+        port = targetobj.port
+        sshoptions = targetobj.sshoptions
+        #Check minimal infos
+        if hostname:
+            if not login:
+                login = "root"
+            if not port:
+                port = 22
+            if not sshoptions:
+                sshoptions = ""
+            # Need to trick ssh: we don't want to check fingerprints
+            # neither to interfer with the local fingerprints file
+            sshcommand = "ssh -p" + str(port) + \
+                    " " + login + "@" + hostname + \
+                    " " + sshoptions + " " \
+                    "-o PasswordAuthentication=no " + \
+                    "-o UserKnownHostsFile=/dev/null " + \
+                    "-o StrictHostKeyChecking=no " + \
+                    "-o ConnectTimeout=10 " + \
+                    "echo OK"
+
+            # Try to connect and get the result
+            if os.system(sshcommand) == 0:
+                result.append("OK:   " + hostname + "\t" + \
+                        targetobj.name)
+            else:
+                result.append("ERROR:" + hostname + "\t" + \
+                        targetobj.name + "\tError with this ssh command: " + \
+                        sshcommand)
+
+    if not result:
+        return 'No target hostname matching the pattern "' + pattern + \
             '" found.', 200, {"content-type": "text/plain; charset=utf-8"}
 
     return "\n".join(result), 200, \
