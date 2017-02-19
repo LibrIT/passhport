@@ -64,6 +64,14 @@ def search(obj, param):
     return get(config.url_passhport + obj + "/search/" + param["<pattern>"])
 
 
+def checkaccess(obj, param):
+    """Check access to the target with a name or hostname with this pattern"""
+    if isinstance(param["<pattern>"], bytes):
+        param["<pattern>"] = param["<pattern>"].decode("utf8")
+
+    return get(config.url_passhport + obj + "/checkaccess/" + param["<pattern>"])
+
+
 def show(obj, param):
     """Get data of the given object"""
     if isinstance(param["<name>"], bytes):
