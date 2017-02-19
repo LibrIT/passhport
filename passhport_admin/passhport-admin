@@ -64,8 +64,8 @@ Arguments:
     targetgroupname     The name of the targetgroup.
     subtargetgroupname  The name of the subtargetgroup.
     comment             A comment about the object.
-    pattern             A SQL search pattern. In checkaccess, can be hostname \
-or targetname
+    pattern             A SQL search pattern. For checkaccess, can be \
+hostname or targetname
     sshkey              The SSH key used to authenticate the user.
     hostname            The name of the server of the target.
     login               Login used to log on the target.

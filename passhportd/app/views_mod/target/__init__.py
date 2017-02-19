@@ -75,9 +75,8 @@ def target_checkaccess(pattern):
                 port = 22
             if not sshoptions:
                 sshoptions = ""
-            #Try to connect and get the result
             # Need to trick ssh: we don't want to check fingerprints
-            # neither to interfer with the local file
+            # neither to interfer with the local fingerprints file
             sshcommand = "ssh -p" + str(port) + \
                     " " + login + "@" + hostname + \
                     " " + sshoptions + " " \
@@ -86,7 +85,8 @@ def target_checkaccess(pattern):
                     "-o StrictHostKeyChecking=no " + \
                     "-o ConnectTimeout=10 " + \
                     "echo OK"
-            print(sshcommand)
+
+            # Try to connect and get the result
             if os.system(sshcommand) == 0:
                 result.append("OK:   " + hostname + "\t" + \
                         targetobj.name)
