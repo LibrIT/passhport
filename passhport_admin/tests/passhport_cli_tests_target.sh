@@ -4,18 +4,19 @@
 # basic functions
 
 #GENERAL
-PADM="./passhport-admin"
+PADM="/home/passhport/passhport-run-env/bin/python3 ./passhport-admin"
 
 #################
 # USER MANAGEMENT
 #################
 #Variables
 CMD="${PADM} target"
+LOGIN="MyLogin"
 TARGETNAME="Mytarget"
 HOSTNAME="Myhostname"
 SSHOPTIONS="-x"
 PORT="2222"
-COMMENT="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed neque eget velit ultrices rhoncus nec at tellus. Sed efficitur lobortis erat, at faucibus sapien porttitor porta. Sed cursus, orci et ullamcorper rutrum, libero sapien ornare justo, at pellentesque eros magna sit amet risus. Nam consectetur cursus rutrum. Duis pretium nibh eu est condimentum, vitae ultrices felis suscipit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut tristique posuere tempus. Suspendisse potenti. Curabitur dapibus leo erat, vitae vestibulum risus fermentum id. Donec semper ex augue, non hendrerit neque lacinia a."
+COMMENT="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed neque eget velit ultrices rhoncus nec at tellus. Sed efficitur lobortis erat, at faucibus sapien porttitor porta. Sed cursus, orci et ullamcorper rutrum, libero sapien ornare justo, at pellentesque eros magna sit amet risus. Nam consectetur cursus rutrum. Duis pretium nibh eu est condimentum, vitae ultrices felis suscipit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
 SSHKEY="ssh-rsa AAAAB3NzaC1yc2TAAAADAQABAAABAQCoeJeOHb++y3dx6sv26/wHbWyX5sbtwKbabCovD3BUchUG3548CaxAk1N03sOo+/QFq/CpOLG/BeJ+/oZfmVKeuqfok6ZkS2BdU+UJYEJCYU/HCPEgfU81nQcsxnVJYvhquHQO4yHpyC/vcbkiY6Wm2vBW1QyQILtvT0RNybDGuvwsvG95Zk6oy2Kuja6giPA1Mu8YwOKK9MDGkaJCw9dMZKy2r5rpBe9XaZZfgz2Ll0jUmvLL41jk/y60o8blpP1coQw2QcGcLozCJLGyXZUJI9a6tvyLij56BLh7+G4Ji7jjV7CAGn5cwbvNKiqIgUTVJDavV4JbjnRbjZhm+oB5 ${USERNAME}"
 
 #Tests
@@ -56,13 +57,13 @@ echo "[target] edit    1/2: " ${r/1/ERROR}
 
 # DELETE 1/2
 PATTERN="ERROR: No target with the name \"${TARGETNAME}\" in the database."
-${CMD} delete -f ${TARGETNAME} | grep "${PATTERN}"  &> /dev/null
+${CMD} delete -f ${TARGETNAME}  | grep "${PATTERN}" &> /dev/null
 r=${?/0/OK}
 echo "[target] delete  1/2: " ${r/1/ERROR}
 
 # CREATE 1/2
 PATTERN="OK: \"${TARGETNAME}\" -> created"
-${CMD} create ${TARGETNAME} ${HOSTNAME}  --comment="${COMMENT}" --sshoptions="${SSHOPTIONS}" --port="${PORT}" | grep "${PATTERN}"  &> /dev/null
+${CMD} create ${TARGETNAME} ${HOSTNAME}  --comment="${COMMENT}" --login="${LOGIN}" --sshoptions="${SSHOPTIONS}" --port="${PORT}" | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
 echo "[target] create  1/2: " ${r/1/ERROR}
 
@@ -79,27 +80,29 @@ r=${?/0/OK}
 echo "[target] search  2/2: " ${r/1/ERROR}
 
 # SHOW 2/2
-PATTERN="Name: ${USERNAME}
-SSH key: ${SSHKEY}
+PATTERN="Name: ${TARGETNAME}
+Hostname: ${HOSTNAME}
+Login: ${LOGIN}
 Port: ${PORT}
-SSH options: ${SSHOPTIONS}
+SSH options: ${OPTIONS}
 Comment: ${COMMENT}
-User list:
-Usergroup list:"
-${CMD} show ${TARGETNAME} | grep "${PATTERN}" | wc -l | grep 7 &> /dev/null
+Attached users:
+Usergroup list:
+Users who can access this target:
+All usergroups:
+Member of the following targetgroups:"
+${CMD} show ${TARGETNAME} | head -7 | grep "${PATTERN}" | wc -l | grep 7 &> /dev/null
 r=${?/0/OK}
-echo "[target] show   2/2: " ${r/1/ERROR}
-
-# ADDUSER 1/2
+echo "[target] show    2/2: " ${r/1/ERROR}
 
 # EDIT 2/2
-PATTERN="OK: \"${USERNAME}\" -> edited" 
-${CMD} edit ${USERNAME} --newname=new_${USERNAME} --newcomment="${COMMENT}" --newsshkey="${SSHKEY}" | grep "${PATTERN}" &> /dev/null
+PATTERN="OK: \"${TARGETNAME}\" -> edited" 
+${CMD} edit ${TARGETNAME} --newname=new_${TARGETNAME} --newcomment="new_${COMMENT}" | grep "${PATTERN}" &> /dev/null
 r=${?/0/OK}
-echo "[user] edit   2/2: " ${r/1/ERROR}
+echo "[target] edit    2/2: " ${r/1/ERROR}
 
 # DEL 2/2
-PATTERN="OK: \"new_${USERNAME}\" -> deleted"
-${CMD} delete new_${USERNAME} | grep "${PATTERN}"  &> /dev/null
+PATTERN="OK: \"new_${TARGETNAME}\" -> deleted"
+${CMD} delete new_${TARGETNAME} -f | grep "${PATTERN}"  &> /dev/null
 r=${?/0/OK}
-echo "[user] del    2/2: " ${r/1/ERROR}
+echo "[target] del     2/2: " ${r/1/ERROR}

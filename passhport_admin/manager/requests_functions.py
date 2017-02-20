@@ -64,6 +64,14 @@ def search(obj, param):
     return get(config.url_passhport + obj + "/search/" + param["<pattern>"])
 
 
+def checkaccess(obj, param):
+    """Check access to the target with a name or hostname with this pattern"""
+    if isinstance(param["<pattern>"], bytes):
+        param["<pattern>"] = param["<pattern>"].decode("utf8")
+
+    return get(config.url_passhport + obj + "/checkaccess/" + param["<pattern>"])
+
+
 def show(obj, param):
     """Get data of the given object"""
     if isinstance(param["<name>"], bytes):
@@ -106,6 +114,7 @@ def post(url, data):
 
         if r.status_code == requests.codes.ok:
             # Copy sshkey on new targets
+            AUTO_DEPLOY_SSHKEY = False
             if re.findall("\/target\/create", url) and AUTO_DEPLOY_SSHKEY:
                 print("Trying to deploy sshkey")
             return 0

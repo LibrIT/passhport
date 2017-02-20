@@ -36,6 +36,10 @@ def prompt_edit(req):
         new_name = input("New name: ")
         new_sshkey = input("New SSH key: ")
         new_comment = input("New comment: ")
+        if len(new_comment.strip()) == 0:
+            answer = input("Remove original comment? [y/N]")
+            if answer == "y":
+                new_comment = "PASSHPORTREMOVECOMMENT"
 
         return {"<name>": name,
                 "--newname": new_name,

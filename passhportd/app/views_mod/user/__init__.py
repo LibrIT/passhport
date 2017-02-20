@@ -162,6 +162,55 @@ def user_create():
         {"content-type": "text/plain; charset=utf-8"}
 
 
+def update_authorized_keys(orig_name, orig_sshkey, new_name, new_sshkey):
+    """Edit the ssh autorized_keys file"""
+    warning = "OK"
+    if not new_name:
+        new_name = orig_name
+    if not new_sshkey:
+        new_sshkey = orig_sshkey
+    # Line supposed to be in the authorized_file
+    authorized_keys_line = 'command="' + config.PYTHON_PATH + \
+                           " " + config.PASSHPORT_PATH + \
+                           " " + orig_name + '" ' + orig_sshkey + "\n"
+
+    # Edit the SSH key in the file authorized_keys
+    try:
+        with open(config.SSH_KEY_FILE, "r+", encoding="utf8") as \
+                  authorized_keys_file:
+            line_edited = False
+            content = authorized_keys_file.readlines()
+            authorized_keys_file.seek(0)
+
+            for line in content:
+                if not line_edited:
+                    if line != authorized_keys_line:
+                        authorized_keys_file.write(line)
+                    else:
+                        authorized_keys_file.write(
+                                'command="' + config.PYTHON_PATH + \
+                                " " + config.PASSHPORT_PATH + \
+                                " " + new_name + '" ' + new_sshkey + "\n")
+                        line_edited = True
+                else:
+                    if line == authorized_keys_line:
+                        warning = ("WARNING: There is more " + \
+                                   "than one line with this name and sshkey " + \
+                                   origname + " - " + orig_sshkey + \
+                                   ", probably added manually. " + \
+                                   "You should edit it manually")
+
+                        authorized_keys_file.write(line)
+
+                authorized_keys_file.truncate()
+           
+    except IOError:
+        warning = 'ERROR: cannot write in the file "authorized_keys"', \
+                  500, {"content-type": "text/plain; charset=utf-8"}
+
+    return warning
+
+
 @app.route("/user/edit", methods=["POST"])
 def user_edit():
     """Edit a user in the database"""
@@ -195,6 +244,9 @@ def user_edit():
     # Let's modify only relevent fields
     # Strangely the order is important, have to investigate why
     if new_comment:
+        # This specific string allows admins to remove old comments of the user
+        if new_comment == "PASSHPORTREMOVECOMMENT":
+            new_comment = ""
         to_update.update({"comment": new_comment})
 
     if new_sshkey:
@@ -209,42 +261,11 @@ def user_edit():
 
         if new_sshkey != query_check.sshkey:
             # Edit the SSH key in the file authorized_keys
-            try:
-                with open(config.SSH_KEY_FILE, "r+", encoding="utf8") as \
-                    authorized_keys_file:
-                    line_edited = False
-                    content = authorized_keys_file.readlines()
-                    authorized_keys_file.seek(0)
-
-                    for line in content:
-                        if not line_edited:
-                            if line != ('command="' + config.PYTHON_PATH + \
-                            " " + config.PASSHPORT_PATH + \
-                            " " + name + '" ' + query_check.sshkey + "\n"):
-                                authorized_keys_file.write(line)
-                            else:
-                                authorized_keys_file.write(
-                                'command="' + config.PYTHON_PATH + \
-                                " " + config.PASSHPORT_PATH + \
-                                " " + new_name + '" ' + new_sshkey + "\n")
-                                line_edited = True
-                        else:
-                            if line == ('command="' + config.PYTHON_PATH + \
-                            " " + config.PASSHPORT_PATH + \
-                            " " + name + '" ' + query_check.sshkey + "\n"):
-                                warning = ("WARNING: There is more " + \
-                                "than one line with the sshkey " + \
-                                query_check.sshkey + \
-                                ", probably added manually. " + \
-                                "You should edit it manually")
-
-                            authorized_keys_file.write(line)
-
-                    authorized_keys_file.truncate()
-            except IOError:
-                return 'ERROR: cannot write in the file "authorized_keys"', \
-                500, {"content-type": "text/plain; charset=utf-8"}
-
+            result = update_authorized_keys(name, query_check.sshkey, \
+                     new_name, new_sshkey)
+            if result != "OK":
+                return result
+       
         to_update.update({"sshkey": new_sshkey})
 
     if new_name:
@@ -256,6 +277,13 @@ def user_edit():
             return 'ERROR: The name "' + new_name + \
                 '" is already used by another user ', 417, \
                 {"content-type": "text/plain; charset=utf-8"}
+        
+        if new_name != name:
+            # Edit the SSH key in the file authorized_keys
+            result = update_authorized_keys(name, query_check.sshkey, \
+                     new_name, new_sshkey)
+            if result != "OK":
+                return result
 
         to_update.update({"name": new_name})
 
@@ -286,6 +314,10 @@ def user_delete(name):
         return 'ERROR: No user with the name "' + name + \
             '" in the database.', 417, \
             {"content-type": "text/plain; charset=utf-8"}
+            
+    authorized_key_line = 'command="' + config.PYTHON_PATH + \
+                          " " + config.PASSHPORT_PATH + \
+                          " " + name + '" ' + query.sshkey + "\n"
 
     # Delete the SSH key from the file authorized_keys
     warning = ""
@@ -298,16 +330,12 @@ def user_delete(name):
 
             for line in content:
                 if not line_deleted:
-                    if line != ('command="' + config.PYTHON_PATH + \
-                    " " + config.PASSHPORT_PATH + \
-                    " " + name + '" ' + query.sshkey + "\n"):
+                    if line != authorized_key_line:
                         authorized_keys_file.write(line)
                     else:
                         line_deleted = True
                 else:
-                    if line == ('command="' + config.PYTHON_PATH + \
-                    " " + config.PASSHPORT_PATH + \
-                    " " + name + '" ' + query.sshkey + "\n"):
+                    if line == authorized_key_line:
                         warning = ("\nWARNING: There is more than one line "
                             "with the sshkey " + query.sshkey + ", probably "
                             "added manually. You should delete it manually")

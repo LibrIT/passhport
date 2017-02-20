@@ -9,6 +9,7 @@ from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 from app import app, db
 from app.models_mod import user, target, usergroup
+import os
 
 from .. import utilities as utils
 
@@ -51,6 +52,57 @@ def target_search(pattern):
         {"content-type": "text/plain; charset=utf-8"}
 
 
+@app.route("/target/checkaccess/<pattern>")
+def target_checkaccess(pattern):
+    """Check SSH connection for each target with a name or hostname that 
+       match the pattern. And return the result for each target"""
+    result = []
+    query  = db.session.query(target.Target) \
+        .filter(target.Target.hostname.like("%" + pattern + "%") | \
+        target.Target.name.like("%" + pattern + "%")) \
+        .order_by(target.Target.name).all()
+
+    for targetobj in query:
+        hostname = targetobj.hostname
+        login = targetobj.login
+        port = targetobj.port
+        sshoptions = targetobj.sshoptions
+        #Check minimal infos
+        if hostname:
+            if not login:
+                login = "root"
+            if not port:
+                port = 22
+            if not sshoptions:
+                sshoptions = ""
+            # Need to trick ssh: we don't want to check fingerprints
+            # neither to interfer with the local fingerprints file
+            sshcommand = "ssh -p" + str(port) + \
+                    " " + login + "@" + hostname + \
+                    " " + sshoptions + " " \
+                    "-o PasswordAuthentication=no " + \
+                    "-o UserKnownHostsFile=/dev/null " + \
+                    "-o StrictHostKeyChecking=no " + \
+                    "-o ConnectTimeout=10 " + \
+                    "echo OK"
+
+            # Try to connect and get the result
+            if os.system(sshcommand) == 0:
+                result.append("OK:   " + hostname + "\t" + \
+                        targetobj.name)
+            else:
+                result.append("ERROR:" + hostname + "\t" + \
+                        targetobj.name + "\tError with this ssh command: " + \
+                        sshcommand)
+
+    if not result:
+        return 'No target hostname matching the pattern "' + pattern + \
+            '" found.', 200, {"content-type": "text/plain; charset=utf-8"}
+
+    return "\n".join(result), 200, \
+        {"content-type": "text/plain; charset=utf-8"}
+
+
 @app.route("/target/show/<name>")
 def target_show(name):
     """Return all data about a target"""
@@ -67,6 +119,34 @@ def target_show(name):
             {"content-type": "text/plain; charset=utf-8"}
 
     return str(target_data), 200, \
+        {"content-type": "text/plain; charset=utf-8"}
+
+
+@app.route("/target/port/<name>")
+def target_port(name):
+    """Return port related to a target"""
+    # Check for required fields
+    if not name:
+        return "ERROR: The name is required ", 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    target_data = target.Target.query.filter_by(name=name).first()
+
+    if target_data is None:
+        return 'ERROR: No target with the name "' + name + \
+            '" in the database.', 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    port = target_data.port
+
+    # If there is no port declared, we assume it's 22
+    if port is None:
+        print("No port set on " + name + ", 22 is used")
+        port = "22"
+    else:
+        port = str(port).replace(" ","")
+    
+    return port, 200, \
         {"content-type": "text/plain; charset=utf-8"}
 
 
@@ -156,6 +236,7 @@ def target_create():
     t = target.Target(
         name=name,
         hostname=hostname,
+        login=login,
         port=port,
         sshoptions=sshoptions,
         comment=comment)
@@ -213,6 +294,9 @@ def target_edit():
         to_update.update({"sshoptions": new_sshoptions})
 
     if new_comment:
+        # This specific string allows admins to remove old comments
+        if new_comment == "PASSHPORTREMOVECOMMENT":
+            new_comment = ""
         to_update.update({"comment": new_comment})
 
     if new_port:

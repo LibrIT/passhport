@@ -8,8 +8,9 @@ from __future__ import unicode_literals
 
 import os
 
-def connect(target, filelog, login, sshoptions):
+def connect(target, filelog, login, port, sshoptions):
     """ Simply launch the ssh connection """
     os.system("script -q --timing=" + filelog + ".timing " + filelog + \
-              ' -c "ssh ' + login + '@' + target + ' ' + sshoptions +'"')
+              ' -c "ssh -p ' + str(port) + " " + login + '@' + target + ' ' + \
+               sshoptions + '"')
 

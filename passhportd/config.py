@@ -1,37 +1,43 @@
 # -*-coding:Utf-8 -*-
 
-"""Configuration file"""
+"""Configuration file reader"""
 
 # Compatibility 2.7-3.4
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-import os
+import os, sys, configparser
 
+# Reading configuration from /etc if possible else form the script directory
+conf = configparser.ConfigParser()
+if os.path.isfile("/etc/passhport/passhport.ini"):
+    conf.read("/etc/passhport/passhport.ini")
+else:
+    conf.read(sys.path[0] + "/passhport.ini")
+
+# Reading the configuration
 """Database (SQLite by default)"""
-basedir = os.path.expanduser("~")
-datadir = os.path.join(basedir, "var")
-
-SQLALCHEMY_TRACK_MODIFICATIONS = True
-
-SQLALCHEMY_DATABASE_DIR = datadir
-SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(datadir, "app.db")
-SQLALCHEMY_MIGRATE_REPO = os.path.join(datadir, "db_repository")
-
+SQLALCHEMY_TRACK_MODIFICATIONS = conf.getboolean("Database", \
+                                "SQLALCHEMY_TRACK_MODIFICATIONS")
+SQLALCHEMY_DATABASE_DIR = conf.get("Database", \
+                                "SQLALCHEMY_DATABASE_DIR")
+SQLALCHEMY_DATABASE_URI = conf.get("Database", \
+                                "SQLALCHEMY_DATABASE_URI")
+SQLALCHEMY_MIGRATE_REPO = conf.get("Database", \
+                                "SQLALCHEMY_MIGRATE_REPO")
 """ SSH Keyfile """
-SSH_KEY_FILE = os.environ["HOME"] + "/.ssh/authorized_keys"
+SSH_KEY_FILE = conf.get("Environment", "SSH_KEY_FILE")
 
 """ PaSSHport path """
-PASSHPORT_PATH= os.environ["HOME"] + "/passhport/passhport/passhport"
-PYTHON_PATH= os.environ["HOME"] + "/passhport-run-env/bin/python3"
+PASSHPORT_PATH = conf.get("Environment", "PASSHPORT_PATH")
+PYTHON_PATH = conf.get("Environment", "PYTHON_PATH")
 
 """ Server configuration """
-HOST = '0.0.0.0'
-
+HOST =  conf.get("Network", "HOST")
 
 """ SSL Configuration """
-SSL            = False
-SSL_CERTIFICAT = os.environ["HOME"] + "/certs/cert.pem"
-SSL_KEY        = os.environ["HOME"] + "/certs/key.pem"
+SSL            = conf.get("SSL", "SSL")
+SSL_CERTIFICAT = conf.get("SSL", "SSL_CERTIFICAT")
+SSL_KEY        = conf.get("SSL", "SSL_KEY")
 
 

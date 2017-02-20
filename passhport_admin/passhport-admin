@@ -16,6 +16,7 @@ Usage:
     passhport-admin user delete [([-f | --force] <name>)]
     passhport-admin target list
     passhport-admin target search [<pattern>]
+    passhport-admin target checkaccess [<pattern>]
     passhport-admin target show [<name>]
     passhport-admin target create [((<name> <hostname>) [--login=<login>] \
 [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]
@@ -63,7 +64,8 @@ Arguments:
     targetgroupname     The name of the targetgroup.
     subtargetgroupname  The name of the subtargetgroup.
     comment             A comment about the object.
-    pattern             A SQL search pattern.
+    pattern             A SQL search pattern. For checkaccess, can be \
+hostname or targetname
     sshkey              The SSH key used to authenticate the user.
     hostname            The name of the server of the target.
     login               Login used to log on the target.
@@ -208,6 +210,7 @@ Options:
 Usage:
     target list
     target search [<pattern>]
+    target checkaccess [<pattern>]
     target show [<name>]
     target create [((<name> <hostname>) [--login=<login>] \
 [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]
@@ -225,7 +228,7 @@ Arguments:
     targetname     The name of the target.
     usergroupname  The name of the usergroup.
     comment        A comment about the object.
-    pattern        A SQL search pattern.
+    pattern        A SQL search pattern. For checkaccess can be hostname or target name
     hostname       The name of the server of the target.
     login          Login used to log on the target.
     sshoptions     Options used to connect via ssh or scp.
@@ -250,6 +253,7 @@ with the target.
         commands = {
             "list",
             "search",
+            "checkaccess",
             "show",
             "create",
             "edit",
@@ -448,7 +452,7 @@ Options:
 def requests_object_method(opt):
     """Call the right method depending of the object type"""
     objects = {"user", "target", "usergroup", "targetgroup"}
-    methods = {"list", "search", "show", "delete", "create", "edit",
+    methods = {"list", "search", "checkaccess", "show", "delete", "create", "edit",
                "adduser", "rmuser", "addusergroup", "rmusergroup",
                "addtarget", "rmtarget", "addtargetgroup", "rmtargetgroup"}
     param = {}
