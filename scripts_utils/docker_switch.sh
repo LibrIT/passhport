@@ -2,6 +2,7 @@
 PYTHON_ENV=$1
 shift
 DOCKER_PASSHPORT_SWITCH=$1
+shift
 ARGS_LIST=$@
 case "${DOCKER_PASSHPORT_SWITCH}" in
 	passhportd)
