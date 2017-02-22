@@ -10,10 +10,11 @@ import os, sys, configparser
 
 # Reading configuration from /etc if possible else form the script directory
 conf = configparser.ConfigParser()
-if os.path.isfile("/etc/passhport/passhport.ini"):
-    conf.read("/etc/passhport/passhport.ini")
+conffile = "passhportd.ini"
+if os.path.isfile("/etc/passhport/" + conffile):
+    conf.read("/etc/passhport/" + conffile)
 else:
-    conf.read(sys.path[0] + "/passhport.ini")
+    conf.read(sys.path[0] + "/" + conffile)
 
 # Reading the configuration
 """Database (SQLite by default)"""
@@ -33,7 +34,7 @@ PASSHPORT_PATH = conf.get("Environment", "PASSHPORT_PATH")
 PYTHON_PATH = conf.get("Environment", "PYTHON_PATH")
 
 """ Server configuration """
-HOST =  conf.get("Network", "HOST")
+HOST =  conf.get("Network", "LISTENING_IP")
 
 """ SSL Configuration """
 SSL            = conf.get("SSL", "SSL")
