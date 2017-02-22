@@ -15,10 +15,11 @@ from connections_utils import password
 
 # Reading configuration from /etc if possible else form the script directory
 conf = configparser.ConfigParser()
-if os.path.isfile("/etc/passhport/passhport.ini"):
-    conf.read("/etc/passhport/passhport.ini")
+conffile = "passhport.ini"
+if os.path.isfile("/etc/passhport/" + conffile):
+    conf.read("/etc/passhport/" + conffile)
 else:
-    conf.read(sys.path[0] + "/passhport.ini")
+    conf.read(sys.path[0] + "/" + conffile)
 
 #TODO: put this in the code not as global
 SCRIPT_LOGS_PATH = conf.get("Environment", "SCRIPT_LOGS_PATH")
@@ -102,7 +103,7 @@ def build_target_list(target_list, tabulations=0):
 if __name__ == '__main__':
     username = sys.argv[1]
     url_passhport = "http" + conf.getboolean("SSL", "SSL")*"s" + \
-                    "://" + conf.get("Network", "HOST") + ":" + \
+                    "://" + conf.get("Network", "PASSHPORTD_HOSTNAME") + ":" + \
                     conf.get("Network", "PORT") + "/"
     target_list = get(url_passhport + "user" + "/accessible_targets/" + \
                   username).split("\n")

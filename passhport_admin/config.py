@@ -10,15 +10,16 @@ import os, sys, configparser
 
 # Reading configuration from /etc if possible else form the script directory
 conf = configparser.ConfigParser()
-if os.path.isfile("/etc/passhport/passhport.ini"):
-    conf.read("/etc/passhport/passhport.ini")
+conffile="passhport-admin.ini"
+if os.path.isfile("/etc/passhport/" + conffile):
+    conf.read("/etc/passhport/" + conffile)
 else:
-    conf.read(sys.path[0] + "/passhport.ini")
+    conf.read(sys.path[0] + "/" + conffile)
 
 
 """ Server configuration """
-HOST =  conf.get("Network", "HOST")
-PORT =  conf.get("Network", "PORT")
+HOST =  conf.get("Network", "PASSHPORTD_HOSTNAME")
+PORT =  conf.get("Network", "PASSHPORTD_PORT")
 
 """ SSL Configuration """
 SSL            = conf.getboolean("SSL", "SSL")
