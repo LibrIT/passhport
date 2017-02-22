@@ -28,6 +28,12 @@ def search(obj):
     return req.search(obj, {"<pattern>": pattern})
 
 
+def checkaccess(obj):
+    """Search a target and test the connectivity"""
+    pattern = input("Pattern: ")
+    return req.checkaccess(obj, {"<pattern>": pattern})
+
+
 def show(obj):
     """Ask arguments for showing the object"""
     name = input("Name: ")

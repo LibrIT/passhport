@@ -28,6 +28,20 @@ def ask_port(prompt_text):
     return port
 
 
+def checkaccess(param):
+    """Pattern to search targets and check access"""
+    pattern = ""
+
+    return{"<pattern>": param}
+
+
+def prompt_checkaccess():
+    """Prompt a pattern to search targets and check access"""
+    pattern = input("Pattern used to search the targets to test:")
+
+    return{"<pattern>": pattern}
+
+
 def prompt_create():
     """Prompt user to obtain data to create a target"""
     name = input("Name: ")
