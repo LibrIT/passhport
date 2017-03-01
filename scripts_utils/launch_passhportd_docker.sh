@@ -70,6 +70,8 @@ then
 				-extensions v3_req"
 fi
 
+/usr/sbin/sshd-keygen &>/dev/null
+/usr/sbin/sshd
 
 # Launch the passhportd in the virtualenv
 su - passhport -c "\"${VIRTUAL_ENV_PYTHON}\" /home/passhport/passhport/passhportd/passhportd"

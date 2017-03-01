@@ -14,18 +14,18 @@ then
 	echo "Also, don't forget to share the volume from passhportd docker :"
 	echo "- /home/passhport/certs"
 	echo "For example, launch passhportd docker like this : "
-	echo "$ docker run -t -i -v /var/tmp/dockerpasshportsshdir:/home/passhport/.ssh/ -v /var/tmp/dockerpasshportcerts/ -p 5000:5000 passhportd "
+	echo "$ docker run -t -i -v /var/tmp/dockerpasshportsshdir:/home/passhport/.ssh/ -v /var/tmp/dockerpasshportcerts/ -p 5000:5000 librit/passhport passhportd "
 	echo "it will generate certificates, and make them available for the passhport-admin docker."
 	echo ""
 	echo "Then launch passhport-admin docker with this share volume :"
-	echo "$ docker run -t -i -v /var/tmp/dockerpasshportcerts/:/home/passhport/certs"
+	echo "$ docker run -t -i -v /var/tmp/dockerpasshportcerts/:/home/passhport/certs librit/passhport passhport-admin"
 	exit 1
 else
 	# We get cert CN to put it into /etc/hosts
 	PASSHPORTD_HOSTNAME=`openssl x509 -in /home/passhport/certs/cert.pem -noout -text | grep -e "Subject:.*CN=" | perl -l -p -e 's/.*CN=([^,\s]+)[,\s]*.*$/\1/'`
 	IP_GATEWAY=`/sbin/ip route|awk '/default/ { print $3 }'`
 	echo "${IP_GATEWAY} ${PASSHPORTD_HOSTNAME}" >> /etc/hosts
-	su - passhport -c "sed -i -e 's#^url_passhport =.*#url_passhport = \"https://${PASSHPORTD_HOSTNAME}:5000/\"#' /home/passhport/passhport/passhport_admin/config.py"
+	sed -i -e "s#^PASSHPORTD_HOSTNAME =.*#PASSHPORTD_HOSTNAME = ${PASSHPORTD_HOSTNAME}#" /etc/passhport/passhport-admin.ini
 fi
 
 shift

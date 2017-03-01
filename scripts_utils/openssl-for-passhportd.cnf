@@ -14,4 +14,5 @@ authorityKeyIdentifier	= keyid:always,issuer
 
 [ alternate_names ]
 DNS.1 = 127.0.0.1
-DNS.2 = passhport
+DNS.2 = localhost
+DNS.3 = passhport
