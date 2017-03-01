@@ -104,7 +104,7 @@ echo '# Editing passhportd conf file…'
 echo '##############################################################'
 sed -i -e 's#SQLALCHEMY_DATABASE_DIR\s*=.*#SQLALCHEMY_DATABASE_DIR        = /var/lib/passhport/#' /etc/passhport/passhportd.ini
 sed -i -e 's#SQLALCHEMY_MIGRATE_REPO\s*=.*#SQLALCHEMY_MIGRATE_REPO        = /var/lib/passhport/db_repository#' /etc/passhport/passhportd.ini
-sed -i -e 's#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = sqlite:///var/lib/passhport/app.db#' /etc/pashport/passhportd.ini
+sed -i -e 's#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = sqlite:////var/lib/passhport/app.db#' /etc/passhport/passhportd.ini
 echo '##############################################################'
 echo '# Creating database for PaSSHport (SQLite)…'
 echo '##############################################################'
@@ -117,7 +117,7 @@ su - passhport -c "chmod 700 /home/passhport/certs"
 echo '##############################################################'
 echo '# Generating Web-API RSA key (4096b)'
 echo '##############################################################'
-su - passphort -c "openssl genrsa -out "/home/passhport/certs/key.pem" 4096"
+su - passhport -c "openssl genrsa -out "/home/passhport/certs/key.pem" 4096"
 echo '##############################################################'
 echo '# Generating Web-API certificate…'
 echo '##############################################################'
