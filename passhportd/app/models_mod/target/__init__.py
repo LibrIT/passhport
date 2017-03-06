@@ -55,6 +55,11 @@ class Target(db.Model):
     def show_hostname(self):
         """Return a string containing the target's hostname"""
         return self.hostname
+    
+
+    def show_comment(self):
+        """Return a string containing the target's comment"""
+        return self.comment
 
 
     # User management
