@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from builtins import input
 from datetime import datetime
+from tabulate import tabulate
 
 import os, sys, locale, requests, random, crypt, re, configparser
 
@@ -87,14 +88,22 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd):
 def build_target_list(target_list, tabulations=0):
     """Print the targets list in a readable listed numbered list format"""
     indexed_target_list = []
+    table = []
     number = 1
     for each_target in target_list:
         if not tabulations:
             indexed_target_list.append(str(number) + " " + each_target)
         else:
-            indexed_target_list.append(str(number) + " " + \
-                                each_target.replace(" "," \t\t"))
+            line=[]
+            line.append(str(number))
+            line.append(each_target.split(" ", 1)[0]) # target name
+            line.append(" ".join(each_target.split(" ")[1:2])) # target hostname
+            line.append(" ".join(each_target.split(" ")[2:])) # target comment
+            table.append(line)
         number = number + 1
+
+    if tabulations:
+        indexed_target_list = tabulate(table, tablefmt="plain")
 
     return indexed_target_list
 
@@ -134,8 +143,9 @@ if __name__ == '__main__':
         print("Welcome {}.".format(username))
         print("Here is the list of servers you can access:")
 
+
         # Print servers the user can access, with a blank line between each entry
-        print(*build_target_list(target_list, tabulations=1), sep='\n')
+        print(build_target_list(target_list, tabulations=1))#, sep='\n')
 
         # Let the use chose his server
         sys.stdout.write("Type the number, name or hostname of the server you want to connect to : ")

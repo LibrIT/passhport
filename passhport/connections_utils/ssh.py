@@ -11,6 +11,6 @@ import os
 def connect(target, filelog, login, port, sshoptions):
     """ Simply launch the ssh connection """
     os.system("script -q --timing=" + filelog + ".timing " + filelog + \
-              ' -c "ssh -p ' + str(port) + " " + login + '@' + target + ' ' + \
+              ' -c "ssh -t -p ' + str(port) + " " + login + '@' + target + ' ' + \
                sshoptions + '"')
 
