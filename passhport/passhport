@@ -8,7 +8,7 @@ from builtins import input
 from datetime import datetime
 from tabulate import tabulate
 
-import os, sys, locale, requests, random, crypt, re, configparser
+import os, sys, locale, requests, random, crypt, re, configparser, signal
 
 from connections_utils import ssh
 from connections_utils import scp
@@ -27,6 +27,12 @@ SCRIPT_LOGS_PATH = conf.get("Environment", "SCRIPT_LOGS_PATH")
 PWD_RST_AFTER_SESSION = conf.getboolean("RootPasswordRest", \
                                         "PWD_RST_AFTER_SESSION")
 PWD_FILE_DIR = conf.get("RootPasswordRest", "PWD_FILE_DIR")
+
+
+def signal_handler(signal, frame):
+        print("\nExiting at your own sweet will.")
+        sys.exit(0)
+
 
 def get(url):
     """Send the GET request to the server and print a result.
@@ -110,6 +116,8 @@ def build_target_list(target_list, tabulations=0):
 
 ### MAIN ###
 if __name__ == '__main__':
+    signal.signal(signal.SIGINT, signal_handler)
+
     username = sys.argv[1]
     url_passhport = "http" + conf.getboolean("SSL", "SSL")*"s" + \
                     "://" + conf.get("Network", "PASSHPORTD_HOSTNAME") + ":" + \

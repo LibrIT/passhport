@@ -46,13 +46,14 @@ def prompt_create():
     """Prompt user to obtain data to create a target"""
     name = input("Name: ")
     hostname = input("Hostname: ")
-    login = input("Login (default is root):")
+    login = input("Login (default is root): ")
     port = ask_port("Port: ")
     sshoptions = input("SSH Options: ")
     comment = input("Comment: ")
 
     return {"<name>": name,
         "<hostname>": hostname,
+        "--login": login,
         "--sshoptions": sshoptions,
         "--port": port,
         "--comment": comment}
