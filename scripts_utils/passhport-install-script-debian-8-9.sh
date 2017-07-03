@@ -75,7 +75,7 @@ su - passhport -c "/home/passhport/passhport-run-env/bin/pip install pymysql sql
 echo '##############################################################'
 echo '# Cloning passhport git from github'
 echo '##############################################################'
-su - passhport -c "git clone http://github.org/LibrIT/passhport.git"
+su - passhport -c "git clone https://github.com/LibrIT/passhport.git"
 echo '##############################################################'
 echo '# Creating "/var/log/passhport" log directory'
 echo '##############################################################'
