@@ -33,6 +33,28 @@ def target_list():
         {"content-type": "text/plain; charset=utf-8"}
 
 
+@app.route("/target/detaillist")
+def target_detaillist():
+    """Return the detailled targets list of database"""
+    result = []
+    query = db.session.query(
+        target.Target).order_by(
+        target.Target.name).all()
+    
+    result.append("{\n\"targets\": [")
+    for entry in query:
+        result.append( entry.simplejson() + "," )
+    result.append("]\n}")
+
+
+    if not result:
+        return "No target in database.", 200, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    return "\n".join(result), 200, \
+        {"content-type": "text/plain; charset=utf-8"}
+
+
 @app.route("/target/search/<pattern>")
 def target_search(pattern):
     """Return a list of targets that match the given pattern"""
