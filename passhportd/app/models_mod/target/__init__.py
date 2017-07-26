@@ -47,6 +47,20 @@ class Target(db.Model):
         return "\n".join(output)
 
 
+    def simplejson(self):
+        """Return a simplified data of the target as json but not all the data"""
+        output = "{\n"
+
+        output = output + "\"Name\": \"" + format(self.name) + "\",\n"
+        output = output + "\"Hostname\": \"" + format(self.hostname) + "\",\n"
+        output = output + "\"Login\": \"" + format(self.login) + "\",\n"
+        output = output + "\"Port\": \"" + format(self.port) + "\",\n"
+        output = output + "\"Comment\": \"" + format(self.comment) + "\"\n"
+        output = output + "}"
+
+        return output
+        
+
     def show_name(self):
         """Return a string containing the target's name"""
         return self.name
