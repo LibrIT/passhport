@@ -40,18 +40,23 @@ def target_detaillist():
     query = db.session.query(
         target.Target).order_by(
         target.Target.name).all()
-    
-    result.append("{\n\"targets\": [")
+    i = 0
+
+    result.append("[")
     for entry in query:
-        result.append( entry.simplejson() + "," )
-    result.append("]\n}")
+        if i == 0:
+            i = 1
+        else:
+            result.append(",\n")
+        result.append( entry.simplejson())
+    result.append("]")
 
 
     if not result:
         return "No target in database.", 200, \
             {"content-type": "text/plain; charset=utf-8"}
 
-    return "\n".join(result), 200, \
+    return "".join(result), 200, \
         {"content-type": "text/plain; charset=utf-8"}
 
 
