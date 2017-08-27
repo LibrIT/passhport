@@ -18,7 +18,7 @@ else:
 
 
 """ Server configuration """
-HOST =  conf.get("Network", "PASSHPORTD_HOSTNAME")
+HOST =  eval(conf.get("Network", 'PASSHPORTD_HOSTNAME'))
 PORT =  conf.get("Network", "PASSHPORTD_PORT")
 
 """ SSL Configuration """
