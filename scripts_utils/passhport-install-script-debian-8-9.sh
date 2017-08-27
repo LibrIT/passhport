@@ -43,6 +43,16 @@ do
 	read ANSWER
 done
 
+echo 'On which IP would you like passhport to listen to ?'
+echo 'IPs available :'
+IP_LIST=`ip a | grep -e "inet\s" | awk '{print $2}' | cut -d'/' -f1`
+for IP in ${IP_LIST}
+do
+	echo "${IP}"
+done
+
+echo -n "Please type the IP : "
+read CHOOSEN_IP
 
 echo '##############################################################'
 echo '# Updating repos…'
@@ -100,11 +110,14 @@ echo '##############################################################'
 mkdir -p /var/lib/passhport
 chown -R passhport:passhport /var/lib/passhport/
 echo '##############################################################'
-echo '# Editing passhportd conf file…'
+echo '# Editing PaSSHport conf files…'
 echo '##############################################################'
 sed -i -e 's#SQLALCHEMY_DATABASE_DIR\s*=.*#SQLALCHEMY_DATABASE_DIR        = /var/lib/passhport/#' /etc/passhport/passhportd.ini
+sed -i -e 's#LISTENING_IP\s*=.*#LISTENING_IP = 0.0.0.0#' /etc/passhport/passhportd.ini
 sed -i -e 's#SQLALCHEMY_MIGRATE_REPO\s*=.*#SQLALCHEMY_MIGRATE_REPO        = /var/lib/passhport/db_repository#' /etc/passhport/passhportd.ini
 sed -i -e 's#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = sqlite:////var/lib/passhport/app.db#' /etc/passhport/passhportd.ini
+sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = ${CHOOSEN_IP}#" /etc/passhport/passhport-admin.ini
+sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = ${CHOOSEN_IP}#" /etc/passhport/passhport.ini
 echo '##############################################################'
 echo '# Creating database for PaSSHport (SQLite)…'
 echo '##############################################################'
@@ -118,6 +131,10 @@ echo '##############################################################'
 echo '# Generating Web-API RSA key (4096b)'
 echo '##############################################################'
 su - passhport -c "openssl genrsa -out "/home/passhport/certs/key.pem" 4096"
+echo '##############################################################'
+echo '# Adding choosen IP to the certificate…'
+echo '##############################################################'
+sed -i -e "s#^\(DNS.*\s*=\s*\)TO_CHANGE#\1${CHOOSEN_IP}#g" /home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf 
 echo '##############################################################'
 echo '# Generating Web-API certificate…'
 echo '##############################################################'
