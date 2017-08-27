@@ -33,9 +33,9 @@ def target_list():
         {"content-type": "text/plain; charset=utf-8"}
 
 
-@app.route("/target/detaillist")
-def target_detaillist():
-    """Return the detailled targets list of database"""
+@app.route("/api/target/list")
+def api_target_list():
+    """Return a json formatted targets list from database"""
     result = []
     query = db.session.query(
         target.Target).order_by(
