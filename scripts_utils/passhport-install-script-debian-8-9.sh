@@ -43,6 +43,16 @@ do
 	read ANSWER
 done
 
+echo 'On which IP would you like passhport to listen to ?'
+echo 'IPs available :'
+IP_LIST=`ip a | grep -e "inet\s" | awk '{print $2}' | cut -d'/' -f1`
+for IP in ${IP_LIST}
+do
+	echo "${IP}"
+done
+
+echo -n "Please type the IP : "
+read CHOOSEN_IP
 
 echo '##############################################################'
 echo '# Updating repos…'
@@ -90,6 +100,9 @@ cp /home/passhport/passhport/passhport/passhport.ini /etc/passhport/.
 cp /home/passhport/passhport/passhport_admin/passhport-admin.ini /etc/passhport/.
 cp /home/passhport/passhport/passhportd/passhportd.ini /etc/passhport/.
 echo '##############################################################'
+echo '# Changing P'
+echo '##############################################################'
+echo '##############################################################'
 echo '# Generating PaSSHport RSA (4096b) and ecdsa (521b) keys…'
 echo '##############################################################'
 su - passhport -c '/usr/bin/ssh-keygen -t rsa -b 4096 -N "" -f "/home/passhport/.ssh/id_rsa"'
@@ -103,8 +116,11 @@ echo '##############################################################'
 echo '# Editing passhportd conf file…'
 echo '##############################################################'
 sed -i -e 's#SQLALCHEMY_DATABASE_DIR\s*=.*#SQLALCHEMY_DATABASE_DIR        = /var/lib/passhport/#' /etc/passhport/passhportd.ini
+sed -i -e 's#LISTENING_IP\s*=.*#LISTENING_IP = 0.0.0.0#' /etc/passhport/passhportd.ini
 sed -i -e 's#SQLALCHEMY_MIGRATE_REPO\s*=.*#SQLALCHEMY_MIGRATE_REPO        = /var/lib/passhport/db_repository#' /etc/passhport/passhportd.ini
 sed -i -e 's#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = sqlite:////var/lib/passhport/app.db#' /etc/passhport/passhportd.ini
+sed -i -e 's#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = 192.168.122.56#' /etc/passhport/passhportd.ini
+sed -i -e 's#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = 192.168.122.56#' /etc/passhport/passhport-admin.ini
 echo '##############################################################'
 echo '# Creating database for PaSSHport (SQLite)…'
 echo '##############################################################'
