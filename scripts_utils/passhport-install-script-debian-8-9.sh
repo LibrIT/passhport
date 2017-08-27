@@ -100,8 +100,10 @@ cp /home/passhport/passhport/passhport/passhport.ini /etc/passhport/.
 cp /home/passhport/passhport/passhport_admin/passhport-admin.ini /etc/passhport/.
 cp /home/passhport/passhport/passhportd/passhportd.ini /etc/passhport/.
 echo '##############################################################'
-echo '# Changing P'
+echo '# Changing IP in configuration file'
 echo '##############################################################'
+sed -i -e 's#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = ${CHOOSEN_IP}#' /etc/passhport/passhport-admin.ini
+sed -i -e 's#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = ${CHOOSEN_IP}#' /etc/passhport/passhport.ini
 echo '##############################################################'
 echo '# Generating PaSSHport RSA (4096b) and ecdsa (521b) keys…'
 echo '##############################################################'
