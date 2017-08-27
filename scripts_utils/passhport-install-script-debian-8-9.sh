@@ -135,6 +135,10 @@ echo '# Generating Web-API RSA key (4096b)'
 echo '##############################################################'
 su - passhport -c "openssl genrsa -out "/home/passhport/certs/key.pem" 4096"
 echo '##############################################################'
+echo '# Adding choosen IP to the certificate…'
+echo '##############################################################'
+sed -i -e "s#^\(DNS.*\s*=\s*\)TO_CHANGE#\1${CHOOSEN_IP}#g" /home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf 
+echo '##############################################################'
 echo '# Generating Web-API certificate…'
 echo '##############################################################'
 openssl req -new -key "/home/passhport/certs/key.pem" \
