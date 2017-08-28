@@ -38,6 +38,18 @@ class User(db.Model):
 
         return "\n".join(output)
 
+    def simplejson(self):
+        """Return a simplified data of the user as json but not all the data"""
+        output = "{\n"
+
+        output = output + "\"E-mail\": \"" + format(self.name) + "\",\n"
+        output = output + "\"SSH key\": \"" + format(self.sshkey) + "\",\n"
+        output = output + "\"Comment\": \"" + format(self.comment) + "\",\n"
+        output = output + "\"Accessible target list\": \"" + format(self.accessible_targetname_list()) + "\",\n"
+        output = output + "\"Accessible targets\": \"" + format(self.all_access()) + "\"\n"
+        output = output + "}"
+
+        return output
 
     def show_name(self):
         """Return a string containing the user's name"""
