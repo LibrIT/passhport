@@ -13,6 +13,7 @@ from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 from app import app, db
 from app.models_mod import user, target
+from . import api
 
 @app.route("/user/list")
 def user_list():
