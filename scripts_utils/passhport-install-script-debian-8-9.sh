@@ -45,9 +45,6 @@ do
 	read ANSWER
 done
 
-FQDN=`hostname -f`
-HOSTNAME=`hostname`
-
 echo '##############################################################'
 echo '# Updating repos…'
 echo '##############################################################'
