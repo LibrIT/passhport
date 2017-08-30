@@ -42,11 +42,11 @@ class User(db.Model):
         """Return a simplified data of the user as json but not all the data"""
         output = "{\n"
 
-        output = output + "\"E-mail\": \"" + format(self.name) + "\",\n"
-        output = output + "\"SSH key\": \"" + format(self.sshkey) + "\",\n"
-        output = output + "\"Comment\": \"" + format(self.comment) + "\",\n"
-        output = output + "\"Accessible target list\": \"" + format(self.accessible_targetname_list()) + "\",\n"
-        output = output + "\"Accessible targets\": \"" + format(self.all_access()) + "\"\n"
+        output = output + "\"email\": \"" + format(self.name) + "\",\n"
+        output = output + "\"sshkey\": \"" + format(self.sshkey) + "\",\n"
+        output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
+        output = output + "\"accessibleTargetList\": \"" + format(self.accessible_targetname_list()) + "\",\n"
+        output = output + "\"accessibleTargets\": \"" + format(self.all_access()) + "\"\n"
         output = output + "}"
 
         return output
