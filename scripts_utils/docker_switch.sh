@@ -1,18 +1,18 @@
 #!/bin/bash
-PYTHON_ENV=$1
-shift
+PYTHON_ENV=/home/passhport/passhport-run-env
 DOCKER_PASSHPORT_SWITCH=$1
 shift
 ARGS_LIST=$@
 case "${DOCKER_PASSHPORT_SWITCH}" in
 	passhportd)
-		/home/passhport/passhport/scripts_utils/launch_passhportd_docker.sh ${PYTHON_ENV}
+		su - passhport -c "/home/passhport/passhport/scripts_utils/launch_passhportd_docker.sh ${PYTHON_ENV}"
 		;;
 	passhport-admin)
-		/home/passhport/passhport/scripts_utils/launch_passhport-admin_docker.sh ${PYTHON_ENV} ${ARGS_LIST}
+		su - passhport -c "/home/passhport/passhport/scripts_utils/launch_passhport-admin_docker.sh ${PYTHON_ENV} ${ARGS_LIST}"
 		;;
 	*)
-		echo "Wrong wrong wrong ! Choose between \"passhportd\" or \"passhport-admin\""
+		echo "Oups ! Launch the correct mode between \"passhportd\" or \"passhport-admin\" when you launch the docker."
+		echo "Example : docker run --rm -it -v /var/tmp/passhport-volume:/home/passhport/certs -v /var/tmp/passhport-volume:/var/lib/passhport librit/passhport passhportd"
 		exit 1
 		;;
 esac

@@ -33,4 +33,4 @@ shift
 LIST_OF_ARGS=$@
 
 # Launch the passhportd in the virtualenv
-su - passhport -c "\"${VIRTUAL_ENV_PYTHON}\" /home/passhport/passhport/passhport_admin/passhport-admin ${LIST_OF_ARGS}"
+"${VIRTUAL_ENV_PYTHON}" /home/passhport/passhport/passhport_admin/passhport-admin ${LIST_OF_ARGS}
