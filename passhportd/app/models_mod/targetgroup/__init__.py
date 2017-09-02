@@ -62,6 +62,15 @@ class Targetgroup(db.Model):
 
         return "\n".join(output)
 
+    def simplejson(self):
+        """Return a simplified data of the target as json but not all the data"""
+        output = "{\n"
+
+        output = output + "\"name\": \"" + format(self.name) + "\",\n"
+        output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
+        output = output + "}"
+
+        return output
 
     def show_name(self):
         """Return a string containing the targetgroup’s name"""
