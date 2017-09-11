@@ -142,7 +142,7 @@ openssl req -new -key "/home/passhport/certs/key.pem" \
 	-days 365 \
 	-sha256 \
 	-extensions v3_req
-echo 'Do you wan to launch passhportd daemon ? (y/N)'
+echo 'Do you want to launch passhportd daemon ? (y/N)'
 read ANSWER
 if [ "${ANSWER}" == 'y' ] || [ "${ANSWER}" == 'yes' ]
 then
