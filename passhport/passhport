@@ -52,6 +52,9 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd):
     """Check if the user have entered an accessible target
        then check target type and launch the action"""
 
+    #In order to allow an automatic login name for each user:
+    login = re.split("@", username)[0] #We take the first part of the email
+
     # Check the target access and access type
     for line in indexed_target_list:
         item_list = line.split(" ")
@@ -65,6 +68,9 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd):
                           target + "-" + username
                 login = get(url_passhport + "target" + "/login/" +  
                         item_list[1])
+                #target login is set at $email => login=username (without @...)
+                if login == "$email":
+                    login = re.split("@", username)[0] 
                 port = get(url_passhport + "target" + "/port/" +  
                         item_list[1])
                 sshoptions = get(url_passhport + "target" + "/sshoptions/" + \
