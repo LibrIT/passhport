@@ -19,3 +19,4 @@ DNS.3 = passhport
 DNS.4 = bastion
 DNS.5 = bastion.passhport.org
 DNS.6 = bastion.librit.fr
+DNS.7 = passhport.librit.fr
