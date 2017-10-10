@@ -167,7 +167,7 @@ def ssh_direct_command(username, url_passhport, target_list, originalcmd):
     if len(splitcommand) < 2:
         # if there is no command, we connect as normal ssh connection
         checkandconnect(build_targets_list(target_list), server, username, 
-                        originalcmd)
+                        "")
     else:
         # else we remove the target name
         checkandconnect(build_targets_list(target_list), server, username, 
