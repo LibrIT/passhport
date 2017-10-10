@@ -82,7 +82,8 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd):
 
                 # It's SCP if originalcmd is set, else ssh.
                 if originalcmd: 
-                    scp.connect(target, filelog, login, sshoptions, originalcmd)
+                    scp.connect(target, filelog, login, sshoptions, 
+                                originalcmd)
                 else:
                     ssh.connect(target, filelog, login, port, sshoptions)
 
@@ -109,8 +110,8 @@ def build_target_list(target_list, tabulations=0):
             line=[]
             line.append(str(number))
             line.append(each_target.split(" ", 1)[0]) # target name
-            line.append(" ".join(each_target.split(" ")[1:2])) # target hostname
-            line.append(" ".join(each_target.split(" ")[2:])) # target comment
+            line.append(" ".join(each_target.split(" ")[1:2])) # hostname
+            line.append(" ".join(each_target.split(" ")[2:])) # comment
             table.append(line)
         number = number + 1
 
@@ -126,8 +127,8 @@ if __name__ == '__main__':
 
     username = sys.argv[1]
     url_passhport = "http" + conf.getboolean("SSL", "SSL")*"s" + \
-                    "://" + conf.get("Network", "PASSHPORTD_HOSTNAME") + ":" + \
-                    conf.get("Network", "PORT") + "/"
+                    "://" + conf.get("Network", "PASSHPORTD_HOSTNAME") + \
+                    ":" + conf.get("Network", "PORT") + "/"
     target_list = get(url_passhport + "user" + "/accessible_targets/" + \
                   username).split("\n")
     originalcmd = os.environ.get('SSH_ORIGINAL_COMMAND')
@@ -140,25 +141,41 @@ if __name__ == '__main__':
     #Construct the indexted targets list
     indexed_target_list = build_target_list(target_list)
 
-    # Check if it's pure ssh or another type of connection:
+    # Check if it's interactive ssh or another type of connection:
     if originalcmd:
         # In case the SSH_ORIGINAL_COMMAND is set,
         # it should be scp/rsync (according to sshd manpage)
-        # Determine the target parsing the originalcmd
-        parsedcommand = scp.parse(originalcmd)
-        if len(parsedcommand) > 1:
-            choice = parsedcommand[0] # the target
-            command = parsedcommand[1] # the rewrited command
-            checkandconnect(indexed_target_list, choice, username, command)
+        # After testing, it can be ssh with a direct command too...
+
+        # We need to check syntax to know if it's an scp or ssh
+        if ( re.sub("^scp ", "", originalcmd) == originalcmd ):
+            # SSH direct command
+            splitcommand = originalcmd.split(" ")
+            server = splitcommand[0]
+            if server not in build_target_list(target_list, tabulations=1):
+                sys.exit("Error: This server is not in your access list")
+            if len(splitcommand) < 2:
+                # if there is no command, we connect as normal ssh connection
+                #TODO
+                print("Not yet implemented")
+            else:
+                command = re.sub("^" + server + " ", "", originalcmd)
         else:
-            sys.exit("Syntax error on the command.")
+            # SCP Determine the target parsing the originalcmd
+            parsedcommand = scp.parse(originalcmd)
+            if len(parsedcommand) > 1:
+                choice = parsedcommand[0] # the target
+                command = parsedcommand[1] # the rewrited command
+                checkandconnect(indexed_target_list, choice, username, command)
+            else:
+                sys.exit("Syntax error on the command.")
     else:
-        # We handle the ssh connection
+        # We handle the interactive ssh connection
         print("Welcome {}.".format(username))
         print("Here is the list of servers you can access:")
 
-
-        # Print servers the user can access, with a blank line between each entry
+        # Print servers the user can access, 
+        # with a blank line between each entry
         print(build_target_list(target_list, tabulations=1))#, sep='\n')
 
         # Let the use chose his server
