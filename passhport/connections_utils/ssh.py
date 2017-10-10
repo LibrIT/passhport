@@ -8,9 +8,15 @@ from __future__ import unicode_literals
 
 import os
 
-def connect(target, filelog, login, port, sshoptions):
-    """ Simply launch the ssh connection """
-    os.system("script -q --timing=" + filelog + ".timing " + filelog + \
-              ' -c "ssh -t -p ' + str(port) + " " + login + '@' + target + ' ' + \
-               sshoptions + '"')
+def connect(target, filelog, login, port, sshoptions, originalcmd):
+    """ Simply launch the ssh connection or execute the ssh command"""
+    if not originalcmd:
+        os.system("script -q --timing=" + filelog + ".timing " + filelog + \
+                ' -c "ssh -t -p ' + str(port) + " " + login + '@' + target + \
+                ' ' + sshoptions + '"')
+    else:
+        os.system("echo \"DIRECT COMMAND --- " + \
+                  originalcmd + "\" >" + filelog + \
+                  ' && ssh -p ' + str(port) + " " + login + '@' + target + \
+                  ' ' + sshoptions + " " + originalcmd )
 
