@@ -12,9 +12,9 @@ def parse(originalcmd):
     """Parse the original scp command written by the user.
        Obtain the target, create the command to pass"""
     # We wait a command like :
-    # scp [option] /path/to/my/file user@bastion:targetname//path/on/destination
+    #scp [option] /path/to/my/file user@bastion:targetname//path/on/destination
     # or
-    # scp [option] user@bastion:targetname//path/on/destination/file /local/path
+    #scp [option] user@bastion:targetname//path/on/destination/file /local/path
     # and we should obtain the target name a line like
     # scp -t /path/on/destination/file 
     # scp -f /path/on/destination/file /local/path

@@ -48,7 +48,8 @@ def get(url):
     return 1
 
 
-def checkandconnect(indexed_target_list, choice, username, originalcmd):
+def checkandconnect(indexed_target_list, choice, username, originalcmd, 
+                    scpcmd = False):
     """Check if the user have entered an accessible target
        then check target type and launch the action"""
 
@@ -80,11 +81,13 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd):
                 if not os.path.exists(pathlog):
                     os.mkdir(pathlog)
 
-                # It's SCP if originalcmd is set, else ssh.
-                if originalcmd: 
-                    scp.connect(target, filelog, login, sshoptions, originalcmd)
+                # It's SCP if scpcmd is set, else ssh.
+                if scpcmd == True: 
+                    scp.connect(target, filelog, login, sshoptions, 
+                                originalcmd)
                 else:
-                    ssh.connect(target, filelog, login, port, sshoptions)
+                    ssh.connect(target, filelog, login, port, sshoptions, 
+                                originalcmd)
 
                 # Change password on the target
                 if PWD_RST_AFTER_SESSION:
@@ -97,8 +100,31 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd):
     return False
 
 
-def build_target_list(target_list, tabulations=0):
-    """Print the targets list in a readable listed numbered list format"""
+def build_targetnames_list(target_list):
+    """Return a list with targets names only"""
+    targetnames_list = []
+    for each_target in target_list:
+        targetnames_list.append(each_target.split(" ", 1)[0]) # target name
+
+    return targetnames_list
+
+
+def build_targets_list(target_list):
+    """ Return a list with targets names, hostnames and a number"""
+    """ Globaly the list without comments """
+    indexed_target_list = []
+    number = 1
+    for each_target in target_list:
+        indexed_target_list.append(str(number) + " " + 
+                each_target.split(" ", 1)[0] + " " +
+                " ".join(each_target.split(" ")[1:2]))
+        number = number + 1
+
+    return indexed_target_list
+
+
+def build_commented_targets_list(target_list, tabulations=0):
+    """ Build a targets list in a readable and numbered list format"""
     indexed_target_list = []
     table = []
     number = 1
@@ -109,8 +135,8 @@ def build_target_list(target_list, tabulations=0):
             line=[]
             line.append(str(number))
             line.append(each_target.split(" ", 1)[0]) # target name
-            line.append(" ".join(each_target.split(" ")[1:2])) # target hostname
-            line.append(" ".join(each_target.split(" ")[2:])) # target comment
+            line.append(" ".join(each_target.split(" ")[1:2])) # hostname
+            line.append(" ".join(each_target.split(" ")[2:])) # comment
             table.append(line)
         number = number + 1
 
@@ -120,14 +146,54 @@ def build_target_list(target_list, tabulations=0):
     return indexed_target_list
 
 
+def direct_connection(username, url_passhport, target_list, originalcmd):
+    """ Handle SCP connections and SSH direct commands connections """
+    if ( re.sub("^scp ", "", originalcmd) == originalcmd ):
+        # SSH direct command
+        ssh_direct_command(username, url_passhport, target_list, originalcmd)
+    else:
+        scp_command(username, url_passhport, target_list, originalcmd)
+
+
+def ssh_direct_command(username, url_passhport, target_list, originalcmd):
+    """ Prepare and launch a direct ssh command/connection """
+    splitcommand = originalcmd.split(" ")
+    server = splitcommand[0]
+
+    # Check rights access
+    if server not in build_targetnames_list(target_list):
+        sys.exit("Error: This server is not in your access list")
+
+    if len(splitcommand) < 2:
+        # if there is no command, we connect as normal ssh connection
+        checkandconnect(build_targets_list(target_list), server, username, 
+                        "")
+    else:
+        # else we remove the target name
+        checkandconnect(build_targets_list(target_list), server, username, 
+                        re.sub("^" + server + " ", "", originalcmd))
+
+
+def scp_command(username, url_passhport, target_list, originalcmd):
+    """ Prepare and launch the scp """
+    parsedcommand = scp.parse(originalcmd)
+    if len(parsedcommand) > 1:
+        choice = parsedcommand[0] # the target
+        command = parsedcommand[1] # the rewrited command
+        # Setting scpcmd flag at true
+        checkandconnect(indexed_target_list, choice, username, command, True)
+    else:
+        sys.exit("Syntax error on the scp command.")
+
+
 ### MAIN ###
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
 
     username = sys.argv[1]
     url_passhport = "http" + conf.getboolean("SSL", "SSL")*"s" + \
-                    "://" + conf.get("Network", "PASSHPORTD_HOSTNAME") + ":" + \
-                    conf.get("Network", "PORT") + "/"
+                    "://" + conf.get("Network", "PASSHPORTD_HOSTNAME") + \
+                    ":" + conf.get("Network", "PORT") + "/"
     target_list = get(url_passhport + "user" + "/accessible_targets/" + \
                   username).split("\n")
     originalcmd = os.environ.get('SSH_ORIGINAL_COMMAND')
@@ -138,28 +204,23 @@ if __name__ == '__main__':
         sys.exit("Sorry you can't access any server") 
 
     #Construct the indexted targets list
-    indexed_target_list = build_target_list(target_list)
+    indexed_target_list = build_targets_list(target_list)
 
-    # Check if it's pure ssh or another type of connection:
+    # Check if it's interactive ssh or another type of connection:
     if originalcmd:
         # In case the SSH_ORIGINAL_COMMAND is set,
         # it should be scp/rsync (according to sshd manpage)
-        # Determine the target parsing the originalcmd
-        parsedcommand = scp.parse(originalcmd)
-        if len(parsedcommand) > 1:
-            choice = parsedcommand[0] # the target
-            command = parsedcommand[1] # the rewrited command
-            checkandconnect(indexed_target_list, choice, username, command)
-        else:
-            sys.exit("Syntax error on the command.")
+        # After testing, it can be ssh with a direct command too...
+        direct_connection(username, url_passhport, target_list, originalcmd)
+
     else:
-        # We handle the ssh connection
+        # We handle the interactive ssh connection
         print("Welcome {}.".format(username))
         print("Here is the list of servers you can access:")
 
-
-        # Print servers the user can access, with a blank line between each entry
-        print(build_target_list(target_list, tabulations=1))#, sep='\n')
+        # Print servers the user can access, 
+        # with a blank line between each entry
+        print(build_commented_targets_list(target_list, tabulations=1))
 
         # Let the use chose his server
         sys.stdout.write("Type the number, name or hostname of the server you want to connect to : ")
