@@ -1,112 +1,133 @@
-.. PaSSHport documentation master file, created by
-   sphinx-quickstart on Sat Sep  2 14:47:10 2017.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-Welcome to PaSSHport's documentation!
-=====================================
+Welcome to Read The Docs
+========================
 
-Your main adminsys goes away of your company. Are you sure all his ssh access are revoked? What about the interns? The consultants?... Let's fix this.
+`Read the Docs`_ hosts documentation for the open source community.
+We support Sphinx_ docs written with reStructuredText_ and `CommonMark`_.
+We pull your code from your Subversion_, Bazaar_, Git_, and Mercurial_ repositories.
+Then we build documentation and host it for you.
+Think of it as *Continuous Documentation*.
 
-.. general_u:
+The code is open source, and `available on GitHub`_.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: General presentation & architecture
+.. _Read the docs: http://readthedocs.org/
+.. _Sphinx: http://sphinx.pocoo.org/
+.. _reStructuredText: http://sphinx.pocoo.org/rest.html
+.. _CommonMark: http://commonmark.org/
+.. _Markdown: http://daringfireball.net/projects/markdown/syntax
+.. _Subversion: http://subversion.tigris.org/
+.. _Bazaar: http://bazaar.canonical.com/
+.. _Git: http://git-scm.com/
+.. _Mercurial: https://www.mercurial-scm.org/
+.. _available on GitHub: http://github.com/rtfd/readthedocs.org
 
+The main documentation for the site is organized into a couple sections:
 
-.. install_u:
+* :ref:`user-docs`
+* :ref:`feature-docs`
+* :ref:`about-docs`
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Installation & configuration
-   
-   
-.. start_u:
+Information about development is also available:
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Getting started
-   
-   Add a first target
-   Add a first user
-   First connection
-   
-.. objects_u:
+* :ref:`dev-docs`
+* :ref:`design-docs`
 
-.. toctree::
-   :maxdepth: 2
-   :caption: PaSSHport objects
-   
-   Target
-   Users
-   Usergroup
-   Targetgroup
-   
-.. advanced_u:
+.. _user-docs:
 
 .. toctree::
    :maxdepth: 2
-   :caption: Advanced usage
-   
-   Creating a complete organization
-   Using PaSSHport to log actions
-   Using SCP through PaSSHport
-   Automatic root passowrd update
-   
-   
-.. advanced_u:
+   :caption: User Documentation
+
+   getting_started
+   versions
+   builds
+   features
+   support
+   faq
+   yaml-config
+   guides/index
+   api
+   embed
+
+.. _about-docs:
 
 .. toctree::
    :maxdepth: 2
-   :caption: API
-   
-   General
-   URL listing
+   :caption: About Read the Docs
 
-.. limitatiosn_u:
+   contribute
+   team
+   code-of-conduct
+   ethical-advertising
+   sponsors
+   open-source-philosophy
+   story
+   talks
+   dmca/index
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Limitations
-
-
-Features
---------
-
-- Be awesome
-- Make things faster
-
-Contribute
-----------
-
-- Issue Tracker: github.com/LibrIT/passhport/issues
-- Source Code: github.com/LibrIT/passhport
-
-Support
--------
-
-If you are having issues, please let us know on github :
-https://github.com/LibrIT/passhport/issues
-
-License
--------
-
-The project is licensed under the GPLv3 license.
-
-
-
-Contents:
+.. _feature-docs:
 
 .. toctree::
    :maxdepth: 2
+   :glob:
+   :caption: Feature Documentation
+
+   webhooks
+   badges
+   alternate_domains
+   localization
+   vcs
+   subprojects
+   conda
+   canonical
+   single_version
+   privacy
+   user-defined-redirects
+   automatic-redirects
+   features/*
 
 
+.. _dev-docs:
 
-Indices and tables
-==================
+.. toctree::
+   :maxdepth: 2
+   :caption: Developer Documentation
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   install
+   api/index
+   changelog
+   tests
+   docs
+   architecture
+   development/standards
+   development/buildenvironments
+   symlinks
+   settings
+   i18n
+   issue-labels
+
+.. _business-docs:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Business Documentation
+
+   business/index
+
+.. _custom-docs:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Custom Install Documentation
+
+   custom_installs/index
+
+.. _design-docs:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Designer Documentation
+
+   design
+   theme
 
