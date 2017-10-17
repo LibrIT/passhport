@@ -3,64 +3,27 @@ Welcome to PaSSHport's documentation!
 
 Your main adminsys goes away of your company. Are you sure all his ssh access are revoked? What about the interns? The consultants?... Let's fix this.
 
-.. general:
+Sommaire :
 
 .. toctree::
    :maxdepth: 2
-   :caption: General presentation & architecture
 
+   a_propos
+   release_notes/index
+   lifecycle
+   installation/index
+   migration/index
+   quick_start/index
+   configuration_guide/index
+   exploitation_guide/index
+   administration_guide/index
+   upgrade/index
+   faq/index
+   howto/index
+   developper/index
+   api/index
 
-.. install:
+Ressources en ligne supplémentaires :
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Installation & configuration
-   
-   
-.. start:
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Getting started
-   
-   Add a first target
-   Add a first user
-   First connection
-   
-.. objects:
-
-.. toctree::
-   :maxdepth: 2
-   :caption: PaSSHport objects
-   
-   Target
-   Users
-   Usergroup
-   Targetgroup
-   
-.. advanced:
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Advanced usage
-   
-   Creating a complete organization
-   Using PaSSHport to log actions
-   Using SCP through PaSSHport
-   Automatic root passowrd update
-   
-   
-.. advanced:
-
-.. toctree::
-   :maxdepth: 2
-   :caption: API
-   
-   General
-   URL listing
-
-.. limitatiosn:
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Limitations
+* `Demo <http://demo.centreon.com>`_
+* `Captures d'écran <http://www.centreon.com/Content-Products-IT-network-monitoring/screenshots-for-centreon-it-monitoring-centreon>`_
