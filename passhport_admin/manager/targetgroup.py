@@ -12,7 +12,7 @@ def prompt_create():
     name = input("Name: ")
     comment = input("Comment: ")
 
-    return {"<name>": name, "<comment>": comment}
+    return {"<name>": name, "--comment": comment}
 
 
 def create(param):
@@ -21,7 +21,7 @@ def create(param):
 
     if "--comment" in param:
         comment = param["--comment"]
-
+    
     return {"name": param["<name>"],
             "comment": comment}
 
