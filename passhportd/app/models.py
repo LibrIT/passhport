@@ -24,6 +24,29 @@ class Target_User(db.Model):
         db.ForeignKey("user.id"),
         primary_key=True)
 
+class Tg_admins(db.Model):
+    """Users authorized to admin targetgroups"""
+    __tablename__ = "tg_admins"
+    target_id = db.Column(
+        db.Integer,
+        db.ForeignKey("targetgroup.id"),
+        primary_key=True)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("user.id"),
+        primary_key=True)
+
+class Ug_admins(db.Model):
+    """Users authorized to admin usergroups"""
+    __tablename__ = "ug_admins"
+    target_id = db.Column(
+        db.Integer,
+        db.ForeignKey("usergroup.id"),
+        primary_key=True)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("user.id"),
+        primary_key=True)
 
 class Group_User(db.Model):
     """Groupuser users in groups"""

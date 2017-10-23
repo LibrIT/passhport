@@ -42,7 +42,8 @@ class Targetgroup(db.Model):
         primaryjoin=id == tgroup_of_tgroup.c.container_id,
         secondaryjoin=id == tgroup_of_tgroup.c.subtargetgroup_id,
         backref="containedin")
-
+    # Admins - can admin usergroups and targetgroups (add and remove users)
+    tgadmins = db.relationship("User", secondary="tg_admins")
 
     def __repr__(self):
         """Return main data of the targetgroup as a string"""

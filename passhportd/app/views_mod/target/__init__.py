@@ -208,6 +208,8 @@ def target_create():
     # Simplification for the reading
     name = request.form["name"]
     hostname = request.form["hostname"]
+    #servertype = request.form["servertype"]
+    servertype = "ssh"
     login = request.form["login"]
     port = request.form["port"]
     sshoptions = request.form["sshoptions"]
@@ -217,6 +219,9 @@ def target_create():
     if not name or not hostname:
         return "ERROR: The name and hostname are required ", 417, \
             {"content-type": "text/plain; charset=utf-8"}
+
+    if not servertype:
+        servertype = "ssh"
 
     if not login:
         login = "root"
@@ -236,6 +241,7 @@ def target_create():
     t = target.Target(
         name=name,
         hostname=hostname,
+        servertype=servertype,
         login=login,
         port=port,
         sshoptions=sshoptions,
@@ -265,6 +271,7 @@ def target_edit():
     name = request.form["name"]
     new_name = request.form["new_name"]
     new_hostname = request.form["new_hostname"]
+    #new_servertype = request.form["new_servertype"]
     new_login = request.form["new_login"]
     new_port = request.form["new_port"]
     new_sshoptions = request.form["new_sshoptions"]
@@ -289,7 +296,7 @@ def target_edit():
     # Let's modify only relevent fields
     if new_login:
         to_update.update({"login": new_login})
-
+    
     if new_sshoptions:
         to_update.update({"sshoptions": new_sshoptions})
 

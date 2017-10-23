@@ -42,7 +42,8 @@ class Usergroup(db.Model):
         primaryjoin=id == group_of_group.c.container_id,
         secondaryjoin=id == group_of_group.c.subgroup_id,
         backref="containedin")
-
+    # Admins
+    ugadmins = db.relationship("User", secondary="ug_admins")
 
     def __repr__(self):
         """Return main data of the usergroup as a string"""
