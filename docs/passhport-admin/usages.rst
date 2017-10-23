@@ -1,6 +1,6 @@
-Building Simple Apps
-====================
+Targets
+=====
 
-** create a target **
+**create a target**
 
 To create a target, use "passhport-admin target create".
