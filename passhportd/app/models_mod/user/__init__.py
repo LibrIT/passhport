@@ -20,8 +20,11 @@ class User(db.Model):
         nullable=False)
     comment = db.Column(db.String(500), index=True)
 
-    # Relations
+    # Relations (in targetgroups)
     targets = db.relationship("Target", secondary="target_user")
+    # Admins - can admin usergroups and targetgroups (add and remove users)
+    adminoftg = db.relationship("Targetgroup", secondary="tg_admins")
+    adminofug = db.relationship("Usergroup", secondary="ug_admins")
 
 
     def __repr__(self):

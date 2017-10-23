@@ -16,6 +16,7 @@ class Target(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), index=True, unique=True)
     hostname = db.Column(db.String(120), index=True, nullable=False)
+    servertype = db.Column(db.String(120), index=True, server_default="ssh")
     login = db.Column(db.String(120), index=True)
     port = db.Column(db.Integer, index=False)
     sshoptions = db.Column(db.String(500), index=True)
@@ -29,9 +30,9 @@ class Target(db.Model):
     def __repr__(self):
         """Return main data of the target as a string"""
         output = []
-
         output.append("Name: {}".format(self.name))
         output.append("Hostname: {}".format(self.hostname))
+        output.append("Server Type : {}".format(self.servertype))
         output.append("Login: {}".format(self.login))
         output.append("Port: {}".format(str(self.port)))
         output.append("SSH options: {}".format(self.sshoptions))
@@ -53,6 +54,7 @@ class Target(db.Model):
 
         output = output + "\"Name\": \"" + format(self.name) + "\",\n"
         output = output + "\"Hostname\": \"" + format(self.hostname) + "\",\n"
+        output = output + "\"Server Type\": \"" + format(self.servertype) + "\",\n"
         output = output + "\"Login\": \"" + format(self.login) + "\",\n"
         output = output + "\"Port\": \"" + format(self.port) + "\",\n"
         output = output + "\"Comment\": \"" + format(self.comment) + "\"\n"
@@ -69,6 +71,11 @@ class Target(db.Model):
     def show_hostname(self):
         """Return a string containing the target's hostname"""
         return self.hostname
+    
+
+    def show_servertype(self):
+        """Return a string containing the target's servertype"""
+        return self.servertype
     
 
     def show_comment(self):
