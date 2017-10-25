@@ -1,14 +1,22 @@
 Welcome to PaSSHport's documentation!
 =====================================
 
-Your main adminsys goes away of your company. Are you sure all his ssh access are revoked? What about the interns? The consultants?... Let's fix this.
+Your main adminsys leaves your company. Are you sure all his ssh access are revoked? What about the interns? The consultants?... Let's fix this.
 
 Table of content :
+--------
 
 .. toctree::
    :maxdepth: 2
 
-   passhport-admin/usages.rst
+   introduction
+   installation-and-configuration
+   getting-started
+   passhport-admin
+   advanced-usage
+   api
+   limitations
+   get-involved
 
 Some links :
 

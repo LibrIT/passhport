@@ -1,0 +1,93 @@
+# Introduction du projet PaSSHport.
+# Copyright (C) 2017, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# Raphaël Berlamont <raphael.berlamont@librit.fr>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport 1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-25 00:01+0200\n"
+"PO-Revision-Date: 2017-10-25 00:10+0200\n"
+"Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
+"Language-Team: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+
+#: ../../introduction.rst:2
+msgid "Introduction to PaSSHport"
+msgstr "Introduction à PaSSHport"
+
+#: ../../introduction.rst:4
+msgid "PaSSHport is a software that allows you to control the SSH access of your IT components : Linux/Unix servers, network switchs, routers, WiFi access points, and any appliances that is accessed by SSH. In three words : who accesses what ?"
+msgstr "PaSSHport est un logiciel qui vous permet de contrôler les accès SSH des briques de votre IT : serveurs Linux/Unix, switchs réseaux, routeurs, points d'accès WiFi, ainsi que n'importe quelle brique accessible via SSH. En quatre mots : qui a accès à quoi ?"
+
+#: ../../introduction.rst:7
+msgid "PaSSHport has been written with the following in mind : "
+msgstr "PaSSHport a été écrit avec les objectifs suivants : "
+
+#: ../../introduction.rst:8
+msgid "Similar to `SSHgate <https://github.com/Tauop/sshGate>`" 
+msgstr "Similaire à `SSHgate <https://github.com/Tauop/sshGate>`"
+
+#: ../../introduction.rst:9
+msgid "Two main objects : targets and users (we'll see below what are those)"
+msgstr "Deux types d'objects : targets et users (Nous verrons ça un peu plus bas)"
+
+#: ../../introduction.rst:10
+msgid "Objects can be grouped : targetgroups and usergroups"
+msgstr "Les objects peuvent être groupés"
+
+#: ../../introduction.rst:11
+msgid "Record all sessions of users"
+msgstr "Enrigistrer toutes les sessions des utilisateurs"
+
+#: ../../introduction.rst:12
+msgid "Can be fully configure and used from the command line interface"
+msgstr "Être entièrement configurable et utilisé depuis la ligne de commandes"
+
+#: ../../introduction.rst:13
+msgid "Can do Secured Copy (scp)"
+msgstr "Possibilité de faire des copy sécurisées (scp)"
+
+#: ../../introduction.rst:14
+msgid "REST API based communication between components so that it can be easily integrated in an automated IT environment"
+msgstr "Des communications entre les composants basées sur une API REST, pour une intégration plus aisée dans un IT automatisé"
+
+#: ../../introduction.rst:15
+msgid "Use only (or mainly) OpenSource technologies"
+msgstr "Utiliser seulement (ou principalement) des technologies OpenSource"
+
+#: ../../introduction.rst:17
+msgid "Please read below to understand the main components, and how they work together."
+msgstr "Pour comprendre les composants principaux, et comment ils interagissent entre eux, veuillez lire ce qui suit."
+
+#: ../../introduction.rst:20
+msgid "Components"
+msgstr "Composants"
+
+#: ../../introduction.rst:21
+msgid "PaSSHport project is composed with 3 main programs :" 
+msgstr "PaSSHport est composé de 3 programmes :"
+
+#: ../../introduction.rst:22
+msgid "passhportd : the daemon that verify access rights, and store configuration"
+msgstr "passhportd : le démon qui enregistrent, et vérifie la configuration"
+
+#: ../../introduction.rst:23
+msgid "passhport : the script that receive the connections (it does NOT replace the SSH server). Think of it has the shell a user falls into when connecting to a PaSSHport gateway."
+msgstr "passhport : le script qui reçoit les connexions (il ne remplace PAS un serveur SSH). Il faut le voir comme le shell sur lequel les utilisateurs arrivent quand ils se connectent à PaSSHport."
+
+#: ../../introduction.rst:24
+msgid "passhport-admin : the script that is used to configure passhportd. SysAdmins use it to add a *user*, a *target*, a *usergroup*, a *targetgroup*, and combine those to configure accesses"
+msgstr "passhport-admin : le script qui permet de configurer passhportd. Les adminSys l'utilisent pour, par exemple, ajouter un *user*, une *target*, un *usergroup*, un *targetgroup*, et combiner ces derniers pour configurer les accès"
+
+#: ../../introduction.rst:26
+msgid "#.. image:: images/architecture.png"
+msgstr "#.. image:: images/architecture.png"
+
+#: ../../introduction.rst:28
+msgid "Now let's go to the installation process…"
+msgstr "Et maintenant, y plus qu'à passer à l'installation…"
+
