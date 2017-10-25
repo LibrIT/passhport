@@ -1,13 +1,13 @@
 Installation on Debian 8 or 9
 =============================
 
-The followings shows you how to install and run PaSSHport on Debian 8 (Jessie) or 9 (Stretch). We start from a minimal installation of Debian (available `here <http://www.debian.org>`), **with openssh-server and curl** packages installed.
+The followings shows you how to install and run PaSSHport on Debian 8 (Jessie) or 9 (Stretch). We start from a minimal installation of Debian (available `here <http://www.debian.org>`_), **with openssh-server and curl** packages installed.
 
 The easy, automated way
 -----------------------
-Before starting, please be aware that we wrote a script that will do all described below automatically. You can review it `here <https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils/passhport-install-script-debian-8-9.sh>`.
+You can review the installation script `here <https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils/passhport-install-script-debian-8-9.sh>`_.
 
-You can run it directly from command line (please ensure that curl is installed : ``apt install curl`` :
+You can run it directly from command line ( please ensure that curl is installed : ``apt install curl`` ):
 
 .. code-block:: none
 
@@ -45,7 +45,7 @@ Now, install virtual-env using pip :
 
   root@debian9:~# pip3 install virtualenv
 
-Next will need to add a system user called « passhport », and switch to it :
+Next we will need to add a system user called « passhport », and switch to it :
 
 .. code-block:: none
 
@@ -67,7 +67,7 @@ Now that we have our virtual-env, we install the python’s modules we’ll need
 
 Now, let’s start the real thing…
 
-Let’s install get passhport sources from github :
+Let’s get passhport sources from github :
 
 .. code-block:: none
 
@@ -96,7 +96,7 @@ We’ll also create the config directory, and copy the differents config file :
   root@debian9:~# cp /home/passhport/passhport/passhport_admin/passhport-admin.ini /etc/passhport/.
   root@debian9:~# cp /home/passhport/passhport/passhportd/passhportd.ini /etc/passhport/.
 
-We’ll also need to make some modifications ine those config file, if you run passhportd on a distant server. Here we’ll change the default listening address (localhost) to the real IP of our server.
+We’ll also need to make some modifications in those config file, if you run passhportd on a distant server. Here we’ll change the default listening address (localhost) to the real IP of our server.
 
 First, passhportd :
 
@@ -162,13 +162,13 @@ We’ll need ssh publickey, so we generate an 4096 bits RSA key:
   +----[SHA256]-----+
   passhport@debian9:~$
 
-This will be the key that’ll be use by PaSSHport to connect to your hosts. You can also generate a ECDSA key if you wish:
+This will be the key that’ll be use by PaSSHport to connect to your hosts. You can also generate a ECDSA key if you wish :
 
 .. code-block:: none
 
   passhport@debian9:~$ /usr/bin/ssh-keygen -t ecdsa -b 521 -N "" -f "/home/passhport/.ssh/id_ecdsa"
 
-Again as root, let’s make the directory that’ll contains the database (because we use SQLite for this tutorial):
+Again as root, let’s make the directory that’ll contains the database (because we use SQLite for this tutorial) :
 
 .. code-block:: none
 
@@ -197,24 +197,24 @@ Now we can create the database and check that it has correcly been created:
   drwxr-xr-x  4 passhport passhport   4096 févr. 28 16:10 db_repository
   passhport@debian9:~$
 
-We’ll now need to create the certificate to secure the API. First, create the directory in which will be key and the cert, and make the directory rwx for passport only:
+We’ll now need to create the certificate to secure the API. First, create the directory in which will be key and the cert, and make the directory rwx for passport only :
 
 .. code-block:: none
 
   passhport@debian9:~$ mkdir /home/passhport/certs
   passhport@debian9:~$ chmod 700 /home/passhport/certs
 
-Create the RSA key:
+Create the RSA key :
 
 .. code-block:: none
 
   [passhport@centos-7 ~]$ openssl genrsa -out "/home/passhport/certs/key.pem" 4096
 
-There is a conf file provided for OpenSSL, to generate a minimal correct SSL cert. The file is:
+There is a conf file provided for OpenSSL, to generate a minimal correct SSL cert. The file is :
 
 ``/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf``
 
-Edit it, and add DNS name you’ll use to reach the API. For the tutorial, we’ll use both type : two IPs and two hostnames:
+Edit it, and add DNS name you’ll use to reach the API. For the tutorial, we’ll use two hostnames :
 
 .. code-block:: none
 
@@ -238,7 +238,7 @@ Edit it, and add DNS name you’ll use to reach the API. For the tutorial, we’
   DNS.3 = passhport.librit.fr
   DNS.4 = entry.passhport.org
 
-Now, generate the certificate using this command (put on multiple lines, so you can copy/paste easily), but please adapt the subject line (-subj):
+Now, generate the certificate using this command (put on multiple lines, so you can copy/paste easily), but please adapt the subject line (-subj) :
 
 .. code-block:: none
 
@@ -249,7 +249,7 @@ Now, generate the certificate using this command (put on multiple lines, so you 
   -x509 -days 365 -sha256 \
   -extensions v3_req
 
-Once executed, you’ll have a cert file next to the key file:
+Once executed, you’ll have a cert file next to the key file :
 
 .. code-block:: none
 
@@ -263,13 +263,13 @@ Once executed, you’ll have a cert file next to the key file:
 
 Almost done… Hold on ! :)
 
-And now, we’re ready to go, just launch passhportd daemon (as user passhport ):
+And now, we’re ready to go, just launch passhportd daemon (as user passhport ) :
 
 .. code-block:: none
 
   passhport@debian9:~$ /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/passhportd
    * Running on https://0.0.0.0:5000/ (Press CTRL+C to quit)
 
-You can check in you browser, by going to the above URL (replace 0.0.0.0 by the IP on the host you installed passhportd):
+You can check in you browser, by going to the below URL (replace 0.0.0.0 by the IP on the host you installed passhportd) :
 
 .. image:: images/passhportd-running.png
