@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-25 02:22+0200\n"
+"POT-Creation-Date: 2017-10-25 16:23+0200\n"
 "PO-Revision-Date: 2017-10-25 00:01+0200\n"
 "Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
 "Language-Team: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
@@ -42,189 +42,182 @@ msgstr ""
 #: ../../installation-and-configuration.rst:10
 msgid ""
 "You can run it directly from command line (please ensure that curl is "
-"installed : ``apt install curl``) :"
+"installed : ``apt install curl`` :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:13
+#: ../../installation-and-configuration.rst:16
 msgid ""
-"root@debian9:~# bash <(curl -s "
-"https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils"
-"/passhport-install-script-debian-8-9.sh)"
+"Once finished, you can go to the `Getting Started <getting-"
+"started.html>`_ chapter."
 msgstr ""
 
-#: ../../installation-and-configuration.rst:15
-msgid ""
-"Once finished, you can go to the `Getting Started <getting-started.html>`"
-" chapter."
-msgstr ""
-
-#: ../../installation-and-configuration.rst:19
+#: ../../installation-and-configuration.rst:20
 msgid "The long, manual way"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:21
+#: ../../installation-and-configuration.rst:22
 msgid ""
 "To understand what you do on your system when you install PaSSHport, "
 "follow the instructions below, that are more or less the step by step "
 "commands from the automated installation script."
 msgstr ""
 
-#: ../../installation-and-configuration.rst:23
+#: ../../installation-and-configuration.rst:24
 msgid "First of all, we’ll need to update your repositories :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:28
+#: ../../installation-and-configuration.rst:30
 msgid ""
 "We will install python3-pip, and other packages that we’ll need later for"
 " this tutorial (it will get ~+100MB from the archives, so be patient) :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:33
+#: ../../installation-and-configuration.rst:36
 msgid "Let’s update pip :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:38
+#: ../../installation-and-configuration.rst:42
 msgid "Now, install virtual-env using pip :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:43
+#: ../../installation-and-configuration.rst:48
 msgid ""
 "Next will need to add a system user called « passhport », and switch to "
 "it :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:50
+#: ../../installation-and-configuration.rst:56
 msgid "We now need to create a virtual-env for passhport user :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:55
+#: ../../installation-and-configuration.rst:62
 msgid ""
 "Now that we have our virtual-env, we install the python’s modules we’ll "
 "need for PaSSHport :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:60
+#: ../../installation-and-configuration.rst:68
 msgid "Now, let’s start the real thing…"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:62
+#: ../../installation-and-configuration.rst:70
 msgid "Let’s install get passhport sources from github :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:74
+#: ../../installation-and-configuration.rst:83
 msgid ""
 "PaSSHport will need to write some logs, so, as root, we’ll create a "
 "directory in « /var/log », and give the ownership to the « passhport » "
 "user:"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:80
+#: ../../installation-and-configuration.rst:90
 msgid ""
 "We’ll also create the config directory, and copy the differents config "
 "file :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:88
+#: ../../installation-and-configuration.rst:99
 msgid ""
 "We’ll also need to make some modifications ine those config file, if you "
 "run passhportd on a distant server. Here we’ll change the default "
 "listening address (localhost) to the real IP of our server."
 msgstr ""
 
-#: ../../installation-and-configuration.rst:90
+#: ../../installation-and-configuration.rst:101
 msgid "First, passhportd :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:95
+#: ../../installation-and-configuration.rst:107
 msgid "Change the « LISTENING_IP » parameter, to the IP address of your server :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:123
+#: ../../installation-and-configuration.rst:136
 msgid ""
 "Change the following parameter in /etc/passhport/passhport.ini and "
 "/etc/passhport/passhport-admin.ini :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:125
+#: ../../installation-and-configuration.rst:138
 msgid "``PASSHPORTD_HOSTNAME = 192.168.122.56``"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:127
+#: ../../installation-and-configuration.rst:140
 msgid "We’ll need ssh publickey, so we generate an 4096 bits RSA key:"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:151
+#: ../../installation-and-configuration.rst:165
 msgid ""
 "This will be the key that’ll be use by PaSSHport to connect to your "
 "hosts. You can also generate a ECDSA key if you wish:"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:156
+#: ../../installation-and-configuration.rst:171
 msgid ""
 "Again as root, let’s make the directory that’ll contains the database "
 "(because we use SQLite for this tutorial):"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:162
+#: ../../installation-and-configuration.rst:178
 msgid ""
 "… then we’ll have to change 3 paramaters in the passhportd config file "
 "(as root, edit «/etc/passhport/passhportd.ini») :"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:169
+#: ../../installation-and-configuration.rst:186
 msgid ""
 "Now we can create the database and check that it has correcly been "
 "created:"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:182
+#: ../../installation-and-configuration.rst:200
 msgid ""
 "We’ll now need to create the certificate to secure the API. First, create"
 " the directory in which will be key and the cert, and make the directory "
 "rwx for passport only:"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:188
+#: ../../installation-and-configuration.rst:207
 msgid "Create the RSA key:"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:193
+#: ../../installation-and-configuration.rst:213
 msgid ""
 "There is a conf file provided for OpenSSL, to generate a minimal correct "
 "SSL cert. The file is:"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:195
+#: ../../installation-and-configuration.rst:215
 msgid "``/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf``"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:197
+#: ../../installation-and-configuration.rst:217
 msgid ""
 "Edit it, and add DNS name you’ll use to reach the API. For the tutorial, "
 "we’ll use both type : two IPs and two hostnames:"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:220
+#: ../../installation-and-configuration.rst:241
 msgid ""
 "Now, generate the certificate using this command (put on multiple lines, "
 "so you can copy/paste easily), but please adapt the subject line (-subj):"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:230
+#: ../../installation-and-configuration.rst:252
 msgid "Once executed, you’ll have a cert file next to the key file:"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:241
+#: ../../installation-and-configuration.rst:264
 msgid "Almost done… Hold on ! :)"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:243
+#: ../../installation-and-configuration.rst:266
 msgid ""
 "And now, we’re ready to go, just launch passhportd daemon (as user "
 "passhport ):"
 msgstr ""
 
-#: ../../installation-and-configuration.rst:249
+#: ../../installation-and-configuration.rst:273
 msgid ""
 "You can check in you browser, by going to the above URL (replace 0.0.0.0 "
 "by the IP on the host you installed passhportd): .. image:: images"
@@ -248,5 +241,24 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid ".. image:: images/passhportd-running.png"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You can run it directly from "
+#~ "command line (please ensure that curl"
+#~ " is installed : ``apt install curl``)"
+#~ " :"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "root@debian9:~# bash <(curl -s "
+#~ "https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils"
+#~ "/passhport-install-script-debian-8-9.sh)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Once finished, you can go to the"
+#~ " `Getting Started <getting-started.html>` "
+#~ "chapter."
 #~ msgstr ""
 
