@@ -7,12 +7,13 @@ The easy, automated way
 -----------------------
 Before starting, please be aware that we wrote a script that will do all described below automatically. You can review it `here <https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils/passhport-install-script-debian-8-9.sh>`.
 
-You can run it directly from command line (please ensure that curl is installed : ``apt install curl``) :
+You can run it directly from command line (please ensure that curl is installed : ``apt install curl`` :
 
 .. code-block:: none
-root@debian9:~# bash <(curl -s https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils/passhport-install-script-debian-8-9.sh)
 
-Once finished, you can go to the `Getting Started <getting-started.html>` chapter.
+  root@debian9:~# bash <(curl -s https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils/passhport-install-script-debian-8-9.sh)
+
+Once finished, you can go to the `Getting Started <getting-started.html>`_ chapter.
 
 
 The long, manual way
@@ -23,26 +24,31 @@ To understand what you do on your system when you install PaSSHport, follow the 
 First of all, we’ll need to update your repositories :
 
 .. code-block:: none
+
   root@debian9:~# apt update
 
 We will install python3-pip, and other packages that we’ll need later for this tutorial (it will get ~+100MB from the archives, so be patient) :
 
 .. code-block:: none
+
   root@debian9:~# apt install python3-pip git openssl
 
 Let’s update pip :
 
 .. code-block:: none
+
   root@debian9:~# pip3 install -U pip
 
 Now, install virtual-env using pip :
 
 .. code-block:: none
+
   root@debian9:~# pip3 install virtualenv
 
 Next will need to add a system user called « passhport », and switch to it :
 
 .. code-block:: none
+
   root@debian9:~# useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
   root@debian9:~# su - passhport
   passhport@debian9:~$
@@ -50,11 +56,13 @@ Next will need to add a system user called « passhport », and switch to it :
 We now need to create a virtual-env for passhport user :
 
 .. code-block:: none
+
   passhport@debian9:~$ virtualenv -p python3 passhport-run-env
 
 Now that we have our virtual-env, we install the python’s modules we’ll need for PaSSHport :
 
 .. code-block:: none
+
   passhport@debian9:~$ /home/passhport/passhport-run-env/bin/pip install pymysql sqlalchemy-migrate flask-migrate requests docopt configparser tabulate
 
 Now, let’s start the real thing…
@@ -62,6 +70,7 @@ Now, let’s start the real thing…
 Let’s install get passhport sources from github :
 
 .. code-block:: none
+
   passhport@debian9:~$ git clone http://github.com/LibrIT/passhport.git
   Clonage dans 'passhport'...
   remote: Counting objects: 2713, done.
@@ -74,12 +83,14 @@ Let’s install get passhport sources from github :
 PaSSHport will need to write some logs, so, as root, we’ll create a directory in « /var/log », and give the ownership to the « passhport » user:
 
 .. code-block:: none
+
   root@debian9:~# mkdir -p /var/log/passhport/
   root@debian9:~# chown passhport:passhport /var/log/passhport/
 
 We’ll also create the config directory, and copy the differents config file :
 
 .. code-block:: none
+
   root@debian9:~# mkdir /etc/passhport
   root@debian9:~# cp /home/passhport/passhport/passhport/passhport.ini /etc/passhport/.
   root@debian9:~# cp /home/passhport/passhport/passhport_admin/passhport-admin.ini /etc/passhport/.
@@ -90,11 +101,13 @@ We’ll also need to make some modifications ine those config file, if you run p
 First, passhportd :
 
 .. code-block:: none
+
   root@debian9:~# vim /etc/passhport/passhportd.ini
 
 Change the « LISTENING_IP » parameter, to the IP address of your server :
 
 .. code-block:: none
+
   # Passhportd configuration file. You should copy it to
   # /etc/passhport/passhportd.ini if you want to do modifications
   [SSL]
@@ -127,6 +140,7 @@ Change the following parameter in /etc/passhport/passhport.ini and /etc/passhpor
 We’ll need ssh publickey, so we generate an 4096 bits RSA key:
 
 .. code-block:: none
+
   root@debian9:~# su - passhport
   passhport@debian9:~$ ssh-keygen -t rsa -b 4096 -N "" -f "/home/passhport/.ssh/id_rsa"
   Generating public/private rsa key pair.
@@ -151,17 +165,20 @@ We’ll need ssh publickey, so we generate an 4096 bits RSA key:
 This will be the key that’ll be use by PaSSHport to connect to your hosts. You can also generate a ECDSA key if you wish:
 
 .. code-block:: none
+
   passhport@debian9:~$ /usr/bin/ssh-keygen -t ecdsa -b 521 -N "" -f "/home/passhport/.ssh/id_ecdsa"
 
 Again as root, let’s make the directory that’ll contains the database (because we use SQLite for this tutorial):
 
 .. code-block:: none
+
   root@debian9:~# mkdir -p /var/lib/passhport
   root@debian9:~# chown -R passhport:passhport /var/lib/passhport/
 
 … then we’ll have to change 3 paramaters in the passhportd config file (as root, edit «/etc/passhport/passhportd.ini») :
 
 .. code-block:: none
+
   SQLALCHEMY_DATABASE_DIR        = /var/lib/passhport/
   SQLALCHEMY_MIGRATE_REPO        = /var/lib/passhport/db_repository
   SQLALCHEMY_DATABASE_URI        = sqlite:////var/lib/passhport/app.db
@@ -169,6 +186,7 @@ Again as root, let’s make the directory that’ll contains the database (becau
 Now we can create the database and check that it has correcly been created:
 
 .. code-block:: none
+
   root@debian9:~# su - passhport
   passhport@debian9:~$ /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/db_create.py
   passhport@debian9:~$ ls -la /var/lib/passhport/
@@ -182,12 +200,14 @@ Now we can create the database and check that it has correcly been created:
 We’ll now need to create the certificate to secure the API. First, create the directory in which will be key and the cert, and make the directory rwx for passport only:
 
 .. code-block:: none
+
   passhport@debian9:~$ mkdir /home/passhport/certs
   passhport@debian9:~$ chmod 700 /home/passhport/certs
 
 Create the RSA key:
 
 .. code-block:: none
+
   [passhport@centos-7 ~]$ openssl genrsa -out "/home/passhport/certs/key.pem" 4096
 
 There is a conf file provided for OpenSSL, to generate a minimal correct SSL cert. The file is:
@@ -197,6 +217,7 @@ There is a conf file provided for OpenSSL, to generate a minimal correct SSL cer
 Edit it, and add DNS name you’ll use to reach the API. For the tutorial, we’ll use both type : two IPs and two hostnames:
 
 .. code-block:: none
+
   [req]
   distinguished_name      = req_distinguished_name
   req_extensions          = v3_req
@@ -220,6 +241,7 @@ Edit it, and add DNS name you’ll use to reach the API. For the tutorial, we’
 Now, generate the certificate using this command (put on multiple lines, so you can copy/paste easily), but please adapt the subject line (-subj):
 
 .. code-block:: none
+
   openssl req -new -key "/home/passhport/certs/key.pem" \
   -config "/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf" \
   -out "/home/passhport/certs/cert.pem" \
@@ -230,6 +252,7 @@ Now, generate the certificate using this command (put on multiple lines, so you 
 Once executed, you’ll have a cert file next to the key file:
 
 .. code-block:: none
+
   passhport@debian9:~$ ls -la /home/passhport/certs/
   total 16
   drwx------ 2 passhport passhport 4096 févr. 28 18:00 .
@@ -243,6 +266,7 @@ Almost done… Hold on ! :)
 And now, we’re ready to go, just launch passhportd daemon (as user passhport ):
 
 .. code-block:: none
+
   passhport@debian9:~$ /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/passhportd
    * Running on https://0.0.0.0:5000/ (Press CTRL+C to quit)
 
