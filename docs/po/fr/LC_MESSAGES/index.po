@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-23 15:55+0200\n"
+"POT-Creation-Date: 2017-10-25 00:01+0200\n"
 "PO-Revision-Date: 2017-10-23 10:09+0200\n"
 "Last-Translator: Raphael Berlamont <raphael.berlamont@librit.fr>\n"
 "Language-Team: Raphael Berlamont <raphael.berlamont@librit.fr>\n"
@@ -21,28 +21,26 @@ msgstr "Bienvenue sur la documentation de PaSSHport!"
 
 #: ../../index.rst:4
 msgid ""
-"Your main adminsys goes away of your company. Are you sure all his ssh "
-"access are revoked? What about the interns? The consultants?... Let's fix"
-" this."
+"Your main adminsys leaves your company. Are you sure all his ssh access "
+"are revoked? What about the interns? The consultants?... Let's fix this."
 msgstr ""
 "Votre admin sys quitte votre société. Êtes-vous sûrs que tous ses accès "
 "ssh sont révoqué ? Et les stagières ? Les prestataires ?... Réglons ça."
 
-#: ../../index.rst:6
+#: ../../index.rst:7
 msgid "Table of content :"
 msgstr "Table des matières :"
 
-#: ../../index.rst:13
+#: ../../index.rst:21
 msgid "Some links :"
 msgstr "Quelques liens :"
 
-#: ../../index.rst:15
-#, fuzzy
+#: ../../index.rst:23
 msgid "PaSSHport project Site : <http://www.passhport.org>"
 msgstr "Site du projet : <http://www.passhport.org>"
 
-#: ../../index.rst:16
+#: ../../index.rst:24
 #, fuzzy
-msgid "PaSSHport github : <https://www.github.com/LibrIT/passhport>"
+msgid "Github : <https://www.github.com/LibrIT/passhport>"
 msgstr "Github : <https://www.github.com/LibrIT/passhport>"
 
