@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-25 02:22+0200\n"
+"POT-Creation-Date: 2017-10-25 16:45+0200\n"
 "PO-Revision-Date: 2017-10-25 00:10+0200\n"
 "Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
 "Language-Team: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
@@ -112,11 +112,6 @@ msgstr ""
 "un *usergroup*, un *targetgroup*, et combiner ces derniers pour "
 "configurer les accès"
 
-#: ../../introduction.rst:28
-msgid "#.. image:: images/architecture.png"
-msgstr "#.. image:: images/architecture.png"
-
 #: ../../introduction.rst:30
 msgid "Now let's go to the installation process…"
 msgstr "Et maintenant, passons à l'installation…"
-

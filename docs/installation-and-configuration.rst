@@ -271,4 +271,5 @@ And now, we’re ready to go, just launch passhportd daemon (as user passhport )
    * Running on https://0.0.0.0:5000/ (Press CTRL+C to quit)
 
 You can check in you browser, by going to the above URL (replace 0.0.0.0 by the IP on the host you installed passhportd):
+
 .. image:: images/passhportd-running.png

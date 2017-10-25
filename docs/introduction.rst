@@ -25,6 +25,6 @@ PaSSHport project is composed with 3 main programs :
 * passhport : the script that receive the connection (it does NOT replace the SSH server). Think of it has the shell a user falls into when connecting to a PaSSHport gateway
 * passhport-admin : the script that is used to configure passhportd. SysAdmins will use it to add a *user*, a *target*, a *usergroup*, a *targetgroup*, and combine those to configure accesses
 
-#.. image:: images/architecture.png
+.. image:: images/Composants_PaSSHport_EN.png
 
 Now let's go to the installation process…
