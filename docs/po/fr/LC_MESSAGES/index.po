@@ -4,7 +4,7 @@
 # Raphaël Berlamont <raphael.berlamont@librit.fr>, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: PaSSHport 1\n"
+"Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-10-25 02:22+0200\n"
 "PO-Revision-Date: 2017-10-23 10:09+0200\n"
@@ -36,12 +36,10 @@ msgid "Some links :"
 msgstr "Quelques liens :"
 
 #: ../../index.rst:23
-#, fuzzy
 msgid "Project Site : <http://www.passhport.org>"
 msgstr "Site du projet : <http://www.passhport.org>"
 
 #: ../../index.rst:24
-#, fuzzy
 msgid "Github : <https://www.github.com/LibrIT/passhport>"
 msgstr "Github : <https://www.github.com/LibrIT/passhport>"
 

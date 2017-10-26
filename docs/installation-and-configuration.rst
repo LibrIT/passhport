@@ -1,11 +1,14 @@
+PaSSHport Installation
+######################
+
 Installation on Debian 8 or 9
 =============================
 
-The followings shows you how to install and run PaSSHport on Debian 8 (Jessie) or 9 (Stretch). We start from a minimal installation of Debian (available `here <http://www.debian.org>`_), **with openssh-server and curl** packages installed.
+The followings shows you how to install and run PaSSHport on Debian 8 (Jessie) or 9 (Stretch). We start from a minimal installation of Debian (available `here <http://www.debian.org>`__), **with openssh-server and curl** packages installed.
 
 The easy, automated way
 -----------------------
-You can review the installation script `here <https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils/passhport-install-script-debian-8-9.sh>`_.
+You can review the installation script `here <https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils/passhport-install-script-debian-8-9.sh>`__.
 
 You can run it directly from command line ( please ensure that curl is installed : ``apt install curl`` ):
 
