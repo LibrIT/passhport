@@ -53,7 +53,7 @@ msgstr "Enregistrer toutes les sessions des utilisateurs"
 
 #: ../../introduction.rst:13
 msgid "Can be fully configure and used from the command line interface"
-msgstr "Être entièrement configurable et utilisé depuis la ligne de commandes"
+msgstr "Être entièrement configurable et utilisable depuis la ligne de commandes"
 
 #: ../../introduction.rst:14
 msgid "Can do Secured Copy (scp)"
