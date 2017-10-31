@@ -6,8 +6,7 @@ from __future__ import unicode_literals
 
 from app import app, db
 from app.models_mod import target,usergroup,targetgroup
-
-
+   
 class User(db.Model):
     """User defines information for every adminsys using passhport"""
     __tablename__ = "user"

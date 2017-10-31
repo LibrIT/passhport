@@ -8,12 +8,60 @@ from io import open
 import os, sys, stat
 import config
 
+from ldap3 import Server, Connection, ALL
 from flask import request
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 from app import app, db
 from app.models_mod import user, target
 from . import api
+
+def try_ldap_login(login, password):
+    """ Connect to a LDAP directory to verify user login/passwords"""
+    s = Server(config.LDAPURI, port=config.LDAPPORT, use_ssl=False, get_info=ALL)
+    c = Connection(s, 
+                   user = "uid={},".format(login) + config.LDAPOU , 
+                   password=password)
+    c.open()
+    c.bind()
+    return c.result["description"] # "success" if bind is ok
+
+
+def try_login(login, password, method="LDAP"):
+    if method == "LDAP":
+        return try_ldap_login(login, password)
+
+
+@app.route("/user/login", methods=["POST"])
+def user_login():
+    """Allow passhportd to handle login/passwords for users"""
+    # Only POST data are handled
+    if request.method != "POST":
+        return "ERROR: POST method is required ", 405, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    # Simplification for the reading
+    login = request.form["login"]
+    password = request.form["password"]
+
+    # Check for required fields
+    if not login or not password:
+        return "ERROR: The login and password are required ", 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    # Check data validity uppon LDAP/local/whatever...
+    result = try_login(login, password)
+    if result == "success":
+        print("Authentication ok for {}".format(login))
+        # If the LDAP connection is ok, user can connect
+        return "Authorized", 200, \
+               {"content-type": "text/plain; charset=utf-8"}
+    else:
+        print("Authentication error for {} => ".format(login) + result)
+        return "Refused: " + result, 200, \
+               {"content-type": "text/plain; charset=utf-8"}
+    
+
 
 @app.route("/user/list")
 def user_list():

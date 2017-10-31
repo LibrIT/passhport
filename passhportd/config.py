@@ -36,9 +36,15 @@ PYTHON_PATH = conf.get("Environment", "PYTHON_PATH")
 """ Server configuration """
 HOST =  conf.get("Network", "LISTENING_IP")
 
+""" LDAP configuration """
+LDAPURI = conf.get("LDAP", "LDAP_PROVIDER_URL")
+LDAPPORT = int(conf.get("LDAP", "LDAP_PORT"))
+LDAPOU = conf.get("LDAP", "LDAP_USER_OU")
+
 """ SSL Configuration """
 SSL            = conf.get("SSL", "SSL")
 SSL_CERTIFICAT = conf.get("SSL", "SSL_CERTIFICAT")
 SSL_KEY        = conf.get("SSL", "SSL_KEY")
+
 
 
