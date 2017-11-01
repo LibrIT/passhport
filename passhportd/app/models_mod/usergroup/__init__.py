@@ -37,6 +37,7 @@ class Usergroup(db.Model):
     # Relations
     members = db.relationship("User", secondary="group_user")
     targets = db.relationship("Target", secondary="target_group")
+    tgmembers = db.relationship("Targetgroup", secondary="tgroup_group")
     gmembers = db.relationship(
         "Usergroup",
         secondary=group_of_group,
@@ -248,6 +249,7 @@ class Usergroup(db.Model):
 
         return usergroups
 
+
     def accessible_target_list(self, checked_usergroups = []):
         """Return all the targets this usergroups give access to"""
         accessible_targets = []
@@ -265,7 +267,14 @@ class Usergroup(db.Model):
                     if target not in self.targets:
                         accessible_targets.append(target)
 
+        # 3. list all the target accessible through targetgroups
+        for targetgroup in self.tgmembers:
+            for target in targetgroup.accessible_target_list():
+                if target not in self.targets:
+                    accessible_targets.append(target)
+
         return accessible_targets
+
 
     def show_targets(self, indentation):
         """Return all targets the group gives access
