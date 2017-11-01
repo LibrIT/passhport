@@ -188,22 +188,34 @@ class Targetgroup(db.Model):
         return targetnames
 
 
-    def all_targetname_list(self, parsed_targetgroups = None):
-        """Return a list with all the targets of this targetgroup"""
+    def accessible_target_list(self, parsed_targetgroups = None, style="object"):
+        """Return accessible targets as an object list or target name list"""
         if parsed_targetgroups is None :
             parsed_targetgroups = []
 
-        targetnames = self.targetname_list()
+        targets = self.tmembers
 
         for targetgroup in self.tgmembers:
             if targetgroup not in parsed_targetgroups:
                 parsed_targetgroups.append(targetgroup)
+                for target in targetgroup.accessible_target_list(
+                                            parsed_targetgroups = parsed_targetgroups,
+                                            style = style):
+                    if target not in targets:
+                        targets.append(target)
+        # Return target objects or names depending of the style                
+        if style == "names":
+            targetnames = []
+            for target in targets:
+                targetnames.append(target.show_name())
+            targets = sorted(targetnames)
 
-                for targetname in targetgroup.all_targetname_list(parsed_targetgroups):
-                    if targetname not in targetnames:
-                        targetnames.append(targetname)
+        return targets
 
-        return targetnames
+
+    def all_targetname_list(self, parsed_targetgroups = None):
+        """Return a list with all the targets of this targetgroup"""
+        return accessible_target_list(parsed_targetgroups, style="names")
 
 
     # Usergroup management

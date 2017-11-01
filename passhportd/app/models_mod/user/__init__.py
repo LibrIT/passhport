@@ -19,8 +19,11 @@ class User(db.Model):
         nullable=False)
     comment = db.Column(db.String(500), index=True)
 
+
     # Relations (in targetgroups)
     targets = db.relationship("Target", secondary="target_user")
+    usergroups = db.relationship("Usergroup", secondary="group_user")
+    targetgroups = db.relationship("Targetgroup", secondary="tgroup_user")
     # Admins - can admin usergroups and targetgroups (add and remove users)
     adminoftg = db.relationship("Targetgroup", secondary="tg_admins")
     adminofug = db.relationship("Usergroup", secondary="ug_admins")
@@ -35,7 +38,7 @@ class User(db.Model):
         output.append("Comment: {}".format(self.comment))
         output.append("Accessible target list: " + \
             " ".join(self.accessible_targetname_list()))
-        output.append("Accessible targets:\n" + \
+        output.append("\nDetails in access:\n" + \
             "".join(self.all_access()))
 
         return "\n".join(output)
@@ -60,31 +63,35 @@ class User(db.Model):
 
     def accessible_targetname_list(self):
         """Return target names which are accessible to the user"""
-        targetnames = []
+        return self.accessible_target_list("names")
 
-        query = db.session.query(
-            target.Target).order_by(
-            target.Target.name).all()
-
-        for each_target in query:
-            if self.name in each_target.list_all_usernames():
-                targetnames.append(each_target.show_name())
-
-        return targetnames
-
-
-    def accessible_target_list(self):
-        """Return target objects which are accessible to the user"""
+    def accessible_target_list(self, style="object"):
+        """Return targets accessible to the users (as object or names list)"""
         targets = []
 
-        query = db.session.query(
-            target.Target).order_by(
-            target.Target.name).all()
+        # 1. list all the directly attached targets
+        for target in self.targets:
+            targets.append(target)
+        
+        # 2. list all the targets accessible through usergroup
+        for usergroup in self.usergroups:
+            for target in usergroup.accessible_target_list():
+                if target not in targets:
+                    targets.append(target)
 
-        for each_target in query:
-            if self.name in each_target.list_all_usernames():
-                targets.append(each_target)
+        # 3. list all the targets accessible through targetgroup
+        for targetgroup in self.targetgroups:
+            for target in targetgroup.accessible_target_list():
+                if target not in targets:
+                    targets.append(target)
 
+        # return target objects or names depending of style
+        if style == "names":
+            targetnames = []
+            for target in targets:
+                targetnames.append(target.show_name())
+            targets = sorted(targetnames)
+        
         return targets
 
 
@@ -120,27 +127,28 @@ class User(db.Model):
 
     def all_access(self):
         """Return a detailled view of the path to the differents targets"""
-        targetspaths = []
 
-        #First list the targets where the user is directly attached
-        #We will check all the accessible targets, let list them
-        accessible_targets = self.accessible_target_list()
-        if accessible_targets:
-            targetspaths.append("Directly attached: \n")
-            for each_target in accessible_targets:
-                if self in each_target.user_list():
-                    targetspaths.append(each_target.name + "\n")
+        output = "Accessible directly: "
 
-        #Secondly list all the target the user can access through his groups
-        #So we need to list all the groups the user is in
-        my_usergroups = self.direct_usergroups()
+        # 1. list all the directly attached targets
+        for target in self.targets:
+            output = output + target.show_name() + " ; "
 
-        for each_usergroup in my_usergroups:
-            targetspaths.append("".join(each_usergroup.show_targets(0)) + "\n")
+        output = output + "\nAccessible through usergroups: "
+        # 2. list all the targets accessible through usergroup
+        for usergroup in self.usergroups:
+            output = output + "\n" + usergroup.show_name() + ": "
+            for target in usergroup.accessible_target_list():
+                output = output + target.show_name() + " ; "
 
-        #Finaly the targetgroups the user is in
-        my_targetgroups = self.direct_targetgroups()
-        for each_targetgroup in my_targetgroups:
-            targetspaths.append("".join(each_targetgroup.show_targets(0)))
-
-        return targetspaths
+        output = output + "\nAccessible through targetgroups: "
+        # 3. list all the targets accessible through targetgroup
+        for targetgroup in self.targetgroups:
+            output = output + "\n" + targetgroup.show_name() + ": "
+            for target in targetgroup.accessible_target_list():
+                output = output + target.show_name() + " ; "
+       
+        output = output + "\n"
+        
+        return output
+        
