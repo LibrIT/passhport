@@ -194,8 +194,11 @@ if __name__ == '__main__':
     url_passhport = "http" + conf.getboolean("SSL", "SSL")*"s" + \
                     "://" + conf.get("Network", "PASSHPORTD_HOSTNAME") + \
                     ":" + conf.get("Network", "PORT") + "/"
-    target_list = get(url_passhport + "user" + "/accessible_targets/" + \
-                  username).split("\n")
+    try:
+        target_list = get(url_passhport + "user" + "/accessible_targets/" + \
+                      username).split("\n")
+    except AttributeError as e:
+        sys.exit("No user exists in database.")
     originalcmd = os.environ.get('SSH_ORIGINAL_COMMAND')
     choice = 0
  
