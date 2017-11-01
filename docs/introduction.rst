@@ -1,6 +1,9 @@
 Introduction to PaSSHport
 =========================
 
+What is PaSSHport ?
+-------------------
+
 PaSSHport is a software that allows you to control the SSH access of your IT components : Linux/Unix servers, network switchs, routers, WiFi access points, and any appliances that is accessed by SSH.
 In three words : who accesses what ?
 

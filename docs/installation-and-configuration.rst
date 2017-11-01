@@ -169,7 +169,7 @@ This will be the key that’ll be use by PaSSHport to connect to your hosts. You
 
 .. code-block:: none
 
-  passhport@debian9:~$ /usr/bin/ssh-keygen -t ecdsa -b 521 -N "" -f "/home/passhport/.ssh/id_ecdsa"
+  passhport@debian9:~$ ssh-keygen -t ecdsa -b 521 -N "" -f "/home/passhport/.ssh/id_ecdsa"
 
 Again as root, let’s make the directory that’ll contains the database (because we use SQLite for this tutorial) :
 
@@ -276,3 +276,48 @@ And now, we’re ready to go, just launch passhportd daemon (as user passhport )
 You can check in you browser, by going to the below URL (replace 0.0.0.0 by the IP on the host you installed passhportd) :
 
 .. image:: images/passhportd-running.png
+
+Use PostgreSQL has database backend
+===================================
+
+If you want to use PostgreSQL has the database backend you'll need to add a python module : psycopg2.
+
+As passhport user, install psycopg2 : 
+
+.. code-block:: none
+  $ /home/passhport/passhport-run-env/bin/pip install psycopg2
+
+Create a passhport user in you postgreSQL server (may be different on your distro, this is just an example) :
+
+.. code-block:: none
+ # su - postgres
+ $ createuser -D -S -R passhport && createdb -O passhport "passhport"
+
+Add a password to postgreSQL passhport user :
+
+.. code-block:: none
+ $ psql
+ psql (9.2.18)
+ Type "help" for help.
+
+ postgres=# ALTER USER "passhport" WITH PASSWORD 'MySUpErp45sw0rD';
+ ALTER ROLE
+ postgres=# \q
+ $
+
+Change the configuration of the *passhportd.ini* file (``/etc/passhport/passhportd.ini``). You need to change the ``SQLALCHEMY_DATABASE_URI`` parameter to :
+
+.. code-block:: none
+ SQLALCHEMY_DATABASE_URI        = postgresql://passhport:MySUpErp45sw0rD@localhost/passhport
+
+As passhport (system) user, initialize the database : 
+
+.. code-block:: none
+ $ /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/db_create.py
+
+Then you can launch *passhportd* (kill it before if it stills running) :
+
+.. code-block:: none
+ $ /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/passhportd
+
+PaSSHport now use PostgreSQL backend.
