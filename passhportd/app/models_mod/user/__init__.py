@@ -39,7 +39,7 @@ class User(db.Model):
         output.append("Accessible target list: " + \
             " ".join(self.accessible_targetname_list()))
         output.append("\nDetails in access:\n" + \
-            "".join(self.all_access()))
+            "".join(self.accessible_target_list("details")))
 
         return "\n".join(output)
 
@@ -51,7 +51,7 @@ class User(db.Model):
         output = output + "\"sshkey\": \"" + format(self.sshkey) + "\",\n"
         output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
         output = output + "\"accessibleTargetList\": \"" + format(self.accessible_targetname_list()) + "\",\n"
-        output = output + "\"accessibleTargets\": \"" + format(self.all_access()) + "\"\n"
+        output = output + "\"accessibleTargets\": \"" + format(self.accessible_target_list("details")) + "\"\n"
         output = output + "}"
 
         return output
@@ -68,20 +68,28 @@ class User(db.Model):
     def accessible_target_list(self, style="object"):
         """Return targets accessible to the users (as object or names list)"""
         targets = []
+        output = "Accessible directly: "
 
         # 1. list all the directly attached targets
         for target in self.targets:
             targets.append(target)
+            output = output + target.show_name() + " ; "
         
+        output = output + "\nAccessible through usergroups: "
         # 2. list all the targets accessible through usergroup
         for usergroup in self.usergroups:
+            output = output + "\n" + usergroup.show_name() + ": "
             for target in usergroup.accessible_target_list():
+                output = output + target.show_name() + " ; "
                 if target not in targets:
                     targets.append(target)
 
+        output = output + "\nAccessible through targetgroups: "
         # 3. list all the targets accessible through targetgroup
         for targetgroup in self.targetgroups:
+            output = output + "\n" + targetgroup.show_name() + ": "
             for target in targetgroup.accessible_target_list():
+                output = output + target.show_name() + " ; "
                 if target not in targets:
                     targets.append(target)
 
@@ -91,6 +99,8 @@ class User(db.Model):
             for target in targets:
                 targetnames.append(target.show_name())
             targets = sorted(targetnames)
+        elif style == "details":
+            targets = output
         
         return targets
 
@@ -124,31 +134,3 @@ class User(db.Model):
 
         return directtargetgroups
 
-
-    def all_access(self):
-        """Return a detailled view of the path to the differents targets"""
-
-        output = "Accessible directly: "
-
-        # 1. list all the directly attached targets
-        for target in self.targets:
-            output = output + target.show_name() + " ; "
-
-        output = output + "\nAccessible through usergroups: "
-        # 2. list all the targets accessible through usergroup
-        for usergroup in self.usergroups:
-            output = output + "\n" + usergroup.show_name() + ": "
-            for target in usergroup.accessible_target_list():
-                output = output + target.show_name() + " ; "
-
-        output = output + "\nAccessible through targetgroups: "
-        # 3. list all the targets accessible through targetgroup
-        for targetgroup in self.targetgroups:
-            output = output + "\n" + targetgroup.show_name() + ": "
-            for target in targetgroup.accessible_target_list():
-                output = output + target.show_name() + " ; "
-       
-        output = output + "\n"
-        
-        return output
-        
