@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-26 15:00+0200\n"
+"POT-Creation-Date: 2017-11-01 03:37+0100\n"
 "PO-Revision-Date: 2017-10-25 00:01+0200\n"
 "Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
 "Language-Team: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
@@ -288,4 +288,47 @@ msgstr ""
 "On peut vérifier à l'aide d'un navigateur, en se rendant à l'adresse ci-"
 "dessous (on remplace 0.0.0.0 par l'IP de l'hôte sur lequel on a installé "
 "passhportd) :"
+
+#: ../../installation-and-configuration.rst:281
+msgid "Use PostgreSQL has database backend"
+msgstr ""
+
+#: ../../installation-and-configuration.rst:283
+msgid ""
+"If you want to use PostgreSQL has the database backend you'll need to add"
+" a python module : psycopg2."
+msgstr ""
+
+#: ../../installation-and-configuration.rst:285
+msgid "As passhport user, install psycopg2 :"
+msgstr ""
+
+#: ../../installation-and-configuration.rst:290
+msgid ""
+"Create a passhport user in you postgreSQL server (may be different on "
+"your distro, this is just an example) :"
+msgstr ""
+
+#: ../../installation-and-configuration.rst:296
+msgid "Add a password to postgreSQL passhport user :"
+msgstr ""
+
+#: ../../installation-and-configuration.rst:308
+msgid ""
+"Change the configuration of the *passhportd.ini* file "
+"(``/etc/passhport/passhportd.ini``). You need to change the "
+"``SQLALCHEMY_DATABASE_URI`` parameter to :"
+msgstr ""
+
+#: ../../installation-and-configuration.rst:313
+msgid "As passhport (system) user, initialize the database :"
+msgstr ""
+
+#: ../../installation-and-configuration.rst:318
+msgid "Then you can launch *passhportd* (kill it before if it stills running) :"
+msgstr ""
+
+#: ../../installation-and-configuration.rst:323
+msgid "PaSSHport now use PostgreSQL backend."
+msgstr ""
 

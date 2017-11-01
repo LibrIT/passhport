@@ -4,9 +4,9 @@
 # Raphaël Berlamont <raphael.berlamont@librit.fr>, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: PaSSHport 1\n"
+"Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-25 16:45+0200\n"
+"POT-Creation-Date: 2017-10-26 15:05+0200\n"
 "PO-Revision-Date: 2017-10-25 00:10+0200\n"
 "Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
 "Language-Team: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
@@ -19,7 +19,11 @@ msgstr ""
 msgid "Introduction to PaSSHport"
 msgstr "Introduction à PaSSHport"
 
-#: ../../introduction.rst:4
+#: ../../introduction.rst:5
+msgid "What is PaSSHport ?"
+msgstr "Qu'est-ce que PaSSHport ?"
+
+#: ../../introduction.rst:7
 msgid ""
 "PaSSHport is a software that allows you to control the SSH access of your"
 " IT components : Linux/Unix servers, network switchs, routers, WiFi "
@@ -31,35 +35,35 @@ msgstr ""
 "points d'accès WiFi, ainsi que n'importe quelle brique accessible via "
 "SSH. En quatre mots : qui a accès à quoi ?"
 
-#: ../../introduction.rst:7
+#: ../../introduction.rst:10
 msgid "PaSSHport has been written with the following in mind :"
 msgstr "PaSSHport a été écrit avec les objectifs suivants : "
 
-#: ../../introduction.rst:9
+#: ../../introduction.rst:12
 msgid "Similar to `SSHgate <https://github.com/Tauop/sshGate>`_"
 msgstr "Similaire à `SSHgate <https://github.com/Tauop/sshGate>`_"
 
-#: ../../introduction.rst:10
+#: ../../introduction.rst:13
 msgid "Two main objects : targets and users (we'll see below what are those)"
 msgstr "Deux types d'objects : targets et users (Nous verrons ça un peu plus bas)"
 
-#: ../../introduction.rst:11
+#: ../../introduction.rst:14
 msgid "Objects can be grouped : targetgroups and usergroups"
 msgstr "Les objects peuvent être groupés"
 
-#: ../../introduction.rst:12
+#: ../../introduction.rst:15
 msgid "Record all sessions of users"
 msgstr "Enregistrer toutes les sessions des utilisateurs"
 
-#: ../../introduction.rst:13
+#: ../../introduction.rst:16
 msgid "Can be fully configure and used from the command line interface"
 msgstr "Être entièrement configurable et utilisable depuis la ligne de commandes"
 
-#: ../../introduction.rst:14
+#: ../../introduction.rst:17
 msgid "Can do Secured Copy (scp)"
 msgstr "Possibilité de faire des copy sécurisées (scp)"
 
-#: ../../introduction.rst:15
+#: ../../introduction.rst:18
 msgid ""
 "REST API based communication between components so that it can be easily "
 "integrated in an automated IT environment"
@@ -67,11 +71,11 @@ msgstr ""
 "Des communications entre les composants basées sur une API REST, pour une"
 " intégration plus aisée dans un IT automatisé"
 
-#: ../../introduction.rst:16
+#: ../../introduction.rst:19
 msgid "Use only OpenSource technologies"
 msgstr "Utiliser seulement (ou principalement) des technologies OpenSource"
 
-#: ../../introduction.rst:18
+#: ../../introduction.rst:21
 msgid ""
 "Please read below to understand the main components, and how they work "
 "together."
@@ -79,19 +83,19 @@ msgstr ""
 "Pour comprendre les composants principaux, et comment ils interagissent "
 "entre eux, veuillez lire ce qui suit."
 
-#: ../../introduction.rst:21
+#: ../../introduction.rst:24
 msgid "Components"
 msgstr "Composants"
 
-#: ../../introduction.rst:22
+#: ../../introduction.rst:25
 msgid "PaSSHport project is composed with 3 main programs :"
 msgstr "PaSSHport est composé de 3 programmes :"
 
-#: ../../introduction.rst:24
+#: ../../introduction.rst:27
 msgid "passhportd : the daemon that verify access rights, and store configuration"
 msgstr "passhportd : le démon qui enregistrent, et vérifie la configuration"
 
-#: ../../introduction.rst:25
+#: ../../introduction.rst:28
 msgid ""
 "passhport : the script that receive the connection (it does NOT replace "
 "the SSH server). Think of it has the shell a user falls into when "
@@ -101,7 +105,7 @@ msgstr ""
 "serveur SSH). Il faut le voir comme le shell sur lequel les utilisateurs "
 "arrivent quand ils se connectent à PaSSHport."
 
-#: ../../introduction.rst:26
+#: ../../introduction.rst:29
 msgid ""
 "passhport-admin : the script that is used to configure passhportd. "
 "SysAdmins will use it to add a *user*, a *target*, a *usergroup*, a "
@@ -112,6 +116,7 @@ msgstr ""
 "un *usergroup*, un *targetgroup*, et combiner ces derniers pour "
 "configurer les accès"
 
-#: ../../introduction.rst:30
+#: ../../introduction.rst:33
 msgid "Now let's go to the installation process…"
 msgstr "Et maintenant, passons à l'installation…"
+
