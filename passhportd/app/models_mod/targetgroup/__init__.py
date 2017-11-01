@@ -215,7 +215,7 @@ class Targetgroup(db.Model):
 
     def all_targetname_list(self, parsed_targetgroups = None):
         """Return a list with all the targets of this targetgroup"""
-        return accessible_target_list(parsed_targetgroups, style="names")
+        return self.accessible_target_list(parsed_targetgroups, style="names")
 
 
     # Usergroup management
