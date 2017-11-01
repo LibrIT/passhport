@@ -72,7 +72,7 @@ su - passhport -c "virtualenv -p python3 passhport-run-env"
 echo '##############################################################'
 echo '# Installing mandatory packages in the virtual environment…'
 echo '##############################################################'
-su - passhport -c "/home/passhport/passhport-run-env/bin/pip install pymysql sqlalchemy-migrate flask-migrate requests docopt configparser tabulate"
+su - passhport -c "/home/passhport/passhport-run-env/bin/pip install pymysql sqlalchemy-migrate flask-migrate requests docopt configparser tabulate flask-login ldap3"
 echo '##############################################################'
 echo '# Cloning passhport git from github'
 echo '##############################################################'
