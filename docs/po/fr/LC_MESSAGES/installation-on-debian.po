@@ -1,0 +1,231 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-02 16:35+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+
+#: ../../installation-on-debian.rst:2
+msgid "PaSSHport Installation"
+msgstr ""
+
+#: ../../installation-on-debian.rst:5
+msgid "Installation on Debian 8 or 9"
+msgstr ""
+
+#: ../../installation-on-debian.rst:7
+msgid ""
+"The followings shows you how to install and run PaSSHport on Debian 8 "
+"(Jessie) or 9 (Stretch). We start from a minimal installation of Debian "
+"(available `here <http://www.debian.org>`__), **with openssh-server and "
+"curl** packages installed."
+msgstr ""
+
+#: ../../installation-on-debian.rst:10
+msgid "The easy, automated way"
+msgstr ""
+
+#: ../../installation-on-debian.rst:11
+msgid ""
+"You can review the installation script `here "
+"<https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils"
+"/passhport-install-script-debian-8-9.sh>`__."
+msgstr ""
+
+#: ../../installation-on-debian.rst:13
+msgid ""
+"You can run it directly from command line ( please ensure that curl is "
+"installed : ``apt install curl`` ):"
+msgstr ""
+
+#: ../../installation-on-debian.rst:19
+msgid ""
+"Once finished, you can go to the `Getting Started <getting-"
+"started.html>`_ chapter."
+msgstr ""
+
+#: ../../installation-on-debian.rst:23
+msgid "The long, manual way"
+msgstr ""
+
+#: ../../installation-on-debian.rst:25
+msgid ""
+"To understand what you do on your system when you install PaSSHport, "
+"follow the instructions below, that are more or less the step by step "
+"commands from the automated installation script."
+msgstr ""
+
+#: ../../installation-on-debian.rst:27
+msgid "First of all, we’ll need to update your repositories :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:33
+msgid ""
+"We will install python3-pip, and other packages that we’ll need later for"
+" this tutorial (it will get ~+100MB from the archives, so be patient) :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:39
+msgid "Let’s update pip :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:45
+msgid "Now, install virtual-env using pip :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:51
+msgid ""
+"Next we will need to add a system user called « passhport », and switch "
+"to it :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:59
+msgid "We now need to create a virtual-env for passhport user :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:65
+msgid ""
+"Now that we have our virtual-env, we install the python’s modules we’ll "
+"need for PaSSHport :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:71
+msgid "Now, let’s start the real thing…"
+msgstr ""
+
+#: ../../installation-on-debian.rst:73
+msgid "Let’s get passhport sources from github :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:86
+msgid ""
+"PaSSHport will need to write some logs, so, as root, we’ll create a "
+"directory in « /var/log », and give the ownership to the « passhport » "
+"user:"
+msgstr ""
+
+#: ../../installation-on-debian.rst:93
+msgid ""
+"We’ll also create the config directory, and copy the differents config "
+"file :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:102
+msgid ""
+"We’ll also need to make some modifications in those config file, if you "
+"run passhportd on a distant server. Here we’ll change the default "
+"listening address (localhost) to the real IP of our server."
+msgstr ""
+
+#: ../../installation-on-debian.rst:104
+msgid "First, passhportd :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:110
+msgid "Change the « LISTENING_IP » parameter, to the IP address of your server :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:139
+msgid ""
+"Change the following parameter in /etc/passhport/passhport.ini and "
+"/etc/passhport/passhport-admin.ini :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:141
+msgid "``PASSHPORTD_HOSTNAME = 192.168.122.56``"
+msgstr ""
+
+#: ../../installation-on-debian.rst:143
+msgid "We’ll need ssh publickey, so we generate an 4096 bits RSA key:"
+msgstr ""
+
+#: ../../installation-on-debian.rst:168
+msgid ""
+"This will be the key that’ll be use by PaSSHport to connect to your "
+"hosts. You can also generate a ECDSA key if you wish :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:174
+msgid ""
+"Again as root, let’s make the directory that’ll contains the database "
+"(because we use SQLite for this tutorial) :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:181
+msgid ""
+"… then we’ll have to change 3 paramaters in the passhportd config file "
+"(as root, edit «/etc/passhport/passhportd.ini») :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:189
+msgid ""
+"Now we can create the database and check that it has correcly been "
+"created:"
+msgstr ""
+
+#: ../../installation-on-debian.rst:203
+msgid ""
+"We’ll now need to create the certificate to secure the API. First, create"
+" the directory in which will be key and the cert, and make the directory "
+"rwx for passport only :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:210
+msgid "Create the RSA key :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:216
+msgid ""
+"There is a conf file provided for OpenSSL, to generate a minimal correct "
+"SSL cert. The file is :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:218
+msgid "``/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf``"
+msgstr ""
+
+#: ../../installation-on-debian.rst:220
+msgid ""
+"Edit it, and add DNS name you’ll use to reach the API. For the tutorial, "
+"we’ll use two hostnames :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:244
+msgid ""
+"Now, generate the certificate using this command (put on multiple lines, "
+"so you can copy/paste easily), but please adapt the subject line (-subj) "
+":"
+msgstr ""
+
+#: ../../installation-on-debian.rst:255
+msgid "Once executed, you’ll have a cert file next to the key file :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:267
+msgid "Almost done… Hold on ! :)"
+msgstr ""
+
+#: ../../installation-on-debian.rst:269
+msgid ""
+"And now, we’re ready to go, just launch passhportd daemon (as user "
+"passhport ) :"
+msgstr ""
+
+#: ../../installation-on-debian.rst:276
+msgid ""
+"You can check in you browser, by going to the below URL (replace 0.0.0.0 "
+"by the IP on the host you installed passhportd) :"
+msgstr ""
+

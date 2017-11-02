@@ -10,7 +10,7 @@ Table of content :
    :maxdepth: 2
 
    introduction
-   installation-and-configuration
+   installation-and-configuration/index
    getting-started
    passhport-admin
    advanced-usage
