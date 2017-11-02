@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-02 16:35+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+
+#: ../../use-postgresql-as-backend.rst:2
+msgid "Use PostgreSQL as database backend"
+msgstr ""
+
+#: ../../use-postgresql-as-backend.rst:4
+msgid ""
+"If you want to use PostgreSQL has the database backend you'll need to add"
+" a python module : psycopg2."
+msgstr ""
+
+#: ../../use-postgresql-as-backend.rst:6
+msgid "As passhport user, install psycopg2 :"
+msgstr ""
+
+#: ../../use-postgresql-as-backend.rst:12
+msgid ""
+"Create a passhport user in you postgreSQL server (may be different on "
+"your distro, this is just an example) :"
+msgstr ""
+
+#: ../../use-postgresql-as-backend.rst:19
+msgid "Add a password to postgreSQL passhport user :"
+msgstr ""
+
+#: ../../use-postgresql-as-backend.rst:32
+msgid ""
+"Change the configuration of the *passhportd.ini* file "
+"(``/etc/passhport/passhportd.ini``). You need to change the "
+"``SQLALCHEMY_DATABASE_URI`` parameter to :"
+msgstr ""
+
+#: ../../use-postgresql-as-backend.rst:38
+msgid "As passhport (system) user, initialize the database :"
+msgstr ""
+
+#: ../../use-postgresql-as-backend.rst:44
+msgid "Then you can launch *passhportd* (kill it before if it stills running) :"
+msgstr ""
+
+#: ../../use-postgresql-as-backend.rst:50
+msgid "PaSSHport now use PostgreSQL backend."
+msgstr ""
+
