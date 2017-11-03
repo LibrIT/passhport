@@ -13,10 +13,10 @@ authorityKeyIdentifier	= keyid:always,issuer
 [req_distinguished_name]
 
 [ alternate_names ]
-DNS.1 = 127.0.0.1
-DNS.2 = localhost
-DNS.3 = passhport
-DNS.4 = bastion
-DNS.5 = bastion.passhport.org
-DNS.6 = bastion.librit.fr
-DNS.7 = passhport.librit.fr
+DNS.1 = localhost
+DNS.2 = passhport
+DNS.3 = passhport.passhport.org
+DNS.4 = passhport.librit.fr
+DNS.5 = bastion
+DNS.6 = bastion.passhport.org
+DNS.7 = bastion.librit.fr
