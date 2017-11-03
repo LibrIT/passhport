@@ -116,8 +116,8 @@ su - passhport -c "/home/passhport/passhport-run-env/bin/python /home/passhport/
 echo '##############################################################'
 echo '# Creating symbolink links to binaries…'
 echo '##############################################################'
-ln -s /home/passhport/passhport/scripts_utils/passhport-admin_v0.sh /usr/bin/passhport-admin
-ln -s /home/passhport/passhport/scripts_utils/launch_passhportd_v0.sh /usr/sbin/passhportd
+ln -s /home/passhport/passhport/tools/passhport-admin_v0.sh /usr/bin/passhport-admin
+ln -s /home/passhport/passhport/tools/launch_passhportd_v0.sh /usr/sbin/passhportd
 echo '##############################################################'
 echo '# Creating Web-API cert directory…'
 echo '##############################################################'
@@ -130,12 +130,12 @@ su - passhport -c "openssl genrsa -out "/home/passhport/certs/key.pem" 4096"
 echo '##############################################################'
 echo '# Adding choosen IP to the certificate…'
 echo '##############################################################'
-sed -i -e "s#^\(DNS.*\s*=\s*\)TO_CHANGE#\1`hostname -f`#g" /home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf 
+sed -i -e "s#^\(DNS.*\s*=\s*\)TO_CHANGE#\1`hostname -f`#g" /home/passhport/passhport/tools/openssl-for-passhportd.cnf 
 echo '##############################################################'
 echo '# Generating Web-API certificate…'
 echo '##############################################################'
 openssl req -new -key "/home/passhport/certs/key.pem" \
-	-config "/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf" \
+	-config "/home/passhport/passhport/tools/openssl-for-passhportd.cnf" \
 	-out "/home/passhport/certs/cert.pem" \
 	-subj "/C=FR/ST=Ile De France/L=Ivry sur Seine/O=LibrIT/OU=DSI/CN=passhport.librit.fr" \
 	-x509 \

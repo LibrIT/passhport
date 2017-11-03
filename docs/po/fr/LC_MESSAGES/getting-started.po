@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-01 03:37+0100\n"
+"POT-Creation-Date: 2017-11-03 17:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,113 +35,118 @@ msgstr ""
 msgid "For this tutorial, we will use the following infos :"
 msgstr ""
 
-#: ../../getting-started.rst:11
+#: ../../getting-started.rst:13
 msgid "1 PaSSHport node"
 msgstr ""
 
-#: ../../getting-started.rst:12
+#: ../../getting-started.rst:14
 msgid ""
 "We'll use a monolithic installation of PaSSHport : passhportd, passhport "
 "and passhport-admin are on the same host."
 msgstr ""
 
-#: ../../getting-started.rst:15
+#: ../../getting-started.rst:17
 msgid "3 users"
 msgstr ""
 
-#: ../../getting-started.rst:16
+#: ../../getting-started.rst:18
 msgid ""
 "John, a linux/unix administrator, who needs to access all linux/unix "
 "servers"
 msgstr ""
 
-#: ../../getting-started.rst:17
+#: ../../getting-started.rst:19
 msgid ""
 "Vincent, a network administrator, who needs to access all network "
 "appliances"
 msgstr ""
 
-#: ../../getting-started.rst:18
+#: ../../getting-started.rst:20
 msgid ""
 "Alice, a general appliance administrator who needs to access all tier "
 "appliances"
 msgstr ""
 
-#: ../../getting-started.rst:19
+#: ../../getting-started.rst:21
 msgid ""
 "Yann, a consultant who's here for a temporary mission about storage "
 "infrastructure, that need to access the NAS server and a the SAN bay"
 msgstr ""
 
-#: ../../getting-started.rst:22
+#: ../../getting-started.rst:24
 msgid "1 PaSSHport admin"
 msgstr ""
 
-#: ../../getting-started.rst:23
+#: ../../getting-started.rst:25
 msgid "Marc, the ISSM, who configures PaSSHport, to control all the access rights"
 msgstr ""
 
-#: ../../getting-started.rst:26
+#: ../../getting-started.rst:28
 msgid "3 types of targets"
 msgstr ""
 
-#: ../../getting-started.rst:27
+#: ../../getting-started.rst:29
 msgid "Linux/Unix servers :"
 msgstr ""
 
-#: ../../getting-started.rst:28
+#: ../../getting-started.rst:31
 msgid "1 web server, Linux, www-server / 10.0.1.24"
 msgstr ""
 
-#: ../../getting-started.rst:29
+#: ../../getting-started.rst:32
 msgid "1 VPN server, OpenBSD, vpn-srv1 / 10.0.23.51"
 msgstr ""
 
-#: ../../getting-started.rst:30
+#: ../../getting-started.rst:33
 msgid "1 NAS server, FreeBSD, nas-srv1 / 10.0.12.87"
 msgstr ""
 
-#: ../../getting-started.rst:31
+#: ../../getting-started.rst:35
 msgid "Network appliances"
 msgstr ""
 
-#: ../../getting-started.rst:32
+#: ../../getting-started.rst:37
 msgid "1 WiFi access points, net-AP9-23 / 172.22.9.23"
 msgstr ""
 
-#: ../../getting-started.rst:33
+#: ../../getting-started.rst:38
 msgid "1 router, net-RO10-98 / 172.16.10.98"
 msgstr ""
 
-#: ../../getting-started.rst:34
+#: ../../getting-started.rst:39
 msgid "1 network switch, net-SW22-57 / 172.20.22.57"
 msgstr ""
 
-#: ../../getting-started.rst:35
+#: ../../getting-started.rst:41
 msgid "Other appliances"
 msgstr ""
 
-#: ../../getting-started.rst:36
+#: ../../getting-started.rst:43
 msgid "1 IPBX, ipbx1 / 10.192.98.76"
 msgstr ""
 
-#: ../../getting-started.rst:37
+#: ../../getting-started.rst:44
 msgid "1 Network printer, prntr44 / 192.168.254.44"
 msgstr ""
 
-#: ../../getting-started.rst:38
+#: ../../getting-started.rst:45
 msgid "1 SAN bay, san1 / 10.192.1.10"
 msgstr ""
 
-#: ../../getting-started.rst:41
+#: ../../getting-started.rst:48
 msgid "Configure targets"
 msgstr ""
 
-#: ../../getting-started.rst:42
+#: ../../getting-started.rst:49
 msgid "First of all, we'll include the targets into PaSSHport."
 msgstr ""
 
-#: ../../getting-started.rst:44
-msgid "Let's connect to your PaSSHport node, and add the linux target :"
+#: ../../getting-started.rst:51
+msgid ""
+"Let's connect to your PaSSHport node, and add the linux target, you can "
+"do this as passhport :"
 msgstr ""
+
+#~ msgid "Let's connect to your PaSSHport node, and add the linux target :"
+#~ msgstr ""
 
