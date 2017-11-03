@@ -60,10 +60,10 @@ then
 		fi
 	done
 	IP_GATEWAY=`/sbin/ip route|awk '/default/ { print $3 }'`
-	echo "DNS.3 = ${IP_GATEWAY}" >> "/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf" 
-	echo "DNS.4 = ${PASSHPORTD_HOSTNAME}" >> "/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf" 
+	echo "DNS.3 = ${IP_GATEWAY}" >> "/home/passhport/passhport/tools/openssl-for-passhportd.cnf" 
+	echo "DNS.4 = ${PASSHPORTD_HOSTNAME}" >> "/home/passhport/passhport/tools/openssl-for-passhportd.cnf" 
 	su - passhport -c "openssl req -new -key \"/home/passhport/certs/key.pem\" \
-				-config \"/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf\" \
+				-config \"/home/passhport/passhport/tools/openssl-for-passhportd.cnf\" \
 				-out \"/home/passhport/certs/cert.pem\" \
 				-subj '/C=FR/ST=Ile De France/L=Ivry sur Seine/O=LibrIT/OU=DSI/CN=${PASSHPORTD_HOSTNAME}' \
 				-x509 -days 365 -sha256\
