@@ -40,7 +40,7 @@ msgstr ""
 #: ../../installation-on-debian.rst:11
 msgid ""
 "You can review the installation script `here "
-"<https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils"
+"<https://raw.githubusercontent.com/Raphux/passhport/master/tools"
 "/passhport-install-script-debian-8-9.sh>`__."
 msgstr ""
 
@@ -193,7 +193,7 @@ msgid ""
 msgstr ""
 
 #: ../../installation-on-debian.rst:218
-msgid "``/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf``"
+msgid "``/home/passhport/passhport/tools/openssl-for-passhportd.cnf``"
 msgstr ""
 
 #: ../../installation-on-debian.rst:220

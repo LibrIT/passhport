@@ -8,13 +8,13 @@ The followings shows you how to install and run PaSSHport on Debian 8 (Jessie) o
 
 The easy, automated way
 -----------------------
-You can review the installation script `here <https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils/passhport-install-script-debian-8-9.sh>`__.
+You can review the installation script `here <https://raw.githubusercontent.com/Raphux/passhport/master/tools/passhport-install-script-debian-8-9.sh>`__.
 
 You can run it directly from command line ( please ensure that curl is installed : ``apt install curl`` ):
 
 .. code-block:: none
 
-  root@debian9:~# bash <(curl -s https://raw.githubusercontent.com/Raphux/passhport/master/scripts_utils/passhport-install-script-debian-8-9.sh)
+  root@debian9:~# bash <(curl -s https://raw.githubusercontent.com/Raphux/passhport/master/tools/passhport-install-script-debian-8-9.sh)
 
 Once finished, you can go to the `Getting Started <getting-started.html>`_ chapter.
 
@@ -215,7 +215,7 @@ Create the RSA key :
 
 There is a conf file provided for OpenSSL, to generate a minimal correct SSL cert. The file is :
 
-``/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf``
+``/home/passhport/passhport/tools/openssl-for-passhportd.cnf``
 
 Edit it, and add DNS name you’ll use to reach the API. For the tutorial, we’ll use two hostnames :
 
@@ -246,7 +246,7 @@ Now, generate the certificate using this command (put on multiple lines, so you 
 .. code-block:: none
 
   openssl req -new -key "/home/passhport/certs/key.pem" \
-  -config "/home/passhport/passhport/scripts_utils/openssl-for-passhportd.cnf" \
+  -config "/home/passhport/passhport/tools/openssl-for-passhportd.cnf" \
   -out "/home/passhport/certs/cert.pem" \
   -subj "/C=FR/ST=Ile De France/L=Ivry sur Seine/O=LibrIT/OU=DSI/CN=passhport.librit.fr" \
   -x509 -days 365 -sha256 \
