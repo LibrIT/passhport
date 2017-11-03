@@ -96,7 +96,7 @@ We’ll also create the config directory, and copy the differents config file :
 
   root@debian9:~# mkdir /etc/passhport
   root@debian9:~# cp /home/passhport/passhport/passhport/passhport.ini /etc/passhport/.
-  root@debian9:~# cp /home/passhport/passhport/passhport_admin/passhport-admin.ini /etc/passhport/.
+  root@debian9:~# cp /home/passhport/passhport/passhport-admin/passhport-admin.ini /etc/passhport/.
   root@debian9:~# cp /home/passhport/passhport/passhportd/passhportd.ini /etc/passhport/.
 
 We’ll also need to make some modifications in those config file, if you run passhportd on a distant server. Here we’ll change the default listening address (localhost) to the real IP of our server.

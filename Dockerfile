@@ -14,7 +14,7 @@ RUN mkdir -p /var/lib/passhport; chown -R passhport:passhport /var/lib/passhport
 RUN mkdir /etc/passhport && \
 	cp /home/passhport/passhport/passhport/passhport.ini /etc/passhport/. && \
 	sed -e 's/^LISTENING_IP =.*/LISTENING_IP = 0.0.0.0/' /home/passhport/passhport/passhportd/passhportd.ini > /etc/passhport/passhportd.ini && \
-	cp /home/passhport/passhport/passhport_admin/passhport-admin.ini /etc/passhport/.
+	cp /home/passhport/passhport/passhport-admin/passhport-admin.ini /etc/passhport/.
 ENTRYPOINT ["/home/passhport/passhport/tools/docker_switch.sh", "/home/passhport/passhport-run-env/bin/python"]
 
 EXPOSE 5000
