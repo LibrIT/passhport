@@ -117,7 +117,7 @@ echo '##############################################################'
 echo '# Creating symbolink links to binaries…'
 echo '##############################################################'
 ln -s /home/passhport/passhport/tools/passhport-admin.sh /usr/bin/passhport-admin
-ln -s /home/passhport/passhport/tools/launch_passhportd_v0.sh /usr/sbin/passhportd
+ln -s /home/passhport/passhport/tools/passhportd.sh /usr/sbin/passhportd
 echo '##############################################################'
 echo '# Creating Web-API cert directory…'
 echo '##############################################################'
