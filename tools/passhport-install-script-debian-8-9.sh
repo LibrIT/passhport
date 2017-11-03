@@ -142,13 +142,18 @@ openssl req -new -key "/home/passhport/certs/key.pem" \
 	-days 365 \
 	-sha256 \
 	-extensions v3_req
-echo 'Do you want to launch passhportd daemon ? (y/N)'
-read ANSWER
-if [ "${ANSWER}" == 'y' ] || [ "${ANSWER}" == 'yes' ]
+# We try to detect if we run on a systemd OS.
+if (stat /proc/1/exe | head -n 1 | grep systemd &>/dev/null)
 then
-	su - passhport -c "/home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/passhportd"
-else
-	echo 'To launch passhportd, run one of the following :'
-	echo '- As root : # su - passhport -c "/home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/passhportd"'
-	echo '- As passhport user : $ /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/passhportd'
+	echo '##############################################################'
+	echo '# Importing passhportd service in systemd…'
+	echo '##############################################################'
+	cp /home/passhport/passhport/tools/passhportd.service /etc/systemd/system/passhportd.service
+	systemctl daemon-reload
+	systemctl enable passhportd
+	echo "passhportd has been enabled at startup."
+	systemctl start passhportd
+	echo "passhportd has been started."
+	echo 'Please use systemctl to start/stop service.'
 fi
+

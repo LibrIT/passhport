@@ -1,0 +1,12 @@
+[Unit]
+Description=passhportd server
+After=network.target
+
+[Service]
+User=passhport
+ExecStart=/home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/passhportd
+WorkingDirectory=~
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
