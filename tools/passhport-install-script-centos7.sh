@@ -6,7 +6,7 @@ echo ''
 echo 'PLEASE enable EPEL repository BEFORE running this script !!'
 echo ''
 echo 'What this script will do to your existing system:'
-echo '- install "python3-pip", "git" and "openssl" packages.'
+echo '- install "python34-pip", "git" and "openssl" packages.'
 echo '- update PIP via pip3 script, installed previously'
 echo '- install virtualenv via pip3 script'
 echo '- add a "passhport" system user'
@@ -53,7 +53,7 @@ echo '##############################################################'
 yum install -y python34-pip 
 if [ $? -ne 0 ]
 then
-	echo 'Couldn't install python34-pip package. Can't continue without it.'
+	echo "Couldn't install python34-pip package. Can't continue without it."
 	echo 'Is EPEL repository correctly installed ?'
 	exit 1
 fi
@@ -165,5 +165,13 @@ then
 	echo 'Please use systemctl to start/stop service.'
 fi
 
-echo "PaSSHport is now installed on your system.
+echo "PaSSHport is now installed on your system."
+
+echo '##############################################################'
+echo '# You can test that passhportd is running by running :'
+echo '# curl -s --insecure https://localhost:5000'
+echo '# if it display : '
+echo '# "passhportd is running, gratz!"'
+echo '# you successfuly installed PaSSHport. Well done !'
+echo '##############################################################'
 
