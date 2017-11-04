@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-02 16:55+0100\n"
+"POT-Creation-Date: 2017-11-04 02:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -214,18 +214,44 @@ msgid "Once executed, you’ll have a cert file next to the key file :"
 msgstr ""
 
 #: ../../installation-and-configuration/installation-on-debian.rst:267
-msgid "Almost done… Hold on ! :)"
+msgid ""
+"As root, create some symlink to the two main *binaries*, passhportd and "
+"passhport-admin, so you can access it without typing full path :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-debian.rst:269
-msgid ""
-"And now, we’re ready to go, just launch passhportd daemon (as user "
-"passhport ) :"
+#: ../../installation-and-configuration/installation-on-debian.rst:274
+msgid "We now create the systemd service, and enables *passhportd* on startup :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-debian.rst:276
-msgid ""
-"You can check in you browser, by going to the below URL (replace 0.0.0.0 "
-"by the IP on the host you installed passhportd) :"
+#: ../../installation-and-configuration/installation-on-debian.rst:281
+msgid "And now, we’re ready to go, just launch passhportd daemon :"
 msgstr ""
+
+#: ../../installation-and-configuration/installation-on-debian.rst:287
+msgid ""
+"You can check that passhportd is running, by curling the IP you "
+"previously configured in */etc/passhport/passhportd.ini*, on port 5000 :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-debian.rst:295
+msgid ""
+"Bravo ! You successfully installed PaSSHport. You may now go to the "
+"`Getting Started <getting-started.html>`_ chapter."
+msgstr ""
+
+#~ msgid "Almost done… Hold on ! :)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "And now, we’re ready to go, just"
+#~ " launch passhportd daemon (as user "
+#~ "passhport ) :"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You can check in you browser, by"
+#~ " going to the below URL (replace "
+#~ "0.0.0.0 by the IP on the host "
+#~ "you installed passhportd) :"
+#~ msgstr ""
 

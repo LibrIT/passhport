@@ -14,7 +14,7 @@ You can run it directly from command line ( please ensure that curl is installed
 
 .. code-block:: none
 
-  root@debian9:~# bash <(curl -s https://raw.githubusercontent.com/Raphux/passhport/master/tools/passhport-install-script-debian-8-9.sh)
+  root@debian9:~# bash <(curl -s https://raw.githubusercontent.com/librit/passhport/master/tools/passhport-install-script-debian-8-9.sh)
 
 Once finished, you can go to the `Getting Started <getting-started.html>`_ chapter.
 
@@ -264,16 +264,32 @@ Once executed, you’ll have a cert file next to the key file :
   -rw------- 1 passhport passhport 3243 févr. 28 16:11 key.pem
   passhport@debian9:~$
 
-Almost done… Hold on ! :)
-
-And now, we’re ready to go, just launch passhportd daemon (as user passhport ) :
+As root, create some symlink to the two main *binaries*, passhportd and passhport-admin, so you can access it without typing full path :
 
 .. code-block:: none
 
-  passhport@debian9:~$ /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/passhportd
-   * Running on https://0.0.0.0:5000/ (Press CTRL+C to quit)
+  root@centos7:~# ln -s /home/passhport/passhport/tools/passhportd.sh /usr/bin/passhportd
+  root@centos7:~# ln -s /home/passhport/passhport/tools/passhport-admin.sh /usr/bin/passhport-admin
 
-You can check in you browser, by going to the below URL (replace 0.0.0.0 by the IP on the host you installed passhportd) :
+We now create the systemd service, and enables *passhportd* on startup :
 
-.. image:: images/passhportd-running.png
+.. code-block:: none
+  root@centos7:~# cp /home/passhport/passhport/tools/passhportd.service /etc/systemd/system/passhportd.service
+  root@centos7:~# systemctl daemon-reload
+  root@centos7:~# systemctl enable passhportd
 
+And now, we’re ready to go, just launch passhportd daemon :
+
+.. code-block:: none
+
+  root@centos7:~# systemctl start passhportd
+
+You can check that passhportd is running, by curling the IP you previously configured in */etc/passhport/passhportd.ini*, on port 5000 :
+
+.. code-block:: none
+
+  root@centos7:~# curl -s --insecure https://192.168.122.56:5000
+  passhportd is running, gratz!
+  root@centos7:~#
+
+Bravo ! You successfully installed PaSSHport. You may now go to the `Getting Started <getting-started.html>`_ chapter.
