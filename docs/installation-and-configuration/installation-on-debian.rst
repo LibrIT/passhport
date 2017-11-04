@@ -1,6 +1,3 @@
-PaSSHport Installation
-######################
-
 Installation on Debian 8 or 9
 =============================
 
