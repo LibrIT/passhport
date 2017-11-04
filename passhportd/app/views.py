@@ -10,4 +10,4 @@ from .views_mod import user, target, usergroup, targetgroup
 
 @app.route("/")
 def imalive():
-    return """Passhport is running, gratz!"""
+    return """passhportd is running, gratz!\n"""

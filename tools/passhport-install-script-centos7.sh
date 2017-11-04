@@ -1,11 +1,12 @@
 #!/bin/bash -e 
 echo 'Hi there ! Please read carefully the following (not long)'.
 echo 'This script will attempt to install PaSSHport on this system.'
-echo 'This script works on Debian 8 (Jessy) and Debian 9 (Stretch).'
-echo "It may also work on Debian 7, but it hasn't been tested."
+echo 'This script works on Centos 7, WITH EPEL repos configured !!'
+echo ''
+echo 'PLEASE enable EPEL repository BEFORE running this script !!'
 echo ''
 echo 'What this script will do to your existing system:'
-echo '- install "python3-pip", "git" and "openssl" packages.'
+echo '- install "python34-pip", "git" and "openssl" packages.'
 echo '- update PIP via pip3 script, installed previously'
 echo '- install virtualenv via pip3 script'
 echo '- add a "passhport" system user'
@@ -33,7 +34,7 @@ echo 'You may also remove virtualenv that has been installed by pip3 :'
 echo '# pip3 uninstall virtualenv'
 echo "Finally you may also purge the following packages if you don't need them"
 echo 'anymore:'
-echo 'python3-pip git openssl (# apt purge python3-pip git openssl)'
+echo 'python34-pip git openssl (# yum remove python34-pip git openssl)'
 echo ''
 echo 'Once you read and understood the above lines, you may proceed by typing'
 echo '"yes", or exit by the famous "CTRL+C" :'
@@ -46,13 +47,20 @@ do
 done
 
 echo '##############################################################'
-echo '# Updating repos…'
+echo '# Installing python34-pip. If it installs, it mean EPEL are'
+echo '# correctly configured.'
 echo '##############################################################'
-apt update
+yum install -y python34-pip 
+if [ $? -ne 0 ]
+then
+	echo "Couldn't install python34-pip package. Can't continue without it."
+	echo 'Is EPEL repository correctly installed ?'
+	exit 1
+fi
 echo '##############################################################'
-echo '# Installing python3-pip, git and openssl package…'
+echo '# Installing python34-pip, git and openssl package…'
 echo '##############################################################'
-apt install -y python3-pip git openssl
+yum install -y python34-pip git openssl
 echo '##############################################################'
 echo '# Updating pip…'
 echo '##############################################################'
