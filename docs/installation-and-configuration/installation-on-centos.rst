@@ -1,6 +1,3 @@
-PaSSHport Installation
-######################
-
 Installation on CentOS 7
 =============================
 
@@ -10,7 +7,7 @@ The easy, automated way
 -----------------------
 You can review the installation script `here <https://raw.githubusercontent.com/Raphux/passhport/master/tools/passhport-install-script-centos7.sh>`__.
 
-You can run it directly from command line ( please ensure that curl is installed : ``apt install curl`` ):
+You can run it directly from command line :
 
 .. code-block:: none
 
@@ -24,8 +21,15 @@ The long, manual way
 
 To understand what you do on your system when you install PaSSHport, follow the instructions below, that are more or less the step by step commands from the automated installation script.
 
-We install python34-pip package. If yum can't find the package, you **NEED** to configure EPEL repository.
-(you can try running the command : ``rpm -ivh http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm``, but the package version may be outdated, so… Google it.) :)
+Before continue, you **NEED** to configure EPEL repository. The purpose of the current documentation is not to describe this process, but you can try running the command : 
+
+.. code-block:: none
+
+  rpm -ivh http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+  
+if the package version may be outdated, find the latest one… Google it. :)
+
+Install python34-pip package :
 
 .. code-block:: none
 
