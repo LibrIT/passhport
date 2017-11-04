@@ -157,3 +157,12 @@ then
 	echo 'Please use systemctl to start/stop service.'
 fi
 
+echo "PaSSHport is now installed on your system."
+
+echo '##############################################################'
+echo '# You can test that passhportd is running by running :'
+echo '# curl -s --insecure https://localhost:5000'
+echo '# if it display : '
+echo '# "passhportd is running, gratz!"'
+echo '# you successfuly installed PaSSHport. Well done !'
+echo '##############################################################'
