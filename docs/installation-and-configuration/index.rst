@@ -7,4 +7,5 @@ This chapter describes the installation on different distro, and the main config
    :maxdepth: 2
 
    installation-on-debian
-   use-postgresql-as-backend.rst
+   installation-on-centos
+   use-postgresql-as-backend
