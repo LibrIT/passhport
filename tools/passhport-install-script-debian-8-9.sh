@@ -29,8 +29,16 @@ echo 'rm -rf /var/lib/passhport'
 echo 'rm -rf /var/log/passhport'
 echo 'rm /usr/bin/passhport-admin'
 echo 'rm /usr/sbin/passhportd'
+echo 'rm /etc/bash_completion.d/passhport-admin'
+echo ''
 echo 'You may also remove virtualenv that has been installed by pip3 :'
 echo '# pip3 uninstall virtualenv'
+echo ''
+echo 'Remove the systemd service :'
+echo '# systemctl disable passhportd'
+echo '# rm /etc/systemd/system/passhportd.service'
+echo '# systemctl daemon-reload'
+echo ''
 echo "Finally you may also purge the following packages if you don't need them"
 echo 'anymore:'
 echo 'python3-pip git openssl (# apt purge python3-pip git openssl)'
@@ -114,6 +122,15 @@ echo '# Creating database for PaSSHport (SQLite)…'
 echo '##############################################################'
 su - passhport -c "/home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/db_create.py"
 echo '##############################################################'
+echo '# Creating bash_completion file for passhport-admin script…'
+echo '##############################################################'
+if [ ! -d "/etc/bash_completion.d/" ]
+then
+	mkdir "/etc/bash_completion.d/"
+fi
+cp /home/passhport/passhport/tools/passhport-admin.bash_completion /etc/bash_completion.d/passhport-admin
+. /etc/bash_completion.d/passhport-admin
+echo '##############################################################'
 echo '# Creating symbolink links to binaries…'
 echo '##############################################################'
 ln -s /home/passhport/passhport/tools/passhport-admin.sh /usr/bin/passhport-admin
@@ -162,7 +179,7 @@ echo "PaSSHport is now installed on your system."
 echo '##############################################################'
 echo '# You can test that passhportd is running by running :'
 echo '# curl -s --insecure https://localhost:5000'
-echo '# if it display : '
+echo '# if it displays : '
 echo '# "passhportd is running, gratz!"'
 echo '# you successfuly installed PaSSHport. Well done !'
 echo '##############################################################'

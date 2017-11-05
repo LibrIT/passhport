@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-02 16:55+0100\n"
+"POT-Creation-Date: 2017-11-05 21:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Generated-By: Babel 2.5.1\n"
 
 #: ../../installation-and-configuration/index.rst:2
-msgid "Installation and configuration"
+msgid "PaSSHport installation and configuration"
 msgstr ""
 
 #: ../../installation-and-configuration/index.rst:4
@@ -26,4 +26,7 @@ msgid ""
 "This chapter describes the installation on different distro, and the main"
 " configuration principles."
 msgstr ""
+
+#~ msgid "Installation and configuration"
+#~ msgstr ""
 
