@@ -1,0 +1,847 @@
+#!/bin/bash
+
+targetlist()
+{
+
+	PASSHPORT_ADMIN=`echo ${COMP_LINE} | awk '{print $1}'`
+
+	TARGET_LIST=`${PASSHPORT_ADMIN} target list | xargs`
+	if [ "${TARGET_LIST}" != "No target in database." ]
+	then
+		COMPREPLY=( $( compgen -W "${TARGET_LIST}" -- $cur) )
+	fi
+}
+userlist()
+{
+
+	PASSHPORT_ADMIN=`echo ${COMP_LINE} | awk '{print $1}'`
+
+	USER_LIST=`${PASSHPORT_ADMIN} user list | xargs`
+	if [ "${USER_LIST}" != "No user in database." ]
+	then
+		COMPREPLY=( $( compgen -W "${USER_LIST}" -- $cur) )
+	fi
+}
+targetgrouplist()
+{
+
+	PASSHPORT_ADMIN=`echo ${COMP_LINE} | awk '{print $1}'`
+
+	TARGETGROUP_LIST=`${PASSHPORT_ADMIN} targetgroup list | xargs`
+	if [ "${TARGETGROUP_LIST}" != "No targetgroup in database." ]
+	then
+		COMPREPLY=( $( compgen -W "${TARGETGROUP_LIST}" -- $cur) )
+	fi
+}
+usergrouplist()
+{
+
+	PASSHPORT_ADMIN=`echo ${COMP_LINE} | awk '{print $1}'`
+
+	USERGROUP_LIST=`${PASSHPORT_ADMIN} usergroup list | xargs`
+	if [ "${USERGROUP_LIST}" != "No usergroup in database." ]
+	then
+		COMPREPLY=( $( compgen -W "${USERGROUP_LIST}" -- $cur) )
+	fi
+}
+
+_passhportadmin()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 1 ]; then
+		#COMPREPLY=( $( compgen -W '-i --interactive -i --interactive -h --help -h --help usergroup target user targetgroup' -- $cur) )
+		COMPREPLY=( $( compgen -W 'usergroup target user targetgroup' -- $cur) )
+	else
+		case ${COMP_WORDS[1]} in
+			usergroup)
+			_passhportadmin_usergroup
+		;;
+			target)
+			_passhportadmin_target
+		;;
+			user)
+			_passhportadmin_user
+		;;
+			targetgroup)
+			_passhportadmin_targetgroup
+		;;
+		esac
+
+	fi
+}
+
+_passhportadmin_usergroup()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 2 ]; then
+		COMPREPLY=( $( compgen -W ' adduser edit delete addusergroup search rmuser list create show rmusergroup' -- $cur) )
+	else
+		case ${COMP_WORDS[2]} in
+			adduser)
+			_passhportadmin_usergroup_adduser
+		;;
+			edit)
+			_passhportadmin_usergroup_edit
+		;;
+			delete)
+			_passhportadmin_usergroup_delete
+		;;
+			addusergroup)
+			_passhportadmin_usergroup_addusergroup
+		;;
+			search)
+			_passhportadmin_usergroup_search
+		;;
+			rmuser)
+			_passhportadmin_usergroup_rmuser
+		;;
+			list)
+			_passhportadmin_usergroup_list
+		;;
+			create)
+			_passhportadmin_usergroup_create
+		;;
+			show)
+			_passhportadmin_usergroup_show
+		;;
+			rmusergroup)
+			_passhportadmin_usergroup_rmusergroup
+		;;
+		esac
+
+	fi
+}
+
+_passhportadmin_usergroup_adduser()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		userlist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_usergroup_edit()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W '--newname= --newcomment= ' -- $cur) )
+	fi
+}
+
+_passhportadmin_usergroup_delete()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W '-f --force' -- $cur) )
+	fi
+}
+
+_passhportadmin_usergroup_addusergroup()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_usergroup_search()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -ge 3 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_usergroup_rmuser()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		userlist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_usergroup_list()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -ge 3 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_usergroup_create()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		COMPREPLY=( $( compgen -W '--comment= ' -- $cur) )
+	fi
+}
+
+_passhportadmin_usergroup_show()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_usergroup_rmusergroup()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_target()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 2 ]; then
+		COMPREPLY=( $( compgen -W 'adduser edit delete addusergroup rmuser search checkaccess list create show rmusergroup' -- $cur) )
+	else
+		case ${COMP_WORDS[2]} in
+			adduser)
+			_passhportadmin_target_adduser
+		;;
+			edit)
+			_passhportadmin_target_edit
+		;;
+			delete)
+			_passhportadmin_target_delete
+		;;
+			addusergroup)
+			_passhportadmin_target_addusergroup
+		;;
+			rmuser)
+			_passhportadmin_target_rmuser
+		;;
+			search)
+			_passhportadmin_target_search
+		;;
+			checkaccess)
+			_passhportadmin_target_checkaccess
+		;;
+			list)
+			_passhportadmin_target_list
+		;;
+			create)
+			_passhportadmin_target_create
+		;;
+			show)
+			_passhportadmin_target_show
+		;;
+			rmusergroup)
+			_passhportadmin_target_rmusergroup
+		;;
+		esac
+
+	fi
+}
+
+_passhportadmin_target_adduser()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		userlist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetlist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_target_edit()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	 
+	if [ $COMP_CWORD -eq 3 ]; then
+		targetlist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W '--newname= --newhostname= --newlogin= --newcomment= --newsshoptions= --newport= ' -- $cur) )
+	fi
+}
+
+_passhportadmin_target_delete()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		targetlist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W '-f --force -f --force ' -- $cur) )
+	fi
+}
+
+_passhportadmin_target_addusergroup()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetlist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_target_rmuser()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		userlist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetlist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_target_search()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -ge 3 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_target_checkaccess()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	
+	if [ $COMP_CWORD -eq 3 ]; then
+		targetlist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_target_list()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -ge 3 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_target_create()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W '--login= --comment= --sshoptions= --port= ' -- $cur) )
+	fi
+}
+
+_passhportadmin_target_show()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		targetlist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_target_rmusergroup()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetlist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_user()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 2 ]; then
+		COMPREPLY=( $( compgen -W ' edit delete search list create show' -- $cur) )
+	else
+		case ${COMP_WORDS[2]} in
+			edit)
+			_passhportadmin_user_edit
+		;;
+			delete)
+			_passhportadmin_user_delete
+		;;
+			search)
+			_passhportadmin_user_search
+		;;
+			list)
+			_passhportadmin_user_list
+		;;
+			create)
+			_passhportadmin_user_create
+		;;
+			show)
+			_passhportadmin_user_show
+		;;
+		esac
+
+	fi
+}
+
+_passhportadmin_user_edit()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		userlist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W '--newname= --newsshkey= --newcomment= ' -- $cur) )
+	fi
+}
+
+_passhportadmin_user_delete()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		userlist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W '-f --force -f --force ' -- $cur) )
+	fi
+}
+
+_passhportadmin_user_search()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -ge 3 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_user_list()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -ge 3 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_user_create()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 5 ]; then
+		COMPREPLY=( $( compgen -W '--comment=' -- $cur) )
+	fi
+}
+
+_passhportadmin_user_show()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	PASSHPORT_ADMIN=`echo ${COMP_LINE} | awk '{print $1}'`
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		userlist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 2 ]; then
+		COMPREPLY=( $( compgen -W ' edit delete adduser list rmtarget addtargetgroup rmtargetgroup addusergroup search rmuser addtarget create show rmusergroup' -- $cur) )
+	else
+		case ${COMP_WORDS[2]} in
+			edit)
+			_passhportadmin_targetgroup_edit
+		;;
+			delete)
+			_passhportadmin_targetgroup_delete
+		;;
+			adduser)
+			_passhportadmin_targetgroup_adduser
+		;;
+			list)
+			_passhportadmin_targetgroup_list
+		;;
+			rmtarget)
+			_passhportadmin_targetgroup_rmtarget
+		;;
+			addtargetgroup)
+			_passhportadmin_targetgroup_addtargetgroup
+		;;
+			rmtargetgroup)
+			_passhportadmin_targetgroup_rmtargetgroup
+		;;
+			addusergroup)
+			_passhportadmin_targetgroup_addusergroup
+		;;
+			search)
+			_passhportadmin_targetgroup_search
+		;;
+			rmuser)
+			_passhportadmin_targetgroup_rmuser
+		;;
+			addtarget)
+			_passhportadmin_targetgroup_addtarget
+		;;
+			create)
+			_passhportadmin_targetgroup_create
+		;;
+			show)
+			_passhportadmin_targetgroup_show
+		;;
+			rmusergroup)
+			_passhportadmin_targetgroup_rmusergroup
+		;;
+		esac
+
+	fi
+}
+
+_passhportadmin_targetgroup_edit()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W '--newname= --newcomment= ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_delete()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W '-f --force ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_adduser()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		userlist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_list()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -ge 3 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_rmtarget()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		targetlist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_addtargetgroup()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_rmtargetgroup()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_addusergroup()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_search()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -ge 3 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_rmuser()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		userlist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_addtarget()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		targetlist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_create()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -ge 3 ]; then
+		COMPREPLY=( $( compgen -W '--comment= ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_show()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 4 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+_passhportadmin_targetgroup_rmusergroup()
+{
+	local cur
+	cur="${COMP_WORDS[COMP_CWORD]}"
+
+	if [ $COMP_CWORD -eq 3 ]; then
+		usergrouplist
+	fi
+
+	if [ $COMP_CWORD -eq 4 ]; then
+		targetgrouplist
+	fi
+
+	if [ $COMP_CWORD -ge 5 ]; then
+		COMPREPLY=( $( compgen -W ' ' -- $cur) )
+	fi
+}
+
+#complete -o bashdefault -o default -o filenames -F _passhportadmin passhport-admin
+complete -F _passhportadmin passhport-admin

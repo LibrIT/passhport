@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-04 02:55+0100\n"
+"POT-Creation-Date: 2017-11-05 21:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,14 +18,10 @@ msgstr ""
 "Generated-By: Babel 2.5.1\n"
 
 #: ../../installation-and-configuration/installation-on-centos.rst:2
-msgid "PaSSHport Installation"
-msgstr ""
-
-#: ../../installation-and-configuration/installation-on-centos.rst:5
 msgid "Installation on CentOS 7"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:7
+#: ../../installation-and-configuration/installation-on-centos.rst:4
 msgid ""
 "The followings shows you how to install and run PaSSHport on CentOS 7. We"
 " start from a minimal installation of CentOS (available `here "
@@ -33,214 +29,240 @@ msgid ""
 "configured."
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:10
+#: ../../installation-and-configuration/installation-on-centos.rst:7
 msgid "The easy, automated way"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:11
+#: ../../installation-and-configuration/installation-on-centos.rst:8
 msgid ""
 "You can review the installation script `here "
 "<https://raw.githubusercontent.com/Raphux/passhport/master/tools"
 "/passhport-install-script-centos7.sh>`__."
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:13
-msgid ""
-"You can run it directly from command line ( please ensure that curl is "
-"installed : ``apt install curl`` ):"
+#: ../../installation-and-configuration/installation-on-centos.rst:10
+msgid "You can run it directly from command line :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:19
+#: ../../installation-and-configuration/installation-on-centos.rst:16
 msgid ""
 "Once finished, you can go to the `Getting Started <getting-"
 "started.html>`_ chapter."
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:23
+#: ../../installation-and-configuration/installation-on-centos.rst:20
 msgid "The long, manual way"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:25
+#: ../../installation-and-configuration/installation-on-centos.rst:22
 msgid ""
 "To understand what you do on your system when you install PaSSHport, "
 "follow the instructions below, that are more or less the step by step "
 "commands from the automated installation script."
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:27
+#: ../../installation-and-configuration/installation-on-centos.rst:24
 msgid ""
-"We install python34-pip package. If yum can't find the package, you "
-"**NEED** to configure EPEL repository. (you can try running the command :"
-" ``rpm -ivh http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e"
-"/epel-release-7-11.noarch.rpm``, but the package version may be outdated,"
-" so… Google it.) :)"
+"Before continue, you **NEED** to configure EPEL repository. The purpose "
+"of the current documentation is not to describe this process, but you can"
+" try running the command :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:34
+#: ../../installation-and-configuration/installation-on-centos.rst:30
+msgid "if the package version may be outdated, find the latest one… Google it. :)"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:32
+msgid "Install python34-pip package :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:38
 msgid ""
 "Install other packages that we’ll need later for this tutorial (it will "
 "get ~+100MB from the archives, so be patient) :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:40
+#: ../../installation-and-configuration/installation-on-centos.rst:44
 msgid "Let’s update pip :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:46
+#: ../../installation-and-configuration/installation-on-centos.rst:50
 msgid "Now, install virtual-env using pip :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:52
+#: ../../installation-and-configuration/installation-on-centos.rst:56
 msgid ""
 "Next we will need to add a system user called « passhport », and switch "
 "to it :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:60
+#: ../../installation-and-configuration/installation-on-centos.rst:64
 msgid "We now need to create a virtual-env for passhport user :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:66
+#: ../../installation-and-configuration/installation-on-centos.rst:70
 msgid ""
 "Now that we have our virtual-env, we install the python’s modules we’ll "
 "need for PaSSHport :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:72
+#: ../../installation-and-configuration/installation-on-centos.rst:76
 msgid "Now, let’s start the real thing…"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:74
+#: ../../installation-and-configuration/installation-on-centos.rst:78
 msgid "Let’s get passhport sources from github :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:87
+#: ../../installation-and-configuration/installation-on-centos.rst:91
 msgid ""
 "PaSSHport will need to write some logs, so, as root, we’ll create a "
 "directory in « /var/log », and give the ownership to the « passhport » "
 "user:"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:94
+#: ../../installation-and-configuration/installation-on-centos.rst:98
 msgid ""
 "We’ll also create the config directory, and copy the differents config "
 "file :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:103
+#: ../../installation-and-configuration/installation-on-centos.rst:107
 msgid ""
 "We’ll also need to make some modifications in those config file, if you "
 "run passhportd on a distant server. Here we’ll change the default "
 "listening address (localhost) to the real IP of our server."
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:105
+#: ../../installation-and-configuration/installation-on-centos.rst:109
 msgid "First, passhportd :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:111
+#: ../../installation-and-configuration/installation-on-centos.rst:115
 msgid "Change the « LISTENING_IP » parameter, to the IP address of your server :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:140
+#: ../../installation-and-configuration/installation-on-centos.rst:144
 msgid ""
 "Change the following parameter in /etc/passhport/passhport.ini and "
 "/etc/passhport/passhport-admin.ini :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:142
+#: ../../installation-and-configuration/installation-on-centos.rst:146
 msgid "``PASSHPORTD_HOSTNAME = 192.168.122.56``"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:144
+#: ../../installation-and-configuration/installation-on-centos.rst:148
 msgid "We’ll need ssh publickey, so we generate an 4096 bits RSA key:"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:169
+#: ../../installation-and-configuration/installation-on-centos.rst:173
 msgid ""
 "This will be the key that’ll be use by PaSSHport to connect to your "
 "hosts. You can also generate a ECDSA key if you wish :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:175
+#: ../../installation-and-configuration/installation-on-centos.rst:179
 msgid ""
 "Again as root, let’s make the directory that’ll contains the database "
 "(because we use SQLite for this tutorial) :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:182
+#: ../../installation-and-configuration/installation-on-centos.rst:186
 msgid ""
 "… then we’ll have to change 3 paramaters in the passhportd config file "
 "(as root, edit «/etc/passhport/passhportd.ini») :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:190
+#: ../../installation-and-configuration/installation-on-centos.rst:194
 msgid ""
 "Now we can create the database and check that it has correcly been "
 "created:"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:204
+#: ../../installation-and-configuration/installation-on-centos.rst:208
 msgid ""
 "We’ll now need to create the certificate to secure the API. First, create"
 " the directory in which will be key and the cert, and make the directory "
 "rwx for passport only :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:211
+#: ../../installation-and-configuration/installation-on-centos.rst:215
 msgid "Create the RSA key :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:217
+#: ../../installation-and-configuration/installation-on-centos.rst:221
 msgid ""
 "There is a conf file provided for OpenSSL, to generate a minimal correct "
 "SSL cert. The file is :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:219
+#: ../../installation-and-configuration/installation-on-centos.rst:223
 msgid "``/home/passhport/passhport/tools/openssl-for-passhportd.cnf``"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:221
+#: ../../installation-and-configuration/installation-on-centos.rst:225
 msgid ""
 "Edit it, and add DNS name you’ll use to reach the API. For the tutorial, "
 "we’ll use two hostnames (localhost added) :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:244
+#: ../../installation-and-configuration/installation-on-centos.rst:248
 msgid ""
 "Now, generate the certificate using this command (put on multiple lines, "
 "so you can copy/paste easily), but please adapt the subject line (-subj) "
 ":"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:255
+#: ../../installation-and-configuration/installation-on-centos.rst:259
 msgid "Once executed, you’ll have a cert file next to the key file :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:267
+#: ../../installation-and-configuration/installation-on-centos.rst:271
 msgid ""
 "As root, create some symlink to the two main *binaries*, passhportd and "
 "passhport-admin, so you can access it without typing full path :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:274
+#: ../../installation-and-configuration/installation-on-centos.rst:278
 msgid "We now create the systemd service, and enables *passhportd* on startup :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:281
+#: ../../installation-and-configuration/installation-on-centos.rst:285
 msgid "And now, we’re ready to go, just launch passhportd daemon :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:287
+#: ../../installation-and-configuration/installation-on-centos.rst:291
 msgid ""
 "You can check that passhportd is running, by curling the IP you "
 "previously configured in */etc/passhport/passhportd.ini*, on port 5000 :"
 msgstr ""
 
-#: ../../installation-and-configuration/installation-on-centos.rst:295
+#: ../../installation-and-configuration/installation-on-centos.rst:299
 msgid ""
 "Bravo ! You successfully installed PaSSHport. You may now go to the "
 "`Getting Started <getting-started.html>`_ chapter."
 msgstr ""
+
+#~ msgid "PaSSHport Installation"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You can run it directly from "
+#~ "command line ( please ensure that "
+#~ "curl is installed : ``apt install "
+#~ "curl`` ):"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "We install python34-pip package. If yum"
+#~ " can't find the package, you **NEED**"
+#~ " to configure EPEL repository. (you "
+#~ "can try running the command : "
+#~ "``rpm -ivh "
+#~ "http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-"
+#~ "release-7-11.noarch.rpm``, but the package "
+#~ "version may be outdated, so… Google "
+#~ "it.) :)"
+#~ msgstr ""
 

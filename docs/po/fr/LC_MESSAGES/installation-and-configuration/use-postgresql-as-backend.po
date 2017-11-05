@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-02 16:55+0100\n"
+"POT-Creation-Date: 2017-11-05 21:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,42 +21,61 @@ msgstr ""
 msgid "Use PostgreSQL as database backend"
 msgstr ""
 
-#: ../../installation-and-configuration/use-postgresql-as-backend.rst:4
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:5
+msgid "Install psycopg2 python module"
+msgstr ""
+
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:7
+msgid ""
+"If you did not use the packaged version of passhport (deb/rpm), proceed "
+"as follow. If you used the package version, go directly below, to the "
+"`PostgreSQL configuration`_."
+msgstr ""
+
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:9
 msgid ""
 "If you want to use PostgreSQL has the database backend you'll need to add"
 " a python module : psycopg2."
 msgstr ""
 
-#: ../../installation-and-configuration/use-postgresql-as-backend.rst:6
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:11
 msgid "As passhport user, install psycopg2 :"
 msgstr ""
 
-#: ../../installation-and-configuration/use-postgresql-as-backend.rst:12
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:18
+msgid "PostgreSQL configuration"
+msgstr ""
+
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:20
 msgid ""
 "Create a passhport user in you postgreSQL server (may be different on "
 "your distro, this is just an example) :"
 msgstr ""
 
-#: ../../installation-and-configuration/use-postgresql-as-backend.rst:19
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:27
 msgid "Add a password to postgreSQL passhport user :"
 msgstr ""
 
-#: ../../installation-and-configuration/use-postgresql-as-backend.rst:32
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:41
+msgid "passhportd configuration"
+msgstr ""
+
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:43
 msgid ""
 "Change the configuration of the *passhportd.ini* file "
 "(``/etc/passhport/passhportd.ini``). You need to change the "
 "``SQLALCHEMY_DATABASE_URI`` parameter to :"
 msgstr ""
 
-#: ../../installation-and-configuration/use-postgresql-as-backend.rst:38
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:49
 msgid "As passhport (system) user, initialize the database :"
 msgstr ""
 
-#: ../../installation-and-configuration/use-postgresql-as-backend.rst:44
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:55
 msgid "Then you can launch *passhportd* (kill it before if it stills running) :"
 msgstr ""
 
-#: ../../installation-and-configuration/use-postgresql-as-backend.rst:50
+#: ../../installation-and-configuration/use-postgresql-as-backend.rst:61
 msgid "PaSSHport now use PostgreSQL backend."
 msgstr ""
 
