@@ -278,6 +278,7 @@ As root, create some symlink to the two main *binaries*, passhportd and passhpor
 We now create the systemd service, and enables *passhportd* on startup :
 
 .. code-block:: none
+
   root@centos7:~# cp /home/passhport/passhport/tools/passhportd.service /etc/systemd/system/passhportd.service
   root@centos7:~# systemctl daemon-reload
   root@centos7:~# systemctl enable passhportd
