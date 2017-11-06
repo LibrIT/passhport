@@ -32,8 +32,8 @@ msgid ""
 msgstr ""
 "PaSSHport est un logiciel qui vous permet de contrôler les accès SSH des "
 "briques de votre IT : serveurs Linux/Unix, switchs réseaux, routeurs, "
-"points d'accès WiFi, ainsi que n'importe quelle brique accessible via "
-"SSH. En quatre mots : qui a accès à quoi ?"
+"points d'accès Wi-Fi, ainsi que n'importe quelle brique accessible via "
+"SSH. En quelques mots : qui a accès à quoi ?"
 
 #: ../../introduction.rst:10
 msgid "PaSSHport has been written with the following in mind :"
@@ -41,15 +41,15 @@ msgstr "PaSSHport a été écrit avec les objectifs suivants : "
 
 #: ../../introduction.rst:12
 msgid "Similar to `SSHgate <https://github.com/Tauop/sshGate>`_"
-msgstr "Similaire à `SSHgate <https://github.com/Tauop/sshGate>`_"
+msgstr "Même principes que `SSHgate <https://github.com/Tauop/sshGate>`_"
 
 #: ../../introduction.rst:13
 msgid "Two main objects : targets and users (we'll see below what are those)"
-msgstr "Deux types d'objects : targets et users (Nous verrons ça un peu plus bas)"
+msgstr "Deux types d'objets : targets et users (Nous verrons ça un peu plus bas)"
 
 #: ../../introduction.rst:14
 msgid "Objects can be grouped : targetgroups and usergroups"
-msgstr "Les objects peuvent être groupés"
+msgstr "Les objets peuvent être groupés"
 
 #: ../../introduction.rst:15
 msgid "Record all sessions of users"
@@ -61,7 +61,7 @@ msgstr "Être entièrement configurable et utilisable depuis la ligne de command
 
 #: ../../introduction.rst:17
 msgid "Can do Secured Copy (scp)"
-msgstr "Possibilité de faire des copy sécurisées (scp)"
+msgstr "Possibilité de faire des copies sécurisées (scp)"
 
 #: ../../introduction.rst:18
 msgid ""
@@ -73,7 +73,7 @@ msgstr ""
 
 #: ../../introduction.rst:19
 msgid "Use only OpenSource technologies"
-msgstr "Utiliser seulement (ou principalement) des technologies OpenSource"
+msgstr "Utiliser des technologies OpenSource"
 
 #: ../../introduction.rst:21
 msgid ""
@@ -93,7 +93,7 @@ msgstr "PaSSHport est composé de 3 programmes :"
 
 #: ../../introduction.rst:27
 msgid "passhportd : the daemon that verify access rights, and store configuration"
-msgstr "passhportd : le démon qui enregistrent, et vérifie la configuration"
+msgstr "passhportd : le démon qui enregistre, et vérifie la configuration"
 
 #: ../../introduction.rst:28
 msgid ""
