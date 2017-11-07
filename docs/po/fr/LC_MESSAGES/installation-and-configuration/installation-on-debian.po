@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
+# Installation on Debian 8-9 documentation.
 # Copyright (C) 2017, LibrIT
 # This file is distributed under the same license as the PaSSHport package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+# Raphaël Berlamont <raphael.berlamont@librit.fr>, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-06 23:11+0100\n"
-"PO-Revision-Date: 2017-11-07 00:47+0100\n"
+"PO-Revision-Date: 2017-11-07 03:52+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -89,7 +89,7 @@ msgid ""
 "tutorial (it will get ~+100MB from the archives, so be patient) :"
 msgstr ""
 "On installe python3-pip, et d'autre packages dont nous aurons besoin plus tard "
-"pour ce tuto (il y a environ 100Mo à récupérer sur les dépots, donc soyer "
+"pour ce tuto (il y a environ 100Mo à récupérer sur les dépôts, donc soyer "
 "patient) :"
 
 #: ../../installation-and-configuration/installation-on-debian.rst:36
@@ -118,7 +118,7 @@ msgid ""
 "for PaSSHport :"
 msgstr ""
 "Maintenant que nous avons notre «virtual-env», on installe les modules python "
-"nécessaires au fonctionnement de PaSSHport"
+"nécessaires au fonctionnement de PaSSHport :"
 
 #: ../../installation-and-configuration/installation-on-debian.rst:68
 msgid "Now, let’s start the real thing…"
@@ -141,7 +141,7 @@ msgid ""
 "We’ll also create the config directory, and copy the differents config file :"
 msgstr ""
 "On crée aussi le répertoire qui contiendra la configuration, et on copie les "
-"différents fichiers de conf dedans :"
+"différents fichiers de configuration dedans :"
 
 #: ../../installation-and-configuration/installation-on-debian.rst:99
 msgid ""
