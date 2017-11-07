@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-07 05:18+0100\n"
-"PO-Revision-Date: 2017-11-07 05:18+0100\n"
+"PO-Revision-Date: 2017-11-07 05:24+0100\n"
 "Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
 "Language: fr\n"
 "Language-Team: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
@@ -25,7 +25,7 @@ msgstr "Utiliser PostgreSQL comme base de données"
 
 #: ../../installation-and-configuration/use-postgresql-as-backend.rst:5
 msgid "Install psycopg2 python module"
-msgstr "On installe le module python psycopg2 :"
+msgstr "Installer le module python psycopg2"
 
 #: ../../installation-and-configuration/use-postgresql-as-backend.rst:7
 msgid ""
@@ -38,7 +38,6 @@ msgstr ""
 "directement à la section `Configuration de PostgreSQL`_."
 
 #: ../../installation-and-configuration/use-postgresql-as-backend.rst:9
-#, fuzzy
 msgid ""
 "If you want to use PostgreSQL as the database backend you'll need to add a "
 "python module : psycopg2."
