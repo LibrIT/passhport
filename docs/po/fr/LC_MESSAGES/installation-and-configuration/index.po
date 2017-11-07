@@ -3,30 +3,31 @@
 # This file is distributed under the same license as the PaSSHport package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PaSSHport \n"
+"Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-05 21:34+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2017-11-07 02:32+0100\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: \n"
+"Language-Team: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
+"Language: fr\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: ../../installation-and-configuration/index.rst:2
 msgid "PaSSHport installation and configuration"
-msgstr ""
+msgstr "Installation et configuration de PaSSHport"
 
 #: ../../installation-and-configuration/index.rst:4
 msgid ""
-"This chapter describes the installation on different distro, and the main"
-" configuration principles."
+"This chapter describes the installation on different distro, and the "
+"main configuration principles."
 msgstr ""
-
-#~ msgid "Installation and configuration"
-#~ msgstr ""
-
+"Ce chapitre décrit l'installation de PaSSHport sur différentes "
+"distributions Linux, et certains principes de configuration de base."

@@ -6,7 +6,7 @@ Install psycopg2 python module
 
 If you did not use the packaged version of passhport (deb/rpm), proceed as follow. If you used the package version, go directly below, to the `PostgreSQL configuration`_.
 
-If you want to use PostgreSQL has the database backend you'll need to add a python module : psycopg2.
+If you want to use PostgreSQL as the database backend you'll need to add a python module : psycopg2.
 
 As passhport user, install psycopg2 : 
 

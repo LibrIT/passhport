@@ -1,7 +1,7 @@
 Installation on CentOS 7
 =============================
 
-The followings shows you how to install and run PaSSHport on CentOS 7. We start from a minimal installation of CentOS (available `here <https://www.centos.org/download/>`__), **with EPEL repository** configured.
+The followings shows you how to install and run PaSSHport on CentOS 7. We start from a minimal installation of CentOS (available `here <https://www.centos.org/download/>`__).
 
 The easy, automated way
 -----------------------
@@ -21,25 +21,17 @@ The long, manual way
 
 To understand what you do on your system when you install PaSSHport, follow the instructions below, that are more or less the step by step commands from the automated installation script.
 
-Before continue, you **NEED** to configure EPEL repository. The purpose of the current documentation is not to describe this process, but you can try running the command : 
+Install the EPEL repository : 
 
 .. code-block:: none
 
-  rpm -ivh http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm
+  yum install epel-release
   
-if the package version may be outdated, find the latest one… Google it. :)
-
-Install python34-pip package :
+Install python34-pip and other packages that we’ll need later for this tutorial (it will get ~+100MB from the archives, so be patient) :
 
 .. code-block:: none
 
-  root@centos7:~# yum install python34-pip
-
-Install other packages that we’ll need later for this tutorial (it will get ~+100MB from the archives, so be patient) :
-
-.. code-block:: none
-
-  root@centos7:~# yum install git openssl
+  root@centos7:~# yum install python34-pip git openssl
 
 Let’s update pip :
 
