@@ -14,23 +14,23 @@ You can now do things like these :
 
 .. code-block:: none
 
- # passhport-admin [TAB][TAB]
- target user targetgroup usergroup
- # passhport-admin t[TAB]
- # passhport-admin target[TAB]
- target targetgroup
- # passhport-admin targetg[TAB]
- # passhport-admin targetgroup [TAB][TAB]
- list search show create edit adduser rmuser
- addtarget rmtarget addusergroup rmusergroup 
- addtargetgroup rmtargetgroup delete
+  # passhport-admin [TAB][TAB]
+  target user targetgroup usergroup
+  # passhport-admin t[TAB]
+  # passhport-admin target[TAB]
+  target targetgroup
+  # passhport-admin targetg[TAB]
+  # passhport-admin targetgroup [TAB][TAB]
+  list search show create edit adduser rmuser
+  addtarget rmtarget addusergroup rmusergroup 
+  addtargetgroup rmtargetgroup delete
 
 
- # passhport-admin user show [TAB][TAB]
- john rachel alfred bruce kim jared
- # passhport-admin user show j[TAB]
- john jared
- # passhport-admin user show ja[TAB]
- # passhport-admin user show jared
+  # passhport-admin user show [TAB][TAB]
+  john rachel alfred bruce kim jared
+  # passhport-admin user show j[TAB]
+  john jared
+  # passhport-admin user show ja[TAB]
+  # passhport-admin user show jared
 
-
+The end.

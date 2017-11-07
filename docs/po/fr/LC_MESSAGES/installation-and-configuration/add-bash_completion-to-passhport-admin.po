@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-05 21:34+0100\n"
+"POT-Creation-Date: 2017-11-06 22:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,5 +35,9 @@ msgstr ""
 
 #: ../../installation-and-configuration/add-bash_completion-to-passhport-admin.rst:13
 msgid "You can now do things like these :"
+msgstr ""
+
+#: ../../installation-and-configuration/add-bash_completion-to-passhport-admin.rst:36
+msgid "The end."
 msgstr ""
 
