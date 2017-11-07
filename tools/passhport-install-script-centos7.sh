@@ -55,16 +55,9 @@ do
 done
 
 echo '##############################################################'
-echo '# Installing python34-pip. If it installs, it mean EPEL are'
-echo '# correctly configured.'
+echo '# Installing EPEL repository…'
 echo '##############################################################'
-yum install -y python34-pip 
-if [ $? -ne 0 ]
-then
-	echo "Couldn't install python34-pip package. Can't continue without it."
-	echo 'Is EPEL repository correctly installed ?'
-	exit 1
-fi
+yum install -y epel-release
 echo '##############################################################'
 echo '# Installing python34-pip, git and openssl package…'
 echo '##############################################################'
