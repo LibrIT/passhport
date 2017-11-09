@@ -57,6 +57,7 @@ class Target(db.Model):
         output = output + "\"Server Type\": \"" + format(self.servertype) + "\",\n"
         output = output + "\"Login\": \"" + format(self.login) + "\",\n"
         output = output + "\"Port\": \"" + format(self.port) + "\",\n"
+        output = output + "\"SSH options\": \"" + format(self.sshoptions) + "\",\n"
         output = output + "\"Comment\": \"" + format(self.comment) + "\"\n"
         output = output + "}"
 
