@@ -22,6 +22,13 @@ if os.path.isfile("/etc/passhport/" + conffile):
 else:
     conf.read(sys.path[0] + "/" + conffile)
 
+""" SSL Configuration """
+SSL            = conf.getboolean("SSL", "SSL")
+SSL_CERTIFICAT = conf.get("SSL", "SSL_CERTIFICAT")
+SSL_KEY        = conf.get("SSL", "SSL_KEY")
+
+certificate_path = conf.get("SSL", "SSL_CERTIFICAT")
+
 #TODO: put this in the code not as global
 SCRIPT_LOGS_PATH = conf.get("Environment", "SCRIPT_LOGS_PATH")
 PWD_RST_AFTER_SESSION = conf.getboolean("RootPasswordRest", \
@@ -38,7 +45,7 @@ def get(url):
     """Send the GET request to the server and print a result.
        This is used to connect to passhportd, to check access"""
     try:
-        r = requests.get(url, verify="/home/passhport/certs/cert.pem")
+        r = requests.get(url, verify=config.certificate_path)
     except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
