@@ -324,8 +324,12 @@ def usergroup_addusergroup():
             '" in the database ', 417, \
             {"content-type": "text/plain; charset=utf-8"}
 
-    # Now we can add the usergroup
-    ug.addusergroup(sug)
+    # Now we can add the usergroup (impossible to add a usergroup to itself)
+    if not ug.addusergroup(sug):
+        if sug == ug:
+            return "ERROR: sorry you can't add a usergroup to itself" , 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:

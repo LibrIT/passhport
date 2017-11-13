@@ -62,15 +62,20 @@ class Usergroup(db.Model):
 
         return "\n".join(output)
 
+
     def simplejson(self):
         """Return a simplified data of the usergroup as json but not all the data"""
+        directsize = len(self.members)
+        totalsize = len(self.all_username_list())
         output = "{\n"
-
         output = output + "\"name\": \"" + format(self.name) + "\",\n"
         output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
+        output = output + "\"directsize\": \"" + format(str(directsize)) + "\",\n"
+        output = output + "\"totalsize\": \"" + format(str(totalsize)) + "\",\n"
         output = output + "}"
 
         return output
+
 
     def show_name(self):
         """Return a string containing the usergroup's name"""
@@ -148,8 +153,10 @@ class Usergroup(db.Model):
 
     def addusergroup(self, usergroup):
         """Add a usergroup to the relation table"""
-        if not self.is_gmember(usergroup):
+        if not self.is_gmember(usergroup) and not self == usergroup:
             self.gmembers.append(usergroup)
+        else:
+            return False
 
         return self
 
