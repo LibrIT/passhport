@@ -39,9 +39,15 @@ def ask_confirmation(prompt_confirmation):
 def get(url):
     """Send the GET request to the server and print a result"""
     try:
-        r = requests.get(url, verify=config.certificate_path)
-    except requests.RequestException as e:
-        print("ERROR: " + str(e.message))
+        r = requests.get(url, verify=config.certificate_path, timeout=3)
+    except requests.exceptions.Timeout:
+        print("ERROR: Connection timed out. Check your configuration.")
+    except requests.exceptions.ConnectionError as e:
+        print("ERROR: Connection error. Check your configuration.\n" + str(e))
+    except requests.exceptions.TooManyRedirects:
+        print("ERROR: Too many redirects.")
+    except requests.exceptions.RequestException as e:
+        print("Error: " + str(e))
     else:
         print(r.text)
 
@@ -107,8 +113,14 @@ def post(url, data):
     """Send the POST request to the server and print a result"""
     try:
         r = requests.post(url, data = data, verify=config.certificate_path)
-    except requests.RequestException as e:
-        print("ERROR: " + str(e.message))
+    except requests.exceptions.Timeout:
+        print("ERROR: Connection timed out. Check your configuration.")
+    except requests.exceptions.ConnectionError as e:
+        print("ERROR: Connection error. Check your configuration.\n" + str(e))
+    except requests.exceptions.TooManyRedirects:
+        print("ERROR: Too many redirects.")
+    except requests.exceptions.RequestException as e:
+        print("Error: " + str(e))
     else:
         print(r.text)
 
