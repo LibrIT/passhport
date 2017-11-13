@@ -299,8 +299,10 @@ class Targetgroup(db.Model):
 
     def addtargetgroup(self, targetgroup):
         """Add a targetgroup to the relaton table"""
-        if not self.is_tgmembers(targetgroup):
+        if not self.is_tgmembers(targetgroup) and not self == targetgroup:
             self.tgmembers.append(targetgroup)
+        else: 
+            return False
 
         return self
 

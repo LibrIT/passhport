@@ -51,7 +51,7 @@ class User(db.Model):
         output = output + "\"sshkey\": \"" + format(self.sshkey) + "\",\n"
         output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
         output = output + "\"accessibleTargetList\": \"" + format(self.accessible_targetname_list()) + "\",\n"
-        output = output + "\"accessibleTargets\": \"" + format(self.accessible_target_list("details")) + "\"\n"
+        #output = output + "\"accessibleTargets\": \"" + format(self.accessible_target_list("json")) + "\"\n"
         output = output + "}"
 
         return output

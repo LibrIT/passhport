@@ -511,7 +511,11 @@ def targetgroup_addtargetgroup():
             {"content-type": "text/plain; charset=utf-8"}
 
     # Now we can add the subtargetgroup
-    tg.addtargetgroup(stg)
+    if not tg.addtargetgroup(stg):
+        if tg == stg:
+            return "ERROR: impossible to add a targetgroup into itself.", \
+                    417, {"content-type": "text/plain; charset=utf-8"}
+
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
