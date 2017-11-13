@@ -25,7 +25,7 @@ def api_user_list():
             i = 1
         else:
             result.append(",\n")
-        result.append( entry.simplejson())
+        result.append(entry.simplejson())
     result.append("]")
 
 

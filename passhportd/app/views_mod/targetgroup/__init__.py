@@ -368,9 +368,9 @@ def targetgroup_rmtarget():
 
     # Check if the given target is a member of the given targetgroup
     if not tg.targetname_in_targetgroup(targetname):
-        return 'ERROR: The target "' + target + \
+        return 'ERROR: The target "' + targetname + \
             '" is not a member of the targetgroup "' + \
-            targetgroupname + '" ', 417, \
+            tg.show_name() + '" ', 417, \
             {"content-type": "text/plain; charset=utf-8"}
 
     # Now we can remove the target
@@ -511,7 +511,11 @@ def targetgroup_addtargetgroup():
             {"content-type": "text/plain; charset=utf-8"}
 
     # Now we can add the subtargetgroup
-    tg.addtargetgroup(stg)
+    if not tg.addtargetgroup(stg):
+        if tg == stg:
+            return "ERROR: impossible to add a targetgroup into itself.", \
+                    417, {"content-type": "text/plain; charset=utf-8"}
+
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
