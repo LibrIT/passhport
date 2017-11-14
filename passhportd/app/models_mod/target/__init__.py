@@ -25,6 +25,7 @@ class Target(db.Model):
     # Relations
     members = db.relationship("User", secondary="target_user")
     gmembers = db.relationship("Usergroup", secondary="target_group")
+    memberoftg = db.relationship("Targetgroup", secondary="tgroup_target")
 
 
     def __repr__(self):
@@ -267,3 +268,9 @@ class Target(db.Model):
                 targetgroupnames.append(each_targetgroup.show_name())
 
         return targetgroupnames
+
+
+    def direct_targetgroups(self):
+        """Return the list of the directly attached targetgroups"""
+        return self.memberoftg
+
