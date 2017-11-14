@@ -57,3 +57,7 @@ def get_targetgroup(name):
         return tg[0]
     else:
         return False
+
+def response(errormsg, errorcode):
+    """Return a HTTP formated response"""
+    return errormsg, errorcode, {"content-type": "text/plain; charset=utf-8"}
