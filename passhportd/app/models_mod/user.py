@@ -105,32 +105,17 @@ class User(db.Model):
         return targets
 
 
+    def direct_targets(self):
+        """Return the list of the targets where the user is directly attached"""
+        return self.targets
+        
+
     def direct_usergroups(self):
         """Return the list of the groups where the user is directly attached"""
-        directusergroups  = []
-        
-        query = db.session.query(
-            usergroup.Usergroup).order_by(
-            usergroup.Usergroup.name).all()
-
-        for each_usergroup in query:
-            if self.name in each_usergroup.username_list():
-                directusergroups.append(each_usergroup)
-
-        return directusergroups
+        return self.usergroups
 
 
     def direct_targetgroups(self):
         """Return the list of the targetgroups with user directly attached"""
-        directtargetgroups  = []
-        
-        query = db.session.query(
-            targetgroup.Targetgroup).order_by(
-            targetgroup.Targetgroup.name).all()
-
-        for each_targetgroup in query:
-            if self.name in each_targetgroup.username_list():
-                directtargetgroups.append(each_targetgroup)
-
-        return directtargetgroups
+        return self.targetgroups
 
