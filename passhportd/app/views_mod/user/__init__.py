@@ -399,7 +399,7 @@ def user_delete(name):
     # Delete the user from the associated targets
     user_data = user.User.query.filter_by(name=name).first()
  
-    target_list = user_data.direct_targets() #user_data.accessible_target_list()
+    target_list = user_data.direct_targets()
     for each_target in target_list:
         each_target.rmuser(user_data)
 
