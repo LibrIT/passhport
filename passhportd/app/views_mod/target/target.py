@@ -326,7 +326,7 @@ def target_delete(name):
     # Delete the target from the associated targetgroups
     targetgroup_list = target_data.direct_targetgroups()
     for each_targetgroup in targetgroup_list:
-        each_targetgroup.rmtarget(query)
+        each_targetgroup.rmtarget(target_data)
 
     # We can now delete the target from the db
     db.session.query(
