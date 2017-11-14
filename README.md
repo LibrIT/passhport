@@ -3,6 +3,10 @@ passhport
 
 Your main adminsys goes away of your company. Are you sure all his ssh access are revoked? What about the interns? The consultants?... Let's fix this.
 
+Documentation (installation, usage):
+-------------------------------------
+https://docs.passhport.org
+
 Requirements:
 -------------
  * All users have to provide their public ssh key.
@@ -33,9 +37,3 @@ Used technologies:
  * Alchemy
  * Flask-Alchemy
  * Alchemy-migration
-
-Tests:
-------------------
- To launch unit tests on the server side, go in passhportd directory and type:
- 
-     nosetests -v
