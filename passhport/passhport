@@ -25,7 +25,6 @@ else:
 # SSL Configuration
 SSL              = conf.getboolean("SSL", "SSL")
 SSL_CERTIFICAT   = conf.get("SSL", "SSL_CERTIFICAT")
-SSL_KEY          = conf.get("SSL", "SSL_KEY")
 SCRIPT_LOGS_PATH = conf.get("Environment", "SCRIPT_LOGS_PATH")
 PWD_FILE_DIR     = conf.get("RootPasswordRest", "PWD_FILE_DIR")
 PWD_RST_AFTER_SESSION = conf.getboolean("RootPasswordRest", \
@@ -42,7 +41,11 @@ def get(url):
     """Send the GET request to the server and print a result.
        This is used to connect to passhportd, to check access"""
     try:
-        r = requests.get(url, verify=SSL_CERTIFICATE)
+        if SSL:
+            r = requests.get(url, verify=SSL_CERTIFICATE)
+        else:
+            r = requests.get(url)
+
     except requests.RequestException as e:
         print("ERROR: " + str(e.message))
     else:
