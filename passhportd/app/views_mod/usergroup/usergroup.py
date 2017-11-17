@@ -343,7 +343,7 @@ def usergroup_rmusergroup():
     # Check if the given subusergroup is a member of the given usergroup
     if not ug.subusergroupname_in_usergroup(subusergroupname):
         return utils.response('ERROR: The subusergroup "' + \
-                              subusergroupname + '" is not a member of ' + \ 
+                              subusergroupname + '" is not a member of ' + \
                               'the usergroup "' + usergroupname + '" ', 417)
 
     # Now we can remove the subusergroup
