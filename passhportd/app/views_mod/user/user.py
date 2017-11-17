@@ -37,8 +37,7 @@ def user_login():
     """Allow passhportd to handle login/passwords for users"""
     # Only POST data are handled
     if request.method != "POST":
-        return "ERROR: POST method is required ", 405, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: POST method is required ", 405)
 
     # Simplification for the reading
     login = request.form["login"]
@@ -46,21 +45,17 @@ def user_login():
 
     # Check for required fields
     if not login or not password:
-        return "ERROR: The login and password are required ", 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: The login and password are required ", 417)
 
     # Check data validity uppon LDAP/local/whatever...
     result = try_login(login, password)
     if result == "success":
         print("Authentication ok for {}".format(login))
         # If the LDAP connection is ok, user can connect
-        return "Authorized", 200, \
-               {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("Authorized", 200)
     else:
         print("Authentication error for {} => ".format(login) + result)
-        return "Refused: " + result, 200, \
-               {"content-type": "text/plain; charset=utf-8"}
-    
+        return utils.response("Refused: " + result, 200)
 
 
 @app.route("/user/list")
@@ -73,11 +68,9 @@ def user_list():
         result.append(row[0])
 
     if not result:
-        return "No user in database.", 200, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("No user in database.", 200)
 
-    return "\n".join(result), 200, \
-        {"content-type": "text/plain; charset=utf-8"}
+    return utils.response("\n".join(result), 200)
 
 
 @app.route("/user/search/<pattern>")
@@ -92,11 +85,10 @@ def user_search(pattern):
         result.append(row[0])
 
     if not result:
-        return 'No user matching the pattern "' + pattern + \
-            '" found.', 200, {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('No user matching the pattern "' + pattern + \
+                              '" found.', 200)
 
-    return "\n".join(result), 200, \
-        {"content-type": "text/plain; charset=utf-8"}
+    return utils.response("\n".join(result), 200)
 
 
 @app.route("/user/show/<name>")
@@ -104,18 +96,15 @@ def user_show(name):
     """Return all data about a user"""
     # Check for required fields
     if not name:
-        return "ERROR: The name is required ", 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: The name is required ", 417)
 
     user_data = user.User.query.filter_by(name=name).first()
 
     if user_data is None:
-        return 'ERROR: No user with the name "' + name + \
-            '" in the database.', 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('ERROR: No user with the name "' + name + \
+                              '" in the database.', 417)
 
-    return user_data.__repr__(), 200, \
-        {"content-type": "text/plain; charset=utf-8"}
+    return utils.response(user_data.__repr__(), 200)
 
 
 @app.route("/user/accessible_targets/<name>")
@@ -123,15 +112,13 @@ def user_accessible_targets(name):
     """Return the list of targets that the user can access"""
     # Check for required fields
     if not name:
-        return "ERROR: The name is required ", 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: The name is required ", 417)
 
     user_data = user.User.query.filter_by(name=name).first()
 
     if user_data is None:
-        return 'ERROR: No user with the name "' + name + \
-            '" in the database.', 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('ERROR: No user with the name "' + name + \
+                              '" in the database.', 417)
 
     target_list = user_data.accessible_target_list()
     formatted_target_list = []
@@ -139,8 +126,7 @@ def user_accessible_targets(name):
     for each_target in target_list:
         formatted_target_list.append(each_target.show_name() + " " + \
         each_target.show_hostname() + " " + each_target.show_comment())
-    return "\n".join(formatted_target_list), 200, \
-        {"content-type": "text/plain; charset=utf-8"}
+    return utils.response("\n".join(formatted_target_list), 200)
 
 
 @app.route("/user/create", methods=["POST"])
@@ -148,8 +134,7 @@ def user_create():
     """Add a user in the database"""
     # Only POST data are handled
     if request.method != "POST":
-        return "ERROR: POST method is required ", 405, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: POST method is required ", 405)
 
     # Simplification for the reading
     name = request.form["name"]
@@ -158,26 +143,23 @@ def user_create():
 
     # Check for required fields
     if not name or not sshkey:
-        return "ERROR: The name and SSH key are required ", 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: The name and SSH key are required ", 417)
 
     # Check unicity for name
     query = db.session.query(user.User.name)\
         .filter_by(name=name).first()
 
     if query is not None:
-        return 'ERROR: The name "' + name + \
-            '" is already used by another user ', 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('ERROR: The name "' + name + \
+                              '" is already used by another user ', 417)
 
     # Check unicity for SSH key
     query = db.session.query(user.User.sshkey)\
         .filter_by(sshkey=sshkey).first()
 
     if query is not None:
-        return 'ERROR: The SSH key "' + sshkey + \
-            '" is already used by another user ', 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('ERROR: The SSH key "' + sshkey + \
+                              '" is already used by another user ', 417)
 
     # Add the SSH key in the file authorized_keys
     try:
@@ -188,8 +170,8 @@ def user_create():
                                        " " + config.PASSHPORT_PATH + \
                                        " " + name + '" ' + sshkey + "\n")
     except IOError:
-        return 'ERROR: cannot write in the file "authorized_keys"', 500, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('ERROR: cannot write in the file ' + \
+                              '"authorized_keys"', 500)
     
     # set correct read/write permissions
     os.chmod(config.SSH_KEY_FILE, stat.S_IRUSR | stat.S_IWUSR)
@@ -204,11 +186,9 @@ def user_create():
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + name + '" -> ' + e.message , 409, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('ERROR: "' + name + '" -> ' + e.message , 409)
 
-    return 'OK: "' + name + '" -> created', 200, \
-        {"content-type": "text/plain; charset=utf-8"}
+    return utils.response('OK: "' + name + '" -> created', 200)
 
 
 def update_authorized_keys(orig_name, orig_sshkey, new_name, new_sshkey):
@@ -254,8 +234,8 @@ def update_authorized_keys(orig_name, orig_sshkey, new_name, new_sshkey):
                 authorized_keys_file.truncate()
            
     except IOError:
-        warning = 'ERROR: cannot write in the file "authorized_keys"', \
-                  500, {"content-type": "text/plain; charset=utf-8"}
+        warning = utils.response('ERROR: cannot write in the file "' + \
+                                 '"authorized_keys"', 500)
 
     return warning
 
@@ -265,8 +245,7 @@ def user_edit():
     """Edit a user in the database"""
     # Only POST data are handled
     if request.method != "POST":
-        return "ERROR: POST method is required ", 405, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: POST method is required ", 405)
 
     # Simplification for the reading
     name = request.form["name"]
@@ -276,17 +255,15 @@ def user_edit():
 
     # Check required fields
     if not name:
-        return "ERROR: The name is required ", 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: The name is required ", 417)
 
     # Check if the name exists in the database
     query_check = db.session.query(user.User).filter_by(
         name=name).first()
 
     if query_check is None:
-        return 'ERROR: No user with the name "' + name + \
-            '" in the database.', 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('ERROR: No user with the name "' + name + \
+                              '" in the database.', 417)
 
     to_update = db.session.query(user.User.name).filter_by(name=name)
 
@@ -304,9 +281,8 @@ def user_edit():
             .filter_by(sshkey=new_sshkey).first()
 
         if query is not None and query != query_check:
-            return 'ERROR: The SSH key "' + new_sshkey + \
-                '" is already used by another user ', 417, \
-                {"content-type": "text/plain; charset=utf-8"}
+            return utils.response('ERROR: The SSH key "' + new_sshkey + \
+                                  '" is already used by another user ', 417)
 
         if new_sshkey != query_check.sshkey:
             # Edit the SSH key in the file authorized_keys
@@ -323,9 +299,8 @@ def user_edit():
             .filter_by(name=new_name).first()
 
         if query != query_check and query is not None:
-            return 'ERROR: The name "' + new_name + \
-                '" is already used by another user ', 417, \
-                {"content-type": "text/plain; charset=utf-8"}
+            return utils.response('ERROR: The name "' + new_name + \
+                                  '" is already used by another user ', 417)
         
         if new_name != name:
             # Edit the SSH key in the file authorized_keys
@@ -339,11 +314,9 @@ def user_edit():
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + name + '" -> ' + e.message, 409, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('ERROR: "' + name + '" -> ' + e.message, 409)
 
-    return 'OK: "' + name + '" -> edited', 200, \
-        {"content-type": "text/plain; charset=utf-8"}
+    return utils.response('OK: "' + name + '" -> edited', 200)
 
 
 @app.route("/user/delete/<name>")
@@ -353,16 +326,14 @@ def user_delete(name):
        in the associated targets
        and in the associated groups"""
     if not name:
-        return "ERROR: The name is required ", 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: The name is required ", 417)
 
     # Check if the name exists
     query = db.session.query(user.User).filter_by(name=name).first()
 
     if query is None:
-        return 'ERROR: No user with the name "' + name + \
-            '" in the database.', 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('ERROR: No user with the name "' + name + \
+                              '" in the database.', 417)
             
     authorized_key_line = 'command="' + config.PYTHON_PATH + \
                           " " + config.PASSHPORT_PATH + \
@@ -393,8 +364,8 @@ def user_delete(name):
 
             authorized_keys_file.truncate()
     except IOError:
-        return 'ERROR: cannot write in the file "authorized_keys"', 500, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('ERROR: cannot write in the file ' + \
+                              '"authorized_keys"', 500)
 
     # Delete the user from the associated targets
     user_data = user.User.query.filter_by(name=name).first()
@@ -421,8 +392,6 @@ def user_delete(name):
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
-        return 'ERROR: "' + name + '" -> ' + e.message, 409, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response('ERROR: "' + name + '" -> ' + e.message, 409)
 
-    return 'OK: "' + name + '" -> deleted' + warning, 200, \
-        {"content-type": "text/plain; charset=utf-8"}
+    return utils.response('OK: "' + name + '" -> deleted' + warning, 200)
