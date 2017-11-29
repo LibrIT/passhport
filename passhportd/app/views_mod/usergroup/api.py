@@ -30,8 +30,6 @@ def api_usergroup_list():
 
 
     if not result:
-        return "No usergroup in database.", 200, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("No usergroup in database.", 200)
 
-    return "".join(result), 200, \
-        {"content-type": "text/plain; charset=utf-8"}
+    return utils.response("\n".join(result), 200)

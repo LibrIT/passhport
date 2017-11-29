@@ -30,8 +30,6 @@ def api_user_list():
 
 
     if not result:
-        return "No user in database.", 200, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("No user in database.", 200)
 
-    return "".join(result), 200, \
-        {"content-type": "text/plain; charset=utf-8"}
+    return utils.response("".join(result), 200)

@@ -7,8 +7,8 @@ from __future__ import unicode_literals
 import flask
 from app import app
 
+from .. import utilities as utils
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return "ERROR: You must fill the requested fields", 404, \
-        {"content-type": "text/plain; charset=utf-8"}
+    return utils.response("ERROR: You must fill the requested fields", 404)

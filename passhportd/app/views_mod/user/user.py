@@ -16,6 +16,8 @@ from app import app, db
 from app.models_mod import user, target
 from . import api
 
+from .. import utilities as utils
+
 def try_ldap_login(login, password):
     """ Connect to a LDAP directory to verify user login/passwords"""
     s = Server(config.LDAPURI, port=config.LDAPPORT, use_ssl=False, get_info=ALL)
