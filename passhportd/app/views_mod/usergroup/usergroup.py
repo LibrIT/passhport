@@ -317,8 +317,7 @@ def usergroup_rmusergroup():
     """Remove a usergroup (subusergroup) from the usergroup in the database"""
     # Only POST data are handled
     if request.method != "POST":
-        return "ERROR: POST method is required ", 405, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: POST method is required ", 405)
 
     # Simplification for the reading
     usergroupname = request.form["usergroupname"]

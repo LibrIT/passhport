@@ -30,11 +30,9 @@ def api_target_list():
 
 
     if not result:
-        return "No target in database.", 200, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("No target in database.", 200)
 
-    return "".join(result), 200, \
-        {"content-type": "text/plain; charset=utf-8"}
+    return utils.response("".join(result), 200)
 
 
 @app.route("/api/target/show/<name>")
@@ -42,15 +40,14 @@ def api_target_show(name):
     """Return  json formated data about a target"""
     # Check for required fields
     if not name:
-        return "ERROR: The name is required ", 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: Target's name is required ", 417)
 
     target_data = target.Target.query.filter_by(name=name).first()
 
     if target_data is None:
-        return 'ERROR: No target with the name "' + name + \
-            '" in the database.', 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+
+        return utils.response("ERROR: No target with the name " + name + \
+                " in the database.", 417)
 
     return "["+str(target_data.simplejson())+"]", 200, \
         {"content-type": "text/plain; charset=utf-8"}
@@ -71,8 +68,4 @@ def api_target_user(name):
             '" in the database.', 417, \
             {"content-type": "text/plain; charset=utf-8"}
 
-    print("[" + target_data.username_list_json() + "]")
-    return "[" + target_data.username_list_json() + "]", 200, \
-        {"content-type": "text/plain; charset=utf-8"}
-
-
+    return utils.response("["+str(target_data.simplejson())+"]", 200)
