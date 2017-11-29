@@ -128,6 +128,16 @@ class Target(db.Model):
             usernames.append(user.show_name())
 
         return usernames
+    
+
+    def username_list_json(self):
+        """Return all the direct users names of the target"""
+        usernames = ""
+
+        for user in self.members:
+            usernames = usernames + "{\"Name\" : \"" + user.show_name() + "\"},"
+
+        return usernames[:-1]
 
 
     def user_list(self):

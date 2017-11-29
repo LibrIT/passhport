@@ -45,7 +45,27 @@ def api_target_show(name):
     target_data = target.Target.query.filter_by(name=name).first()
 
     if target_data is None:
+
         return utils.response("ERROR: No target with the name " + name + \
                 " in the database.", 417)
+
+    return "["+str(target_data.simplejson())+"]", 200, \
+        {"content-type": "text/plain; charset=utf-8"}
+
+
+@app.route("/api/target/user/<name>")
+def api_target_user(name):
+    """Return json formated list of users attached to the target"""
+    # Check for required fields
+    if not name:
+        return "ERROR: The name is required ", 417, \
+            {"content-type": "text/plain; charset=utf-8"}
+
+    target_data = target.Target.query.filter_by(name=name).first()
+
+    if target_data is None:
+        return 'ERROR: No target with the name "' + name + \
+            '" in the database.', 417, \
+            {"content-type": "text/plain; charset=utf-8"}
 
     return utils.response("["+str(target_data.simplejson())+"]", 200)
