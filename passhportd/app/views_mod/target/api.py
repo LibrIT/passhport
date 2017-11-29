@@ -48,7 +48,7 @@ def api_target_show(name):
         return utils.response("ERROR: No target with the name " + name + \
                 " in the database.", 417)
 
-    return utils.response("["+str(target_data.simplejson())+"]", 200)
+    return utils.response("[" + str(target_data.simplejson()) + "]", 200)
 
 
 @app.route("/api/target/user/<name>")
@@ -56,8 +56,7 @@ def api_target_user(name):
     """Return json formated list of users attached to the target"""
     # Check for required fields
     if not name:
-        return "ERROR: The name is required ", 417, \
-            {"content-type": "text/plain; charset=utf-8"}
+        return utils.response("ERROR: The name is required ", 417)
 
     target_data = target.Target.query.filter_by(name=name).first()
 
