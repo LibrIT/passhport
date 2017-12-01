@@ -42,7 +42,7 @@ def get(url):
        This is used to connect to passhportd, to check access"""
     try:
         if SSL:
-            r = requests.get(url, verify=SSL_CERTIFICATE)
+            r = requests.get(url, verify=SSL_CERTIFICAT)
         else:
             r = requests.get(url)
 
