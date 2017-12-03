@@ -9,23 +9,23 @@ For this tutorial, we will use the following infos :
 
 .. image:: images/PaSSHport-getting_started_1_EN.png
 
-1 PaSSHport node
-----------------
+* 1 PaSSHport node
+
 We'll use a monolithic installation of PaSSHport : passhportd, passhport and passhport-admin are on the same host.
 
-3 users
---------
+**3 users**
+
 * John, a linux/unix administrator, who needs to access all linux/unix servers
 * Vincent, a network administrator, who needs to access all network appliances
 * Alice, a general appliance administrator who needs to access all tier appliances
 * Yann, a consultant who's here for a temporary mission about storage infrastructure, that need to access the NAS server and a the SAN bay
 
-1 PaSSHport admin
-------------------
+**1 PaSSHport admin**
+
 * Marc, the ISSM, who configures PaSSHport, to control all the access rights
 
-3 types of targets
--------------------
+**3 types of targets**
+
 * Linux/Unix servers :
 
  - 1 web server, Linux, www-server / 10.0.1.24
