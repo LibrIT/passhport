@@ -7,7 +7,7 @@ from __future__ import unicode_literals
 import flask
 from app import app
 
-from .. import utilities as utils
+from . import utilities as utils
 
 @app.errorhandler(404)
 def page_not_found(error):
