@@ -1,152 +1,507 @@
-# SOME DESCRIPTIVE TITLE.
+# Getting started tutorial.
 # Copyright (C) 2017, LibrIT
 # This file is distributed under the same license as the PaSSHport package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-03 17:23+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2017-12-03 22:00+0100\n"
+"PO-Revision-Date: 2017-12-03 22:31+0100\n"
+"Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
+"Language: fr\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: ../../getting-started.rst:2
 msgid "Getting started"
-msgstr ""
+msgstr "Premiers pas"
 
 #: ../../getting-started.rst:4
 msgid ""
-"So you now have a brand new installation of PaSSHport, but you don't know"
-" what to do next…"
+"So you now have a brand new installation of PaSSHport, but you don't know what "
+"to do next…"
 msgstr ""
+"Vous avez donc maintenant une toute nouvelle installation de PaSSHport, mais "
+"vous ne savez pas quoi faire ensuite…"
 
 #: ../../getting-started.rst:7
 msgid "Example prerequisites"
-msgstr ""
+msgstr "Exemple d'architecture"
 
 #: ../../getting-started.rst:8
 msgid "For this tutorial, we will use the following infos :"
-msgstr ""
+msgstr "Pour ce tutoriel, nous utiliserons les informations suivantes :"
 
 #: ../../getting-started.rst:13
 msgid "1 PaSSHport node"
-msgstr ""
+msgstr "1 serveur PaSSHport"
 
 #: ../../getting-started.rst:14
 msgid ""
-"We'll use a monolithic installation of PaSSHport : passhportd, passhport "
-"and passhport-admin are on the same host."
+"We'll use a monolithic installation of PaSSHport : passhportd, passhport and "
+"passhport-admin are on the same host."
 msgstr ""
+"Nous utiliserons une installation monolithique de PaSSHport : passhportd, "
+"passhport et passhport-admin sont sur la même machine."
 
 #: ../../getting-started.rst:17
 msgid "3 users"
-msgstr ""
+msgstr "trois utilisateurs"
 
 #: ../../getting-started.rst:18
 msgid ""
-"John, a linux/unix administrator, who needs to access all linux/unix "
-"servers"
+"John, a linux/unix administrator, who needs to access all linux/unix servers"
 msgstr ""
+"John, un administrateur linux/unix, qui doit accéder à l'ensemble des serveurs "
+"linux/unix"
 
 #: ../../getting-started.rst:19
 msgid ""
-"Vincent, a network administrator, who needs to access all network "
-"appliances"
+"Vincent, a network administrator, who needs to access all network appliances"
 msgstr ""
+"Vincent, un administrateur réseau, qui a besoin d'accéder à tous les "
+"périphériques réseaux"
 
 #: ../../getting-started.rst:20
 msgid ""
-"Alice, a general appliance administrator who needs to access all tier "
-"appliances"
+"Alice, a general appliance administrator who needs to access all tier appliances"
 msgstr ""
+"Alice, une administratrice généraliste, qui a besoin d'accéder à tous les "
+"périphériques tiers"
 
 #: ../../getting-started.rst:21
 msgid ""
 "Yann, a consultant who's here for a temporary mission about storage "
 "infrastructure, that need to access the NAS server and a the SAN bay"
 msgstr ""
+"Yann, un consultant qui est ici pour une mission temporaire sur l'infrastructure "
+"de stockage, qui a besoin d'accéder au server NAS et à la bas SAN"
 
 #: ../../getting-started.rst:24
 msgid "1 PaSSHport admin"
-msgstr ""
+msgstr "1 administrateur PaSSHport"
 
 #: ../../getting-started.rst:25
 msgid "Marc, the ISSM, who configures PaSSHport, to control all the access rights"
-msgstr ""
+msgstr "Marc, le RSSI, qui configure PaSSHport, et qui contrôle les droits d'accès"
 
 #: ../../getting-started.rst:28
 msgid "3 types of targets"
-msgstr ""
+msgstr "3 type de targets (serveur cible)"
 
 #: ../../getting-started.rst:29
 msgid "Linux/Unix servers :"
-msgstr ""
+msgstr "Serveurs Linux/Unix :"
 
 #: ../../getting-started.rst:31
 msgid "1 web server, Linux, www-server / 10.0.1.24"
-msgstr ""
+msgstr "1 serveur web, Linux, www-server / 10.0.1.24"
 
 #: ../../getting-started.rst:32
 msgid "1 VPN server, OpenBSD, vpn-srv1 / 10.0.23.51"
-msgstr ""
+msgstr "1 serveur VPN, OpenBSD, vpn-srv1 / 10.0.23.51"
 
 #: ../../getting-started.rst:33
 msgid "1 NAS server, FreeBSD, nas-srv1 / 10.0.12.87"
-msgstr ""
+msgstr "1 serveur NAS, FreeBSD, nas-srv1 / 10.0.12.87"
 
 #: ../../getting-started.rst:35
 msgid "Network appliances"
-msgstr ""
+msgstr "Périphérique réseau"
 
 #: ../../getting-started.rst:37
 msgid "1 WiFi access points, net-AP9-23 / 172.22.9.23"
-msgstr ""
+msgstr "1 point d'accès WiFi, net-AP9-23 / 172.22.9.23"
 
 #: ../../getting-started.rst:38
 msgid "1 router, net-RO10-98 / 172.16.10.98"
-msgstr ""
+msgstr "1 routeur, net-RO10-98 / 172.16.10.98"
 
 #: ../../getting-started.rst:39
 msgid "1 network switch, net-SW22-57 / 172.20.22.57"
-msgstr ""
+msgstr "1 commutateur réseau (switch), net-SW22-57 / 172.20.22.57"
 
 #: ../../getting-started.rst:41
 msgid "Other appliances"
-msgstr ""
+msgstr "Autre périphériques"
 
 #: ../../getting-started.rst:43
 msgid "1 IPBX, ipbx1 / 10.192.98.76"
-msgstr ""
+msgstr "1 IPBX (serveur voix sur IP), ipbx1 / 10.192.98.76"
 
 #: ../../getting-started.rst:44
 msgid "1 Network printer, prntr44 / 192.168.254.44"
-msgstr ""
+msgstr "1 imprimante réseau, prntr44 / 192.168.254.44"
 
 #: ../../getting-started.rst:45
 msgid "1 SAN bay, san1 / 10.192.1.10"
-msgstr ""
+msgstr "1 bay SAN, san1 / 10.192.1.10"
 
 #: ../../getting-started.rst:48
 msgid "Configure targets"
-msgstr ""
+msgstr "Configurer les targets"
 
 #: ../../getting-started.rst:49
 msgid "First of all, we'll include the targets into PaSSHport."
-msgstr ""
+msgstr "Tout d'abord, nous allons enregistrer les targets dans PaSSHport"
 
 #: ../../getting-started.rst:51
 msgid ""
-"Let's connect to your PaSSHport node, and add the linux target, you can "
-"do this as passhport :"
+"Let's connect to your PaSSHport node, and add the linux target. We can do this "
+"as passhport user :"
 msgstr ""
+"On se connecte au serveur PaSSHport, et on ajout le serveur linux. On peut le "
+"faire en tant qu'utilisateur passhport :"
 
-#~ msgid "Let's connect to your PaSSHport node, and add the linux target :"
-#~ msgstr ""
+#: ../../getting-started.rst:59
+msgid "We can check that the target has been well recorded :"
+msgstr "On peut vérifier que la target a été correctement enregistrée :"
 
+#: ../../getting-started.rst:67
+msgid "Now let's add the other Linux/Unix server :"
+msgstr "Maintenant, ajoutons les autres serveurs Linux/Unix :"
+
+#: ../../getting-started.rst:77
+msgid "Do the same for the network appliances, and the remaining :"
+msgstr "On fait la même chose avec les périphériques réseaux, et les autres :"
+
+#: ../../getting-started.rst:95
+msgid "We now have all our targets configured into PaSSHport."
+msgstr "Nous avons désormais l'ensemble de nos targets configurées dans PaSSHport."
+
+#: ../../getting-started.rst:98
+msgid "Special target, with a specific login"
+msgstr "Target avec un login spécifique"
+
+#: ../../getting-started.rst:100
+msgid ""
+"We want to be able to connect to the SAN bay, as another user, because Yann "
+"should not have access to the SAN bay as the root user, but as \"admin\" user :"
+msgstr ""
+"Nous voulons être capable de nous connecter à la baie SAN, en tant un autre "
+"utilisateur que root, car Yann (le prestataire) ne doit accéder à cette baie en "
+"tant que root, mais en tant qu'utilisateur \"admin\" :"
+
+#: ../../getting-started.rst:114
+msgid ""
+"The SAN will now be accessible throug two target : \"san1\" and \"admin@san1\"."
+msgstr ""
+"La baie SAN sera désormais accessible à travers deux targets : \"san1\" et "
+"\"admin@san1\"."
+
+#: ../../getting-started.rst:117
+msgid "Configure target's groups"
+msgstr "Configuration des groupes de targets (targetgroup)"
+
+#: ../../getting-started.rst:118
+msgid ""
+"We'll group the targets we just created into three groups : unices, network and "
+"others."
+msgstr ""
+"Nous groupons les targets que nous venons de créer dans trois groupes : unices, "
+"network, et autres."
+
+#: ../../getting-started.rst:120
+msgid "We create the groups :"
+msgstr "Nous créons les groupes :"
+
+#: ../../getting-started.rst:132
+msgid "Now we put the targets into the corresponding target groups :"
+msgstr "Maintenant nous mettons les targets dans les groupes correspondant :"
+
+#: ../../getting-started.rst:140
+msgid "I'm a bit lazy, so I'll script the remainings :"
+msgstr "Je suis paresseux, je vais donc \"scripter\" un peu tout ça :"
+
+#: ../../getting-started.rst:157
+msgid ""
+"We'll create a last group, that will have all the targets in it (again, I'm "
+"gonna script this) :"
+msgstr ""
+"Nous créons un dernier groupe, qui contiendra l'ensemble des targets (je vais "
+"encore le scripter) :"
+
+#: ../../getting-started.rst:175
+msgid "We're now done with the targets/targetgroups, at least for the moment…"
+msgstr ""
+"On en a terminé avec les targets et les targetgroups (au moins pour le moment)…"
+
+#: ../../getting-started.rst:178
+msgid "Configure the users"
+msgstr "Configuration des utilisateurs"
+
+#: ../../getting-started.rst:180
+msgid ""
+"We take it for granted that our users have all created a ssh public key (rsa, "
+"dsa or ecdsa), and that they gave us the public part. We have all the following "
+"keys :"
+msgstr ""
+"Nous partons du préalable que nos utilisateurs on déjà crée leur clé publique "
+"SSH (rsa, dsa ou ecdsa), et qu'il nous on donné leur clé publique. Nous avons "
+"les clés suivantes :"
+
+#: ../../getting-started.rst:183
+msgid "Alice, a 2048 bits RSA key :"
+msgstr "Alice, une clé RSA de 2048 bits :"
+
+#: ../../getting-started.rst:190
+msgid "John, an 521 bits ECDSA key :"
+msgstr "John, une clé ECDSA de 521 bits :"
+
+#: ../../getting-started.rst:196
+msgid "Marc, a 4096 bits RSA key :"
+msgstr "Marc, une clé RSA de 4096 bits :"
+
+#: ../../getting-started.rst:202
+msgid "Vincent, a 521 bits ECDSA key :"
+msgstr "Vincent, une clé ECDSA de 521 bits :"
+
+#: ../../getting-started.rst:208
+msgid "And Yann, a 2048 bits RSA key :"
+msgstr "Et Yann, une clé RSA de 2048 bits :"
+
+#: ../../getting-started.rst:214
+msgid "With those keys, we can add the users as follow…"
+msgstr ""
+"Avec ces clés, nous pouvons ajouter les utilisateurs, des manières suivantes…"
+
+#: ../../getting-started.rst:216
+msgid "Interactively :"
+msgstr "De manière interactive :"
+
+#: ../../getting-started.rst:227
+msgid "On a single line, one shot :"
+msgstr "Sur une seule ligne, en un coup :"
+
+#: ../../getting-started.rst:235
+msgid "We add the others :"
+msgstr "Nous ajoutons les autres :"
+
+#: ../../getting-started.rst:247
+msgid ""
+"As you can see above, I forgot to put a comment on \"marc@myfirm.com\" account. "
+"Let's add one :"
+msgstr ""
+"Comme vous pouvez le voir ci-dessus, nous avons oublié de mettre un commentaire "
+"pour l'utilisateur \"marc@myfirm.com\". Ajoutons-en un :"
+
+#: ../../getting-started.rst:255
+msgid "Users are now created. Let's put them in usergroups…"
+msgstr ""
+"Les utilisateurs sont maintenant créer. Mettons les dans des groupes "
+"d'utilisateur (usergroup)…"
+
+#: ../../getting-started.rst:258
+msgid "Configure usergroups :"
+msgstr "Configuration des usergroups"
+
+#: ../../getting-started.rst:260
+msgid ""
+"Even if in this example we only have one user for each purpose of "
+"administration, it's generaly a good idea to add a group for one type skill."
+msgstr ""
+"Même si dans ce tutoriel, nous n'avons qu'un utilisateur pour chaque type de "
+"machine à administrer, il est généralement conseillé de créer un groupe pour "
+"chaque type de compétence."
+
+#: ../../getting-started.rst:262
+msgid "Let's add those groups :"
+msgstr "Ajoutons ces groupes :"
+
+#: ../../getting-started.rst:276
+msgid "We add the users to each corresponding groups :"
+msgstr "Nous ajoutons chaque utilisateur au groupe lui correspondant :"
+
+#: ../../getting-started.rst:292
+msgid "Connect usergroups and targetgroups :"
+msgstr "Mise en ralation des groupe"
+
+#: ../../getting-started.rst:294
+msgid "We now can connect each usergroups to targetgroups :"
+msgstr "Nous pouvons maintenant connecter chaque usergroup à son targetgroup :"
+
+#: ../../getting-started.rst:309
+msgid "Special configuration for Yann :"
+msgstr "Configuration spécifique pour le prestataire Yann :"
+
+#: ../../getting-started.rst:311
+msgid ""
+"Because Yann is only here for a short mission, and need to access to different "
+"targets, that won't be grouped into a targetgroup, so we connect him directly to "
+"the targets :"
+msgstr ""
+"Comme Yann n'est ici que pour une courte mission, et qu'il a besoin d'accéder à "
+"différentes targets qui n'ont pas vocations à être groupée au sein d'un "
+"targetgroup, nous connectons directement l'utilisateur à ses targets :"
+
+#: ../../getting-started.rst:321
+msgid ""
+"As you can see above, we did not give Yann access directly to san1 as root, but "
+"as admin user, through the admin@san1 target we created before."
+msgstr ""
+"Comme vous pouvez le voir ci-dessus, nous n'avons pas donné à Yann l'accès a la "
+"baie SAN san1 en tant que root, mais en tant qu'utilisateur admin, grâce à la "
+"target admin@san1 précédemment configurée."
+
+#: ../../getting-started.rst:324
+msgid "Check rights :"
+msgstr "Vérification des droits d'accès :"
+
+#: ../../getting-started.rst:326
+msgid ""
+"We can check what we configured with the \"show\" sub-command of passhport-"
+"admin :"
+msgstr ""
+"On peut vérifier ce que nous avons configuré avec la sous-commande \"show\" de "
+"passhport-admin :"
+
+#: ../../getting-started.rst:343
+msgid ""
+"As you can see, the \"show\" sub-command shows how the user has access to each "
+"target. We can see above that Marc has access to all the target we configured, "
+"because we placed him in the \"super_admins\" group."
+msgstr ""
+"Comme on peut le voir, la sous commande \"show\" montre comment un utilisateur à "
+"accès à une target. Nous pouvons voir ci-dessus que Marc a accès à toutes "
+"targets configurées, parce que nous l'avons placé dans le usergroup "
+"\"super_admins\"."
+
+#: ../../getting-started.rst:345
+msgid "Here is the example for Yann :"
+msgstr "Voici l'exemple de Yann :"
+
+#: ../../getting-started.rst:361
+msgid ""
+"You can see above that Yann has a direct access to targets, not through "
+"usergroups, or targetgroups."
+msgstr ""
+"On peut voir ci-dessus que Yann à un accès direct aux target, sans passer par "
+"des usergroup, ou des targetgroup."
+
+#: ../../getting-started.rst:364
+msgid "Let's connect !"
+msgstr "C"
+
+#: ../../getting-started.rst:366
+msgid ""
+"Let's say that I'm John, I connect to PaSSHport, using the id_rsa key that I "
+"sent to the PaSSHport admin :"
+msgstr ""
+"Mettons nous maintenant dans la peau de John : je me connect à PaSSHport, en "
+"utilisant la clé id_ecdsa que j'ai envoyé à l'administrateur de PaSSHport :"
+
+#: ../../getting-started.rst:378
+msgid ""
+"As John, I can see that I can access to 3 servers : www-server, vpn-srv1 and nas-"
+"srv1. I can now access to each server, using :"
+msgstr ""
+"En tant que John, je constate que je peux accéder à trois serveurs : www-server, "
+"vpn-srv1, et nas-srv1. Je peux maintenant accéder à chacun de ces serveurs, "
+"selon les méthodes suivantes :"
+
+#: ../../getting-started.rst:380
+msgid "the number in the first column;"
+msgstr "Le numéro situé dans la première colonne;"
+
+#: ../../getting-started.rst:381
+msgid "the name of the server (www-serve…);"
+msgstr "le nom du serveur (www-server…);"
+
+#: ../../getting-started.rst:382
+msgid "the IP address."
+msgstr "l'adresse IP."
+
+#: ../../getting-started.rst:396
+msgid "John is now on the www-server."
+msgstr "John est maintenant sur le serveur www-server."
+
+#: ../../getting-started.rst:398
+msgid ""
+"Let's say that I'm now Alice, a Windows user. I'm going to use putty to connect "
+"to PaSSHport. Let's configure putty :"
+msgstr ""
+"Je suis maintenant dans la peau d'Alice, dont le poste de travail est sous "
+"Windows. Je vais utiliser l'outil Putty pour me connecter à PaSSHport. Voilà "
+"comment le configurer :"
+
+#: ../../getting-started.rst:400
+msgid ""
+"Last relevant example, Yann, who access nas-srv1 and san1. He uses a linux "
+"laptop :"
+msgstr ""
+"Dernier exemple intéressant, Yann, qui accède au serveur nas-srv1 et san1. Il "
+"utilise un ordinateur portable sous linux :"
+
+#: ../../getting-started.rst:411
+msgid "He can now connect to any of those two servers."
+msgstr "Il peut désormais accéder au deux serveurs relatifs à sa mission."
+
+#: ../../getting-started.rst:414
+msgid "Delete a user"
+msgstr "Suppression d'un utilisateur"
+
+#: ../../getting-started.rst:416
+msgid ""
+"Yann has finished his mission, and left the compagny. There is two way to revoke "
+"his access :"
+msgstr ""
+"Yann a désormais fini sa mission, et a quitté la société. On peut révoquer ses "
+"droits de deux manières :"
+
+#: ../../getting-started.rst:418
+msgid "remove all his target ;"
+msgstr ""
+"en enlevant les liaisons de son compte (que ce soit une target, un targetgroup, "
+"ou un usergroup) ;"
+
+#: ../../getting-started.rst:419
+msgid "delete the user."
+msgstr "en supprimant l'utilisateur."
+
+#: ../../getting-started.rst:421
+msgid ""
+"You may prefer the first way if you know that Yann will may come back later to "
+"do another mission, so you won't have to recreate the user (get his ssh key, "
+"etc…). Here is how you can delete his access…"
+msgstr ""
+"Il parfois plus judicieux d'utiliser la première méthode, quand on sait par "
+"exemple que l'utilisateur est susceptible de revenir plus tard, et ne pas avoir "
+"à le recréer (et devoir récupérer sa clef, et ses informations…). Voici comment "
+"procéder :"
+
+#: ../../getting-started.rst:423
+msgid "First, list his rights :"
+msgstr "Premièrement, on liste ses droits :"
+
+#: ../../getting-started.rst:439
+msgid ""
+"You can see that he has access to nas-srv1 and admin@san1, directly. Let's "
+"revoke those access :"
+msgstr ""
+"On peut voir qu'il a accès aux targets nas-srv1 et admin@san1, directement. "
+"Révoquons ces droits :"
+
+#: ../../getting-started.rst:449
+msgid "Yann won't have access to any target anymore :"
+msgstr "Yann n'aura désormais plus accès à ces targets :"
+
+#: ../../getting-started.rst:465
+msgid "The second option, is to delete the user :"
+msgstr "La seconde option est de supprimer cet utilisateur :"
+
+#: ../../getting-started.rst:484
+msgid "Conclusion"
+msgstr "Conclusion"
+
+#: ../../getting-started.rst:486
+msgid "You should now be able to use the basic functions of PaSSHport."
+msgstr ""
+"Vous devriez être désormais capable d'utiliser les fonctions basiques de "
+"PaSSHport."
