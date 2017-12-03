@@ -265,29 +265,29 @@ As root, create some symlink to the two main *binaries*, passhportd and passhpor
 
 .. code-block:: none
 
-  root@centos7:~# ln -s /home/passhport/passhport/tools/passhportd.sh /usr/bin/passhportd
-  root@centos7:~# ln -s /home/passhport/passhport/tools/passhport-admin.sh /usr/bin/passhport-admin
+  root@debian9:~# ln -s /home/passhport/passhport/tools/passhportd.sh /usr/bin/passhportd
+  root@debian9:~# ln -s /home/passhport/passhport/tools/passhport-admin.sh /usr/bin/passhport-admin
 
 We now create the systemd service, and enables *passhportd* on startup :
 
 .. code-block:: none
 
-  root@centos7:~# cp /home/passhport/passhport/tools/passhportd.service /etc/systemd/system/passhportd.service
-  root@centos7:~# systemctl daemon-reload
-  root@centos7:~# systemctl enable passhportd
+  root@debian9:~# cp /home/passhport/passhport/tools/passhportd.service /etc/systemd/system/passhportd.service
+  root@debian9:~# systemctl daemon-reload
+  root@debian9:~# systemctl enable passhportd
 
 And now, we’re ready to go, just launch passhportd daemon :
 
 .. code-block:: none
 
-  root@centos7:~# systemctl start passhportd
+  root@debian9:~# systemctl start passhportd
 
 You can check that passhportd is running, by curling the IP you previously configured in */etc/passhport/passhportd.ini*, on port 5000 :
 
 .. code-block:: none
 
-  root@centos7:~# curl -s --insecure https://192.168.122.56:5000
+  root@debian9:~# curl -s --insecure https://192.168.122.56:5000
   passhportd is running, gratz!
-  root@centos7:~#
+  root@debian9:~#
 
 Bravo ! You successfully installed PaSSHport. You may now go to the `Getting Started <getting-started.html>`_ chapter.
