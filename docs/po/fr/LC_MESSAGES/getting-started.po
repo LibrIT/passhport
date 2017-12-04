@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-03 22:00+0100\n"
-"PO-Revision-Date: 2017-12-03 22:31+0100\n"
+"POT-Creation-Date: 2017-12-04 02:52+0100\n"
+"PO-Revision-Date: 2017-12-04 02:59+0100\n"
 "Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -39,7 +39,7 @@ msgstr "Exemple d'architecture"
 msgid "For this tutorial, we will use the following infos :"
 msgstr "Pour ce tutoriel, nous utiliserons les informations suivantes :"
 
-#: ../../getting-started.rst:13
+#: ../../getting-started.rst:12
 msgid "1 PaSSHport node"
 msgstr "1 serveur PaSSHport"
 
@@ -51,9 +51,9 @@ msgstr ""
 "Nous utiliserons une installation monolithique de PaSSHport : passhportd, "
 "passhport et passhport-admin sont sur la même machine."
 
-#: ../../getting-started.rst:17
-msgid "3 users"
-msgstr "trois utilisateurs"
+#: ../../getting-started.rst:16
+msgid "**3 users**"
+msgstr "**3 utilisateurs**"
 
 #: ../../getting-started.rst:18
 msgid ""
@@ -84,17 +84,17 @@ msgstr ""
 "Yann, un consultant qui est ici pour une mission temporaire sur l'infrastructure "
 "de stockage, qui a besoin d'accéder au server NAS et à la bas SAN"
 
-#: ../../getting-started.rst:24
-msgid "1 PaSSHport admin"
-msgstr "1 administrateur PaSSHport"
+#: ../../getting-started.rst:23
+msgid "**1 PaSSHport admin**"
+msgstr "**1 administrateur PaSSHport**"
 
 #: ../../getting-started.rst:25
 msgid "Marc, the ISSM, who configures PaSSHport, to control all the access rights"
 msgstr "Marc, le RSSI, qui configure PaSSHport, et qui contrôle les droits d'accès"
 
-#: ../../getting-started.rst:28
-msgid "3 types of targets"
-msgstr "3 type de targets (serveur cible)"
+#: ../../getting-started.rst:27
+msgid "**3 types of targets**"
+msgstr "**3 type de targets (serveur cible)**"
 
 #: ../../getting-started.rst:29
 msgid "Linux/Unix servers :"
@@ -425,7 +425,7 @@ msgstr "John est maintenant sur le serveur www-server."
 #: ../../getting-started.rst:398
 msgid ""
 "Let's say that I'm now Alice, a Windows user. I'm going to use putty to connect "
-"to PaSSHport. Let's configure putty :"
+"to PaSSHport. Let's configure putty…"
 msgstr ""
 "Je suis maintenant dans la peau d'Alice, dont le poste de travail est sous "
 "Windows. Je vais utiliser l'outil Putty pour me connecter à PaSSHport. Voilà "
@@ -433,21 +433,99 @@ msgstr ""
 
 #: ../../getting-started.rst:400
 msgid ""
+"We launch Putty (you can download it from `here <https://www.chiark.greenend.org."
+"uk/~sgtatham/putty/latest.html>`__), and on the left configuration tree, goes to "
+"`Connection -> SSH -> Auth` , then select the ppk key Alice generated (with "
+"puttygen for exemple) :"
+msgstr ""
+"On lance Putty (téléchargable `ici <https://www.chiark.greenend.org.uk/~sgtatham/"
+"putty/latest.html>`__), et sur la partie gauche, on clique sur `Connection -> "
+"SSH -> Auth`, pour selectionner la clé PPK qu'Alice a créé (avec l'outil "
+"puttygen par exemple) :"
+
+#: ../../getting-started.rst:404
+msgid ""
+"Then we go to `Connection -> SSH -> Data` , and set the login name as passhport :"
+msgstr ""
+"Ensuite nous allons dans `Connection -> SSH -> Data` , et mettons le username à "
+"`passhport` :"
+
+#: ../../getting-started.rst:408
+msgid "Finally, we go to the root of the configuration tree `Session` :"
+msgstr ""
+"Pour finir, on retourne à la racine de l'arbre de configuration, dans la section "
+"`Session` :"
+
+#: ../../getting-started.rst:410
+msgid "enter the hostname or IP of your PaSSHport server"
+msgstr "on entre le nom d'hôte ou l'IP du serveur PaSSHport"
+
+#: ../../getting-started.rst:411
+msgid "enter its SSH port (usually 22)"
+msgstr "on entre le port du serveur SSH (généralement 22)"
+
+#: ../../getting-started.rst:412
+msgid "select `SSH` as connection type"
+msgstr "on sélectionne `SSH` comme type de connexion"
+
+#: ../../getting-started.rst:413
+msgid "enter a name for this connection configuration"
+msgstr ""
+"on entre le nom sous lequel sauver la configuration que nous venons de mettre en "
+"place"
+
+#: ../../getting-started.rst:415
+msgid ""
+"For debugging purpose, it may be useful to `Never` close window on exit (so you "
+"can see the error message)."
+msgstr ""
+"Pour débugger une connexion défaillante, il est souvent utile de sélectionner "
+"l'option `Never` dans la section `Close window on exit`, et ce, afin de voir la "
+"raison de déconnexion."
+
+#: ../../getting-started.rst:417
+msgid "Save, and click Open !"
+msgstr "On sauve, et on clique le bouton `Open`, pour lancer la connexion !"
+
+#: ../../getting-started.rst:421
+msgid ""
+"If it's the first time we connect to the PaSSHport server, we'll have a window "
+"that says the fingerprint is new, and ask us if we want to accept it… Just "
+"accept it :"
+msgstr ""
+"Si c'est la première fois qu'on se connecte sur le serveur PaSSHport, une "
+"fenêtre indiquant qu'il faut vérifier l'empreinte du serveur, et si on doit "
+"l'accepter… On l'accepte en cliquant le bouton `Oui` :"
+
+#: ../../getting-started.rst:425
+msgid ""
+"Then we'll have the PaSSHport prompt, and as we want to connect to IPBX, we "
+"select `1` :"
+msgstr ""
+"Nous avons ensuite le prompt de PaSSHport, et comme nous voulons nous connecter "
+"à l'IPBX, on sélection l'entrée `1` :"
+
+#: ../../getting-started.rst:429
+msgid "We are now landed on our target."
+msgstr "On est désormais sur notre serveur cible."
+
+#: ../../getting-started.rst:431
+msgid ""
 "Last relevant example, Yann, who access nas-srv1 and san1. He uses a linux "
 "laptop :"
 msgstr ""
 "Dernier exemple intéressant, Yann, qui accède au serveur nas-srv1 et san1. Il "
 "utilise un ordinateur portable sous linux :"
 
-#: ../../getting-started.rst:411
+#: ../../getting-started.rst:442
 msgid "He can now connect to any of those two servers."
 msgstr "Il peut désormais accéder au deux serveurs relatifs à sa mission."
 
-#: ../../getting-started.rst:414
+#: ../../getting-started.rst:445
 msgid "Delete a user"
 msgstr "Suppression d'un utilisateur"
 
-#: ../../getting-started.rst:416
+#: ../../getting-started.rst:447
 msgid ""
 "Yann has finished his mission, and left the compagny. There is two way to revoke "
 "his access :"
@@ -455,17 +533,17 @@ msgstr ""
 "Yann a désormais fini sa mission, et a quitté la société. On peut révoquer ses "
 "droits de deux manières :"
 
-#: ../../getting-started.rst:418
+#: ../../getting-started.rst:449
 msgid "remove all his target ;"
 msgstr ""
 "en enlevant les liaisons de son compte (que ce soit une target, un targetgroup, "
 "ou un usergroup) ;"
 
-#: ../../getting-started.rst:419
+#: ../../getting-started.rst:450
 msgid "delete the user."
 msgstr "en supprimant l'utilisateur."
 
-#: ../../getting-started.rst:421
+#: ../../getting-started.rst:452
 msgid ""
 "You may prefer the first way if you know that Yann will may come back later to "
 "do another mission, so you won't have to recreate the user (get his ssh key, "
@@ -476,11 +554,11 @@ msgstr ""
 "à le recréer (et devoir récupérer sa clef, et ses informations…). Voici comment "
 "procéder :"
 
-#: ../../getting-started.rst:423
+#: ../../getting-started.rst:454
 msgid "First, list his rights :"
 msgstr "Premièrement, on liste ses droits :"
 
-#: ../../getting-started.rst:439
+#: ../../getting-started.rst:470
 msgid ""
 "You can see that he has access to nas-srv1 and admin@san1, directly. Let's "
 "revoke those access :"
@@ -488,20 +566,27 @@ msgstr ""
 "On peut voir qu'il a accès aux targets nas-srv1 et admin@san1, directement. "
 "Révoquons ces droits :"
 
-#: ../../getting-started.rst:449
+#: ../../getting-started.rst:480
 msgid "Yann won't have access to any target anymore :"
 msgstr "Yann n'aura désormais plus accès à ces targets :"
 
-#: ../../getting-started.rst:465
+#: ../../getting-started.rst:496
 msgid "The second option, is to delete the user :"
 msgstr "La seconde option est de supprimer cet utilisateur :"
 
-#: ../../getting-started.rst:484
+#: ../../getting-started.rst:515
 msgid "Conclusion"
 msgstr "Conclusion"
 
-#: ../../getting-started.rst:486
+#: ../../getting-started.rst:517
 msgid "You should now be able to use the basic functions of PaSSHport."
 msgstr ""
 "Vous devriez être désormais capable d'utiliser les fonctions basiques de "
 "PaSSHport."
+
+#~ msgid ""
+#~ "Finally, we go to the root of the configuration tree `Session` : * enter the "
+#~ "hostname or IP of your PaSSHport server * enter its SSH port (usually 22) * "
+#~ "select `SSH` as connection type * enter a name for this connection "
+#~ "configuration"
+#~ msgstr "Enfin, on revient à la racine de l'arbre de configuration `Session` : "

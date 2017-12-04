@@ -395,7 +395,38 @@ As John, I can see that I can access to 3 servers : www-server, vpn-srv1 and nas
 
 John is now on the www-server.
 
-Let's say that I'm now Alice, a Windows user. I'm going to use putty to connect to PaSSHport. Let's configure putty :
+Let's say that I'm now Alice, a Windows user. I'm going to use putty to connect to PaSSHport. Let's configure putty…
+
+We launch Putty (you can download it from `here <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`__), and on the left configuration tree, goes to `Connection -> SSH -> Auth` , then select the ppk key Alice generated (with puttygen for exemple) :
+
+.. image:: images/putty02-circle.PNG
+
+Then we go to `Connection -> SSH -> Data` , and set the login name as passhport :
+
+.. image:: images/putty03-circle.PNG
+
+Finally, we go to the root of the configuration tree `Session` :
+
+* enter the hostname or IP of your PaSSHport server
+* enter its SSH port (usually 22)
+* select `SSH` as connection type
+* enter a name for this connection configuration
+
+For debugging purpose, it may be useful to `Never` close window on exit (so you can see the error message).
+
+Save, and click Open !
+
+.. image:: images/putty01-circle.PNG
+
+If it's the first time we connect to the PaSSHport server, we'll have a window that says the fingerprint is new, and ask us if we want to accept it… Just accept it :
+
+.. image:: images/putty04-circle.PNG
+
+Then we'll have the PaSSHport prompt, and as we want to connect to IPBX, we select `1` :
+
+.. image:: images/putty06-circle.PNG
+
+We are now landed on our target.
 
 Last relevant example, Yann, who access nas-srv1 and san1. He uses a linux laptop :
 
