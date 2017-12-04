@@ -45,7 +45,7 @@ We'll use a monolithic installation of PaSSHport : passhportd, passhport and pas
  - 1 SAN bay, san1 / 10.192.1.10
 
 Configure targets
------------------
+==================
 First of all, we'll include the targets into PaSSHport.
 
 Let's connect to your PaSSHport node, and add the linux target. We can do this as passhport user :
@@ -95,7 +95,7 @@ Do the same for the network appliances, and the remaining :
 We now have all our targets configured into PaSSHport.
 
 Special target, with a specific login
---------------------------------------
+=========================================================
 
 We want to be able to connect to the SAN bay, as another user, because Yann should not have access to the SAN bay as the root user, but as "admin" user :
 
@@ -114,7 +114,7 @@ We want to be able to connect to the SAN bay, as another user, because Yann shou
 The SAN will now be accessible throug two target : "san1" and "admin@san1".
 
 Configure target's groups
---------------------------
+=========================================================
 We'll group the targets we just created into three groups : unices, network and others.
 
 We create the groups : 
@@ -175,7 +175,7 @@ We'll create a last group, that will have all the targets in it (again, I'm gonn
 We're now done with the targets/targetgroups, at least for the moment…
 
 Configure the users
----------------------
+=========================================================
 
 We take it for granted that our users have all created a ssh public key (rsa, dsa or ecdsa), and that they gave us the public part.
 We have all the following keys :
@@ -255,7 +255,7 @@ As you can see above, I forgot to put a comment on "marc@myfirm.com" account. Le
 Users are now created. Let's put them in usergroups…
 
 Configure usergroups :
------------------------
+=========================================================
 
 Even if in this example we only have one user for each purpose of administration, it's generaly a good idea to add a group for one type skill.
 
@@ -289,7 +289,7 @@ We add the users to each corresponding groups :
 
 
 Connect usergroups and targetgroups :
---------------------------------------
+=========================================================
 
 We now can connect each usergroups to targetgroups :
 
@@ -306,7 +306,7 @@ We now can connect each usergroups to targetgroups :
   passhport@passhport-server:~#
 
 Special configuration for Yann :
---------------------------------
+=========================================================
 
 Because Yann is only here for a short mission, and need to access to different targets, that won't be grouped into a targetgroup, so we connect him directly to the targets :
 
@@ -321,7 +321,7 @@ Because Yann is only here for a short mission, and need to access to different t
 As you can see above, we did not give Yann access directly to san1 as root, but as admin user, through the admin@san1 target we created before.
 
 Check rights :
---------------
+=========================================================
 
 We can check what we configured with the "show" sub-command of passhport-admin :
 
@@ -361,7 +361,7 @@ Here is the example for Yann :
 You can see above that Yann has a direct access to targets, not through usergroups, or targetgroups.
 
 Let's connect !
-----------------
+=========================================================
 
 Let's say that I'm John, I connect to PaSSHport, using the id_rsa key that I sent to the PaSSHport admin : 
 
@@ -442,7 +442,7 @@ Last relevant example, Yann, who access nas-srv1 and san1. He uses a linux lapto
 He can now connect to any of those two servers.
 
 Delete a user
----------------
+=========================================================
 
 Yann has finished his mission, and left the compagny. There is two way to revoke his access : 
 
@@ -512,6 +512,6 @@ The second option, is to delete the user :
   passhport@passhport-server:~$ 
 
 Conclusion
------------
+=========================================================
 
 You should now be able to use the basic functions of PaSSHport.
