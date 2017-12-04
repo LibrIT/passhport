@@ -32,7 +32,7 @@ def generate():
     return pwstring
 
 
-def reset(server, login, sshoptions):
+def reset(server, login, sshoptions, port, PWD_FILE_DIR):
     """After a session, we reset the user password
        and store the password in a local file"""
     # 1. Generate random passowrd
@@ -40,16 +40,17 @@ def reset(server, login, sshoptions):
 
     # 2. Define username (if passed in sshoptions it's used instead of login)
     useroption = sshoptions.split("-l")[-1].split(' ')
-    if useroption[0]:
-        user = useroption[0]
-    elif useroption[1]:
-        user = useroption[1]
+    if len(useroption) > 0  and useroption[0]:
+            user = useroption[0]
+    elif len(useroption) > 1 and useroption[1]:
+            user = useroption[1]
     else:          
         user = login
 
     # 3. Propage password (this command HAS to be launched as root)
-    os.system("ssh root@" + server + ' ' + sshoptions + ' -l root \'echo "'
-                + user + ':' + pwdstring + '" | chpasswd\'')
+    os.system("ssh root@" + server + ' ' + sshoptions 
+              + ' -p ' + port + ' -l root \'echo "'
+              + user + ':' + pwdstring + '" | chpasswd\'')
 
     # 4. Sore it locally
     if not os.path.exists(PWD_FILE_DIR):

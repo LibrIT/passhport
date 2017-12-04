@@ -98,7 +98,7 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
 
                 # Change password on the target
                 if PWD_RST_AFTER_SESSION:
-                    password.reset(target, login, sshoptions)
+                    password.reset(target, login, sshoptions, port, PWD_FILE_DIR)
 
                 return True
             else:
