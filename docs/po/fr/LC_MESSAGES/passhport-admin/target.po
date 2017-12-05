@@ -1,0 +1,362 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-05 02:14+0100\n"
+"PO-Revision-Date: 2017-12-05 03:01+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
+"Language-Team: LibrIT <contact@librit.fr>\n"
+"Language: fr_FR\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: ../../passhport-admin/target.rst:2
+msgid "target"
+msgstr "target"
+
+#: ../../passhport-admin/target.rst:4
+msgid "Usages :"
+msgstr "Usages :"
+
+#: ../../passhport-admin/target.rst:19
+msgid "list"
+msgstr "list"
+
+#: ../../passhport-admin/target.rst:21
+msgid "`passhport-admin target list` show all the configured targets."
+msgstr ""
+"`passhport-admin target list` affiche l'ensemble des targets configurées."
+
+#: ../../passhport-admin/target.rst:23 ../../passhport-admin/target.rst:40
+#: ../../passhport-admin/target.rst:51 ../../passhport-admin/target.rst:66
+#: ../../passhport-admin/target.rst:77 ../../passhport-admin/target.rst:92
+#: ../../passhport-admin/target.rst:113 ../../passhport-admin/target.rst:154
+#: ../../passhport-admin/target.rst:164 ../../passhport-admin/target.rst:201
+#: ../../passhport-admin/target.rst:211 ../../passhport-admin/target.rst:254
+#: ../../passhport-admin/target.rst:264 ../../passhport-admin/target.rst:287
+#: ../../passhport-admin/target.rst:297 ../../passhport-admin/target.rst:320
+#: ../../passhport-admin/target.rst:330 ../../passhport-admin/target.rst:353
+#: ../../passhport-admin/target.rst:363 ../../passhport-admin/target.rst:386
+#: ../../passhport-admin/target.rst:409
+msgid "**Example :**"
+msgstr "**Exemple :**"
+
+#: ../../passhport-admin/target.rst:36
+msgid "search"
+msgstr "search"
+
+#: ../../passhport-admin/target.rst:38
+msgid ""
+"`passhport-admin target search [<PATTERN>]` searches in the target list for "
+"all targets that correspond to the given pattern."
+msgstr ""
+"`passhport-admin target search [<PATTERN>]` cherche dans la liste des targets "
+"celles qui correspondent au modèle (PATTERN) donné."
+
+#: ../../passhport-admin/target.rst:49 ../../passhport-admin/target.rst:75
+#: ../../passhport-admin/target.rst:111
+msgid "If no pattern is given, user enters in interactive mode."
+msgstr "Si aucun modèle (PATTERN), l'utilisateur entre en mode interactif."
+
+#: ../../passhport-admin/target.rst:62
+msgid "checkaccess"
+msgstr "checkaccess"
+
+#: ../../passhport-admin/target.rst:64
+msgid ""
+"`passhport-admin target checkaccess [<PATTERN>]` verifies that PaSSHport has "
+"access to the all targets that correspond to the given pattern."
+msgstr ""
+"`passhport-admin target checkaccess [<PATTERN>]` verifie que PaSSHport a bien "
+"accès à toutes les targets qui correspondent au modèle (<PATTERN>) donné."
+
+#: ../../passhport-admin/target.rst:88
+msgid "show"
+msgstr "show"
+
+#: ../../passhport-admin/target.rst:90
+msgid ""
+"`passhport-admin target show <NAME>` shows informations about the target "
+"<NAME>."
+msgstr ""
+"`passhport-admin target show <NAME>` affiche toutes les informations au sujet "
+"d'une target nommée <NAME>."
+
+#: ../../passhport-admin/target.rst:134
+msgid "create"
+msgstr "create"
+
+#: ../../passhport-admin/target.rst:136
+msgid ""
+"`passhport-admin target create [((<name> <hostname>) [--login=<login>] [--"
+"comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]` creates a "
+"new target."
+msgstr ""
+"`passhport-admin target create [((<name> <hostname>) [--login=<login>] [--"
+"comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]` crée une "
+"nouvelle target."
+
+#: ../../passhport-admin/target.rst:139 ../../passhport-admin/target.rst:184
+#: ../../passhport-admin/target.rst:247 ../../passhport-admin/target.rst:280
+#: ../../passhport-admin/target.rst:313 ../../passhport-admin/target.rst:346
+#: ../../passhport-admin/target.rst:379
+msgid "Argument"
+msgstr "Argument"
+
+#: ../../passhport-admin/target.rst:139 ../../passhport-admin/target.rst:184
+#: ../../passhport-admin/target.rst:247 ../../passhport-admin/target.rst:280
+#: ../../passhport-admin/target.rst:313 ../../passhport-admin/target.rst:346
+#: ../../passhport-admin/target.rst:379
+msgid "Description"
+msgstr "Description"
+
+#: ../../passhport-admin/target.rst:141 ../../passhport-admin/target.rst:186
+#: ../../passhport-admin/target.rst:381
+msgid "<name>"
+msgstr "<name>"
+
+#: ../../passhport-admin/target.rst:141 ../../passhport-admin/target.rst:186
+msgid "Name of the target to edit"
+msgstr "Nom de la target à éditer"
+
+#: ../../passhport-admin/target.rst:143
+msgid "hostname"
+msgstr "hostname"
+
+#: ../../passhport-admin/target.rst:143
+msgid "Hostname or IP of the target"
+msgstr "Nom d'hôte ou IP de la target"
+
+#: ../../passhport-admin/target.rst:145
+msgid "--login"
+msgstr "--login"
+
+#: ../../passhport-admin/target.rst:145
+msgid "Login to use when accessing the target (optional)"
+msgstr "Login à utiliser lors de la connexion à une target (optionnel)"
+
+#: ../../passhport-admin/target.rst:147
+msgid "--comment"
+msgstr "--comment"
+
+#: ../../passhport-admin/target.rst:147
+msgid "Comment concerning the target (optional)"
+msgstr "Commentaire concernant la target (optionnel)"
+
+#: ../../passhport-admin/target.rst:149
+msgid "--sshoptions"
+msgstr "--sshoptions"
+
+#: ../../passhport-admin/target.rst:149
+msgid "SSH options to use when connecting to the target (optional)"
+msgstr "Options SSH à utiliser pour se connecter à la target (optionnel)"
+
+#: ../../passhport-admin/target.rst:151
+msgid "--port"
+msgstr "--port"
+
+#: ../../passhport-admin/target.rst:151
+msgid "SSH port to use when connecting to the target (optional)"
+msgstr "Port SSH à utiliser pour se connecter à la target (optionnel)"
+
+#: ../../passhport-admin/target.rst:162 ../../passhport-admin/target.rst:262
+#: ../../passhport-admin/target.rst:295 ../../passhport-admin/target.rst:328
+#: ../../passhport-admin/target.rst:361 ../../passhport-admin/target.rst:407
+msgid "If no argument is given, user enters in interactive mode."
+msgstr "Si aucun argument n'est donné, l'utilisateur entre en mode interactif."
+
+#: ../../passhport-admin/target.rst:179
+msgid "edit"
+msgstr "edit"
+
+#: ../../passhport-admin/target.rst:181
+msgid ""
+"`passhport-admin target edit [(<name> [--newname=<name>] [--"
+"newhostname=<hostname>] [--newlogin=<login>] [--newcomment=<comment>] [--"
+"newsshoptions=<sshoptions>] [--newport=<port>])]` edits an existing target."
+msgstr ""
+"`passhport-admin target edit [(<name> [--newname=<name>] [--"
+"newhostname=<hostname>] [--newlogin=<login>] [--newcomment=<comment>] [--"
+"newsshoptions=<sshoptions>] [--newport=<port>])]` édite une target existante."
+
+#: ../../passhport-admin/target.rst:188
+msgid "--newname"
+msgstr "--newname"
+
+#: ../../passhport-admin/target.rst:188
+msgid "New name of the target if you want to rename it (optional)"
+msgstr "Nouveau nom de la target que l'on souhaite renommer (optionnel)"
+
+#: ../../passhport-admin/target.rst:190
+msgid "--newhostname"
+msgstr "--newhostname"
+
+#: ../../passhport-admin/target.rst:190
+msgid "New hostname/IP of the target (optional)"
+msgstr "Nouveau nom d'hôte ou IP de la target (optionnel)"
+
+#: ../../passhport-admin/target.rst:192
+msgid "--newlogin"
+msgstr "--newlogin"
+
+#: ../../passhport-admin/target.rst:192
+msgid "New login to use when accessing the target (optional)"
+msgstr "Nouveau login à utiliser lors de la connexion à une target (optionnel)"
+
+#: ../../passhport-admin/target.rst:194
+msgid "--newcomment"
+msgstr "--newcomment"
+
+#: ../../passhport-admin/target.rst:194
+msgid "New comment concerning the target (optional)"
+msgstr "Nouveau commentaire concernant la target (optionel)"
+
+#: ../../passhport-admin/target.rst:196
+msgid "--newsshoptions"
+msgstr "--newsshoptions"
+
+#: ../../passhport-admin/target.rst:196
+msgid "New SSH options to use when connecting to the target (optional)"
+msgstr ""
+"Nouvelles options SSH à utiliser pour se connecter à la target (optionnel)"
+
+#: ../../passhport-admin/target.rst:198
+msgid "--newport"
+msgstr "--newport"
+
+#: ../../passhport-admin/target.rst:198
+msgid "New SSH port to use when connecting to the target (optional)"
+msgstr "Nouveau port SSH à utiliser pour se connecter à la target (optionnel)"
+
+#: ../../passhport-admin/target.rst:209
+msgid ""
+"If no argument is given, user enters in interactive mode. It firsts shows all "
+"parameters of the target, then displays each parameters for a change. User can "
+"keep any previous configured parameter, just by typing \"Enter\". They only "
+"exception is the comment. If user wants to remove the comment, he just type "
+"\"Enter\", and will then be asked if the original comment should be removed or "
+"not."
+msgstr ""
+"Si aucun argument n'est donné, l'utilisateur entre en mode interactif. Un "
+"tableau montrant l'ensemble des paramètre de configuration est d'abord "
+"affiché, puis, ligne par ligne, chaque argument modifiable est affiché. "
+"L'utilisateur peut conserver chaque paramètre présenté au dessus en appuyant "
+"sur \"Entrer\". La seule exception est pour le champs \"comment\" : si "
+"l'utilisateur souhaite enlever le commentaire, il tape alors \"Entrer\", puis "
+"il lui sera demandé s'il veut supprimer le commentaire, ou non."
+
+#: ../../passhport-admin/target.rst:239
+msgid ""
+"As you can see above, we only changed the \"New Login\" entry. If an entry is "
+"simply replied with \"enter\", it keeps the previous value."
+msgstr ""
+"Comme montré ci-dessus, seule l'entrée \"New Login\" a été modifié. Si une "
+"entrée est simplement rempli par \"Entrer\", la valeur précédent est conservée."
+
+#: ../../passhport-admin/target.rst:242
+msgid "adduser"
+msgstr "adduser"
+
+#: ../../passhport-admin/target.rst:244
+msgid ""
+"`passhport-admin target adduser [(<username> <targetname>)]` connects a target "
+"directly to a user."
+msgstr ""
+"`passhport-admin target adduser [(<username> <targetname>)]` connecte "
+"directement une target avec un user."
+
+#: ../../passhport-admin/target.rst:249 ../../passhport-admin/target.rst:282
+msgid "<username>"
+msgstr "<username>"
+
+#: ../../passhport-admin/target.rst:249 ../../passhport-admin/target.rst:282
+msgid "Name of the user to connect to the target"
+msgstr "Nom du user que l'on connecte directement à la target"
+
+#: ../../passhport-admin/target.rst:251 ../../passhport-admin/target.rst:284
+#: ../../passhport-admin/target.rst:317 ../../passhport-admin/target.rst:350
+msgid "<targetname>"
+msgstr "<targetname>"
+
+#: ../../passhport-admin/target.rst:251 ../../passhport-admin/target.rst:284
+msgid "Name of the target on which to connect the user"
+msgstr "Nom de la target à laquelle on connecte directement au user"
+
+#: ../../passhport-admin/target.rst:275
+msgid "rmuser"
+msgstr "rmuser"
+
+#: ../../passhport-admin/target.rst:277
+msgid ""
+"`passhport-admin target adduser [(<username> <targetname>)]` deletes the "
+"direct connection between a target and a user."
+msgstr ""
+"`passhport-admin target adduser [(<username> <targetname>)]` supprime le lien "
+"direct entre une target et un user."
+
+#: ../../passhport-admin/target.rst:308
+msgid "addusergroup"
+msgstr "addusergroup"
+
+#: ../../passhport-admin/target.rst:310
+msgid ""
+"`passhport-admin target addusergroup [(<usergroupname> <targetname>)]` "
+"connects a target directly to a usergroup."
+msgstr ""
+"`passhport-admin target addusergroup [(<usergroupname> <targetname>)]` "
+"connecte directement une target à un usergroup."
+
+#: ../../passhport-admin/target.rst:315 ../../passhport-admin/target.rst:348
+msgid "<usergroupname>"
+msgstr "<usergroupname>"
+
+#: ../../passhport-admin/target.rst:315 ../../passhport-admin/target.rst:348
+msgid "Name of the usergroup to connect to the target"
+msgstr "Nom du usergroup à connecter directement à la target"
+
+#: ../../passhport-admin/target.rst:317 ../../passhport-admin/target.rst:350
+msgid "Name of the target on which to connect the usergroup"
+msgstr "Nom de la target à laquelle on connecte directement le usergroup"
+
+#: ../../passhport-admin/target.rst:341
+msgid "rmusergroup"
+msgstr "rmusergroup"
+
+#: ../../passhport-admin/target.rst:343
+msgid ""
+"`passhport-admin target delusergroup [(<usergroupname> <targetname>)]` delete "
+"the connection between a target and a usergroup."
+msgstr ""
+"`passhport-admin target delusergroup [(<usergroupname> <targetname>)]` "
+"supprime le lien direct entre une target et un usergroup."
+
+#: ../../passhport-admin/target.rst:374
+msgid "delete"
+msgstr "delete"
+
+#: ../../passhport-admin/target.rst:376
+msgid "`passhport-admin target delete [([-f | --force] <name>)]` delete a target"
+msgstr ""
+"`passhport-admin target delete [([-f | --force] <name>)]` supprime une target."
+
+#: ../../passhport-admin/target.rst:381
+msgid "Name of the target to delete"
+msgstr "Nom de la target à supprimer"
+
+#: ../../passhport-admin/target.rst:383
+msgid "-f or --force"
+msgstr "-f ou --force"
+
+#: ../../passhport-admin/target.rst:383
+msgid "If used, user won't be prompt for confirmation"
+msgstr "Si utilisé, aucune confirmation ne sera demandé à l'utilisateur"
