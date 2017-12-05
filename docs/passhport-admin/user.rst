@@ -143,7 +143,7 @@ Argument           Description
 
 --newname          New name of the user if you want to rename it (optional)
 
---newsshkey        SSH key of the user (use ``"`` as the below example) (optional)
+--newsshkey        New SSH key of the user (use ``"`` as the below example) (optional)
 
 --newcomment       New comment concerning the user (optional)
 ================== ===================================================================
@@ -189,7 +189,7 @@ delete
 ================== ===================================================================
 Argument           Description
 ================== ===================================================================
-<name>             Name of the target to delete
+<name>             Name of the user to delete
 
 -f or --force      If used, user won't be prompt for confirmation
 ================== ===================================================================
@@ -217,6 +217,7 @@ If no argument is given, user enters in interactive mode.
 **Example :**
 
 .. code-block:: none
+
  admin@bastion:~$ passhport-admin user delete
  Name: bob@compagny.com
  Email: bob@compagny.com
