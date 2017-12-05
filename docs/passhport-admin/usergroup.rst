@@ -1,5 +1,5 @@
-CLI usage
+usergroup
 =============================
 
-You can call passhport-admin's CLI, by calling ``passhport-admin`` with the ``-i``.
+This will show the usergroup sub-module of passhport-admin
 

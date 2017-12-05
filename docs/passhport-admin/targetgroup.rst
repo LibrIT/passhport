@@ -1,5 +1,4 @@
-CLI usage
+targetgroup
 =============================
 
-You can call passhport-admin's CLI, by calling ``passhport-admin`` with the ``-i``.
-
+This will show the targetgroup sub-module of passhport-admin
