@@ -12,7 +12,7 @@ Table of content :
    introduction
    installation-and-configuration/index
    getting-started
-   passhport-admin
+   passhport-admin/index
    advanced-usage
    api
    limitations
