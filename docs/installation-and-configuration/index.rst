@@ -1,4 +1,4 @@
-PaSSHport installation and configuration
+Installation and configuration
 ########################################
 
 This chapter describes the installation on different distro, and the main configuration principles.

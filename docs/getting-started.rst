@@ -111,7 +111,7 @@ We want to be able to connect to the SAN bay, as another user, because Yann shou
   OK: "admin@san1" -> created
   root@passhport-server:~#
 
-The SAN will now be accessible throug two target : "san1" and "admin@san1".
+The SAN will now be accessible through two targets : "san1" and "admin@san1".
 
 Configure target's groups
 =========================================================
