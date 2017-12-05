@@ -172,6 +172,7 @@ html_static_path = ['_static']
 # typographically correct entities.
 #
 # html_use_smartypants = True
+html_use_smartypants = False
 
 # Custom sidebar templates, maps document names to template names.
 #
