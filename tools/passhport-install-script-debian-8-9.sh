@@ -199,7 +199,7 @@ then
 		echo 'Do you want to link this user to the target root@localhost ? Y/n'
 		read DO_LINK_USER
 	done
-	if [ "${DO_LINK_USER,,}" -eq "y" ] || [ -z "${DO_LINK_USER}" ]
+	if [ "${DO_LINK_USER,,}" == "y" ] || [ -z "${DO_LINK_USER}" ]
 	then
 		FIRST_USER=`su - passhport -c "passhport-admin user list"`
 		su - passhport -c "passhport-admin target adduser ${FIRST_USER} root@localhost"
