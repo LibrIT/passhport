@@ -173,7 +173,6 @@ then
 	echo "passhportd has been started."
 	echo 'Please use systemctl to start/stop service.'
 fi
-
 echo '##############################################################'
 echo '# Adding root@localhost target…'
 echo '##############################################################'
