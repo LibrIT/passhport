@@ -195,6 +195,20 @@ def user_create():
     return utils.response('OK: "' + name + '" -> created', 200)
 
 
+@app.route("/user/generate_authorized_keys", methods=["GET"])
+def generate_authorized_keys():
+    """Return a authorized_key files with all users"""
+    query = db.session.query(user.User).order_by(user.User.name).all()
+    r = ""
+    
+    for userdata in query:
+        r = r + 'command="' + config.PYTHON_PATH + " " + \
+                config.PASSHPORT_PATH + " " + userdata.name + \
+                '" ' + userdata.sshkey + "\n"
+
+    return r
+
+
 def update_authorized_keys(orig_name, orig_sshkey, new_name, new_sshkey):
     """Edit the ssh autorized_keys file"""
     warning = "OK"
