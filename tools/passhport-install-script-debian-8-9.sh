@@ -177,19 +177,20 @@ fi
 echo '##############################################################'
 echo '# Adding root@localhost target…'
 echo '##############################################################'
+# Sleep 2 seconds so passhportd has enough time to start
 sleep 2
 cat "/home/passhport/.ssh/id_ecdsa.pub" >> "/root/.ssh/authorized_keys"
 su - passhport -c 'passhport-admin target create root@localhost 127.0.0.1 --comment="Localhost target added during the PaSSHport installation process."'
-while [ "${DO_CREATE_USER,,}" -ne "y" ] && [ ! -z "${DO_CREATE_USER}" ] && [ "${DO_CREATE_USER,,}" -ne "n" ]
+while [ "${DO_CREATE_USER,,}" != "y" ] && [ ! -z "${DO_CREATE_USER}" ] && [ "${DO_CREATE_USER,,}" != "n" ]
 do
 	echo 'Do you want to add your first user now ? Y/n'
 	read DO_CREATE_USER
 done
-if [ "${DO_CREATE_USER,,}" -eq "y" ] || [ -z "${DO_CREATE_USER}" ]
+if [ "${DO_CREATE_USER,,}" == "y" ] || [ -z "${DO_CREATE_USER}" ]
 then
 	echo 'Remember : no space in the user name!'
 	su - passhport -c "passhport-admin user create"
-	while [ "${DO_LINK_USER,,}" -ne "y" ] && [ ! -z "${DO_LINK_USER}" ] && [ "${DO_LINK_USER,,}" -ne "n" ]
+	while [ "${DO_LINK_USER,,}" != "y" ] && [ ! -z "${DO_LINK_USER}" ] && [ "${DO_LINK_USER,,}" != "n" ]
 	do
 		echo 'Do you want to link this user to the target root@localhost ? Y/n'
 		read DO_LINK_USER
@@ -209,4 +210,6 @@ echo '# curl -s --insecure https://localhost:5000'
 echo '# if it displays : '
 echo '# "passhportd is running, gratz!"'
 echo '# you successfuly installed PaSSHport. Well done !'
+echo '# If you created your first user, you can connect to PaSSHport'
+echo '# using "ssh -i the_key_you_used passhport@PASSHPORT_HOST"'
 echo '##############################################################'
