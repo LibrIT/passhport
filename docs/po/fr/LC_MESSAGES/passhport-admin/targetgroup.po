@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-05 02:14+0100\n"
+"POT-Creation-Date: 2017-12-06 00:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,19 @@ msgstr ""
 "Generated-By: Babel 2.5.1\n"
 
 #: ../../passhport-admin/targetgroup.rst:2
-msgid "CLI usage"
+msgid "targetgroup"
 msgstr ""
 
 #: ../../passhport-admin/targetgroup.rst:4
-msgid ""
-"You can call passhport-admin's CLI, by calling ``passhport-admin`` with "
-"the ``-i``."
+msgid "This will show the targetgroup sub-module of passhport-admin"
 msgstr ""
+
+#~ msgid "CLI usage"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You can call passhport-admin's CLI, "
+#~ "by calling ``passhport-admin`` with the"
+#~ " ``-i``."
+#~ msgstr ""
 

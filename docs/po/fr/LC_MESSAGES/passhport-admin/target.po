@@ -7,18 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-05 02:14+0100\n"
-"PO-Revision-Date: 2017-12-05 03:01+0100\n"
+"POT-Creation-Date: 2017-12-06 00:40+0100\n"
+"PO-Revision-Date: 2017-12-06 00:58+0100\n"
+"Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
+"Language: fr_FR\n"
+"Language-Team: LibrIT <contact@librit.fr>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
-"Language-Team: LibrIT <contact@librit.fr>\n"
-"Language: fr_FR\n"
 "X-Generator: Poedit 1.8.11\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 
 #: ../../passhport-admin/target.rst:2
 msgid "target"
@@ -34,8 +33,7 @@ msgstr "list"
 
 #: ../../passhport-admin/target.rst:21
 msgid "`passhport-admin target list` show all the configured targets."
-msgstr ""
-"`passhport-admin target list` affiche l'ensemble des targets configurées."
+msgstr "`passhport-admin target list` affiche l'ensemble des targets configurées."
 
 #: ../../passhport-admin/target.rst:23 ../../passhport-admin/target.rst:40
 #: ../../passhport-admin/target.rst:51 ../../passhport-admin/target.rst:66
@@ -57,8 +55,8 @@ msgstr "search"
 
 #: ../../passhport-admin/target.rst:38
 msgid ""
-"`passhport-admin target search [<PATTERN>]` searches in the target list for "
-"all targets that correspond to the given pattern."
+"`passhport-admin target search [<PATTERN>]` searches in the target list for all "
+"targets that correspond to the given pattern."
 msgstr ""
 "`passhport-admin target search [<PATTERN>]` cherche dans la liste des targets "
 "celles qui correspondent au modèle (PATTERN) donné."
@@ -86,8 +84,7 @@ msgstr "show"
 
 #: ../../passhport-admin/target.rst:90
 msgid ""
-"`passhport-admin target show <NAME>` shows informations about the target "
-"<NAME>."
+"`passhport-admin target show <NAME>` shows informations about the target <NAME>."
 msgstr ""
 "`passhport-admin target show <NAME>` affiche toutes les informations au sujet "
 "d'une target nommée <NAME>."
@@ -99,8 +96,8 @@ msgstr "create"
 #: ../../passhport-admin/target.rst:136
 msgid ""
 "`passhport-admin target create [((<name> <hostname>) [--login=<login>] [--"
-"comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]` creates a "
-"new target."
+"comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]` creates a new "
+"target."
 msgstr ""
 "`passhport-admin target create [((<name> <hostname>) [--login=<login>] [--"
 "comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]` crée une "
@@ -125,9 +122,9 @@ msgstr "Description"
 msgid "<name>"
 msgstr "<name>"
 
-#: ../../passhport-admin/target.rst:141 ../../passhport-admin/target.rst:186
-msgid "Name of the target to edit"
-msgstr "Nom de la target à éditer"
+#: ../../passhport-admin/target.rst:141
+msgid "Name of the target to create"
+msgstr "Nom de la target à supprimer"
 
 #: ../../passhport-admin/target.rst:143
 msgid "hostname"
@@ -189,6 +186,10 @@ msgstr ""
 "newhostname=<hostname>] [--newlogin=<login>] [--newcomment=<comment>] [--"
 "newsshoptions=<sshoptions>] [--newport=<port>])]` édite une target existante."
 
+#: ../../passhport-admin/target.rst:186
+msgid "Name of the target to edit"
+msgstr "Nom de la target à éditer"
+
 #: ../../passhport-admin/target.rst:188
 msgid "--newname"
 msgstr "--newname"
@@ -227,8 +228,7 @@ msgstr "--newsshoptions"
 
 #: ../../passhport-admin/target.rst:196
 msgid "New SSH options to use when connecting to the target (optional)"
-msgstr ""
-"Nouvelles options SSH à utiliser pour se connecter à la target (optionnel)"
+msgstr "Nouvelles options SSH à utiliser pour se connecter à la target (optionnel)"
 
 #: ../../passhport-admin/target.rst:198
 msgid "--newport"
@@ -248,12 +248,12 @@ msgid ""
 "not."
 msgstr ""
 "Si aucun argument n'est donné, l'utilisateur entre en mode interactif. Un "
-"tableau montrant l'ensemble des paramètre de configuration est d'abord "
-"affiché, puis, ligne par ligne, chaque argument modifiable est affiché. "
-"L'utilisateur peut conserver chaque paramètre présenté au dessus en appuyant "
-"sur \"Entrer\". La seule exception est pour le champs \"comment\" : si "
-"l'utilisateur souhaite enlever le commentaire, il tape alors \"Entrer\", puis "
-"il lui sera demandé s'il veut supprimer le commentaire, ou non."
+"tableau montrant l'ensemble des paramètre de configuration est d'abord affiché, "
+"puis, ligne par ligne, chaque argument modifiable est affiché. L'utilisateur "
+"peut conserver chaque paramètre présenté au dessus en appuyant sur \"Entrer\". "
+"La seule exception est pour le champs \"comment\" : si l'utilisateur souhaite "
+"enlever le commentaire, il tape alors \"Entrer\", puis il lui sera demandé s'il "
+"veut supprimer le commentaire, ou non."
 
 #: ../../passhport-admin/target.rst:239
 msgid ""
@@ -298,8 +298,8 @@ msgstr "rmuser"
 
 #: ../../passhport-admin/target.rst:277
 msgid ""
-"`passhport-admin target adduser [(<username> <targetname>)]` deletes the "
-"direct connection between a target and a user."
+"`passhport-admin target adduser [(<username> <targetname>)]` deletes the direct "
+"connection between a target and a user."
 msgstr ""
 "`passhport-admin target adduser [(<username> <targetname>)]` supprime le lien "
 "direct entre une target et un user."
@@ -310,11 +310,11 @@ msgstr "addusergroup"
 
 #: ../../passhport-admin/target.rst:310
 msgid ""
-"`passhport-admin target addusergroup [(<usergroupname> <targetname>)]` "
-"connects a target directly to a usergroup."
+"`passhport-admin target addusergroup [(<usergroupname> <targetname>)]` connects "
+"a target directly to a usergroup."
 msgstr ""
-"`passhport-admin target addusergroup [(<usergroupname> <targetname>)]` "
-"connecte directement une target à un usergroup."
+"`passhport-admin target addusergroup [(<usergroupname> <targetname>)]` connecte "
+"directement une target à un usergroup."
 
 #: ../../passhport-admin/target.rst:315 ../../passhport-admin/target.rst:348
 msgid "<usergroupname>"
@@ -337,15 +337,15 @@ msgid ""
 "`passhport-admin target delusergroup [(<usergroupname> <targetname>)]` delete "
 "the connection between a target and a usergroup."
 msgstr ""
-"`passhport-admin target delusergroup [(<usergroupname> <targetname>)]` "
-"supprime le lien direct entre une target et un usergroup."
+"`passhport-admin target delusergroup [(<usergroupname> <targetname>)]` supprime "
+"le lien direct entre une target et un usergroup."
 
 #: ../../passhport-admin/target.rst:374
 msgid "delete"
 msgstr "delete"
 
 #: ../../passhport-admin/target.rst:376
-msgid "`passhport-admin target delete [([-f | --force] <name>)]` delete a target"
+msgid "`passhport-admin target delete [([-f | --force] <name>)]` delete a target."
 msgstr ""
 "`passhport-admin target delete [([-f | --force] <name>)]` supprime une target."
 

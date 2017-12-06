@@ -138,7 +138,7 @@ create
 ================== ===================================================================
 Argument           Description
 ================== ===================================================================
-<name>             Name of the target to edit
+<name>             Name of the target to create
 
 hostname           Hostname or IP of the target
 
@@ -373,7 +373,7 @@ If no argument is given, user enters in interactive mode.
 delete
 -----------
 
-`passhport-admin target delete [([-f | --force] <name>)]` delete a target
+`passhport-admin target delete [([-f | --force] <name>)]` delete a target.
 
 ================== ===================================================================
 Argument           Description
@@ -387,7 +387,7 @@ Argument           Description
 
 .. code-block:: none
 
-  root@passhport-dev-debian9:~# passhport-admin target delete firewall1.compagny.com 
+  admin@bastion:~# passhport-admin target delete firewall1.compagny.com 
   Name: firewall1.compagny.com
   Hostname: firewall1.compagny.com
   Server Type : ssh
@@ -402,7 +402,7 @@ Argument           Description
   Member of the following targetgroups: 
   Are you sure you want to delete firewall1.compagny.com? [y/N] y
   OK: "firewall1.compagny.com" -> deleted
-  root@passhport-dev-debian9:~#
+  admin@bastion:~#
 
 If no argument is given, user enters in interactive mode.
 
@@ -410,7 +410,7 @@ If no argument is given, user enters in interactive mode.
 
 .. code-block:: none
 
-  root@passhport-dev-debian9:~# passhport-admin target delete
+  admin@bastion:~# passhport-admin target delete
   Name: firewall2.compagny.com
   Name: firewall2.compagny.com
   Hostname: 87.65.43.220
@@ -426,4 +426,4 @@ If no argument is given, user enters in interactive mode.
   Member of the following targetgroups: 
   Are you sure you want to delete firewall2.compagny.com? [y/N] y
   OK: "firewall2.compagny.com" -> deleted
-  root@passhport-dev-debian9:~# 
+  admin@bastion:~# 
