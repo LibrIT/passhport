@@ -177,6 +177,7 @@ fi
 echo '##############################################################'
 echo '# Adding root@localhost target…'
 echo '##############################################################'
+sleep 2
 cat "/home/passhport/.ssh/id_ecdsa.pub" >> "/root/.ssh/authorized_keys"
 su - passhport -c 'passhport-admin target create root@localhost 127.0.0.1 --comment="Localhost target added during the PaSSHport installation process."'
 while [ "${DO_CREATE_USER,,}" -ne "y" ] && [ ! -z "${DO_CREATE_USER}" ] && [ "${DO_CREATE_USER,,}" -ne "n" ]
