@@ -186,8 +186,8 @@ msgid ""
 "As you can see above, we only changed the \"New comment\" entry. If an entry is "
 "simply replied with \"enter\", it keeps the previous value."
 msgstr ""
-"Comme montré ci-dessus, seule l'entrée \"New comment\" a été modifié. Si une "
-"entrée est simplement rempli par \"Entrer\", la valeur précédent est conservée."
+"Comme montré ci-dessus, seule l'entrée \"New comment\" a été modifiée. Si une "
+"entrée est simplement remplie par \"Entrer\", la valeur précédente est conservée."
 
 #: ../../passhport-admin/user.rst:185
 msgid "delete"

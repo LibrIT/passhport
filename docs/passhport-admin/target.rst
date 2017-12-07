@@ -274,14 +274,14 @@ If no argument is given, user enters in interactive mode.
 rmuser
 -----------
 
-`passhport-admin target adduser [(<username> <targetname>)]` deletes the direct connection between a target and a user.
+`passhport-admin target rmuser [(<username> <targetname>)]` deletes the direct connection between a target and a user.
 
 ================== ===================================================================
 Argument           Description
 ================== ===================================================================
-<username>         Name of the user to connect to the target
+<username>         Name of the user to disconnect to the target
 
-<targetname>       Name of the target on which to connect the user
+<targetname>       Name of the target on which to disconnect the user
 ================== ===================================================================
 
 **Example :**
@@ -345,9 +345,9 @@ rmusergroup
 ================== ===================================================================
 Argument           Description
 ================== ===================================================================
-<usergroupname>    Name of the usergroup to connect to the target
+<usergroupname>    Name of the usergroup to disconnect to the target
 
-<targetname>       Name of the target on which to connect the usergroup
+<targetname>       Name of the target on which to disconnect the usergroup
 ================== ===================================================================
 
 **Example :**
