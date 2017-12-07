@@ -66,43 +66,44 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
     # Check the target access and access type
     for line in indexed_target_list:
         item_list = line.split(" ")
-        if choice in item_list:
-            if len(item_list) > 2:
-                target = item_list[2]
-                pathlog = SCRIPT_LOGS_PATH + "/" + target + "/"
-                isodate = datetime.now().isoformat().replace(":",""). \
-                          replace("-","").split('.')[0]
-                filelog = pathlog + isodate + "-" + str(os.getpid()) + "-" + \
-                          target + "-" + username
-                login = get(url_passhport + "target" + "/login/" +  
-                        item_list[1])
-                #target login is set at $email => login=username (without @...)
-                if login == "$email":
-                    login = re.split("@", username)[0] 
-                port = get(url_passhport + "target" + "/port/" +  
-                        item_list[1])
-                sshoptions = get(url_passhport + "target" + "/sshoptions/" + \
-                             item_list[1])
+        for possibility in item_list:
+            if choice == possibility.casefold():
+                if len(item_list) > 2:
+                    target = item_list[2]
+                    pathlog = SCRIPT_LOGS_PATH + "/" + target + "/"
+                    isodate = datetime.now().isoformat().replace(":",""). \
+                              replace("-","").split('.')[0]
+                    filelog = pathlog + isodate + "-" + str(os.getpid()) + "-" + \
+                              target + "-" + username
+                    login = get(url_passhport + "target" + "/login/" +  
+                            item_list[1])
+                    #target login is set at $email => login=username (without @...)
+                    if login == "$email":
+                        login = re.split("@", username)[0] 
+                    port = get(url_passhport + "target" + "/port/" +  
+                            item_list[1])
+                    sshoptions = get(url_passhport + "target" + "/sshoptions/" + \
+                                 item_list[1])
 
-                # Create a log directory for this target
-                if not os.path.exists(pathlog):
-                    os.mkdir(pathlog)
+                    # Create a log directory for this target
+                    if not os.path.exists(pathlog):
+                        os.mkdir(pathlog)
 
-                # It's SCP if scpcmd is set, else ssh.
-                if scpcmd == True: 
-                    scp.connect(target, filelog, login, sshoptions, 
-                                originalcmd)
+                    # It's SCP if scpcmd is set, else ssh.
+                    if scpcmd == True: 
+                        scp.connect(target, filelog, login, sshoptions, 
+                                    originalcmd)
+                    else:
+                        ssh.connect(target, filelog, login, port, sshoptions, 
+                                    originalcmd)
+
+                    # Change password on the target
+                    if PWD_RST_AFTER_SESSION:
+                        password.reset(target, login, sshoptions, port, PWD_FILE_DIR)
+
+                    return True
                 else:
-                    ssh.connect(target, filelog, login, port, sshoptions, 
-                                originalcmd)
-
-                # Change password on the target
-                if PWD_RST_AFTER_SESSION:
-                    password.reset(target, login, sshoptions, port, PWD_FILE_DIR)
-
-                return True
-            else:
-                print("Error on target definition")
+                    print("Error on target definition")
         
     return False
 
@@ -235,11 +236,11 @@ if __name__ == '__main__':
 
         # Let the use chose his server
         sys.stdout.write("Type the number, name or hostname of the server you want to connect to : ")
-        choice = input("")#.casefold()
+        choice = input("").casefold()
         valid_input = False
 
         # Try to connect the user to the server he choosed or ask to re-type
         while not checkandconnect(indexed_target_list, choice, username, originalcmd):
             print("You didn't type correctly, please try again.")
             sys.stdout.write("Type the number, name or hostname of the server you want to connect to : ")
-            choice = input("")#.casefold()
+            choice = input("").casefold()
