@@ -80,6 +80,11 @@ class Usergroup(db.Model):
     def show_name(self):
         """Return a string containing the usergroup's name"""
         return self.name
+    
+
+    def show_comment(self):
+        """Return a string containing the usergroup's comment"""
+        return self.comment
 
 
     # User management

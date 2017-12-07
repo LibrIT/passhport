@@ -201,6 +201,19 @@ class Target(db.Model):
         return usergroupnames
 
 
+    def usergroupname_list_json(self):
+        """Return all the direct usergroups' names of the target json way"""
+        usergroupnames = ""
+
+        for usergroup in self.gmembers:
+            usergroupnames = usergroupnames + "{\"Name\" : \"" + \
+                             usergroup.show_name() + "\"," + \
+                             "\"Comment\" : \"" + \
+                             usergroup.show_comment() + "\"},"
+
+        return usergroupnames[:-1]
+
+
     def usergroup_list(self):
         """Return all the direct usergroups of the target"""
         usergroups = []

@@ -294,7 +294,7 @@ def target_edit():
         query = db.session.query(target.Target.name)\
             .filter_by(name=new_name).first()
 
-        if query is not None and new_name != query.name:
+        if query is not None and new_name == query.name:
             return utils.response('ERROR: The name "' + new_name + \
                                   '" is already used by another target ', 417)
 
