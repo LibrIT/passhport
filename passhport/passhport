@@ -235,11 +235,11 @@ if __name__ == '__main__':
 
         # Let the use chose his server
         sys.stdout.write("Type the number, name or hostname of the server you want to connect to : ")
-        choice = input("").casefold()
+        choice = input("")#.casefold()
         valid_input = False
 
         # Try to connect the user to the server he choosed or ask to re-type
         while not checkandconnect(indexed_target_list, choice, username, originalcmd):
             print("You didn't type correctly, please try again.")
             sys.stdout.write("Type the number, name or hostname of the server you want to connect to : ")
-            choice = input("").casefold()
+            choice = input("")#.casefold()
