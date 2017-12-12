@@ -15,6 +15,7 @@ from . import user as user
 from . import target as target
 from . import usergroup as usergroup
 from . import targetgroup as targetgroup
+import config
 
 
 def list(obj):
@@ -49,7 +50,7 @@ def delete(obj):
             name + "? [y/N] ")
 
         if confirmed:
-            return req.get(req.url_passhport + obj + "/delete/" + name)
+            return req.get(config.url_passhport + obj + "/delete/" + name)
         else:
             print("Operation aborted.")
 
