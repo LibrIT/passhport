@@ -148,60 +148,24 @@ class MyInteractive(cmd.Cmd):
     prompt = "(passhport) "
     file = None
 
+    def method(self, argitems):
+        for key, value in argitems():
+            if value:
+                return key
+        return False
 
     @docopt_cmd
     def do_user(self, arg):
         """
 Usage:
     user list
-    user search [<pattern>]
-    user show [<name>]
-    user create [((<name> <sshkey>) [--comment=<comment>])]
-    user edit [(<name> [--newname=<name>] [--newsshkey=<sshkey>] \
-[--newcomment=<comment>])]
-    user delete [([-f | --force] <name>)]
-
-Arguments:
-    name     The name of the object.
-    comment  A comment about the object.
-    pattern  A SQL search pattern.
-    sshkey   The SSH key used to authenticate the user.
-
-Options:
-    -f, --force             Force deletion without asking confirmation.
-    --comment=<comment>     Set a comment to the object.
-    --newname=<name>        Set the new name of the object.
-    --newcomment=<comment>  Set the new comment of the object.
-    --newsshkey=<sshkey>    Set the new SSH key of the user.
+    user search
+    user show
+    user create
+    user edit 
+    user delete
         """
-        commands = {
-            "list",
-            "search",
-            "show",
-            "create",
-            "edit",
-            "delete"}
-        arguments = {"<name>", "<pattern>", "<sshkey>"}
-        options = {
-            "--force",
-            "--comment",
-            "--newname",
-            "--newcomment",
-            "--newsshkey"}
-        method = ""
-        param = {}
-
-        for key, value in arg.items():
-            if value:
-                if key in commands:
-                    method = key
-                else:
-                    param[key] = value
-
-        if param:
-            getattr(requests_functions, method)("user", param)
-        else:
-            getattr(prompt_functions, method)("user")
+        getattr(prompt_functions, self.method(arg.items))("user")
 
 
     @docopt_cmd
@@ -209,92 +173,18 @@ Options:
         """
 Usage:
     target list
-    target search [<pattern>]
-    target checkaccess [<pattern>]
-    target show [<name>]
-    target create [((<name> <hostname>) [--login=<login>] \
-[--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]
-    target edit [(<name> [--newname=<name>] \
-[--newhostname=<hostname>] [--newlogin=<login>] [--newcomment=<comment>] \
-[--newsshoptions=<sshoptions>] \[--newport=<port>])]
-    target (adduser | rmuser) [(<username> <targetname>)]
-    target (addusergroup | rmusergroup) \
-[(<usergroupname> <targetname>)]
-    target delete [([-f | --force] <name>)]
-
-Arguments:
-    name           The name of the object.
-    username       The name of the user.
-    targetname     The name of the target.
-    usergroupname  The name of the usergroup.
-    comment        A comment about the object.
-    pattern        A SQL search pattern. For checkaccess can be hostname or target name
-    hostname       The name of the server of the target.
-    login          Login used to log on the target.
-    sshoptions     Options used to connect via ssh or scp.
-    port           The port used to connect with SSH.
-
-Options:
-    -f, --force                     Force deletion without asking \
-confirmation.
-    --comment=<comment>             Set a comment to the object.
-    --sshoptions=<sshoptions>       Set SSH options to the target.
-    --port=<port>                   Set port used to connect with \
-the target.
-    --newname=<name>                Set the new name of the object.
-    --newcomment=<comment>          Set the new comment of the object.
-    --newhostname=<hostname>        Set the new hostname of the target.
-    --newlogin=<login>              Set the new login of the target.
-    --newsshoptions=<sshoptions>    Set the new SSH options \
-of the target.
-    --newport=<port>                Set the new port used \
-with the target.
+    target search
+    target checkaccess
+    target show
+    target create
+    target edit 
+    target adduser
+    target rmuser
+    target addusergroup
+    target rmusergroup
+    target delete
         """
-        commands = {
-            "list",
-            "search",
-            "checkaccess",
-            "show",
-            "create",
-            "edit",
-            "delete",
-            "adduser",
-            "rmuser",
-            "addusergroup",
-            "rmusergroup"}
-        arguments = {
-            "<name>",
-            "<username>",
-            "<targetname>",
-            "<usergroupname>",
-            "<pattern>",
-            "<hostname>"}
-        options = {
-            "--force",
-            "--comment",
-            "--login",
-            "--sshoptions",
-            "--port",
-            "--newname",
-            "--newcomment",
-            "--newhostname",
-            "--newlogin",
-            "--newsshoptions",
-            "--newport"}
-        method = ""
-        param = {}
-
-        for key, value in arg.items():
-            if value:
-                if key in commands:
-                    method = key
-                else:
-                    param[key] = value
-
-        if param:
-            getattr(requests_functions, method)("target", param)
-        else:
-            getattr(prompt_functions, method)("target")
+        getattr(prompt_functions, self.method(arg.items))("target")
 
 
     @docopt_cmd
@@ -302,66 +192,17 @@ with the target.
         """
 Usage:
     usergroup list
-    usergroup search [<pattern>]
-    usergroup show [<name>]
-    usergroup create [(<name> [--comment=<comment>])]
-    usergroup edit [(<name> [--newname=<name>] \
-[--newcomment=<comment>])]
-    usergroup (adduser | rmuser) [(<username> <usergroupname>)]
-    usergroup (addusergroup | rmusergroup) \
-[(<subusergroupname> <usergroupname>)]
-    usergroup delete [([-f | --force] <name>)]
-
-Arguments:
-    name              The name of the object.
-    username          The name of the user.
-    usergroupname     The name of the usergroup.
-    subusergroupname  The name of the subusergroup.
-    comment           A comment about the object.
-    pattern           A SQL search pattern.
-
-Options:
-    -f, --force             Force deletion without asking confirmation.
-    --comment=<comment>     Set a comment to the object.
-    --newname=<name>        Set the new name of the object.
-    --newcomment=<comment>  Set the new comment of the object.
+    usergroup search
+    usergroup show
+    usergroup create
+    usergroup edit
+    usergroup adduser
+    usergroup rmuser
+    usergroup addusergroup
+    usergroup rmusergroup
+    usergroup delete
         """
-        commands = {
-            "list",
-            "search",
-            "show",
-            "create",
-            "edit",
-            "delete",
-            "adduser",
-            "rmuser",
-            "addusergroup",
-            "rmusergroup"}
-        arguments = {
-            "<name>",
-            "<username>",
-            "<usergroupname",
-            "<subusergroupname>",
-            "<pattern>"}
-        options = {
-            "--force",
-            "--comment",
-            "--newname",
-            "--newcomment"}
-        method = ""
-        param = {}
-
-        for key, value in arg.items():
-            if value:
-                if key in commands:
-                    method = key
-                else:
-                    param[key] = value
-
-        if param:
-            getattr(requests_functions, method)("usergroup", param)
-        else:
-            getattr(prompt_functions, method)("usergroup")
+        getattr(prompt_functions, self.method(arg.items))("usergroup")
 
 
     @docopt_cmd
@@ -369,78 +210,21 @@ Options:
         """
 Usage:
     targetgroup list
-    targetgroup search [<pattern>]
-    targetgroup show [<name>]
-    targetgroup create [(<name> [--comment=<comment>])]
-    targetgroup edit [(<name> [--newname=<name>] \
-[--newcomment=<comment>])]
-    targetgroup (adduser | rmuser) [(<username> <targetgroupname>)]
-    targetgroup (addtarget | rmtarget) \
-[(<targetname> <targetgroupname>)]
-    targetgroup (addusergroup | rmusergroup) \
-[(<usergroupname> <targetgroupname>)]
-    targetgroup (addtargetgroup | rmtargetgroup) \
-[(<subtargetgroupname> <targetgroupname>)]
-    targetgroup delete [([-f | --force] <name>)]
-
-Arguments:
-    name                The name of the object.
-    username            The name of the user.
-    targetname          The name of the target.
-    usergroupname       The name of the usergroup.
-    targetgroupname     The name of the targetgroup.
-    subtargetgroupname  The name of the subtargetgroup.
-    comment             A comment about the object.
-    pattern             A SQL search pattern.
-
-Options:
-    -f, --force             Force deletion without asking confirmation.
-    --comment=<comment>     Set a comment to the object.
-    --newname=<name>        Set the new name of the object.
-    --newcomment=<comment>  Set the new comment of the object.
+    targetgroup search
+    targetgroup show
+    targetgroup create
+    targetgroup edit
+    targetgroup adduser 
+    targetgroup rmuser
+    targetgroup addtarget
+    targetgroup rmtarget
+    targetgroup addusergroup
+    targetgroup rmusergroup
+    targetgroup addtargetgroup
+    targetgroup rmtargetgroup
+    targetgroup delete 
         """
-        commands = {
-            "list",
-            "search",
-            "show",
-            "create",
-            "edit",
-            "delete",
-            "adduser",
-            "rmuser",
-            "addtarget",
-            "rmtarget",
-            "addusergroup",
-            "rmusergroup",
-            "addtargetgroup",
-            "rmtargetgroup"}
-        arguments = {
-            "<name>",
-            "<username>",
-            "<targetname>",
-            "<usergroupname>",
-            "<targetgroupname>",
-            "<subtargetgroupname>",
-            "<pattern>"}
-        options = {
-            "--force",
-            "--comment",
-            "--newname",
-            "--newcomment"}
-        method = ""
-        param = {}
-
-        for key, value in arg.items():
-            if value:
-                if key in commands:
-                    method = key
-                else:
-                    param[key] = value
-
-        if param:
-            getattr(requests_functions, method)("targetgroup", param)
-        else:
-            getattr(prompt_functions, method)("targetgroup")
+        getattr(prompt_functions, self.method(arg.items))("targetgroup")
 
 
     def do_quit(self, arg):
