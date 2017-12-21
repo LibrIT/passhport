@@ -331,3 +331,27 @@ class Usergroup(db.Model):
                             "\n".join(targetgroups))
 
         return listing
+
+
+### JSON ###
+
+    def username_list_json(self):
+        """Return all the direct users names"""
+        usernames = ""
+
+        for user in self.members:
+            usernames = usernames + "{\"Name\" : \"" + user.show_name() + "\"},"
+
+        return usernames[:-1]
+
+    def usergroupname_list_json(self):
+        """Return all the direct usergoups names"""
+        usergroupnames = ""
+
+        for usergroup in self.gmembers:
+            usergroupnames = usergroupnames + "{\"Name\" : \"" + \
+                             usergroup.show_name() + "\"," + \
+                             "\"Comment\" : \"" + \
+                             usergroup.show_comment() + "\"},"
+
+        return usergroupnames[:-1]
