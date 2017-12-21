@@ -276,6 +276,7 @@ def usergroup_addusergroup():
     if request.method != "POST":
         return utils.response("ERROR: POST method is required ", 405)
 
+    print(request.form)
     # Simplification for the reading
     subusergroupname = request.form["subusergroupname"]
     usergroupname = request.form["usergroupname"]
