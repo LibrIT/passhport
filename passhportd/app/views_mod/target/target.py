@@ -290,15 +290,16 @@ def target_edit():
         to_update.update({"hostname": new_hostname})
 
     if new_name:
-        # Check unicity for name
-        query = db.session.query(target.Target.name)\
-            .filter_by(name=new_name).first()
+        if name != new_name:
+            # Check unicity for name
+            query = db.session.query(target.Target.name)\
+                .filter_by(name=new_name).first()
 
-        if query is not None and new_name == query.name:
-            return utils.response('ERROR: The name "' + new_name + \
+            if query is not None and new_name == query.name:
+                return utils.response('ERROR: The name "' + new_name + \
                                   '" is already used by another target ', 417)
 
-        to_update.update({"name": new_name})
+            to_update.update({"name": new_name})
 
     try:
         db.session.commit()

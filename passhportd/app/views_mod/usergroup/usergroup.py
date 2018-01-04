@@ -64,6 +64,39 @@ def usergroup_show(name):
     return utils.response(str(usergroup_data), 200)
 
 
+@app.route("/usergroup/memberof/<obj>/<name>")
+def usergroup_memberof(obj, name):
+    """Return the list of obj this usergroup is member of"""
+    # Check for required fields
+    if not name:
+        return utils.response("ERROR: The name is required ", 417)
+
+    usergroup_data = usergroup.Usergroup.query.filter_by(name=name).first()
+
+    if usergroup_data is None:
+        return utils.response('ERROR: No usergroup with the name "' + name + \
+                              '" in the database.', 417)
+
+    return utils.response(str(usergroup_data.memberof(obj)), 200)
+
+    
+@app.route("/usergroup/access/<name>")
+def usergroup_access(name):
+    """Return all the targets accessible if you're in this usergroup"""
+    # Check for required fields
+    if not name:
+        return utils.response("ERROR: The name is required ", 417)
+
+    usergroup_data = usergroup.Usergroup.query.filter_by(name=name).first()
+
+    if usergroup_data is None:
+        return utils.response('ERROR: No usergroup with the name "' + name + \
+                              '" in the database.', 417)
+    print(usergroup_data.accessible_target_list())
+
+    return utils.response(str(usergroup_data.accessible_target_list()), 200)
+
+
 @app.route("/usergroup/create", methods=["POST"])
 def usergroup_create():
     """Add a usergroup in the database"""
