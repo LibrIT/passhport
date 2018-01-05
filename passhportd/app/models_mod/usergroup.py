@@ -283,14 +283,17 @@ class Usergroup(db.Model):
         return usergroups
 
 
-    def accessible_target_list(self, checked_usergroups = []):
+    def accessible_target_list(self, checked_usergroups = [], mode="string"):
         """Return all the targets this usergroups give access to"""
         accessible_targets = []
         checked_usergroups.append(self)
 
         # 1. list all the directly attached targets
         for target in self.targets:
-            accessible_targets.append(target.name)
+            if mode == "string":
+                accessible_targets.append(target.name)
+            else:
+                accessible_targets.append(target)
 
         # 2. list all targets accessible through usergroups
         for usergroup in self.gmembers:
@@ -298,13 +301,19 @@ class Usergroup(db.Model):
                 checked_usergroups.append(usergroup)
                 for target in usergroup.accessible_target_list(checked_usergroups):
                     if target not in self.targets:
-                        accessible_targets.append(target.name)
+                        if mode == "string": 
+                            accessible_targets.append(target.name)
+                        else:
+                            accessible_targets.append(target)
 
         # 3. list all the target accessible through targetgroups
         for targetgroup in self.tgmembers:
             for target in targetgroup.accessible_target_list():
                 if target not in self.targets:
-                    accessible_targets.append(target.name)
+                    if mode == "string":
+                        accessible_targets.append(target.name)
+                    else:
+                        accessible_targets.append(target)
 
         return accessible_targets
 
