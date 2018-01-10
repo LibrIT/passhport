@@ -92,7 +92,6 @@ def usergroup_access(name):
     if usergroup_data is None:
         return utils.response('ERROR: No usergroup with the name "' + name + \
                               '" in the database.', 417)
-    print(usergroup_data.accessible_target_list())
 
     return utils.response(str(usergroup_data.accessible_target_list()), 200)
 
@@ -309,7 +308,6 @@ def usergroup_addusergroup():
     if request.method != "POST":
         return utils.response("ERROR: POST method is required ", 405)
 
-    print(request.form)
     # Simplification for the reading
     subusergroupname = request.form["subusergroupname"]
     usergroupname = request.form["usergroupname"]
