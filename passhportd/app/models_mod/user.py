@@ -79,7 +79,7 @@ class User(db.Model):
         # 2. list all the targets accessible through usergroup
         for usergroup in self.usergroups:
             output = output + "\n" + usergroup.show_name() + ": "
-            for target in usergroup.accessible_target_list():
+            for target in usergroup.accessible_target_list(mode="obj"):
                 output = output + target.show_name() + " ; "
                 if target not in targets:
                     targets.append(target)
