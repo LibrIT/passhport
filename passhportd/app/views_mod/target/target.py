@@ -49,6 +49,22 @@ def target_search(pattern):
     return utils.response("\n".join(result), 200)
 
 
+@app.route("/target/memberof/<obj>/<name>")
+def target_memberof(obj, name):
+    """Return the list of obj this target is member of (obj shoud be tg)"""
+    # Check for required fields
+    if not name:
+        return utils.response("ERROR: The name is required ", 417)
+
+    target_data = target.Target.query.filter_by(name=name).first()
+
+    if target_data is None:
+        return utils.response('ERROR: No target with the name "' + name + \
+                              '" in the database.', 417)
+
+    return utils.response(str(target_data.memberof(obj)), 200)
+
+
 @app.route("/target/checkaccess/<pattern>")
 def target_checkaccess(pattern):
     """Check SSH connection for each target with a name or hostname that 
