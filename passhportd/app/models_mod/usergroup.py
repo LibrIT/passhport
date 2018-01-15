@@ -94,6 +94,7 @@ class Usergroup(db.Model):
         """
         return user in self.members
 
+
     def adduser(self, user):
         """Add a user to the relation table"""
         if not self.is_member(user):
@@ -101,12 +102,14 @@ class Usergroup(db.Model):
 
         return self
 
+
     def rmuser(self, user):
         """Remove a user from the relation table"""
         if self.is_member(user):
             self.members.remove(user)
 
         return self
+
 
     def username_in_usergroup(self, username):
         """Return true if the given username belongs to a member
@@ -117,6 +120,7 @@ class Usergroup(db.Model):
                 return True
 
         return False
+
 
     def username_list(self):
         """Return usernames which belong to users in the usergroup"""
@@ -146,6 +150,23 @@ class Usergroup(db.Model):
                         usernames.append(username)
 
         return usernames
+
+
+    def memberof(self, obj):
+        """Return a string list of direct memberships of this usergroup"""
+        if obj == "target":
+            members = self.targets
+        elif obj == "targetgroup":
+            members = self.tgmembers
+        elif obj == "usergroup":
+            members = self.gmembers
+        else:
+            return "Error in object type"
+            
+        ret = "["
+        for m in members:
+            ret = ret + m.name + ","
+        return ret[:-1] + "]"
 
 
     # Usergroup management
@@ -262,14 +283,17 @@ class Usergroup(db.Model):
         return usergroups
 
 
-    def accessible_target_list(self, checked_usergroups = []):
+    def accessible_target_list(self, checked_usergroups = [], mode="string"):
         """Return all the targets this usergroups give access to"""
         accessible_targets = []
         checked_usergroups.append(self)
 
         # 1. list all the directly attached targets
         for target in self.targets:
-            accessible_targets.append(target)
+            if mode == "string":
+                accessible_targets.append(target.name)
+            else:
+                accessible_targets.append(target)
 
         # 2. list all targets accessible through usergroups
         for usergroup in self.gmembers:
@@ -277,13 +301,19 @@ class Usergroup(db.Model):
                 checked_usergroups.append(usergroup)
                 for target in usergroup.accessible_target_list(checked_usergroups):
                     if target not in self.targets:
-                        accessible_targets.append(target)
+                        if mode == "string": 
+                            accessible_targets.append(target.name)
+                        else:
+                            accessible_targets.append(target)
 
         # 3. list all the target accessible through targetgroups
         for targetgroup in self.tgmembers:
             for target in targetgroup.accessible_target_list():
                 if target not in self.targets:
-                    accessible_targets.append(target)
+                    if mode == "string":
+                        accessible_targets.append(target.name)
+                    else:
+                        accessible_targets.append(target)
 
         return accessible_targets
 
