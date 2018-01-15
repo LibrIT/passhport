@@ -1,0 +1,214 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-06 00:52+0100\n"
+"PO-Revision-Date: 2017-12-06 00:52+0100\n"
+"Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
+"Language: fr_FR\n"
+"Language-Team: LibrIT <contact@librit.fr>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+"X-Generator: Poedit 1.8.11\n"
+
+#: ../../passhport-admin/user.rst:2
+msgid "user"
+msgstr "user"
+
+#: ../../passhport-admin/user.rst:4
+msgid "Usages :"
+msgstr "Usages"
+
+#: ../../passhport-admin/user.rst:16
+msgid "list"
+msgstr "list"
+
+#: ../../passhport-admin/user.rst:18
+msgid "`passhport-admin user list` show all the configured users."
+msgstr "`passhport-admin target list` affiche l'ensemble des users configurées."
+
+#: ../../passhport-admin/user.rst:20 ../../passhport-admin/user.rst:36
+#: ../../passhport-admin/user.rst:47 ../../passhport-admin/user.rst:61
+#: ../../passhport-admin/user.rst:79 ../../passhport-admin/user.rst:111
+#: ../../passhport-admin/user.rst:121 ../../passhport-admin/user.rst:151
+#: ../../passhport-admin/user.rst:161 ../../passhport-admin/user.rst:197
+#: ../../passhport-admin/user.rst:217
+msgid "**Example :**"
+msgstr "**Exemple :**"
+
+#: ../../passhport-admin/user.rst:32
+msgid "search"
+msgstr "search"
+
+#: ../../passhport-admin/user.rst:34
+msgid ""
+"`passhport-admin user search [<PATTERN>]` searches in the user list for all user "
+"that correspond to the given pattern."
+msgstr ""
+"`passhport-admin user search [<PATTERN>]` cherche dans la liste des `user` un "
+"utilisateur dont le nom correspond au modèle <PATTERN>."
+
+#: ../../passhport-admin/user.rst:45 ../../passhport-admin/user.rst:77
+msgid "If no pattern is given, user enters in interactive mode."
+msgstr "Si aucun modèle (PATTERN), l'utilisateur entre en mode interactif."
+
+#: ../../passhport-admin/user.rst:57
+msgid "show"
+msgstr "show"
+
+#: ../../passhport-admin/user.rst:59
+msgid ""
+"`passhport-admin user show <NAME>` shows informations about the user <NAME>."
+msgstr ""
+"`passhport-admin target show <NAME>` affiche toutes les informations au sujet "
+"d'un user nommé <NAME>."
+
+#: ../../passhport-admin/user.rst:97
+msgid "create"
+msgstr "create"
+
+#: ../../passhport-admin/user.rst:99
+msgid ""
+"`passhport-admin user create [((<name> <sshkey>) [--comment=<comment>])]` "
+"creates a new user."
+msgstr ""
+"`passhport-admin user create [((<name> <sshkey>) [--comment=<comment>])]` crée "
+"un nouveau `user`"
+
+#: ../../passhport-admin/user.rst:102 ../../passhport-admin/user.rst:140
+#: ../../passhport-admin/user.rst:190
+msgid "Argument"
+msgstr "Argument"
+
+#: ../../passhport-admin/user.rst:102 ../../passhport-admin/user.rst:140
+#: ../../passhport-admin/user.rst:190
+msgid "Description"
+msgstr "Description"
+
+#: ../../passhport-admin/user.rst:104 ../../passhport-admin/user.rst:142
+#: ../../passhport-admin/user.rst:192
+msgid "<name>"
+msgstr "<name>"
+
+#: ../../passhport-admin/user.rst:104
+msgid "Name of the target to edit"
+msgstr "Nom du user à éditer"
+
+#: ../../passhport-admin/user.rst:106
+msgid "<sshkey>"
+msgstr "<sshkey>"
+
+#: ../../passhport-admin/user.rst:106
+msgid "SSH key of the user (use ``\"`` as the below example)"
+msgstr "La clef SSH du `user` (bien utiliser des apostrophes pour entourer la clé)"
+
+#: ../../passhport-admin/user.rst:108
+msgid "--comment"
+msgstr "--comment"
+
+#: ../../passhport-admin/user.rst:108
+msgid "Comment concerning the user (optional)"
+msgstr "Commentaire concernant le user (optionnel)"
+
+#: ../../passhport-admin/user.rst:119 ../../passhport-admin/user.rst:215
+msgid "If no argument is given, user enters in interactive mode."
+msgstr "Si aucun argument n'est donné, l'utilisateur entre en mode interactif."
+
+#: ../../passhport-admin/user.rst:135
+msgid "edit"
+msgstr "edit"
+
+#: ../../passhport-admin/user.rst:137
+msgid ""
+"`passhport-admin user edit [(<name> [--newname=<name>] [--newsshkey=<sshkey>] [--"
+"newcomment=<comment>])]` edits an existing user."
+msgstr ""
+"`passhport-admin user edit [(<name> [--newname=<name>] [--newsshkey=<sshkey>] [--"
+"newcomment=<comment>])]` édite un user existant."
+
+#: ../../passhport-admin/user.rst:142
+msgid "Name of the user to edit"
+msgstr "Nom du user à éditer"
+
+#: ../../passhport-admin/user.rst:144
+msgid "--newname"
+msgstr "--newname"
+
+#: ../../passhport-admin/user.rst:144
+msgid "New name of the user if you want to rename it (optional)"
+msgstr "Nouveau nom du user que l'on souhaite renommer (optionnel)"
+
+#: ../../passhport-admin/user.rst:146
+msgid "--newsshkey"
+msgstr "--newsshkey"
+
+#: ../../passhport-admin/user.rst:146
+msgid "New SSH key of the user (use ``\"`` as the below example) (optional)"
+msgstr ""
+"La nouvelle clef SSH du `user` (bien utiliser des apostrophes pour entourer la "
+"clé)"
+
+#: ../../passhport-admin/user.rst:148
+msgid "--newcomment"
+msgstr "--newcomment"
+
+#: ../../passhport-admin/user.rst:148
+msgid "New comment concerning the user (optional)"
+msgstr "Nouveau commentaire concernant le user (optionel)"
+
+#: ../../passhport-admin/user.rst:159
+msgid ""
+"If no argument is given, user enters in interactive mode. It firsts shows all "
+"parameters of the user, then displays each parameters for a change. User can "
+"keep any previous configured parameter, just by typing \"Enter\". They only "
+"exception is the comment. If user wants to remove the comment, he just type "
+"\"Enter\", and will then be asked if the original comment should be removed or "
+"not."
+msgstr ""
+"Si aucun argument n'est donné, l'utilisateur entre en mode interactif. Un "
+"tableau montrant l'ensemble des paramètre de configuration est d'abord affiché, "
+"puis, ligne par ligne, chaque argument modifiable est affiché. L'utilisateur "
+"peut conserver chaque paramètre présenté au dessus en appuyant sur \"Entrer\". "
+"La seule exception est pour le champs \"comment\" : si l'utilisateur souhaite "
+"enlever le commentaire, il tape alors \"Entrer\", puis il lui sera demandé s'il "
+"veut supprimer le commentaire, ou non."
+
+#: ../../passhport-admin/user.rst:182
+msgid ""
+"As you can see above, we only changed the \"New comment\" entry. If an entry is "
+"simply replied with \"enter\", it keeps the previous value."
+msgstr ""
+"Comme montré ci-dessus, seule l'entrée \"New comment\" a été modifiée. Si une "
+"entrée est simplement remplie par \"Entrer\", la valeur précédente est conservée."
+
+#: ../../passhport-admin/user.rst:185
+msgid "delete"
+msgstr "delete"
+
+#: ../../passhport-admin/user.rst:187
+msgid "`passhport-admin user delete [([-f | --force] <name>)]` delete a user."
+msgstr ""
+"`passhport-admin target delete [([-f | --force] <name>)]` supprime un user."
+
+#: ../../passhport-admin/user.rst:192
+msgid "Name of the user to delete"
+msgstr "Nom du user à supprimer"
+
+#: ../../passhport-admin/user.rst:194
+msgid "-f or --force"
+msgstr "-f ou --force"
+
+#: ../../passhport-admin/user.rst:194
+msgid "If used, user won't be prompt for confirmation"
+msgstr "Si utilisé, aucune confirmation ne sera demandé à l'utilisateur"
+
+#~ msgid "Name of the target to delete"
+#~ msgstr "Nom de la target à supprimer"

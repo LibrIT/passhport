@@ -100,13 +100,14 @@ def target_checkaccess(pattern):
                     "echo OK"
 
             # Try to connect and get the result
-            if os.system(sshcommand) == 0:
+            r = os.system(sshcommand)
+            if r == 0:
                 result.append("OK:   " + hostname + "\t" + \
                         targetobj.name)
             else:
                 result.append("ERROR:" + hostname + "\t" + \
-                        targetobj.name + "\tError with this ssh command: " + \
-                        sshcommand)
+                        targetobj.name + "\tError with this ssh command " + \
+                        "(return code -> " + str(r) + "): " + sshcommand)
 
     if not result:
         return utils.response('No target hostname matching the pattern "' + \
