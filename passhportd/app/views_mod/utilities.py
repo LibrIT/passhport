@@ -63,3 +63,35 @@ def response(errormsg, errorcode):
     return errormsg, errorcode, {"content-type": "text/plain; charset=utf-8"}
 
 
+def check_user_get(request, name):
+    """Do the checks and return a user object from the name"""
+    # Only GET data are handled
+    if request.method != "GET":
+        return False
+
+    # Check for required fields
+    if not name:
+        return False
+
+    # Check if the name exists in the database
+    query = db.session.query(user.User).filter_by(
+        name=name).first()
+
+    return query
+
+
+def check_usergroup_get(request, name):
+    """Do the checks and return a usergroup object from the name"""
+    # Only GET data are handled
+    if request.method != "GET":
+        return False
+
+    # Check for required fields
+    if not name:
+        return False
+
+    # Check if the name exists in the database
+    query = db.session.query(usergroup.Usergroup).filter_by(
+        name=name).first()
+
+    return query

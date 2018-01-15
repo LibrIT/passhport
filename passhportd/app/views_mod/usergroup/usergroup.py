@@ -301,6 +301,100 @@ def usergroup_rmuser():
                           usergroupname + '"', 200)
 
 
+@app.route("/usergroup/addmanager", methods=["POST"])
+def usergroup_addmanager():
+    """Add a manager in the usergroup in the database"""
+    # Only POST data are handled
+    if request.method != "POST":
+        return utils.response("ERROR: POST method is required ", 405)
+
+    # Simplification for the reading
+    username = request.form["username"]
+    usergroupname = request.form["usergroupname"]
+
+    # Check for required fields
+    if not username or not usergroupname:
+        return utils.response("ERROR: The username and usergroupname " + \
+                              "are required ", 417)
+
+    # User and usergroup have to exist in database
+    u = utils.get_user(username)
+    if not u:
+        return utils.response('ERROR: no user "' + username + \
+                              '" in the database ', 417)
+
+    ug = utils.get_usergroup(usergroupname)
+    if not ug:
+        return utils.response('ERROR: no usergroup "' + usergroupname + \
+                              '" in the database ', 417)
+
+    # Now we can add the user
+    ug.addmanager(u)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        return utils.response('ERROR: "' + usergroupname + '" -> ' + \
+                              e.message, 409)
+
+    return utils.response('OK: "' + username + '" added to "' + \
+                          usergroupname + '"', 200)
+
+
+@app.route("/usergroup/rmmanager", methods=["POST"])
+def usergroup_rmmanager():
+    """Remove a manager from the usergroup in the database"""
+    # Only POST data are handled
+    if request.method != "POST":
+        return utils.response("ERROR: POST method is required ", 405)
+
+    # Simplification for the reading
+    username = request.form["username"]
+    usergroupname = request.form["usergroupname"]
+
+    # Check for required fields
+    if not username or not usergroupname:
+        return utils.response("ERROR: The username and usergroupname are " + \
+                              "required ", 417)
+
+    # User and usergroup have to exist in database
+    u = utils.get_user(username)
+    if not u:
+        return utils.response('ERROR: No user "' + username + \
+                              '" in the database ', 417)
+
+    ug = utils.get_usergroup(usergroupname)
+    if not ug:
+        return utils.response('ERROR: No usergroup "' + usergroupname + \
+                              '" in the database ', 417)
+
+    # Check if the given user is a member of the given usergroup
+    if not ug.username_in_usergroup(username):
+        return utils.response('ERROR: The user "' + username + \
+                              '" is not a member of the usergroup "' + \
+                              usergroupname + '" ', 417)
+
+    # Now we can remove the user
+    ug.rmmanager(u)
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        return utils.response('ERROR: "' + usergroupname + '" -> ' + \
+                              e.message, 409)
+
+    return utils.response('OK: "' + username + '" removed from "' + \
+                          usergroupname + '"', 200)
+
+
+@app.route("/usergroup/ismanager/<name>/<user>", methods=["GET"])
+def user_ismanager(name, user):
+    """Return True if the user is superadmin"""
+    usergroupobj = utils.check_usergroup_get(request, name)
+    if not usergroupobj:
+        return utils.response("ERROR: The request is not correct", 417)
+
+    return utils.response(str(usergroupobj.name_is_manager(user)), 200)
+    
+
 @app.route("/usergroup/addusergroup", methods=["POST"])
 def usergroup_addusergroup():
     """Add a usergroup (subusergroup) in the usergroup in the database"""

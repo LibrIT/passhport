@@ -67,6 +67,9 @@ def api_usergroup_element(usergroup_data, element):
     if element == "user":
         return utils.response("[" + usergroup_data.username_list_json() + \
                               "]", 200)
+    elif element == "manager" :
+        return utils.response("[" + usergroup_data.managername_list_json() + \
+                              "]", 200)
     elif element == "usergroup":
         return utils.response("[" + usergroup_data.usergroupname_list_json() + \
                               "]", 200)
