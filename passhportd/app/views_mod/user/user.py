@@ -193,6 +193,34 @@ def user_create():
     return utils.response('OK: "' + name + '" -> created', 200)
 
 
+@app.route("/user/togglesuperadmin/<name>", methods=["GET"])
+def user_togglesuperadmin(name):
+    """Change superadmin status of this user"""
+    userobj = utils.check_user_get(request, name)
+    if not userobj:
+        return utils.response("ERROR: The request is not correct", 417)
+
+    # Toggle the superadmin flag
+    userobj.togglesuperadmin()
+
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        return utils.response('ERROR: -> ' + e.message, 409)
+
+    return utils.response('OK', 200)
+
+
+@app.route("/user/issuperadmin/<name>", methods=["GET"])
+def user_issuperadmin(name):
+    """Return True if the user is superadmin"""
+    userobj = utils.check_user_get(request, name)
+    if not userobj:
+        return utils.response("ERROR: The request is not correct", 417)
+
+    return utils.response(str(userobj.superadmin), 200)
+    
+
 @app.route("/user/generate_authorized_keys", methods=["GET"])
 def generate_authorized_keys():
     """Return a authorized_key files with all users"""

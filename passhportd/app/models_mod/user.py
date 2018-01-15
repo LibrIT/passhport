@@ -18,6 +18,7 @@ class User(db.Model):
         unique=True,
         nullable=False)
     comment = db.Column(db.String(500), index=True)
+    superadmin = db.Column(db.Boolean, unique=False, default=False)
 
 
     # Relations (in targetgroups)
@@ -40,8 +41,11 @@ class User(db.Model):
             " ".join(self.accessible_targetname_list()))
         output.append("\nDetails in access:\n" + \
             "".join(self.accessible_target_list("details")))
+        if self.superadmin:
+            output.append("This user is a web interface superadmin")
 
         return "\n".join(output)
+
 
     def simplejson(self):
         """Return a simplified data of the user as json but not all the data"""
@@ -56,6 +60,7 @@ class User(db.Model):
 
         return output
 
+
     def show_name(self):
         """Return a string containing the user's name"""
         return self.name
@@ -64,6 +69,7 @@ class User(db.Model):
     def accessible_targetname_list(self):
         """Return target names which are accessible to the user"""
         return self.accessible_target_list("names")
+
 
     def accessible_target_list(self, style="object"):
         """Return targets accessible to the users (as object or names list)"""
@@ -93,6 +99,7 @@ class User(db.Model):
                 if target not in targets:
                     targets.append(target)
 
+
         # return target objects or names depending of style
         if style == "names":
             targetnames = []
@@ -119,3 +126,6 @@ class User(db.Model):
         """Return the list of the targetgroups with user directly attached"""
         return self.targetgroups
 
+    def togglesuperadmin(self):
+        """Change the superadmin flag"""
+        self.superadmin = not self.superadmin

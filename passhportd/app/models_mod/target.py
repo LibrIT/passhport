@@ -85,6 +85,19 @@ class Target(db.Model):
         return self.comment
 
 
+    def memberof(self, obj):
+        """Return a string list of direct memberships of this target"""
+        if obj == "targetgroup":
+            members = self.memberoftg
+        else:
+            return "Error in object type"
+            
+        ret = "["
+        for m in members:
+            ret = ret + m.name + ","
+        return ret[:-1] + "]"
+
+
     # User management
     def is_member(self, user):
         """Return true if the given user is a member of the target,

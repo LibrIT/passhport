@@ -111,6 +111,36 @@ class Usergroup(db.Model):
         return self
 
 
+    def is_manager(self, user):
+        """Return true if the given user is a manager of the usergroup,
+        false otherwise
+        """
+        return user in self.ugadmins
+
+    def name_is_manager(self, user):
+        """Return true if the given username is manager"""
+        for manager in self.ugadmins:
+            if user == manager.name:
+                return True
+        return False
+
+
+    def addmanager(self, user):
+        """Add a manager to the relation table"""
+        if not self.is_manager(user):
+            self.ugadmins.append(user)
+
+        return self
+
+
+    def rmmanager(self, user):
+        """Remove a maanger from the relation table"""
+        if self.is_manager(user):
+            self.ugadmins.remove(user)
+
+        return self
+
+
     def username_in_usergroup(self, username):
         """Return true if the given username belongs to a member
         of the usergroup
@@ -364,7 +394,6 @@ class Usergroup(db.Model):
 
 
 ### JSON ###
-
     def username_list_json(self):
         """Return all the direct users names"""
         usernames = ""
@@ -373,6 +402,17 @@ class Usergroup(db.Model):
             usernames = usernames + "{\"Name\" : \"" + user.show_name() + "\"},"
 
         return usernames[:-1]
+
+
+    def managername_list_json(self):
+        """Return all the direct managers names"""
+        names = ""
+
+        for user in self.ugadmins:
+            names = names + "{\"Name\" : \"" + user.show_name() + "\"},"
+
+        return names[:-1]
+
 
     def usergroupname_list_json(self):
         """Return all the direct usergoups names"""
