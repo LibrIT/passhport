@@ -152,6 +152,17 @@ class Usergroup(db.Model):
         return False
 
 
+    def manager_in_usergroup(self, username):
+        """Return true if the given username belongs to a manager
+        of the usergroup
+        """
+        for user in self.ugadmins:
+            if user.show_name() == username:
+                return True
+
+        return False
+
+
     def username_list(self):
         """Return usernames which belong to users in the usergroup"""
         usernames = []

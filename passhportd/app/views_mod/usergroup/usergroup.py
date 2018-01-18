@@ -367,10 +367,10 @@ def usergroup_rmmanager():
         return utils.response('ERROR: No usergroup "' + usergroupname + \
                               '" in the database ', 417)
 
-    # Check if the given user is a member of the given usergroup
-    if not ug.username_in_usergroup(username):
+    # Check if the given user is a manager of the given usergroup
+    if not ug.manager_in_usergroup(username):
         return utils.response('ERROR: The user "' + username + \
-                              '" is not a member of the usergroup "' + \
+                              '" is not a manager of the usergroup "' + \
                               usergroupname + '" ', 417)
 
     # Now we can remove the user

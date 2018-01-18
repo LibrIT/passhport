@@ -50,6 +50,7 @@ def api_usergroup_show(name):
 
     return utils.response("[" + str(usergroup_data.simplejson()) + "]", 200)
 
+
 @app.route("/api/usergroup/<element>/<name>")
 def api_usergroup_element(name, element):
     """Return json formated users lists attached to the usergroup 'name'"""
