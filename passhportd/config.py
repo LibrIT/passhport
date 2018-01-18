@@ -39,7 +39,10 @@ HOST =  conf.get("Network", "LISTENING_IP")
 """ LDAP configuration """
 LDAPURI = conf.get("LDAP", "LDAP_PROVIDER_URL")
 LDAPPORT = int(conf.get("LDAP", "LDAP_PORT"))
-LDAPOU = conf.get("LDAP", "LDAP_USER_OU")
+LDAPBASE = conf.get("LDAP", "LDAP_USER_BASEDN")
+LDAPFIELD = conf.get("LDAP", "LDAP_LOGIN_SEARCH_FIELD")
+LDAPACC = conf.get("LDAP", "LDAP_ACC")
+LDAPPASS = conf.get("LDAP", "LDAP_PASS")
 
 """ SSL Configuration """
 SSL            = conf.get("SSL", "SSL")
