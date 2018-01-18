@@ -18,15 +18,48 @@ from . import api
 from .. import utilities as utils
 
 
+def useruid(s, login):
+    """Connect to a LDAP and check the uid matching the given field data"""
+    uid = False
+    c = Connection(s, config.LDAPACC, 
+                   password=config.LDAPPASS, auto_bind=True)
+
+    if c.result["description"] != "success":
+        print("Error connecting to the LDAP with the service account")
+        return False
+
+    # Look for the user entry.
+    if not c.search(config.LDAPBASE,
+                    "(" + config.LDAPFIELD + "=" + login + ")") :
+        print("Error: Connection to the LDAP with service account failed")
+        print(c.result["description"])
+    else:
+        if len(c.entries) >= 1 :
+            if len(c.entries) > 1 :
+                print("Error: multiple entries with this login. "+ \
+                      "Trying first entry...")
+            uid = c.entries[0].entry_dn
+        else:
+            print("Error: Login not found")
+        c.unbind()
+    
+    return uid
+
+
 def try_ldap_login(login, password):
     """ Connect to a LDAP directory to verify user login/passwords"""
-    s = Server(config.LDAPURI, port=config.LDAPPORT, use_ssl=False, get_info=ALL)
-    c = Connection(s, 
-                   user = "uid={},".format(login) + config.LDAPOU , 
-                   password=password)
+    s = Server(config.LDAPURI, port=config.LDAPPORT,
+               use_ssl=False, get_info=ALL)
+    # 1. connection with service account to find the user uid
+    uid = useruid(s, login)
+    
+    # 2. Try to bind the user to the LDAP
+    c = Connection(s, user = uid , password=password, auto_bind = True)
     c.open()
     c.bind()
-    return c.result["description"] # "success" if bind is ok
+    result =  c.result["description"] # "success" if bind is ok
+    c.unbind()
+    return result
 
 
 def try_login(login, password, method="LDAP"):
