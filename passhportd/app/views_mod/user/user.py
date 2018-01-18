@@ -141,6 +141,20 @@ def user_show(name):
 
     return utils.response(user_data.__repr__(), 200)
 
+@app.route("/user/access/<name>")
+def user_access(name):
+    """Return all the targets accessible for this user in a simple way"""
+    if not name:
+    	return utils.response("ERROR: The name is required ", 417)
+
+    user_data = user.User.query.filter_by(name=name).first()
+
+    if user_data is None:
+        return utils.response('ERROR: No user with the name "' + name + \
+                              '" in the database.', 417)
+
+    return utils.response(str(user_data.accessible_target_list("names")), 200)
+
 
 @app.route("/user/accessible_targets/<name>")
 def user_accessible_targets(name):

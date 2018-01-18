@@ -24,8 +24,8 @@ else:
         if HOST != "127.0.0.1":
             print("WARNING: Run unsecure mode (no SSL), force use of" + \
                   " 127.0.0.1.")
-        app.run()
+        app.run(debug=True)
     else:
         SSL_CONTEXT  = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
         SSL_CONTEXT.load_cert_chain(SSL_CERTIFICAT, SSL_KEY)
-        app.run(debug=False,host = HOST, ssl_context = SSL_CONTEXT)
+        app.run(debug=True,host = HOST, ssl_context = SSL_CONTEXT)
