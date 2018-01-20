@@ -156,6 +156,22 @@ def user_access(name):
     return utils.response(str(user_data.accessible_target_list("names")), 200)
 
 
+@app.route("/user/memberof/<obj>/<name>")
+def user_memberof(obj, name):
+    """Return the list of obj this user is member of"""
+    # Check for required fields
+    if not name:
+        return utils.response("ERROR: The name is required ", 417)
+
+    user_data = user.User.query.filter_by(name=name).first()
+
+    if user_data is None:
+        return utils.response('ERROR: No user with the name "' + name + \
+                              '" in the database.', 417)
+
+    return utils.response(str(user_data.memberof(obj)), 200)
+
+
 @app.route("/user/accessible_targets/<name>")
 def user_accessible_targets(name):
     """Return the list of targets that the user can access"""

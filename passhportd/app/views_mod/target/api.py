@@ -35,6 +35,30 @@ def api_target_list():
     return utils.response("".join(result), 200)
 
 
+@app.route("/api/accesstarget/list/<name>")
+def api_target_specific_list(name):
+    """Return a json formatted targets list from database for specific user"""
+    result = []
+    q = user.User.query.filter_by(name=name).first()
+    accessibletargets = q.accessible_target_list()
+    i = 0
+
+    result.append("[")
+    for entry in accessibletargets:
+        if i == 0:
+            i = 1
+        else:
+            result.append(",\n")
+        result.append(entry.simplejson()[:-2] + ',\n"Lastconnection": "#TODO"\n}')
+    result.append("]")
+
+    if not result:
+        return utils.response("No target in database.", 200)
+
+    return utils.response("".join(result), 200)
+
+
+
 @app.route("/api/target/show/<name>")
 def api_target_show(name):
     """Return  json formated data about a target"""
