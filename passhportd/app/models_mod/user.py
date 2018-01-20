@@ -126,6 +126,24 @@ class User(db.Model):
         """Return the list of the targetgroups with user directly attached"""
         return self.targetgroups
 
+
+    def memberof(self, obj):
+        """Return a string list of direct memberships of this user"""
+        if obj == "target":
+            members = self.targets
+        elif obj == "targetgroup":
+            members = self.targetgroups
+        elif obj == "usergroup":
+            members = self.usergroups
+        else:
+            return "Error in object type"
+            
+        ret = "["
+        for m in members:
+            ret = ret + m.name + ","
+        return ret[:-1] + "]"
+
+
     def togglesuperadmin(self):
         """Change the superadmin flag"""
         self.superadmin = not self.superadmin
