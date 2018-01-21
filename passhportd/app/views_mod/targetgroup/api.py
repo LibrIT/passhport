@@ -33,3 +33,48 @@ def api_targetgroup_list():
         return utils.response("No targetgroup in database.", 200)
 
     return utils.response("".join(result), 200)
+
+
+@app.route("/api/targetgroup/show/<name>")
+def api_targetgroup_show(name):
+    """Return  json formated data about a targetgroup"""
+    # Check for required fields
+    if not name:
+        return utils.response("ERROR: Targetgroup's name is required ", 417)
+
+    targetgroup_data = targetgroup.Targetgroup.query.filter_by(name=name).first()
+
+    if targetgroup_data is None:
+        return utils.response("ERROR: No targetgroup with the name " + name + \
+                " in the database.", 417)
+
+    return utils.response("[" + str(targetgroup_data.simplejson()) + "]", 200)
+
+
+@app.route("/api/targetgroup/target/<name>")
+def api_targetgroup_target(name):
+    """Return json formated targets lists attached to the targetgroup 'name'"""
+    # Check for required fields
+    if not name:
+        return utils.response("ERROR: The name is required ", 417)
+
+    targetgroup_data = targetgroup.Targetgroup.query.filter_by(name=name).first()
+
+    if targetgroup_data is None:
+        return utils.response("ERROR: No targetgroup with the name " + name + \
+                " in the database.", 417)
+
+    return api_targetgroup_element(targetgroup_data, "target")
+
+
+def api_targetgroup_element(targetgroup_data, element):
+    """Return the attached elements to a targetgroup"""
+    if element == "user":
+        return utils.response("[" + targetgroup_data.username_list_json() + \
+                              "]", 200)
+    elif element == "usergroup":
+        return utils.response("[" + targetgroup_data.usergroupname_list_json() + \
+                              "]", 200)
+    elif element == "target":
+        return utils.response("[" + targetgroup_data.targetname_list_json() + \
+                              "]", 200)
