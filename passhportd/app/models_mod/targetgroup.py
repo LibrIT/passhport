@@ -45,6 +45,7 @@ class Targetgroup(db.Model):
     # Admins - can admin usergroups and targetgroups (add and remove users)
     tgadmins = db.relationship("User", secondary="tg_admins")
 
+
     def __repr__(self):
         """Return main data of the targetgroup as a string"""
         output = []
@@ -63,8 +64,9 @@ class Targetgroup(db.Model):
 
         return "\n".join(output)
 
+
     def simplejson(self):
-        """Return a simplified data of the target as json but not all the data"""
+        """Return a simplified data of the targetgroup as json but not all the data"""
         output = "{\n"
 
         output = output + "\"name\": \"" + format(self.name) + "\",\n"
@@ -72,6 +74,7 @@ class Targetgroup(db.Model):
         output = output + "}"
 
         return output
+
 
     def show_name(self):
         """Return a string containing the targetgroup’s name"""
@@ -186,6 +189,19 @@ class Targetgroup(db.Model):
             targetnames.append(target.show_name())
 
         return targetnames
+
+    def targetname_list_json(self):
+        """Return targets directly linked with the targetgroup"""
+        targetnames = ""
+
+        for target in self.tmembers:
+            targetnames = targetnames + "{\"Name\" : \"" + \
+                             target.show_name() + "\"," + \
+                             "\"Comment\" : \"" + \
+                             target.show_comment() + "\"},"
+
+        return targetnames[:-1]
+
 
 
     def accessible_target_list(self, parsed_targetgroups = None, style="object"):
