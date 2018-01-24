@@ -502,3 +502,13 @@ def user_delete(name):
         return utils.response('ERROR: "' + name + '" -> ' + e.message, 409)
 
     return utils.response('OK: "' + name + '" -> deleted' + warning, 200)
+
+
+@app.route("/user/lastlog/<name>")
+def user_lastlog(name):
+    """Return the 500 last logs as json"""
+    #TODO pagination for ajax call on all logs
+    u = utils.get_user(name)
+    if not u:
+        return "{}"
+    return u.get_lastlog()

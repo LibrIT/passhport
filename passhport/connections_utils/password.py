@@ -48,9 +48,9 @@ def reset(server, login, sshoptions, port, PWD_FILE_DIR):
         user = login
 
     # 3. Propage password (this command HAS to be launched as root)
-    os.system("ssh root@" + server + ' ' + sshoptions 
-              + ' -p ' + port + ' -l root \'echo "'
-              + user + ':' + pwdstring + '" | chpasswd\'')
+    os.system("ssh root@" + server + ' ' + sshoptions + \
+              ' -p ' + str(port) + ' -l root \'echo "' + \
+              user + ':' + pwdstring + '" | chpasswd\'')
 
     # 4. Sore it locally
     if not os.path.exists(PWD_FILE_DIR):

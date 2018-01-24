@@ -55,6 +55,26 @@ def get(url):
     return 1
 
 
+def post(url, data):
+    """Send the POST request to the server and print a result.
+       This is used to connect to passhportd, to log access"""
+    try:
+        if SSL:
+            print(data)
+            r = requests.post(url_passhport + url, data=data, 
+                              verify=SSL_CERTIFICAT)
+        else:
+            r = requests.post(url_passhport + url, data=data)
+
+    except requests.RequestException as e:
+        print("ERROR: " + str(e.message))
+    else:
+        if r.status_code == requests.codes.ok:
+            return r.text
+
+    return 1
+
+
 def checkandconnect(indexed_target_list, choice, username, originalcmd, 
                     scpcmd = False):
     """Check if the user have entered an accessible target
@@ -69,25 +89,43 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
         for possibility in item_list:
             if choice == possibility.casefold():
                 if len(item_list) > 2:
-                    target = item_list[2]
-                    pathlog = SCRIPT_LOGS_PATH + "/" + target + "/"
-                    isodate = datetime.now().isoformat().replace(":",""). \
-                              replace("-","").split('.')[0]
-                    filelog = pathlog + isodate + "-" + str(os.getpid()) + "-" + \
-                              target + "-" + username
-                    login = get(url_passhport + "target" + "/login/" +  
-                            item_list[1])
-                    #target login is set at $email => login=username (without @...)
+                    date       = datetime.today().strftime('%Y/%m/%d')
+                    targetname = item_list[1]
+                    target     = item_list[2]
+                    login      = get(url_passhport + "target" + "/login/" + \
+                                 targetname)
+                    # If target login is set at $email => 
+                    # we user login=username (without @...)
                     if login == "$email":
-                        login = re.split("@", username)[0] 
-                    port = get(url_passhport + "target" + "/port/" +  
-                            item_list[1])
-                    sshoptions = get(url_passhport + "target" + "/sshoptions/" + \
-                                 item_list[1])
-
+                        login  = re.split("@", username)[0] 
+                    pathlog    = SCRIPT_LOGS_PATH + "/" + date + "/"
                     # Create a log directory for this target
-                    if not os.path.exists(pathlog):
-                        os.mkdir(pathlog)
+                    if not os.path.isdir(pathlog):
+                        os.makedirs(pathlog)
+                    isodate    = datetime.now().isoformat().replace(":",""). \
+                                 replace("-","").split('.')[0]
+                    filename   = isodate + "-PID" + \
+                                 str(os.getpid()) + "-" + targetname + "-" + \
+                                 login + "@" + target + "-" + username
+                    filelog    = pathlog + filename
+                    port       = get(url_passhport + "target" + "/port/" +  
+                                 target)
+                    sshoptions = get(url_passhport + "target" + \
+                                  "/sshoptions/" + targetname)
+
+                    if scpcmd == False: 
+                        cmd = "ssh"
+                    else:
+                        cmd = originalcmd
+
+                    data= {"connexiondate" : isodate,
+                           "connexioncmd"  : cmd,
+                           "logfilepath"   : pathlog,
+                           "logfilename"   : filename,
+                           "user"          : username,
+                           "target"        : targetname}
+                    # Log the entry on the database
+                    r = post("logentry/create", data)
 
                     # It's SCP if scpcmd is set, else ssh.
                     if scpcmd == True: 

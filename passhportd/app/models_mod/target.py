@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 
 from app import app, db
 from app.models_mod import targetgroup
+from flask import jsonify
 
 
 class Target(db.Model):
@@ -14,18 +15,19 @@ class Target(db.Model):
     """
     __tablename__ = "target"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256), index=True, unique=True)
-    hostname = db.Column(db.String(120), index=True, nullable=False)
+    name       = db.Column(db.String(256), index=True, unique=True)
+    hostname   = db.Column(db.String(120), index=True, nullable=False)
     servertype = db.Column(db.String(120), index=True, server_default="ssh")
-    login = db.Column(db.String(120), index=True)
-    port = db.Column(db.Integer, index=False)
+    login      = db.Column(db.String(120), index=True)
+    port       = db.Column(db.Integer, index=False)
     sshoptions = db.Column(db.String(500), index=True)
-    comment = db.Column(db.String(500), index=True)
+    comment    = db.Column(db.String(500), index=True)
 
     # Relations
-    members = db.relationship("User", secondary="target_user")
-    gmembers = db.relationship("Usergroup", secondary="target_group")
+    members    = db.relationship("User", secondary="target_user")
+    gmembers   = db.relationship("Usergroup", secondary="target_group")
     memberoftg = db.relationship("Targetgroup", secondary="tgroup_target")
+    logentries = db.relationship("Logentry", secondary="target_log")
 
 
     def __repr__(self):
@@ -96,6 +98,28 @@ class Target(db.Model):
         for m in members:
             ret = ret + m.name + ","
         return ret[:-1] + "]"
+
+    # Log management
+    def addlogentry(self, logentry):
+        """Add a reference on a connexion made on this target"""
+        self.logentries.append(logentry)
+        return self
+    
+
+    def get_lastlog(self):
+        """Return 500 last log entries as json"""
+        output = "{\n"
+        if len(self.logentries) < 1:
+            return "{}"
+
+        for i in range(0, 500):
+            if i >= len(self.logentries):
+                i = 500
+            else:
+                output = output + '"' + str(i) + '": ' + \
+                         self.logentries[i].simplejson() + ",\n"
+        
+        return output[:-2] + "\n}"
 
 
     # User management

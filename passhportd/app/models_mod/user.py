@@ -11,20 +11,19 @@ class User(db.Model):
     """User defines information for every adminsys using passhport"""
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), index=True, unique=True, nullable=False)
-    sshkey = db.Column(
-        db.String(500),
-        index=False,
-        unique=True,
-        nullable=False)
-    comment = db.Column(db.String(500), index=True)
+    name       = db.Column(db.String(120), 
+                           index=True, unique=True, nullable=False)
+    sshkey     = db.Column(db.String(500), 
+                           index=False, unique=True, nullable=False)
+    comment    = db.Column(db.String(500), index=True)
     superadmin = db.Column(db.Boolean, unique=False, default=False)
 
 
     # Relations (in targetgroups)
-    targets = db.relationship("Target", secondary="target_user")
-    usergroups = db.relationship("Usergroup", secondary="group_user")
+    targets      = db.relationship("Target", secondary="target_user")
+    usergroups   = db.relationship("Usergroup", secondary="group_user")
     targetgroups = db.relationship("Targetgroup", secondary="tgroup_user")
+    logentries   = db.relationship("Logentry", secondary="user_log")
     # Admins - can admin usergroups and targetgroups (add and remove users)
     adminoftg = db.relationship("Targetgroup", secondary="tg_admins")
     adminofug = db.relationship("Usergroup", secondary="ug_admins")
@@ -147,3 +146,25 @@ class User(db.Model):
     def togglesuperadmin(self):
         """Change the superadmin flag"""
         self.superadmin = not self.superadmin
+
+    # Log management
+    def addlogentry(self, logentry):
+        """Add a reference on a connexion made on this target"""
+        self.logentries.append(logentry)
+        return self
+
+    def get_lastlog(self):
+        """Return 500 last log entries as json"""
+        output = "{\n"
+        if len(self.logentries) < 1:
+            return "{}"
+
+        for i in range(0, 500):
+            if i >= len(self.logentries):
+                i = 500
+            else:
+                output = output + '"' + str(i) + '": ' + \
+                         self.logentries[i].simplejson() + ",\n"
+        
+        return output[:-2] + "\n}"
+

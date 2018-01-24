@@ -525,3 +525,13 @@ def target_rmusergroup():
 
     return utils.response('OK: "' + usergroupname + '" removed from "' + \
                           targetname + '"', 200)
+
+
+@app.route("/target/lastlog/<name>")
+def target_lastlog(name):
+    """Return the 500 last logs as json"""
+    #TODO pagination for ajax call on all logs
+    t = utils.get_target(name)
+    if not t:
+        return "{}"
+    return t.get_lastlog()
