@@ -5,11 +5,37 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from app import db
-from .models_mod import user, target, usergroup, targetgroup
+from .models_mod import user, target, usergroup, targetgroup, logentry
 
 ###############################################################################
 # Relations tables
 ###############################################################################
+class Target_Log(db.Model):
+    """Link between a connexion and a target"""
+    __tablename__ = "target_log"
+    target_id = db.Column(
+        db.Integer,
+        db.ForeignKey("target.id"),
+        primary_key=True)
+    logentry_id = db.Column(
+        db.Integer,
+        db.ForeignKey("logentry.id"),
+        primary_key=True)
+
+
+class User_Log(db.Model):
+    """Link between a connexion and a user"""
+    __tablename__ = "user_log"
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("user.id"),
+        primary_key=True)
+    logentry_id = db.Column(
+        db.Integer,
+        db.ForeignKey("logentry.id"),
+        primary_key=True)
+
+
 class Target_User(db.Model):
     """TargetUser authorized access between users and targets
     (not including groups).
@@ -24,6 +50,7 @@ class Target_User(db.Model):
         db.ForeignKey("user.id"),
         primary_key=True)
 
+
 class Tg_admins(db.Model):
     """Users authorized to admin targetgroups"""
     __tablename__ = "tg_admins"
@@ -36,6 +63,7 @@ class Tg_admins(db.Model):
         db.ForeignKey("user.id"),
         primary_key=True)
 
+
 class Ug_admins(db.Model):
     """Users authorized to admin usergroups"""
     __tablename__ = "ug_admins"
@@ -47,6 +75,7 @@ class Ug_admins(db.Model):
         db.Integer,
         db.ForeignKey("user.id"),
         primary_key=True)
+
 
 class Group_User(db.Model):
     """Groupuser users in groups"""
