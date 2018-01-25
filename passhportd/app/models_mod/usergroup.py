@@ -4,7 +4,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from app import db
+from app import db, models_mod
 from app.models_mod import target,targetgroup
 
 
@@ -200,7 +200,11 @@ class Usergroup(db.Model):
         elif obj == "targetgroup":
             members = self.tgmembers
         elif obj == "usergroup":
-            members = self.gmembers
+            members = []
+            query = db.session.query(models_mod.usergroup.Usergroup).all()
+            for usergroup in query:
+                if self in usergroup.gmembers:
+                    members.append(usergroup)
         else:
             return "Error in object type"
             
@@ -410,7 +414,9 @@ class Usergroup(db.Model):
         usernames = ""
 
         for user in self.members:
-            usernames = usernames + "{\"Name\" : \"" + user.show_name() + "\"},"
+            usernames = usernames + \
+                        "{\"Name\" : \"" + user.show_name() + "\"," + \
+                        "\"Comment\" : \"" + user.show_comment() + "\"},"
 
         return usernames[:-1]
 
@@ -420,7 +426,8 @@ class Usergroup(db.Model):
         names = ""
 
         for user in self.ugadmins:
-            names = names + "{\"Name\" : \"" + user.show_name() + "\"},"
+            names = names + "{\"Name\" : \"" + user.show_name() + "\"," + \
+                    "\"Comment\" : \"" + user.show_comment() + "\"},"
 
         return names[:-1]
 

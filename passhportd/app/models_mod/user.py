@@ -65,6 +65,11 @@ class User(db.Model):
         return self.name
 
 
+    def show_comment(self):
+        """Return a string containing the user's comment"""
+        return self.comment
+
+
     def accessible_targetname_list(self):
         """Return target names which are accessible to the user"""
         return self.accessible_target_list("names")

@@ -51,9 +51,9 @@ def api_targetgroup_show(name):
     return utils.response("[" + str(targetgroup_data.simplejson()) + "]", 200)
 
 
-@app.route("/api/targetgroup/target/<name>")
-def api_targetgroup_target(name):
-    """Return json formated targets lists attached to the targetgroup 'name'"""
+@app.route("/api/targetgroup/<element>/<name>")
+def api_targetgroup_element(name, element):
+    """Return json formated element lists attached to the targetgroup 'name'"""
     # Check for required fields
     if not name:
         return utils.response("ERROR: The name is required ", 417)
@@ -64,7 +64,7 @@ def api_targetgroup_target(name):
         return utils.response("ERROR: No targetgroup with the name " + name + \
                 " in the database.", 417)
 
-    return api_targetgroup_element(targetgroup_data, "target")
+    return api_targetgroup_element(targetgroup_data, element)
 
 
 def api_targetgroup_element(targetgroup_data, element):
@@ -73,8 +73,14 @@ def api_targetgroup_element(targetgroup_data, element):
         return utils.response("[" + targetgroup_data.username_list_json() + \
                               "]", 200)
     elif element == "usergroup":
-        return utils.response("[" + targetgroup_data.usergroupname_list_json() + \
-                              "]", 200)
+        return utils.response("[" + \
+                   targetgroup_data.usergroupname_list_json() + "]", 200)
     elif element == "target":
         return utils.response("[" + targetgroup_data.targetname_list_json() + \
                               "]", 200)
+    elif element == "targetgroup":
+        return utils.response("[" + \
+                   targetgroup_data.targetgroupname_list_json() + "]", 200)
+    else: 
+        return utils.response("Error: element type unkown" , 417)
+

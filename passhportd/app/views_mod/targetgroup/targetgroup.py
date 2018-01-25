@@ -66,6 +66,22 @@ def targetgroup_show(name):
     return utils.response(targetgroup_data.__repr__(), 200)
 
 
+@app.route("/targetgroup/memberof/<obj>/<name>")
+def targetgroup_memberof(obj, name):
+    """Return the list of obj this targetgroup is member of"""
+    # Check for required fields
+    if not name:
+        return utils.response("ERROR: The name is required ", 417)
+
+    data = targetgroup.Targetgroup.query.filter_by(name=name).first()
+
+    if data is None:
+        return utils.response('ERROR: No targetgroup with the name "' + name + \
+                              '" in the database.', 417)
+
+    return utils.response(str(data.memberof(obj)), 200)
+
+
 @app.route("/targetgroup/create", methods=["POST"])
 def targetgroup_create():
     """Add a targetgroup in the database"""
@@ -528,3 +544,20 @@ def targetgroup_rmtargetgroup():
 
     return utils.response('OK: "' + subtargetgroupname + '" removed from "' + \
                           targetgroupname + '"', 200)
+
+
+@app.route("/targetgroup/access/<name>")
+def targetgroup_access(name):
+    """Return all the targets accessible if you're in this targetgroup"""
+    # Check for required fields
+    if not name:
+        return utils.response("ERROR: The name is required ", 417)
+
+    data = targetgroup.Targetgroup.query.filter_by(name=name).first()
+
+    if data is None:
+        return utils.response('ERROR: No targetgroup with the name "' + name + \
+                              '" in the database.', 417)
+
+    return utils.response(str(data.accessible_target_list(style="names")), 200)
+
