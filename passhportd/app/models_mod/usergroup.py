@@ -68,10 +68,10 @@ class Usergroup(db.Model):
         directsize = len(self.members)
         totalsize = len(self.all_username_list())
         output = "{\n"
-        output = output + "\"name\": \"" + format(self.name) + "\",\n"
-        output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
-        output = output + "\"directsize\": \"" + format(str(directsize)) + "\",\n"
-        output = output + "\"totalsize\": \"" + format(str(totalsize)) + "\",\n"
+        output = output + "\"Name\": \"" + format(self.name) + "\",\n"
+        output = output + "\"Comment\": \"" + format(self.comment) + "\",\n"
+        output = output + "\"Directsize\": \"" + format(str(directsize)) + "\",\n"
+        output = output + "\"Totalsize\": \"" + format(str(totalsize)) + "\",\n"
         output = output + "}"
 
         return output

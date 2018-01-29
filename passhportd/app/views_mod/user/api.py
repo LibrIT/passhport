@@ -34,6 +34,7 @@ def api_user_list():
 
     return utils.response("".join(result), 200)
 
+
 @app.route("/api/user/show/<name>")
 def api_user_show(name):
     """Return  json formated data about a user"""

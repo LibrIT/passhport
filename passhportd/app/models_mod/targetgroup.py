@@ -52,25 +52,34 @@ class Targetgroup(db.Model):
 
         output.append("Name: {}".format(self.name))
         output.append("Comment: {}".format(self.comment))
-        output.append("User list: " + " ".join(self.username_list()))
-        output.append("Target list: " + " ".join(self.targetname_list()))
-        output.append("Usergroup list: " + " ".join(self.usergroupname_list()))
-        output.append("Targetgroup list: " + " ".join(self.targetgroupname_list()))
+        output.append("User list: " + \
+                      " ".join(self.username_list()))
+        output.append("Target list: " + \
+                      " ".join(self.targetname_list()))
+        output.append("Usergroup list: " + \
+                      " ".join(self.usergroupname_list()))
+        output.append("Targetgroup list: " + \
+                      " ".join(self.targetgroupname_list()))
 
-        output.append("All users: " + " ".join(self.all_username_list()))
-        output.append("All targets: " + " ".join(self.all_targetname_list()))
-        output.append("All usergroups: " + " ".join(self.all_usergroupname_list()))
-        output.append("All targetgroups: " + " ".join(self.all_targetgroupname_list()))
+        output.append("All users: " + \
+                      " ".join(self.all_username_list()))
+        output.append("All targets: " + \
+                      " ".join(self.all_targetname_list()))
+        output.append("All usergroups: " + \
+                      " ".join(self.all_usergroupname_list()))
+        output.append("All targetgroups: " + \
+                      " ".join(self.all_targetgroupname_list()))
 
         return "\n".join(output)
 
 
     def simplejson(self):
-        """Return a simplified data of the targetgroup as json but not all the data"""
+        """Return a simplified data of the targetgroup as json but not
+        all the data"""
         output = "{\n"
 
-        output = output + "\"name\": \"" + format(self.name) + "\",\n"
-        output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
+        output = output + "\"Name\": \"" + format(self.name) + "\",\n"
+        output = output + "\"Comment\": \"" + format(self.comment) + "\",\n"
         output = output + "}"
 
         return output
