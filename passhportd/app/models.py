@@ -129,19 +129,6 @@ class TGroup_Target(db.Model):
         primary_key=True)
 
 
-class TGroup_TGroup(db.Model):
-    """TgroupTgroup Targets a group can access"""
-    __tablename__ = "tgroup_tgroup"
-    targetgroup_id = db.Column(
-        db.Integer,
-        db.ForeignKey("targetgroup.id"),
-        primary_key=True)
-    containertargetgroup_id = db.Column(
-        db.Integer,
-        db.ForeignKey("targetgroup.id"),
-        primary_key=True)
-
-
 class Tgroup_Group(db.Model):
     """TgroupGroup Targets in target group a group can access"""
     __tablename__ = "tgroup_group"

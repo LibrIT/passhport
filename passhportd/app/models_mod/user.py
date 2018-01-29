@@ -53,8 +53,6 @@ class User(db.Model):
         output = output + "\"email\": \"" + format(self.name) + "\",\n"
         output = output + "\"sshkey\": \"" + format(self.sshkey) + "\",\n"
         output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
-        output = output + "\"accessibleTargetList\": \"" + format(self.accessible_targetname_list()) + "\",\n"
-        #output = output + "\"accessibleTargets\": \"" + format(self.accessible_target_list("json")) + "\"\n"
         output = output + "}"
 
         return output
@@ -63,6 +61,11 @@ class User(db.Model):
     def show_name(self):
         """Return a string containing the user's name"""
         return self.name
+
+
+    def show_comment(self):
+        """Return a string containing the user's comment"""
+        return self.comment
 
 
     def accessible_targetname_list(self):

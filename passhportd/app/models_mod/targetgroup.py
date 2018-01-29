@@ -4,7 +4,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from app import db
+from app import db, models_mod
 
 # Table to handle the self-referencing many-to-many relationship
 # for the Targetgroup class:
@@ -52,25 +52,34 @@ class Targetgroup(db.Model):
 
         output.append("Name: {}".format(self.name))
         output.append("Comment: {}".format(self.comment))
-        output.append("User list: " + " ".join(self.username_list()))
-        output.append("Target list: " + " ".join(self.targetname_list()))
-        output.append("Usergroup list: " + " ".join(self.usergroupname_list()))
-        output.append("Targetgroup list: " + " ".join(self.targetgroupname_list()))
+        output.append("User list: " + \
+                      " ".join(self.username_list()))
+        output.append("Target list: " + \
+                      " ".join(self.targetname_list()))
+        output.append("Usergroup list: " + \
+                      " ".join(self.usergroupname_list()))
+        output.append("Targetgroup list: " + \
+                      " ".join(self.targetgroupname_list()))
 
-        output.append("All users: " + " ".join(self.all_username_list()))
-        output.append("All targets: " + " ".join(self.all_targetname_list()))
-        output.append("All usergroups: " + " ".join(self.all_usergroupname_list()))
-        output.append("All targetgroups: " + " ".join(self.all_targetgroupname_list()))
+        output.append("All users: " + \
+                      " ".join(self.all_username_list()))
+        output.append("All targets: " + \
+                      " ".join(self.all_targetname_list()))
+        output.append("All usergroups: " + \
+                      " ".join(self.all_usergroupname_list()))
+        output.append("All targetgroups: " + \
+                      " ".join(self.all_targetgroupname_list()))
 
         return "\n".join(output)
 
 
     def simplejson(self):
-        """Return a simplified data of the targetgroup as json but not all the data"""
+        """Return a simplified data of the targetgroup as json but not
+        all the data"""
         output = "{\n"
 
-        output = output + "\"name\": \"" + format(self.name) + "\",\n"
-        output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
+        output = output + "\"Name\": \"" + format(self.name) + "\",\n"
+        output = output + "\"Comment\": \"" + format(self.comment) + "\",\n"
         output = output + "}"
 
         return output
@@ -80,6 +89,11 @@ class Targetgroup(db.Model):
         """Return a string containing the targetgroup’s name"""
         return self.name
 
+
+    def show_comment(self):
+        """Return a string containing the targetgroup’s comment"""
+        return self.comment
+    
 
     # User management
     def is_members(self, user):
@@ -190,6 +204,20 @@ class Targetgroup(db.Model):
 
         return targetnames
 
+
+    def username_list_json(self):
+        """Return users directly linked with the targetgroup"""
+        usernames = ""
+
+        for user in self.members:
+            usernames = usernames + "{\"Name\" : \"" + \
+                             user.show_name() + "\"," + \
+                             "\"Comment\" : \"" + \
+                             user.show_comment() + "\"},"
+
+        return usernames[:-1]
+
+
     def targetname_list_json(self):
         """Return targets directly linked with the targetgroup"""
         targetnames = ""
@@ -202,6 +230,31 @@ class Targetgroup(db.Model):
 
         return targetnames[:-1]
 
+
+    def usergroupname_list_json(self):
+        """Return usergroups directly linked with the targetgroup"""
+        usergroupnames = ""
+
+        for usergroup in self.gmembers:
+            usergroupnames = usergroupnames + "{\"Name\" : \"" + \
+                             usergroup.show_name() + "\"," + \
+                             "\"Comment\" : \"" + \
+                             usergroup.show_comment() + "\"},"
+
+        return usergroupnames[:-1]
+
+
+    def targetgroupname_list_json(self):
+        """Return targetgroups directly linked with the targetgroup"""
+        targetgroupnames = ""
+
+        for targetgroup in self.tgmembers:
+            targetgroupnames = targetgroupnames + "{\"Name\" : \"" + \
+                             targetgroup.show_name() + "\"," + \
+                             "\"Comment\" : \"" + \
+                             targetgroup.show_comment() + "\"},"
+
+        return targetgroupnames[:-1]
 
 
     def accessible_target_list(self, parsed_targetgroups = None, style="object"):
@@ -216,7 +269,7 @@ class Targetgroup(db.Model):
                 parsed_targetgroups.append(targetgroup)
                 for target in targetgroup.accessible_target_list(
                                             parsed_targetgroups = parsed_targetgroups,
-                                            style = style):
+                                            style = "object"):
                     if target not in targets:
                         targets.append(target)
         # Return target objects or names depending of the style                
@@ -329,6 +382,23 @@ class Targetgroup(db.Model):
             self.tgmembers.remove(targetgroup)
 
         return self
+
+
+    def memberof(self, obj):
+        """Return a string list of direct memberships of this targetgroup"""
+        if obj == "targetgroup":
+            members = []
+            query = db.session.query(models_mod.targetgroup.Targetgroup).all()
+            for targetgroup in query:
+                if self in targetgroup.tgmembers:
+                    members.append(targetgroup)
+        else:
+            return "Error in object type"
+            
+        ret = "["
+        for m in members:
+            ret = ret + m.name + ","
+        return ret[:-1] + "]"
 
 
     def subtargetgroupname_in_targetgroup(self, subtargetgroupname):

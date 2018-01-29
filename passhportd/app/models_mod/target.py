@@ -172,7 +172,9 @@ class Target(db.Model):
         usernames = ""
 
         for user in self.members:
-            usernames = usernames + "{\"Name\" : \"" + user.show_name() + "\"},"
+            usernames = usernames + \
+                        "{\"Name\" : \"" + user.show_name() + "\"," + \
+                        "\"Comment\" : \"" + user.show_comment() + "\"},"
 
         return usernames[:-1]
 
