@@ -12,9 +12,17 @@ def parse(originalcmd):
     """Parse the original scp command written by the user.
        Obtain the target, create the command to pass"""
     # We wait a command like :
-    #scp [option] /path/to/my/file user@bastion:targetname//path/on/destination
+    #scp file user@bastion:player//~
+    #ssh user@bastion player scp file user@ip:/path/to/file
+    #ssh user@bastion player rm file
+    #scp [option] /path/to/my/file user@bastion:targetname[//user//ip]//path/on/destination
+    # Specific players : 1. If targetname//user//ip//path then it's a scp on a server behind a target
+    #                    2. We retrive the file on the target (targetname)
+    #                    3. We execute a scp on the target (ssh passhport@target scp file user@ip
+    #                    4. We execure a rm on the target (ssh passhport@target rm file
     # or
     #scp [option] user@bastion:targetname//path/on/destination/file /local/path
+
     # and we should obtain the target name a line like
     # scp -t /path/on/destination/file 
     # scp -f /path/on/destination/file /local/path
