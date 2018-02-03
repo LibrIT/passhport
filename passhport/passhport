@@ -60,7 +60,6 @@ def post(url, data):
        This is used to connect to passhportd, to log access"""
     try:
         if SSL:
-            print(data)
             r = requests.post(url_passhport + url, data=data, 
                               verify=SSL_CERTIFICAT)
         else:
@@ -109,7 +108,7 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
                                  login + "@" + target + "-" + username
                     filelog    = pathlog + filename
                     port       = get(url_passhport + "target" + "/port/" +  
-                                 target)
+                                 targetname)
                     sshoptions = get(url_passhport + "target" + \
                                   "/sshoptions/" + targetname)
 
