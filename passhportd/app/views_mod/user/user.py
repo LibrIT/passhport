@@ -32,7 +32,6 @@ def useruid(s, login):
     if not c.search(config.LDAPBASE,
                     "(" + config.LDAPFIELD + "=" + login + ")") :
         print("Error: Connection to the LDAP with service account failed")
-        print(c.result["description"])
     else:
         if len(c.entries) >= 1 :
             if len(c.entries) > 1 :
@@ -48,17 +47,20 @@ def useruid(s, login):
 
 def try_ldap_login(login, password):
     """ Connect to a LDAP directory to verify user login/passwords"""
+    result = "Wrong login/password"
     s = Server(config.LDAPURI, port=config.LDAPPORT,
                use_ssl=False, get_info=ALL)
     # 1. connection with service account to find the user uid
     uid = useruid(s, login)
-    
-    # 2. Try to bind the user to the LDAP
-    c = Connection(s, user = uid , password=password, auto_bind = True)
-    c.open()
-    c.bind()
-    result =  c.result["description"] # "success" if bind is ok
-    c.unbind()
+   
+    if uid: 
+        # 2. Try to bind the user to the LDAP
+        c = Connection(s, user = uid , password = password, auto_bind = True)
+        c.open()
+        c.bind()
+        result =  c.result["description"] # "success" if bind is ok
+        c.unbind()
+
     return result
 
 
@@ -89,8 +91,8 @@ def user_login():
         # If the LDAP connection is ok, user can connect
         return utils.response("Authorized", 200)
     else:
-        print("Authentication error for {} => ".format(login) + result)
-        return utils.response("Refused: " + result, 200)
+        print("Authentication error for {} => ".format(login) + str(result))
+        return utils.response("Refused: " + str(result), 200)
 
 
 @app.route("/user/list")
