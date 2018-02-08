@@ -4,6 +4,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+
+from datetime import datetime, timedelta, date
 from app import app, db
 from app.models_mod import target,usergroup,targetgroup
    
@@ -170,4 +172,21 @@ class User(db.Model):
                          self.logentries[i].simplejson() + ",\n"
         
         return output[:-2] + "\n}"
+
+
+    def dayssinceconnection(self):
+        """Return the number of days since this account hasn't been used"""
+        # Look for a log entry with this user
+        lastuse = ""
+        if self.logentries:
+            lastuse = self.logentries[-1].connectiondate
+            
+        if lastuse != "":
+            date = datetime.strptime(lastuse, '%Y%m%dT%H%M%S')
+            today = date.today()
+            numberofdays = today - date
+            return numberofdays.days
+        else:
+            return (-1)
+
 

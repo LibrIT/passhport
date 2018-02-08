@@ -117,8 +117,8 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
                     else:
                         cmd = originalcmd
 
-                    data= {"connexiondate" : isodate,
-                           "connexioncmd"  : cmd,
+                    data= {"connectiondate" : isodate,
+                           "connectioncmd"  : cmd,
                            "logfilepath"   : pathlog,
                            "logfilename"   : filename,
                            "user"          : username,
