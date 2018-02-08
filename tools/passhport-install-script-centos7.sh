@@ -179,6 +179,7 @@ echo '# Adding root@localhost target…'
 echo '##############################################################'
 # Sleep 2 seconds so passhportd has enough time to start
 sleep 2
+[ ! -d "/root/.ssh" ] && mkdir "/root/.ssh" && chmod 700 "/root/.ssh"
 cat "/home/passhport/.ssh/id_ecdsa.pub" >> "/root/.ssh/authorized_keys"
 su - passhport -c 'passhport-admin target create root@localhost 127.0.0.1 --comment="Localhost target added during the PaSSHport installation process."'
 echo 'Do you want to add your first user now ? Y/n'
