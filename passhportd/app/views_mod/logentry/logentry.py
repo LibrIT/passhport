@@ -49,8 +49,8 @@ def logentry_create():
         return utils.response("ERROR: POST method is required ", 405)
 
     l = logentry.Logentry(
-        connexiondate = request.form["connexiondate"],
-        connexioncmd  = request.form["connexioncmd"],
+        connectiondate = request.form["connectiondate"],
+        connectioncmd  = request.form["connectioncmd"],
         logfilepath   = request.form["logfilepath"],
         logfilename   = request.form["logfilename"])
     db.session.add(l)
