@@ -4,6 +4,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+from datetime import datetime, timedelta, date
 from app import app, db
 from app.models_mod import targetgroup
 from flask import jsonify
@@ -335,4 +336,20 @@ class Target(db.Model):
     def direct_targetgroups(self):
         """Return the list of the directly attached targetgroups"""
         return self.memberoftg
+
+
+    def dayssinceconnection(self):
+        """Return the number of days since this target hasn't been used"""
+        # Look for a log entry with this target
+        lastuse = ""
+        if self.logentries:
+            lastuse = self.logentries[-1].connectiondate
+            
+        if lastuse != "":
+            date = datetime.strptime(lastuse, '%Y%m%dT%H%M%S')
+            today = date.today()
+            numberofdays = today - date
+            return int(numberofdays.days)
+        else:
+            return int(-1)
 

@@ -1,0 +1,2 @@
+1 0 * * * passhport wget --no-check-certificate -qO - https://localhost:5000/reporting/daily | /usr/bin/mail -s "PaSSHport daily report" admin@email.tld
+2 0 * * 0 passhport wget --no-check-certificate -qO - https://localhost:5000/reporting/weekly/4 | /usr/bin/mail -s "PaSSHport weekly report" admin@email.tld

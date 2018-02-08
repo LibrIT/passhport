@@ -174,7 +174,7 @@ class User(db.Model):
         return output[:-2] + "\n}"
 
 
-    def lastconnection(self):
+    def dayssinceconnection(self):
         """Return the number of days since this account hasn't been used"""
         # Look for a log entry with this user
         lastuse = ""
@@ -184,7 +184,7 @@ class User(db.Model):
         if lastuse != "":
             date = datetime.strptime(lastuse, '%Y%m%dT%H%M%S')
             today = date.today()
-            numberofdays = today - dat
+            numberofdays = today - date
             return numberofdays.days
         else:
             return (-1)
