@@ -9,4 +9,5 @@ This chapter describes the installation on different distro, and the main config
    installation-on-debian
    installation-on-centos
    use-postgresql-as-backend
+   use-mysql-mariadb-as-backend
    add-bash_completion-to-passhport-admin
