@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-12 20:14+0100\n"
+"PO-Revision-Date: 2018-02-12 20:21+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
+"Language-Team: LibrIT <contact@librit.fr>\n"
+"Language: fr\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:2
+msgid "Use MySQL as database backend"
+msgstr "Utiliser MySQL comme base de données"
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:5
+msgid "Install PyMySQL python module"
+msgstr "Installer le module python PyMySQL"
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:7
+msgid ""
+"If you did not use the packaged version of passhport (deb/rpm), proceed as "
+"follow. If you used the package version, go directly below, to the `MySQL "
+"configuration`_."
+msgstr ""
+"Si vous n'avez pas utilisé la version paqueté de PaSSHport (dep/rpm), "
+"procédez comme suit. Si vous avez utilisé la version packagée, aller "
+"directement à la section `Configuration de MySQL`_."
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:9
+msgid ""
+"If you want to use MySQL as the database backend you'll need to add a python "
+"module : PyMySQL."
+msgstr ""
+"Si vous voulez utilisez MySQL comme base de données, vous devez installer le "
+"module python *PyMySQL*."
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:11
+msgid "As passhport user, install PyMySQL :"
+msgstr "En tant qu'utilisateur passhport, on installe PyMySQL :"
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:18
+msgid "MySQL configuration"
+msgstr "Configuration de MySQL"
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:20
+msgid ""
+"Create a *passhport* database in you MySQL server (may be different on your "
+"distro, this is just an example) :"
+msgstr ""
+"Créez une base de données *passhport* dans MySQL (la méthode peut varier "
+"selon votre distribution) :"
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:36
+msgid "Then create a user that'll have all rights on the *passhport* database :"
+msgstr ""
+"Créez ensuite un utilisateur qui aura tous les droits sur la base de données "
+"*passhport* :"
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:49
+msgid "passhportd configuration"
+msgstr "Configuration de passhportd"
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:51
+msgid ""
+"Change the configuration of the *passhportd.ini* file (``/etc/passhport/"
+"passhportd.ini``). You need to change the ``SQLALCHEMY_DATABASE_URI`` "
+"parameter to :"
+msgstr ""
+"On  modifie le fichier de configuration *passhportd.ini*(``/etc/passhport/"
+"passhportd.ini``). On change le paramètre  ``SQLALCHEMY_DATABASE_URI`` :"
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:57
+msgid "As passhport (system) user, initialize the database :"
+msgstr ""
+"En tant qu'utilisateur passhport (celui du system, pas celui de MySQL), on "
+"initialise la base de données :"
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:63
+msgid "Re-launch passhportd (as root) :"
+msgstr "On relance passhportd (en tant que root) :"
+
+#: ../../installation-and-configuration/use-mysql-mariadb-as-backend.rst:69
+msgid "PaSSHport now use MySQL backend."
+msgstr "PaSSHport utilise désormais MySQL."
