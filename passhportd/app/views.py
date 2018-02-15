@@ -76,6 +76,12 @@ def weeklyreport(weeksnb=4):
     return output
 
 
+def hours_minutes(td):
+    """Takes timedelta object and express it in hours/min"""
+    return str((td.days * 24) + (td.seconds//3600)) + "h" + \
+           str((td.seconds//60)%60)
+
+
 @app.route("/connection/ssh/current")
 def currentsshconnections():
     """Return a json presenting the current ssh connections associated 
@@ -98,6 +104,9 @@ def currentsshconnections():
                     connection = [log for log in logs \
                               if log.logfilename in sshcmd[2]][-1]
 
+                    cdate = datetime.strptime(connection.connectiondate,
+                                             '%Y%m%dT%H%M%S')
+                    duration = datetime.now() - cdate
                     # output json formated
                     output = output + \
                              '{"Email" : "' + \
@@ -106,7 +115,7 @@ def currentsshconnections():
                              connection.target[0].show_name() + '",' + \
                              '"PID" : "' + str(proc.pid) + '",' + \
                              '"Date" : "' + \
-                             connection.connectiondate + '"},' 
+                             hours_minutes(duration) + '"},' 
                              
     return output[:-1] + "]"
 
