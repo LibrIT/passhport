@@ -4,10 +4,11 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import psutil, re
 from datetime import datetime, timedelta, date
 from app import app
 from .views_mod import user, target, usergroup, targetgroup, logentry
-from .models_mod import logentry as log
+from .models_mod import logentry
 from .models_mod import user
 from .models_mod import target
 
@@ -27,8 +28,8 @@ def dailyreport():
     yesterday = yesterday.strftime('%Y%m%d') + "T000000"
 
     # 2. Select logs entries from yesterday
-    query = log.Logentry.query.filter(
-            log.Logentry.connectiondate >= yesterday).all()
+    query = logentry.Logentry.query.filter(
+            logentry.Logentry.connectiondate >= yesterday).all()
 
     for row in query:
         output = output + row.connectiondate + ": " + \
@@ -73,3 +74,48 @@ def weeklyreport(weeksnb=4):
     output = output + ", ".join([t.show_name() for t in neverused])
 
     return output
+
+
+@app.route("/connection/ssh/current")
+def currentsshconnections():
+    """Return a json presenting the current ssh connections associated 
+       to their PID"""
+    output        = "[ "
+    pythonexec    = "/home/passhport/passhport-run-env/bin/python3"
+    passhportexec = "/home/passhport/passhport/passhport/passhport" 
+    
+    logs = logentry.Logentry.query.all()
+    procs = [proc for proc in psutil.process_iter() \
+             if proc.username() == "passhport"]
+
+    for proc in procs:
+        if pythonexec in proc.cmdline() and passhportexec in proc.cmdline():
+            # It's a passhport process, his child is a ssh connection
+            if len(proc.children()) == 1:
+                sshcmd = proc.children()[0].cmdline()
+                # Check if it's a ssh connection
+                if [s for s in sshcmd if "script -q --timing=" in s]:
+                    connection = [log for log in logs \
+                              if log.logfilename in sshcmd[2]][-1]
+
+                    # output json formated
+                    output = output + \
+                             '{"Email" : "' + \
+                             connection.user[0].show_name() + '",' + \
+                             '"Target" : "' + \
+                             connection.target[0].show_name() + '",' + \
+                             '"PID" : "' + str(proc.pid) + '",' + \
+                             '"Date" : "' + \
+                             connection.connectiondate + '"},' 
+                             
+    return output[:-1] + "]"
+
+
+@app.route("/connection/ssh/disconnect/<pid>")
+def sshdisconnection(pid):
+    """Kill the pid"""
+    parent = psutil.Process(int(pid))
+    for child in parent.children(): 
+        child.kill()
+    parent.kill()
+    return "Done"

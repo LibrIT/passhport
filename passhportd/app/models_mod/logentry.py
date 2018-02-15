@@ -11,10 +11,11 @@ class Logentry(db.Model):
     """Logentry store connection history for furture reference"""
     __tablename__ = "logentry"
     id = db.Column(db.Integer, primary_key=True)
+    pid            = db.Column(db.Integer, index=True)
     connectiondate = db.Column(db.String(20), index=True)
     connectioncmd  = db.Column(db.String(200), index=True)
-    logfilepath   = db.Column(db.String(200)) # Empty if archived or logrotated
-    logfilename   = db.Column(db.String(200), nullable=False)
+    logfilepath    = db.Column(db.String(200)) # Empty if archived or logrotated
+    logfilename    = db.Column(db.String(200), nullable=False)
 
     # Relations
     target = db.relationship("Target", secondary="target_log")
@@ -25,6 +26,7 @@ class Logentry(db.Model):
         output = []
 
         output.append("Date   : {}".format(self.connectiondate))
+        output.append("PID    : {}".format(str(self.pid)))
         output.append("Command: {}".format(self.connectioncmd))
         output.append("Logfile:" + self.logfilepath + self.logfilename)
         output.append("User   : {}".format(self.user[0].show_name()))
@@ -38,6 +40,7 @@ class Logentry(db.Model):
         output = output + "\"Date\": \"" + format(self.connectiondate) + "\",\n"
         output = output + "\"Command\": \"" + \
                           format(self.connectioncmd) + "\",\n"
+        output = output + "\"PID\": \"" + format(str(self.pid)) + "\",\n"
         output = output + "\"Logfile\": \"" + self.logfilepath + \
                           self.logfilename + "\",\n"
         output = output + "\"User\": \"" + format(self.user[0].show_name()) + "\",\n"

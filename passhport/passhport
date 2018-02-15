@@ -103,8 +103,9 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
                         os.makedirs(pathlog)
                     isodate    = datetime.now().isoformat().replace(":",""). \
                                  replace("-","").split('.')[0]
+                    pid        = os.getpid()
                     filename   = isodate + "-PID" + \
-                                 str(os.getpid()) + "-" + targetname + "-" + \
+                                 str(pid) + "-" + targetname + "-" + \
                                  login + "@" + target + "-" + username
                     filelog    = pathlog + filename
                     port       = get(url_passhport + "target" + "/port/" +  
@@ -113,16 +114,19 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
                                   "/sshoptions/" + targetname)
 
                     if scpcmd == False: 
-                        cmd = "ssh"
+                        cmd = "ssh -t -p " + str(port) + \
+                              " " + login + '@' + target + \
+                              ' ' + sshoptions 
                     else:
                         cmd = originalcmd
 
                     data= {"connectiondate" : isodate,
+                           "pid"            : pid,
                            "connectioncmd"  : cmd,
-                           "logfilepath"   : pathlog,
-                           "logfilename"   : filename,
-                           "user"          : username,
-                           "target"        : targetname}
+                           "logfilepath"    : pathlog,
+                           "logfilename"    : filename,
+                           "user"           : username,
+                           "target"         : targetname}
                     # Log the entry on the database
                     r = post("logentry/create", data)
 
