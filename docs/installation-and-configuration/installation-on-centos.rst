@@ -27,11 +27,11 @@ Install the EPEL repository :
 
   yum install epel-release
   
-Install python34-pip and other packages that we’ll need later for this tutorial (it will get ~+100MB from the archives, so be patient) :
+Install python34-pip and other packages that we’ll need later for this tutorial (it will get ~100MB from the archives, so be patient) :
 
 .. code-block:: none
 
-  root@centos7:~# yum install python34-pip git openssl
+  root@centos7:~# yum install python34-pip git openssl python34-devel gcc
 
 Let’s update pip :
 
