@@ -61,7 +61,7 @@ yum install -y epel-release
 echo '##############################################################'
 echo '# Installing python34-pip, git and openssl package…'
 echo '##############################################################'
-yum install -y python34-pip git openssl
+yum install -y python34-pip git openssl python34-devel gcc
 echo '##############################################################'
 echo '# Updating pip…'
 echo '##############################################################'
