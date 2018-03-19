@@ -347,9 +347,11 @@ def target_delete(name):
         each_targetgroup.rmtarget(target_data)
 
     # We can now delete the target from the db
-    db.session.query(
-        target.Target).filter(
-        target.Target.name == name).delete()
+    t = db.session.query(
+                 target.Target).filter(
+                 target.Target.name == name)
+    t[0].prepare_delete()
+    t.delete()
 
     try:
         db.session.commit()

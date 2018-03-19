@@ -99,6 +99,18 @@ class Target(db.Model):
         for m in members:
             ret = ret + m.name + ","
         return ret[:-1] + "]"
+    
+
+    def prepare_delete(self):
+        """Remove relationships before deletion"""
+        for member in self.members:
+            self.rmuser(member)
+        for gmember in self.gmembers:
+            self.rmusergroup(gmember)
+        # Remove the target from targetgroup is handled in the view
+        for logentry in self.logentries:
+            self.rmlogentry(logentry)
+
 
     # Log management
     def addlogentry(self, logentry):
@@ -121,6 +133,13 @@ class Target(db.Model):
                          self.logentries[i].simplejson() + ",\n"
         
         return output[:-2] + "\n}"
+
+
+    def rmlogentry(self, logentry):
+        """Remove a logentry from the relation table"""
+        self.logentries.remove(logentry)
+
+        return self
 
 
     # User management
@@ -280,7 +299,6 @@ class Target(db.Model):
                 targetgroups.append(each_targetgroup)
 
         return targetgroups
-
 
     # Access management
     def list_all_usernames(self):

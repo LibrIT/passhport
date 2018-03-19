@@ -414,7 +414,7 @@ class Usergroup(db.Model):
             self.rmuser(member)
         for gmember in self.gmembers:
             self.rmusergroup(gmember)
-        for admin in ugadmins:
+        for admin in self.ugadmins:
             self.rmmanager(admin)
 
 

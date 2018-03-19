@@ -197,18 +197,18 @@ def usergroup_delete(name):
         return utils.response("ERROR: The name is required ", 417)
 
     # Check if the name exists
-    query = db.session.query(usergroup.Usergroup.name)\
-        .filter_by(name=name).first()
+    query = db.session.query(
+                usergroup.Usergroup).filter(
+                usergroup.Usergroup.name == name)
 
     if query is None:
         return utils.response('ERROR: No usergroup with the name "' + name + \
                               '" in the database.', 417)
-
-    usergroup = db.session.query(
-                    usergroup.Usergroup).filter(
-                    usergroup.Usergroup.name == name)
-    usergroup.prepare_delete()
-    usergroup.delete()
+    
+    #Normaly there will be only one element with that name
+    ug = query[0]
+    ug.prepare_delete()
+    query.delete()
 
     try:
         db.session.commit()
