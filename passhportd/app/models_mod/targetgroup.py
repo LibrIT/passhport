@@ -93,6 +93,22 @@ class Targetgroup(db.Model):
     def show_comment(self):
         """Return a string containing the targetgroup’s comment"""
         return self.comment
+
+
+    def prepare_delete(self):
+        """Remove all references in foreign tables before a delete"""
+        for member in self.members:
+            self.rmuser(member)
+        for target in self.tmembers:
+            self.rmtarget(target)
+        for gmember in self.gmembers:
+            self.rmusergroup(gmember)
+        for tgmember in self.tgmembers:
+            self.rmtargetgroup(tgmember)
+        for tgadmin in self.tgadmins:
+            self.rmmanager(tgadmin)
+
+        return self
     
 
     # User management

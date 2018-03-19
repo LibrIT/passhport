@@ -189,9 +189,11 @@ def targetgroup_delete(name):
         return utils.response('ERROR: No targetgroup with the name "' + \
                               name + '" in the database.', 417)
 
-    db.session.query(
-        targetgroup.Targetgroup).filter(
-        targetgroup.Targetgroup.name == name).delete()
+    tg = db.session.query(
+            targetgroup.Targetgroup).filter(
+            targetgroup.Targetgroup.name == name)
+    tg[0].prepare_delete()
+    tg.delete()
 
     try:
         db.session.commit()
