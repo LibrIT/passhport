@@ -208,7 +208,7 @@ def usergroup_delete(name):
                     usergroup.Usergroup).filter(
                     usergroup.Usergroup.name == name)
     usergroup.prepare_delete()
-    usergroup.delete():
+    usergroup.delete()
 
     try:
         db.session.commit()
