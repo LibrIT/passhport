@@ -141,6 +141,16 @@ class Usergroup(db.Model):
         return self
 
 
+    def rmtarget(self, target):
+        """Remove a target from the relation table"""
+        self.tmembers.remove(target)
+
+
+    def rmtargetgroup(self, targetgroup):
+        """Remove a group from the relation table"""
+        self.tgmembers.remove(targetgroup)
+
+
     def username_in_usergroup(self, username):
         """Return true if the given username belongs to a member
         of the usergroup
@@ -410,12 +420,16 @@ class Usergroup(db.Model):
 
     def prepare_delete(self):
         """Remove all elements of this usergroup"""
-        for member in self.members:
-            self.rmuser(member)
-        for gmember in self.gmembers:
-            self.rmusergroup(gmember)
-        for admin in self.ugadmins:
-            self.rmmanager(admin)
+        while len(self.members) > 0:
+            self.members.pop()
+        while len(self.gmembers) > 0:
+            self.gmembers.pop()
+        while len(self.ugadmins) > 0:
+            self.ugadmins.pop()
+        while len(self.targets) > 0:
+            self.targets.pop()
+        while len(self.tgmembers) > 0:
+            self.tgmembers.pop()
 
 
 ### JSON ###

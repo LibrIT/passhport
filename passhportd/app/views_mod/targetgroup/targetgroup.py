@@ -193,6 +193,9 @@ def targetgroup_delete(name):
             targetgroup.Targetgroup).filter(
             targetgroup.Targetgroup.name == name)
     tg[0].prepare_delete()
+    tg[0].prepare_delete()
+    tg[0].prepare_delete()
+    tg[0].prepare_delete()
     tg.delete()
 
     try:

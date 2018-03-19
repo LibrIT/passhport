@@ -103,13 +103,13 @@ class Target(db.Model):
 
     def prepare_delete(self):
         """Remove relationships before deletion"""
-        for member in self.members:
-            self.rmuser(member)
-        for gmember in self.gmembers:
-            self.rmusergroup(gmember)
+        while len(self.members) > 0:
+            self.members.pop()
+        while len(self.gmembers) > 0:
+            self.gmembers.pop()
         # Remove the target from targetgroup is handled in the view
-        for logentry in self.logentries:
-            self.rmlogentry(logentry)
+        while len(self.logentries) > 0:
+            self.logentries.pop()
 
 
     # Log management
