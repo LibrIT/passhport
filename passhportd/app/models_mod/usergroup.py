@@ -408,6 +408,16 @@ class Usergroup(db.Model):
         return listing
 
 
+    def prepare_delete(self):
+        """Remove all elements of this usergroup"""
+        for member in self.members:
+            self.rmuser(member)
+        for gmember in self.gmembers:
+            self.rmusergroup(gmember)
+        for admin in ugadmins:
+            self.rmmanager(admin)
+
+
 ### JSON ###
     def username_list_json(self):
         """Return all the direct users names"""

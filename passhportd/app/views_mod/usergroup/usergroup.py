@@ -204,9 +204,11 @@ def usergroup_delete(name):
         return utils.response('ERROR: No usergroup with the name "' + name + \
                               '" in the database.', 417)
 
-    db.session.query(
-        usergroup.Usergroup).filter(
-        usergroup.Usergroup.name == name).delete()
+    usergroup = db.session.query(
+                    usergroup.Usergroup).filter(
+                    usergroup.Usergroup.name == name)
+    usergroup.prepare_delete()
+    usergroup.delete():
 
     try:
         db.session.commit()
