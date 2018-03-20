@@ -319,13 +319,13 @@ def update_authorized_keys(orig_name, orig_sshkey, new_name, new_sshkey):
         with open(config.SSH_KEY_FILE, "r+", encoding="utf8") as \
                   authorized_keys_file:
             line_edited = False
-            content = authorized_keys_file.readlines()
+            content = authorized_keys_file.read()
             authorized_keys_file.seek(0)
 
-            for line in content:
+            for line in content.split('\n')[:-1]:
                 if not line_edited:
-                    if line != authorized_keys_line:
-                        authorized_keys_file.write(line)
+                    if line != authorized_keys_line[:-1]:
+                        authorized_keys_file.write(line + '\n')
                     else:
                         authorized_keys_file.write(
                                 'command="' + config.PYTHON_PATH + \
@@ -333,14 +333,16 @@ def update_authorized_keys(orig_name, orig_sshkey, new_name, new_sshkey):
                                 " " + new_name + '" ' + new_sshkey + "\n")
                         line_edited = True
                 else:
-                    if line == authorized_keys_line:
+                    if line == authorized_keys_line[:-1]:
                         warning = ("WARNING: There is more " + \
                                    "than one line with this name and sshkey " + \
                                    origname + " - " + orig_sshkey + \
                                    ", probably added manually. " + \
                                    "You should edit it manually")
 
-                        authorized_keys_file.write(line)
+                    authorized_keys_file.write(line + '\n')
+
+            authorized_keys_file.truncate()
 
     except IOError:
         warning = utils.response('ERROR: cannot write in the file "' + \
@@ -454,22 +456,22 @@ def user_delete(name):
         with open(config.SSH_KEY_FILE, "r+", encoding="utf8") as \
             authorized_keys_file:
             line_deleted = False
-            content = authorized_keys_file.readlines()
+            content = authorized_keys_file.read()
             authorized_keys_file.seek(0)
 
-            for line in content:
+            for line in content.split('\n')[:-1]:
                 if not line_deleted:
-                    if line != authorized_key_line:
-                        authorized_keys_file.write(line)
+                    if line != authorized_key_line[:-1]:
+                        authorized_keys_file.write(line + '\n')
                     else:
                         line_deleted = True
                 else:
-                    if line == authorized_key_line:
+                    if line == authorized_key_line[:-1]:
                         warning = ("\nWARNING: There is more than one line "
                             "with the sshkey " + query.sshkey + ", probably "
                             "added manually. You should delete it manually")
 
-                    authorized_keys_file.write(line)
+                    authorized_keys_file.write(line + '\n')
 
             authorized_keys_file.truncate()
     except IOError:
