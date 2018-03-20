@@ -82,71 +82,85 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
     #In order to allow an automatic login name for each user:
     login = re.split("@", username)[0] #We take the first part of the email
 
+
     # Check the target access and access type
-    for line in indexed_target_list:
-        item_list = line.split(" ")
-        for possibility in item_list:
-            if choice == possibility.casefold():
-                if len(item_list) > 2:
-                    date       = datetime.today().strftime('%Y/%m/%d')
-                    targetname = item_list[1]
-                    target     = item_list[2]
-                    login      = get(url_passhport + "target" + "/login/" + \
-                                 targetname)
-                    # If target login is set at $email => 
-                    # we user login=username (without @...)
-                    if login == "$email":
-                        login  = re.split("@", username)[0] 
-                    pathlog    = SCRIPT_LOGS_PATH + "/" + date + "/"
-                    # Create a log directory for this target
-                    if not os.path.isdir(pathlog):
-                        os.makedirs(pathlog)
-                    isodate    = datetime.now().isoformat().replace(":",""). \
-                                 replace("-","").split('.')[0]
-                    pid        = os.getpid()
-                    filename   = isodate + "-PID" + \
-                                 str(pid) + "-" + targetname + "-" + \
-                                 login + "@" + target + "-" + username
-                    filelog    = pathlog + filename
-                    port       = get(url_passhport + "target" + "/port/" +  
-                                 targetname)
-                    sshoptions = get(url_passhport + "target" + \
-                                  "/sshoptions/" + targetname)
+    potential_target = False
+    target_found = False
+    i = 0
+    while not target_found and i < len(indexed_target_list):
+        line = indexed_target_list[i]
+        line = indexed_target_list[i].split(" ")
+        i = i + 1
+        if len(line) > 2:
+            if line[1].casefold() == choice:
+                target_found = line
+            if not potential_target and \
+                    (line[0] == choice or line[2] == choice):
+                potential_target = line
 
-                    if scpcmd == False: 
-                        cmd = "ssh -t -p " + str(port) + \
-                              " " + login + '@' + target + \
-                              ' ' + sshoptions 
-                    else:
-                        cmd = originalcmd
+    if not target_found:
+        if not potential_target:
+            print("Error on target definition")
+            return False
+        else:
+            target_found = potential_target
+    print("Connecting to: " + target_found[1] + "...")
 
-                    data= {"connectiondate" : isodate,
-                           "pid"            : pid,
-                           "connectioncmd"  : cmd,
-                           "logfilepath"    : pathlog,
-                           "logfilename"    : filename,
-                           "user"           : username,
-                           "target"         : targetname}
-                    # Log the entry on the database
-                    r = post("logentry/create", data)
+    date       = datetime.today().strftime('%Y/%m/%d')
+    targetname = target_found[1]
+    target     = target_found[2]
+    login      = get(url_passhport + "target" + "/login/" + \
+                 targetname)
+    # If target login is set at $email => 
+    # we user login=username (without @...)
+    if login == "$email":
+        login  = re.split("@", username)[0] 
+    pathlog    = SCRIPT_LOGS_PATH + "/" + date + "/"
+    # Create a log directory for this target
+    if not os.path.isdir(pathlog):
+        os.makedirs(pathlog)
+    isodate    = datetime.now().isoformat().replace(":",""). \
+                 replace("-","").split('.')[0]
+    pid        = os.getpid()
+    filename   = isodate + "-PID" + \
+                 str(pid) + "-" + targetname + "-" + \
+                 login + "@" + target + "-" + username
+    filelog    = pathlog + filename
+    port       = get(url_passhport + "target" + "/port/" +  
+                 targetname)
+    sshoptions = get(url_passhport + "target" + \
+                  "/sshoptions/" + targetname)
 
-                    # It's SCP if scpcmd is set, else ssh.
-                    if scpcmd == True: 
-                        scp.connect(target, filelog, login, sshoptions, 
-                                    originalcmd)
-                    else:
-                        ssh.connect(target, filelog, login, port, sshoptions, 
-                                    originalcmd)
+    if scpcmd == False: 
+        cmd = "ssh -t -p " + str(port) + \
+              " " + login + '@' + target + \
+              ' ' + sshoptions 
+    else:
+        cmd = originalcmd
 
-                    # Change password on the target
-                    if PWD_RST_AFTER_SESSION:
-                        password.reset(target, login, sshoptions, port, PWD_FILE_DIR)
+    data= {"connectiondate" : isodate,
+           "pid"            : pid,
+           "connectioncmd"  : cmd,
+           "logfilepath"    : pathlog,
+           "logfilename"    : filename,
+           "user"           : username,
+           "target"         : targetname}
+    # Log the entry on the database
+    r = post("logentry/create", data)
 
-                    return True
-                else:
-                    print("Error on target definition")
-        
-    return False
+    # It's SCP if scpcmd is set, else ssh.
+    if scpcmd == True: 
+        scp.connect(target, filelog, login, sshoptions, 
+                    originalcmd)
+    else:
+        ssh.connect(target, filelog, login, port, sshoptions, 
+                    originalcmd)
+
+    # Change password on the target
+    if PWD_RST_AFTER_SESSION:
+        password.reset(target, login, sshoptions, port, PWD_FILE_DIR)
+
+    return True
 
 
 def build_targetnames_list(target_list):
@@ -229,6 +243,7 @@ def scp_command(username, url_passhport, target_list, originalcmd):
     if len(parsedcommand) > 1:
         choice = parsedcommand[0] # the target
         command = parsedcommand[1] # the rewrited command
+
         # Setting scpcmd flag at true
         checkandconnect(indexed_target_list, choice, username, command, True)
     else:
