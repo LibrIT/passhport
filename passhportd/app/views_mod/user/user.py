@@ -342,8 +342,6 @@ def update_authorized_keys(orig_name, orig_sshkey, new_name, new_sshkey):
 
                         authorized_keys_file.write(line)
 
-                authorized_keys_file.truncate()
-           
     except IOError:
         warning = utils.response('ERROR: cannot write in the file "' + \
                                  '"authorized_keys"', 500)
