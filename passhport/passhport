@@ -291,7 +291,11 @@ if __name__ == '__main__':
 
         # Let the use chose his server
         sys.stdout.write("Type the number, name or hostname of the server you want to connect to : ")
-        choice = input("").casefold()
+        try:
+            choice = input("").casefold()
+        except EOFError:
+            print("\nExiting at your own sweet will.")
+            sys.exit(0)
         valid_input = False
 
         # Try to connect the user to the server he choosed or ask to re-type
