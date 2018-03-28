@@ -24,14 +24,13 @@ else:
     conf.read(sys.path[0] + "/" + conffile)
 
 # SSL Configuration
-SSL              = conf.getboolean("SSL", "SSL")
-SSL_CERTIFICAT   = conf.get("SSL", "SSL_CERTIFICAT")
-SCRIPT_LOGS_PATH = conf.get("Environment", "SCRIPT_LOGS_PATH")
-PWD_FILE_DIR     = conf.get("RootPasswordRest", "PWD_FILE_DIR")
+SSL                = conf.getboolean("SSL", "SSL")
+SSL_CERTIFICAT     = conf.get("SSL", "SSL_CERTIFICAT")
+SCRIPT_LOGS_PATH   = conf.get("Environment", "SCRIPT_LOGS_PATH")
+PWD_FILE_DIR       = conf.get("RootPasswordRest", "PWD_FILE_DIR")
 PWD_RST_AFTER_SESSION = conf.getboolean("RootPasswordRest", \
                                         "PWD_RST_AFTER_SESSION")
-# TODO put this in conf file
-SCP_THROUGH_TARGET = True
+SCP_THROUGH_TARGET = conf.getboolean("MISC", "SCP_THROUGH_TARGET")
 
 
 def signal_handler(signal, frame):
@@ -318,7 +317,7 @@ def scp_command(username, url_passhport, target_list, originalcmd):
                     print("WARNING: PaSSHport didn't remove the " + \
                           "temporary file on the target.")
             else:
-                print("This type of copy is disabled by configuration.")
+                print(" This type of copy is disabled by configuration.")
 
     else:
         sys.exit()

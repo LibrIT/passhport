@@ -26,8 +26,8 @@ def parse(originalcmd):
     # and we should obtain the target name a line like
     # scp -t /path/on/destination/file 
     # scp -f /path/on/destination/file /local/path
-    nextuser = ""
-    nexttarget = ""
+    nextuser    = ""
+    nexttarget  = ""
     commandelts = re.split("//", originalcmd)
     target      = re.split(" ", commandelts[0])[-1]
     path        = "/" + commandelts[-1]
@@ -39,7 +39,7 @@ def parse(originalcmd):
         nextuser   = commandelts[1]
         nexttarget = commandelts[2]
     elif len(commandelts) != 2:
-        print("Syntax error: there is too many or too few \"//\"." + \
+        print(" Syntax error: there is too many or too few \"//\"." + \
               "It should be like: scp passhport@target//path/to/copy...")
         return False
 
@@ -54,7 +54,7 @@ def connect(target, filelog, login, sshoptions, originalcmd):
     # ssh -q -t login@target scp -f /path/to/target /local/path/
     # and ssh/scp do magic after that
     cmd = re.sub("scp -(.) ", "ssh -q -t " + login + "@" + target + 
-            "scp -\\1 ", originalcmd)  
+            " scp -\\1 ", originalcmd)  
 
     # Print the command on a logfile
     filelog = open(filelog + "-scp.log", "a")
