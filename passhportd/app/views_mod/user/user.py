@@ -191,8 +191,10 @@ def user_accessible_targets(name):
     formatted_target_list = []
 
     for each_target in target_list:
-        formatted_target_list.append(each_target.show_name() + " " + \
-        each_target.show_hostname() + " " + each_target.show_comment())
+        # We show only ssh targets, other types will not be handle here
+        if each_target.show_targettype() == "ssh":
+            formatted_target_list.append(each_target.show_name() + " " + \
+            each_target.show_hostname() + " " + each_target.show_comment())
     return utils.response("\n".join(formatted_target_list), 200)
 
 

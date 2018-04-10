@@ -46,6 +46,7 @@ def prompt_create():
     """Prompt user to obtain data to create a target"""
     name = input("Name: ")
     hostname = input("Hostname: ")
+    targettype = input("Type (default is ssh): ")
     login = input("Login (default is root): ")
     port = ask_port("Port: ")
     sshoptions = input("SSH Options: ")
@@ -53,6 +54,7 @@ def prompt_create():
 
     return {"<name>": name,
         "<hostname>": hostname,
+        "--type": targettype,
         "--login": login,
         "--sshoptions": sshoptions,
         "--port": port,
@@ -61,15 +63,24 @@ def prompt_create():
 
 def create(param):
     """Format param for target creation"""
+    targettype = ""
     login = ""
     port = ""
     sshoptions = ""
     comment = ""
 
+    if "--type" in param:
+        targettype = param["--type"]
+        if targettype not in ["ssh", "mysql", "oracle", "postgresql"]:
+            print ("This type is not supported, ssh will be used. Please " + \
+                   "use a type in ssh, mysql, oracle or postgresql")
+            targettype = "ssh"
+
     if "--port" in param:
         if is_int(param["--port"]):
             port = param["--port"]
         else:
+            port = 22
             print("Port is unknown, therefore port 22 will be used.")
 
     if "--sshoptions" in param:
@@ -83,6 +94,7 @@ def create(param):
 
     return {"name": param["<name>"],
             "hostname": param["<hostname>"],
+            "targettype": targettype,
             "login": login,
             "port": port,
             "sshoptions": sshoptions,
@@ -98,6 +110,7 @@ def prompt_edit(req):
     if req.show("target", {"<name>": name}) == 0:
         new_name = input("New name: ")
         new_hostname = input("New hostname: ")
+        new_targettype = input("New type (ssh, mysql, oracle, postgresql): ")
         new_login = input("New Login: ")
         new_port = ask_port("New port: ")
         new_sshoptions = input("New SSH options: ")
@@ -110,6 +123,7 @@ def prompt_edit(req):
     return {"<name>": name,
             "--newname": new_name,
             "--newhostname": new_hostname,
+            "--newtype": new_targettype,
             "--newlogin": new_login,
             "--newport": new_port,
             "--newsshoptions": new_sshoptions,
@@ -120,6 +134,7 @@ def edit(param):
     """Format param for target edition"""
     new_name = ""
     new_hostname = ""
+    new_targettype = ""
     new_login = ""
     new_port = ""
     new_sshoptions = ""
@@ -130,6 +145,9 @@ def edit(param):
 
     if "--newhostname" in param:
         new_hostname = param["--newhostname"]
+
+    if "--newtype" in param:
+        new_targettype = param["--newtype"]
 
     if "--newlogin" in param:
         new_login = param["--newlogin"]
@@ -146,6 +164,7 @@ def edit(param):
     return {"name": param["<name>"],
             "new_name": new_name,
             "new_hostname": new_hostname,
+            "new_targettype": new_targettype,
             "new_login": new_login,
             "new_port": new_port,
             "new_sshoptions": new_sshoptions,
