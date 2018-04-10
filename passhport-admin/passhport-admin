@@ -19,10 +19,11 @@ Usage:
     passhport-admin target checkaccess [<pattern>]
     passhport-admin target show [<name>]
     passhport-admin target create [((<name> <hostname>) [--login=<login>] \
-[--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]
+[--type=<ssh>] [--comment=<comment>] [--sshoptions=<sshoptions>] \
+[--port=<port>])]
     passhport-admin target edit [(<name> [--newname=<name>] \
-[--newhostname=<hostname>] [--newlogin=<login>] [--newcomment=<comment>] \
-[--newsshoptions=<sshoptions>] [--newport=<port>])]
+[--newhostname=<hostname>] [--newtype=<ssh>] [--newlogin=<login>] \
+[--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>])]
     passhport-admin target (adduser | rmuser) \
 [(<username> <targetname>)]
     passhport-admin target (addusergroup | rmusergroup) \

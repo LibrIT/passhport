@@ -206,10 +206,11 @@ def target_create():
         return utils.response("ERROR: POST method is required ", 405)
 
     # Simplification for the reading
+    print(request.form)
     name = request.form["name"]
     hostname = request.form["hostname"]
-    #servertype = request.form["servertype"]
-    servertype = "ssh"
+    targettype = request.form["targettype"]
+    print(targettype)
     login = request.form["login"]
     port = request.form["port"]
     sshoptions = request.form["sshoptions"]
@@ -220,8 +221,8 @@ def target_create():
         return utils.response("ERROR: The name and hostname are" + \
                               " required", 417)
 
-    if not servertype:
-        servertype = "ssh"
+    if not targettype:
+        targettype = "ssh"
 
     if not login:
         login = "root"
@@ -240,7 +241,7 @@ def target_create():
     t = target.Target(
         name=name,
         hostname=hostname,
-        servertype=servertype,
+        targettype=targettype,
         login=login,
         port=port,
         sshoptions=sshoptions,
@@ -267,7 +268,7 @@ def target_edit():
     name = request.form["name"]
     new_name = request.form["new_name"]
     new_hostname = request.form["new_hostname"]
-    #new_servertype = request.form["new_servertype"]
+    new_targettype = request.form["new_targettype"]
     new_login = request.form["new_login"]
     new_port = request.form["new_port"]
     new_sshoptions = request.form["new_sshoptions"]
@@ -317,6 +318,12 @@ def target_edit():
                                   '" is already used by another target ', 417)
 
             to_update.update({"name": new_name})
+
+    if new_targettype:
+        if new_targettype not in ["ssh", "mysql", "oracle", "postgresql"]:
+            print(new_targettype)
+            new_targettype = "ssh"
+        to_update.update({"targettype": new_targettype})
 
     try:
         db.session.commit()
