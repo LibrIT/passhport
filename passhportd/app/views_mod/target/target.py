@@ -558,7 +558,7 @@ def extgetaccess(ip, targetname, username):
 
     #Date to stop access:
     stopdate = datetime.now() + timedelta(hours=4)
-    formatedstop = format(stopdate, '%Y%m%dT%H%M%S')
+    formatedstop = format(stopdate, '%Y%m%dT%H%M')
     
     #Call the external script
     process = Popen(["/home/passhport/passhwall.sh", 
