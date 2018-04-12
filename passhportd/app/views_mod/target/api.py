@@ -11,14 +11,19 @@ from .. import utilities as utils
 
 
 @app.route("/api/target/list")
-def api_target_list():
+@app.route("/api/target/list/<name>")
+def api_target_list(name=None):
     """Return a json formatted targets list from database"""
     result = []
-    query = db.session.query(
-        target.Target).order_by(
-        target.Target.name).all()
-    i = 0
+    if not name:
+        query = db.session.query(
+                target.Target).order_by(
+                target.Target.name).all()
+    else:
+        q = user.User.query.filter_by(name=name).first()
+        query = [target for target in q.accessible_target_list() if target.targettype != "ssh"]
 
+    i = 0
     result.append("[")
     for entry in query:
         if i == 0:
