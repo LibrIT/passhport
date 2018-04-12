@@ -78,6 +78,11 @@ class Target(db.Model):
         return self.hostname
     
 
+    def show_port(self):
+        """Return a string containing the target's port"""
+        return self.port
+    
+
     def show_targettype(self):
         """Return a string containing the target's targettype"""
         if not self.targettype:
