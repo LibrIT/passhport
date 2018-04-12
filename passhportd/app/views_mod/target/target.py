@@ -10,6 +10,8 @@ from sqlalchemy.orm import sessionmaker
 from app import app, db
 from app.models_mod import user, target, usergroup
 from . import api
+from subprocess import Popen, PIPE
+from datetime import datetime, timedelta
 import os
 
 from .. import utilities as utils
@@ -321,7 +323,6 @@ def target_edit():
 
     if new_targettype:
         if new_targettype not in ["ssh", "mysql", "oracle", "postgresql"]:
-            print(new_targettype)
             new_targettype = "ssh"
         to_update.update({"targettype": new_targettype})
 
@@ -544,3 +545,36 @@ def target_lastlog(name):
     if not t:
         return "{}"
     return t.get_lastlog()
+
+
+@app.route("/exttargetaccess/open/<ip>/<targetname>/<username>")
+def extgetaccess(ip, targetname, username):
+    """Create an external request to open a connection to a target"""
+
+    t = utils.get_target(targetname)
+    if not t:
+        return utils.response('ERROR: No target "' + targetname + \
+                              '" in the database ', 417)
+
+    #Date to stop access:
+    stopdate = datetime.now() + timedelta(hours=4)
+    formatedstop = format(stopdate, '%Y%m%dT%H%M%S')
+    
+    #Call the external script
+    process = Popen(["/home/passhport/passhwall.sh", 
+                    t.show_targettype(),
+                    formatedstop,                    
+                    ip,
+                    t.show_hostname(),
+                    str(t.show_port()),
+                    t.show_name()], stdout=PIPE)
+
+    (output, err) = process.communicate()
+    exit_code = process.wait()
+    
+    if exit_code != 0:
+        return utils.response('ERROR: external script return ' + \
+                               exit_code, 500)
+
+    return utils.response(output, 200)
+
