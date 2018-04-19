@@ -29,6 +29,9 @@ class User(db.Model):
     # Admins - can admin usergroups and targetgroups (add and remove users)
     adminoftg = db.relationship("Targetgroup", secondary="tg_admins")
     adminofug = db.relationship("Usergroup", secondary="ug_admins")
+    # Connections demands
+    exttargetaccess = db.relationship("Exttargetaccess", 
+                                      secondary="user_extaccess")
 
 
     def __repr__(self):

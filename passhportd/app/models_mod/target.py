@@ -29,6 +29,8 @@ class Target(db.Model):
     gmembers   = db.relationship("Usergroup", secondary="target_group")
     memberoftg = db.relationship("Targetgroup", secondary="tgroup_target")
     logentries = db.relationship("Logentry", secondary="target_log")
+    exttargetaccess = db.relationship("Exttargetaccess", 
+                                      secondary="target_extaccess")
 
 
     def __repr__(self):
