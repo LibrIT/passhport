@@ -5,10 +5,10 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from flask import request
-from sqlalchemy import exc
+from sqlalchemy import exc, and_
 from sqlalchemy.orm import sessionmaker
 from app import app, db
-from app.models_mod import user, target, usergroup
+from app.models_mod import user, target, usergroup, exttargetaccess
 from . import api
 from subprocess import Popen, PIPE
 from datetime import datetime, timedelta
@@ -208,11 +208,9 @@ def target_create():
         return utils.response("ERROR: POST method is required ", 405)
 
     # Simplification for the reading
-    print(request.form)
     name = request.form["name"]
     hostname = request.form["hostname"]
     targettype = request.form["targettype"]
-    print(targettype)
     login = request.form["login"]
     port = request.form["port"]
     sshoptions = request.form["sshoptions"]
@@ -557,7 +555,8 @@ def extgetaccess(ip, targetname, username):
                               '" in the database ', 417)
 
     #Date to stop access:
-    stopdate = datetime.now() + timedelta(hours=4)
+    startdate = datetime.now()
+    stopdate  = startdate + timedelta(hours=4)
     formatedstop = format(stopdate, '%Y%m%dT%H%M')
     
     #Call the external script
@@ -576,5 +575,44 @@ def extgetaccess(ip, targetname, username):
         return utils.response('ERROR: external script return ' + \
                                exit_code, 500)
 
-    return utils.response(output, 200)
+    if output:
+        # Transform the ouput on Dict
+        output = eval(output)
+        if output["execution_statut"] != "OK":
+            return utils.response('ERROR: external script execution status.',
+                                   500)
+
+        # Create a exttarget object to log the connection
+        u = utils.get_user(username)
+        if not u:
+            return utils.response('ERROR: No user "' + username + \
+                              '" in the database ', 417)
+
+        ta = exttargetaccess.Exttargetaccess(
+            startdate = startdate,
+            stopdate = stopdate,
+            userip = ip,
+            proxy_ip = output["proxy_ip"],
+            proxy_port = output["proxy_port"])
+        ta.addtarget(t)
+        ta.adduser(u)
+
+        db.session.add(ta)
+
+        # Try to add the targetaccess on the database
+        try:
+            db.session.commit()
+        except exc.SQLAlchemyError as e:
+            print('ERROR registering connection demand: exttargetaccess "' + \
+                  str(output) + '" -> ' + str(e))
+
+        # Create the output to print
+        response = "Connect via " + output["proxy_ip"] + " on  port " + \
+                   output["proxy_port"] + " until " + \
+                   format(stopdate, '%H:%M')
+
+    return utils.response(response, 200)
+
+
+
 

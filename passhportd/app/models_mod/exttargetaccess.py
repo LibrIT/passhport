@@ -9,6 +9,8 @@ class Exttargetaccess(db.Model):
     startdate = db.Column(db.String(20), index=True)
     stopdate  = db.Column(db.String(20), index=True)
     userip    = db.Column(db.String(20), index=True)
+    proxy_ip  = db.Column(db.String(20), index=True)
+    proxy_port= db.Column(db.Integer, index=True)
 
     # Relations
     target = db.relationship("Target", secondary="target_extaccess")
@@ -27,7 +29,7 @@ class Exttargetaccess(db.Model):
 
 
     def simplejson(self):
-        """Return a json of logentry infos"""
+        """Return a json of exttargetaccess infos"""
         output = "{"
         output = output + "\"Start date\": \"" + \
                           format(self.startdate) + "\",\n"
@@ -41,3 +43,22 @@ class Exttargetaccess(db.Model):
         return output
 
 
+    def addtarget(self, target):
+        self.target.append(target)
+        return self
+        
+
+    def adduser(self, user):
+        self.user.append(user)
+        return self
+
+    def show_username(self):
+        if self.user:
+            return self.user[0].show_name()
+        return "None"
+
+
+    def show_targetname(self):
+        if self.user:
+            return self.target[0].show_name()
+        return "None"
