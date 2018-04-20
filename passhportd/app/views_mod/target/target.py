@@ -578,7 +578,7 @@ def extgetaccess(ip, targetname, username):
     if output:
         # Transform the ouput on Dict
         output = eval(output)
-        if output["execution_statut"] != "OK":
+        if output["execution_status"] != "OK":
             return utils.response('ERROR: external script execution status.',
                                    500)
 
