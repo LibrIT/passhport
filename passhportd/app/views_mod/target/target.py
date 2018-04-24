@@ -566,6 +566,7 @@ def extgetaccess(ip, targetname, username):
                     ip,
                     t.show_hostname(),
                     str(t.show_port()),
+                    username,
                     t.show_name()], stdout=PIPE)
 
     (output, err) = process.communicate()
