@@ -6,8 +6,8 @@ class Exttargetaccess(db.Model):
     """Exttargetaccess store special targets access demands"""
     __tablename__ = "exttargetaccess"
     id = db.Column(db.Integer, primary_key=True)
-    startdate = db.Column(db.String(20), index=True)
-    stopdate  = db.Column(db.String(20), index=True)
+    startdate = db.Column(db.String(50), index=True)
+    stopdate  = db.Column(db.String(50), index=True)
     userip    = db.Column(db.String(20), index=True)
     proxy_ip  = db.Column(db.String(20), index=True)
     proxy_port= db.Column(db.Integer, index=True)

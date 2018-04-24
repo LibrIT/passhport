@@ -13,6 +13,7 @@ from . import api
 from subprocess import Popen, PIPE
 from datetime import datetime, timedelta
 import os
+import config
 
 from .. import utilities as utils
 
@@ -560,7 +561,7 @@ def extgetaccess(ip, targetname, username):
     formatedstop = format(stopdate, '%Y%m%dT%H%M')
     
     #Call the external script
-    process = Popen(["/home/passhport/passhwall.sh", 
+    process = Popen([config.OPEN_ACCESS_PATH, 
                     t.show_targettype(),
                     formatedstop,                    
                     ip,
@@ -579,7 +580,7 @@ def extgetaccess(ip, targetname, username):
     if output:
         # Transform the ouput on Dict
         output = eval(output)
-        if output["execution_statut"] != "OK":
+        if output["execution_status"] != "OK":
             return utils.response('ERROR: external script execution status.',
                                    500)
 

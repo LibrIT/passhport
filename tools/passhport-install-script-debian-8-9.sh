@@ -80,7 +80,7 @@ su - passhport -c "virtualenv -p python3 passhport-run-env"
 echo '##############################################################'
 echo '# Installing mandatory packages in the virtual environment…'
 echo '##############################################################'
-su - passhport -c "/home/passhport/passhport-run-env/bin/pip install pymysql sqlalchemy-migrate flask-migrate requests docopt configparser tabulate flask-login ldap3"
+su - passhport -c "/home/passhport/passhport-run-env/bin/pip install sqlalchemy-migrate flask-migrate requests docopt configparser tabulate flask-login ldap3 psutil"
 echo '##############################################################'
 echo '# Cloning passhport git from github'
 echo '##############################################################'
@@ -178,6 +178,7 @@ echo '# Adding root@localhost target…'
 echo '##############################################################'
 # Sleep 2 seconds so passhportd has enough time to start
 sleep 2
+[ ! -d "/root/.ssh" ] && mkdir "/root/.ssh" && chmod 700 "/root/.ssh"
 cat "/home/passhport/.ssh/id_ecdsa.pub" >> "/root/.ssh/authorized_keys"
 su - passhport -c 'passhport-admin target create root@localhost 127.0.0.1 --comment="Localhost target added during the PaSSHport installation process."'
 echo 'Do you want to add your first user now ? Y/n'

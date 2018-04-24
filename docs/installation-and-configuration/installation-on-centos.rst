@@ -27,11 +27,11 @@ Install the EPEL repository :
 
   yum install epel-release
   
-Install python34-pip and other packages that we’ll need later for this tutorial (it will get ~+100MB from the archives, so be patient) :
+Install python34-pip and other packages that we’ll need later for this tutorial (it will get ~100MB from the archives, so be patient) :
 
 .. code-block:: none
 
-  root@centos7:~# yum install python34-pip git openssl
+  root@centos7:~# yum install python34-pip git openssl python34-devel gcc
 
 Let’s update pip :
 
@@ -63,7 +63,7 @@ Now that we have our virtual-env, we install the python’s modules we’ll need
 
 .. code-block:: none
 
-  passhport@centos7:~$ /home/passhport/passhport-run-env/bin/pip install pymysql sqlalchemy-migrate flask-migrate requests docopt configparser tabulate ldap3
+  passhport@centos7:~$ /home/passhport/passhport-run-env/bin/pip install sqlalchemy-migrate flask-migrate requests docopt configparser tabulate flask-login ldap3 psutil
 
 Now, let’s start the real thing…
 

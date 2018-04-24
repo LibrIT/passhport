@@ -1,35 +1,41 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2017, LibrIT
 # This file is distributed under the same license as the PaSSHport package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PaSSHport \n"
+"Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-05 02:14+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2018-02-12 21:32+0100\n"
+"PO-Revision-Date: 2018-02-12 21:44+0100\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
+"Language-Team: LibrIT <contact@librit.fr>\n"
+"Language: fr\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: ../../passhport-admin/cli.rst:2
 msgid "CLI usage"
-msgstr ""
+msgstr "Utilisation de la CLI"
 
 #: ../../passhport-admin/cli.rst:4
 msgid ""
 "You can call passhport-admin's CLI, by calling ``passhport-admin`` with "
 "the ``-i``."
 msgstr ""
+"Vous pouvez lancer passhport-admin en ligne de commande interactive, en "
+"utilisant l'option ``-i``."
 
 #: ../../passhport-admin/cli.rst:6
 msgid ""
-"You can then configure passhportd through this command line. Refer to the"
-" good section in the submodule doc to know how to use them."
+"You can then configure passhportd through this command line. Refer to "
+"the good section in the submodule doc to know how to use them."
 msgstr ""
-
+"Vous pouvez configurer passhportd à travers ce mode interactif. Référez-"
+"vous à la bonne section de la documentation du module correspondant."
