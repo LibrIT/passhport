@@ -46,7 +46,7 @@ def listexttargetaccess(username):
     now = datetime.now()
 
     query  = db.session.query(exttargetaccess.Exttargetaccess) \
-             .filter(exttargetaccess.Exttargetaccess.stopdate > now).all()
+             .filter(exttargetaccess.Exttargetaccess.stopdate > str(now)).all()
 
     result = [taccess for taccess in query if taccess.show_username() == username]
         

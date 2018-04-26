@@ -575,7 +575,7 @@ def extgetaccess(ip, targetname, username):
     
     if exit_code != 0:
         return utils.response('ERROR: external script return ' + \
-                               exit_code, 500)
+                               str(exit_code), 500)
 
     if output:
         # Transform the ouput on Dict
