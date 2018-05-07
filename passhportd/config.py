@@ -30,6 +30,7 @@ SQLALCHEMY_MIGRATE_REPO         = conf.get("Database", \
 SSH_KEY_FILE    = conf.get("Environment", "SSH_KEY_FILE")
 
 """ PaSSHport path """
+OPEN_ACCESS_PATH  = conf.get("Environment", "OPEN_ACCESS_PATH")
 PASSHPORT_PATH  = conf.get("Environment", "PASSHPORT_PATH")
 PYTHON_PATH     = conf.get("Environment", "PYTHON_PATH")
 

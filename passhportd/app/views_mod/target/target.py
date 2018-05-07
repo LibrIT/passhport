@@ -5,12 +5,15 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from flask import request
-from sqlalchemy import exc
+from sqlalchemy import exc, and_
 from sqlalchemy.orm import sessionmaker
 from app import app, db
-from app.models_mod import user, target, usergroup
+from app.models_mod import user, target, usergroup, exttargetaccess
 from . import api
+from subprocess import Popen, PIPE
+from datetime import datetime, timedelta
 import os
+import config
 
 from .. import utilities as utils
 
@@ -208,8 +211,7 @@ def target_create():
     # Simplification for the reading
     name = request.form["name"]
     hostname = request.form["hostname"]
-    #servertype = request.form["servertype"]
-    servertype = "ssh"
+    targettype = request.form["targettype"]
     login = request.form["login"]
     port = request.form["port"]
     sshoptions = request.form["sshoptions"]
@@ -220,8 +222,8 @@ def target_create():
         return utils.response("ERROR: The name and hostname are" + \
                               " required", 417)
 
-    if not servertype:
-        servertype = "ssh"
+    if not targettype:
+        targettype = "ssh"
 
     if not login:
         login = "root"
@@ -240,7 +242,7 @@ def target_create():
     t = target.Target(
         name=name,
         hostname=hostname,
-        servertype=servertype,
+        targettype=targettype,
         login=login,
         port=port,
         sshoptions=sshoptions,
@@ -267,7 +269,7 @@ def target_edit():
     name = request.form["name"]
     new_name = request.form["new_name"]
     new_hostname = request.form["new_hostname"]
-    #new_servertype = request.form["new_servertype"]
+    new_targettype = request.form["new_targettype"]
     new_login = request.form["new_login"]
     new_port = request.form["new_port"]
     new_sshoptions = request.form["new_sshoptions"]
@@ -317,6 +319,11 @@ def target_edit():
                                   '" is already used by another target ', 417)
 
             to_update.update({"name": new_name})
+
+    if new_targettype:
+        if new_targettype not in ["ssh", "mysql", "oracle", "postgresql"]:
+            new_targettype = "ssh"
+        to_update.update({"targettype": new_targettype})
 
     try:
         db.session.commit()
@@ -537,3 +544,76 @@ def target_lastlog(name):
     if not t:
         return "{}"
     return t.get_lastlog()
+
+
+@app.route("/exttargetaccess/open/<ip>/<targetname>/<username>")
+def extgetaccess(ip, targetname, username):
+    """Create an external request to open a connection to a target"""
+
+    t = utils.get_target(targetname)
+    if not t:
+        return utils.response('ERROR: No target "' + targetname + \
+                              '" in the database ', 417)
+
+    #Date to stop access:
+    startdate = datetime.now()
+    stopdate  = startdate + timedelta(hours=4)
+    formatedstop = format(stopdate, '%Y%m%dT%H%M')
+    
+    #Call the external script
+    process = Popen([config.OPEN_ACCESS_PATH, 
+                    t.show_targettype(),
+                    formatedstop,                    
+                    ip,
+                    t.show_hostname(),
+                    str(t.show_port()),
+                    t.show_name()], stdout=PIPE)
+
+    (output, err) = process.communicate()
+    exit_code = process.wait()
+    
+    if exit_code != 0:
+        return utils.response('ERROR: external script return ' + \
+                               exit_code, 500)
+
+    if output:
+        # Transform the ouput on Dict
+        output = eval(output)
+        if output["execution_status"] != "OK":
+            return utils.response('ERROR: external script execution status.',
+                                   500)
+
+        # Create a exttarget object to log the connection
+        u = utils.get_user(username)
+        if not u:
+            return utils.response('ERROR: No user "' + username + \
+                              '" in the database ', 417)
+
+        ta = exttargetaccess.Exttargetaccess(
+            startdate = startdate,
+            stopdate = stopdate,
+            userip = ip,
+            proxy_ip = output["proxy_ip"],
+            proxy_port = output["proxy_port"])
+        ta.addtarget(t)
+        ta.adduser(u)
+
+        db.session.add(ta)
+
+        # Try to add the targetaccess on the database
+        try:
+            db.session.commit()
+        except exc.SQLAlchemyError as e:
+            print('ERROR registering connection demand: exttargetaccess "' + \
+                  str(output) + '" -> ' + str(e))
+
+        # Create the output to print
+        response = "Connect via " + output["proxy_ip"] + " on  port " + \
+                   output["proxy_port"] + " until " + \
+                   format(stopdate, '%H:%M')
+
+    return utils.response(response, 200)
+
+
+
+

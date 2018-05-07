@@ -4,21 +4,27 @@ from flask import request
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 from app import app, db
-from app.models_mod import user, target, usergroup
+from app.models_mod import user, target, usergroup, exttargetaccess
+from datetime import datetime, timedelta
 import os
 
 from .. import utilities as utils
 
 
 @app.route("/api/target/list")
-def api_target_list():
+@app.route("/api/target/list/<name>")
+def api_target_list(name=None):
     """Return a json formatted targets list from database"""
     result = []
-    query = db.session.query(
-        target.Target).order_by(
-        target.Target.name).all()
-    i = 0
+    if not name:
+        query = db.session.query(
+                target.Target).order_by(
+                target.Target.name).all()
+    else:
+        q = user.User.query.filter_by(name=name).first()
+        query = [target for target in q.accessible_target_list() if target.targettype != "ssh"]
 
+    i = 0
     result.append("[")
     for entry in query:
         if i == 0:
@@ -33,6 +39,40 @@ def api_target_list():
         return utils.response("No target in database.", 200)
 
     return utils.response("".join(result), 200)
+
+
+def listexttargetaccess(username):
+    """List current open access for current user"""
+    now = datetime.now()
+
+    query  = db.session.query(exttargetaccess.Exttargetaccess) \
+             .filter(exttargetaccess.Exttargetaccess.stopdate > now).all()
+
+    result = [taccess for taccess in query if taccess.show_username() == username]
+        
+    return result
+
+
+@app.route("/api/target/openedaccess/<name>")
+def api_opened_access(name):
+    """Return a json formatted target and connection infos for this user"""
+    openaccess = listexttargetaccess(name)
+    output = '{}'
+    doneelt = []
+    if openaccess:
+        output = '{\n'
+        for elt in openaccess:
+            if not elt.show_targetname() in doneelt:
+                doneelt.append(elt.show_targetname())
+                output = output + '"' + elt.show_targetname() + '" : {\n'
+                output = output + '"proxy_ip" : "' + elt.proxy_ip  + '",\n'
+                output = output + '"proxy_port" : "' + str(elt.proxy_port) + '",\n'
+                enddate = format(datetime.strptime(
+                         elt.stopdate, "%Y-%m-%d %H:%M:%S.%f"), '%H:%M')
+                output = output + '"enddate" : "' + enddate + '"},\n'
+        output = output[:-2] + '\n}\n'
+
+    return utils.response(output, 200)
 
 
 @app.route("/api/accesstarget/list/<name>")

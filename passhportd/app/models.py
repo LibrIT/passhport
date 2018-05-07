@@ -5,7 +5,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from app import db
-from .models_mod import user, target, usergroup, targetgroup, logentry
+from .models_mod import user, target, usergroup, targetgroup, logentry, exttargetaccess
 
 ###############################################################################
 # Relations tables
@@ -33,6 +33,32 @@ class User_Log(db.Model):
     logentry_id = db.Column(
         db.Integer,
         db.ForeignKey("logentry.id"),
+        primary_key=True)
+
+    
+class Target_Extaccess(db.Model):
+    """Link between an access demand and a target"""
+    __tablename__ = "target_extaccess"
+    target_id = db.Column(
+        db.Integer,
+        db.ForeignKey("target.id"),
+        primary_key=True)
+    exttargetaccess_id = db.Column(
+        db.Integer,
+        db.ForeignKey("exttargetaccess.id"),
+        primary_key=True)
+
+
+class User_Extaccess(db.Model):
+    """Link between an access demand and a user"""
+    __tablename__ = "user_extaccess"
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("user.id"),
+        primary_key=True)
+    exttargetaccess_id = db.Column(
+        db.Integer,
+        db.ForeignKey("exttargetaccess.id"),
         primary_key=True)
 
 

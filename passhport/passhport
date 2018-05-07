@@ -9,6 +9,7 @@ from datetime import datetime
 from tabulate import tabulate
 
 import os, sys, locale, requests, random, crypt, re, configparser, signal
+import uuid
 
 from connections_utils import ssh
 from connections_utils import scp
@@ -23,12 +24,13 @@ else:
     conf.read(sys.path[0] + "/" + conffile)
 
 # SSL Configuration
-SSL              = conf.getboolean("SSL", "SSL")
-SSL_CERTIFICAT   = conf.get("SSL", "SSL_CERTIFICAT")
-SCRIPT_LOGS_PATH = conf.get("Environment", "SCRIPT_LOGS_PATH")
-PWD_FILE_DIR     = conf.get("RootPasswordRest", "PWD_FILE_DIR")
+SSL                = conf.getboolean("SSL", "SSL")
+SSL_CERTIFICAT     = conf.get("SSL", "SSL_CERTIFICAT")
+SCRIPT_LOGS_PATH   = conf.get("Environment", "SCRIPT_LOGS_PATH")
+PWD_FILE_DIR       = conf.get("RootPasswordRest", "PWD_FILE_DIR")
 PWD_RST_AFTER_SESSION = conf.getboolean("RootPasswordRest", \
                                         "PWD_RST_AFTER_SESSION")
+SCP_THROUGH_TARGET = conf.getboolean("MISC", "SCP_THROUGH_TARGET")
 
 
 def signal_handler(signal, frame):
@@ -74,7 +76,7 @@ def post(url, data):
     return 1
 
 
-def checkandconnect(indexed_target_list, choice, username, originalcmd, 
+def checkandconnect(indexed_target_list, choice, username, originalcmd,
                     scpcmd = False):
     """Check if the user have entered an accessible target
        then check target type and launch the action"""
@@ -82,71 +84,90 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
     #In order to allow an automatic login name for each user:
     login = re.split("@", username)[0] #We take the first part of the email
 
+
     # Check the target access and access type
-    for line in indexed_target_list:
-        item_list = line.split(" ")
-        for possibility in item_list:
-            if choice == possibility.casefold():
-                if len(item_list) > 2:
-                    date       = datetime.today().strftime('%Y/%m/%d')
-                    targetname = item_list[1]
-                    target     = item_list[2]
-                    login      = get(url_passhport + "target" + "/login/" + \
-                                 targetname)
-                    # If target login is set at $email => 
-                    # we user login=username (without @...)
-                    if login == "$email":
-                        login  = re.split("@", username)[0] 
-                    pathlog    = SCRIPT_LOGS_PATH + "/" + date + "/"
-                    # Create a log directory for this target
-                    if not os.path.isdir(pathlog):
-                        os.makedirs(pathlog)
-                    isodate    = datetime.now().isoformat().replace(":",""). \
-                                 replace("-","").split('.')[0]
-                    pid        = os.getpid()
-                    filename   = isodate + "-PID" + \
-                                 str(pid) + "-" + targetname + "-" + \
-                                 login + "@" + target + "-" + username
-                    filelog    = pathlog + filename
-                    port       = get(url_passhport + "target" + "/port/" +  
-                                 targetname)
-                    sshoptions = get(url_passhport + "target" + \
-                                  "/sshoptions/" + targetname)
+    potential_target = False
+    target_found = False
+    i = 0
+    while not target_found and i < len(indexed_target_list):
+        line = indexed_target_list[i].split(" ")
+        i = i + 1
+        if len(line) > 2:
+            if line[1].casefold() == choice:
+                target_found = line
+            if not potential_target and \
+                    (line[0] == choice or line[2] == choice):
+                potential_target = line
 
-                    if scpcmd == False: 
-                        cmd = "ssh -t -p " + str(port) + \
-                              " " + login + '@' + target + \
-                              ' ' + sshoptions 
-                    else:
-                        cmd = originalcmd
+    if not target_found:
+        if not potential_target:
+            print("Error on target definition")
+            return False
+        else:
+            target_found = potential_target
+    print("Connecting to: " + target_found[1] + "...")
+    
+    # Prepare variables
+    date       = datetime.today().strftime('%Y/%m/%d')
+    targetname = target_found[1]
+    target     = target_found[2]
+    login      = get(url_passhport + "target" + "/login/" + \
+                 targetname)
+    # If target login is set at $email => 
+    # we user login=username (without @...)
+    if login == "$email":
+        login  = re.split("@", username)[0] 
+    pathlog    = SCRIPT_LOGS_PATH + "/" + date + "/"
+    # Create a log directory for this target
+    if not os.path.isdir(pathlog):
+        os.makedirs(pathlog)
+    isodate    = datetime.now().isoformat().replace(":",""). \
+                 replace("-","").split('.')[0]
+    pid        = os.getpid()
+    filename   = isodate + "-PID" + \
+                 str(pid) + "-" + targetname + "-" + \
+                 login + "@" + target + "-" + username
+    filelog    = pathlog + filename
+    port       = get(url_passhport + "target" + "/port/" +  
+                 targetname)
+    sshoptions = get(url_passhport + "target" + \
+                  "/sshoptions/" + targetname)
 
-                    data= {"connectiondate" : isodate,
-                           "pid"            : pid,
-                           "connectioncmd"  : cmd,
-                           "logfilepath"    : pathlog,
-                           "logfilename"    : filename,
-                           "user"           : username,
-                           "target"         : targetname}
-                    # Log the entry on the database
-                    r = post("logentry/create", data)
+    # Log the entry in database
+    if scpcmd == False: 
+        cmd = "ssh -t -p " + str(port) + \
+              " " + login + '@' + target + \
+              ' ' + sshoptions 
+    else:
+        cmd = originalcmd
 
-                    # It's SCP if scpcmd is set, else ssh.
-                    if scpcmd == True: 
-                        scp.connect(target, filelog, login, sshoptions, 
-                                    originalcmd)
-                    else:
-                        ssh.connect(target, filelog, login, port, sshoptions, 
-                                    originalcmd)
+    data= {"connectiondate" : isodate,
+           "pid"            : pid,
+           "connectioncmd"  : cmd,
+           "logfilepath"    : pathlog,
+           "logfilename"    : filename,
+           "user"           : username,
+           "target"         : targetname}
+    r = post("logentry/create", data)
 
-                    # Change password on the target
-                    if PWD_RST_AFTER_SESSION:
-                        password.reset(target, login, sshoptions, port, PWD_FILE_DIR)
+    # It's SCP if scpcmd is set, else ssh.
+    if scpcmd == True: 
+        if isinstance(originalcmd, str):
+            scp.connect(target, filelog, login, sshoptions, 
+                        originalcmd)
+        else:
+            #originalcmd is not a string, it's a list of commands
+            scp.specialconnect(target, filelog, login, sshoptions,
+                               originalcmd)
+    else:
+        ssh.connect(target, filelog, login, port, sshoptions, 
+                    originalcmd)
 
-                    return True
-                else:
-                    print("Error on target definition")
-        
-    return False
+    # Change password on the target
+    if PWD_RST_AFTER_SESSION:
+        password.reset(target, login, sshoptions, port, PWD_FILE_DIR)
+
+    return True
 
 
 def build_targetnames_list(target_list):
@@ -226,13 +247,80 @@ def ssh_direct_command(username, url_passhport, target_list, originalcmd):
 def scp_command(username, url_passhport, target_list, originalcmd):
     """ Prepare and launch the scp """
     parsedcommand = scp.parse(originalcmd)
-    if len(parsedcommand) > 1:
-        choice = parsedcommand[0] # the target
-        command = parsedcommand[1] # the rewrited command
-        # Setting scpcmd flag at true
-        checkandconnect(indexed_target_list, choice, username, command, True)
+    if parsedcommand:
+        if len(parsedcommand) > 1:
+            choice       = parsedcommand[0] # the target
+            command      = parsedcommand[1] # the rewrited command
+            shortcmd     = " ".join(command.split(" ")[:-2]) # without path
+            path         = command.split(" ")[-1] # the path, usefull in -f
+            copyway      = command.split(" ")[-2] # -t or -f 
+            finalpath    = parsedcommand[2] # The path to copy the file
+            next_user    = parsedcommand[3] # Potential next target user
+            next_target  = parsedcommand[4] # Potential next target hostname
+
+            if not (next_user and next_target):
+                # Simple scp, setting scpcmd flag at true
+                checkandconnect(indexed_target_list, choice, 
+                                username, command, True)
+
+            elif SCP_THROUGH_TARGET:
+                # There is a scp through a target (ie: player)
+                # Warning: this is a dangerous action since we do a "rm -rf"
+                # Command on the proxy target. DO NOT MODIFY THIS.
+                
+                # 1. Create an unique temporary directory on the "proxy" target
+                tmpdir   = "/tmp/passhport-" + next_user + \
+                           "@" +next_target + "-" + str(uuid.uuid4()) 
+                mktmpdir = "mkdir -p " + tmpdir
+
+                # 2. copy the file(s) into this proxy temp directory
+                if copyway == "-t":
+                    # if we send a file we copy the sent file on target
+                    sshcmd1 = shortcmd +  " " + copyway + " " + tmpdir
+                    # 3. We launch a scp on the target to the final destination
+                    sshcmd2 = shortcmd + " " + tmpdir + "/* " + \
+                             next_user + "@" + next_target + ":" + \
+                             finalpath
+                    # actually doing it
+                    checkandconnect(indexed_target_list, choice, 
+                                username, mktmpdir, False)
+                    checkandconnect(indexed_target_list, choice, 
+                                    username, sshcmd1, True)
+                    checkandconnect(indexed_target_list, choice,
+                                    username, sshcmd2, False)
+
+                if copyway == "-f":
+                    # if we receive a file we copy the wanted file(s) from 
+                    # the distant server to the temporary directory
+                    # Then send the files in the temporary directory to the
+                    # client
+                    # This actions have to be done in one unique command
+                    # to work with ssh behavior (else ssh never answer)
+                    sshcmd1 = shortcmd + " -q " + next_user + "@" + \
+                              next_target + ":" + path + " " + tmpdir + "/"
+                    sshcmd2 = shortcmd + " -q " + copyway + " " + tmpdir + "/*"
+                    # for this, ssh needs one unique and muted connection
+                    # so we will execute one unique big command
+                    checkandconnect(indexed_target_list, choice,
+                                    username, [mktmpdir, sshcmd1, sshcmd2], 
+                                    True)
+
+                # 4. We remove the intermediary files
+                if "/tmp/passhport-" in tmpdir:
+                    if " " not in tmpdir:
+                        # This tmpdir should NEVER have a space
+                        rmtmpdir = "rm -rf " + tmpdir
+                        checkandconnect(indexed_target_list, choice, 
+                                        username, rmtmpdir, False)
+                else:
+                    # This should never happen
+                    print("WARNING: PaSSHport didn't remove the " + \
+                          "temporary file on the target.")
+            else:
+                print(" This type of copy is disabled by configuration.")
+
     else:
-        sys.exit("Syntax error on the scp command.")
+        sys.exit()
 
 
 ### MAIN ###
@@ -277,7 +365,11 @@ if __name__ == '__main__':
 
         # Let the use chose his server
         sys.stdout.write("Type the number, name or hostname of the server you want to connect to : ")
-        choice = input("").casefold()
+        try:
+            choice = input("").casefold()
+        except EOFError:
+            print("\nExiting at your own sweet will.")
+            sys.exit(0)
         valid_input = False
 
         # Try to connect the user to the server he choosed or ask to re-type
