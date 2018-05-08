@@ -62,10 +62,6 @@ echo '# Installing python3-pip, git and openssl package…'
 echo '##############################################################'
 apt install -y python3-pip git openssl
 echo '##############################################################'
-echo '# Updating pip…'
-echo '##############################################################'
-pip3 install -U pip 
-echo '##############################################################'
 echo '# Installing virtualenv with pip…'
 echo '##############################################################'
 pip3 install virtualenv
