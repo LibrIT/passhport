@@ -105,7 +105,8 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
             return False
         else:
             target_found = potential_target
-    print("Connecting to: " + target_found[1] + "...")
+    if not originalcmd:
+        print("Connecting to: " + target_found[1] + "...")
     
     # Prepare variables
     date       = datetime.today().strftime('%Y/%m/%d')
@@ -138,6 +139,8 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
         cmd = "ssh -t -p " + str(port) + \
               " " + login + '@' + target + \
               ' ' + sshoptions 
+        if originalcmd:
+            cmd = cmd + "DIRECT COMMAND: " + originalcmd
     else:
         cmd = originalcmd
 
@@ -165,7 +168,8 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
 
     # Change password on the target
     if PWD_RST_AFTER_SESSION:
-        password.reset(target, login, sshoptions, port, PWD_FILE_DIR)
+        password.reset(targetname, target, login, sshoptions, port,
+                       isodate)
 
     return True
 

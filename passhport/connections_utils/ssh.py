@@ -15,8 +15,10 @@ def connect(target, filelog, login, port, sshoptions, originalcmd):
                 ' -c "ssh -t -p ' + str(port) + " " + login + '@' + target + \
                 ' ' + sshoptions + '"')
     else:
-        os.system("echo \"DIRECT COMMAND --- " + \
-                  originalcmd + "\" >" + filelog + \
-                  ' && ssh -p ' + str(port) + " " + login + '@' + target + \
-                  ' ' + sshoptions + " " + originalcmd )
+        f = open(filelog, "w")
+        f.write("DIRECT COMMAND --- " + originalcmd)
+        f.close()
+        os.system('ssh -p ' + str(port) + " " + login + '@' + target + \
+                  ' ' + sshoptions + " '" + originalcmd + "'" )
+
 

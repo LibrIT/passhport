@@ -8,10 +8,11 @@ from flask import request
 from sqlalchemy import exc, and_
 from sqlalchemy.orm import sessionmaker
 from app import app, db
-from app.models_mod import user, target, usergroup, exttargetaccess
+from app.models_mod import user, target, usergroup, exttargetaccess, passentry
 from . import api
 from subprocess import Popen, PIPE
 from datetime import datetime, timedelta
+from simplecrypt import encrypt
 import os
 import config
 
@@ -616,5 +617,56 @@ def extgetaccess(ip, targetname, username):
     return utils.response(response, 200)
 
 
+@app.route("/target/savepassword", methods=["POST"])
+def savepassword():
+    """Store a password associated to a target, used on automatic 
+    root password change by passhport script"""
+    # Only POST data are handled
+    if request.method != "POST":
+        return utils.response("ERROR: POST method is required ", 405)
+
+    p = passentry.Passentry(request.form["connectiondate"], 
+                            request.form["password"])
+    db.session.add(p)
+
+    # Link this passentry with the target
+    t = utils.get_target(request.form["target"])
+    if not t:
+        return utils.response('ERROR: No target "' + targetname + \
+                              '" in the database ', 417)
+    t.addpassentry(p)
+    
+    # Try to add the Logentry on the database
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        return utils.response('ERROR: -> ' + e.message , 409)
+
+    return utils.response("OK", 200)
 
 
+@app.route("/target/getpassword/<targetname>")
+def getpassword(targetname):
+    """Get stored passwords associated to a target, used on automatic 
+    root password change by passhport script"""
+    
+    t = target.Target.query.filter_by(name=targetname).first()
+
+    if t is None:
+        return utils.response('ERROR: No target with the name "' + \
+                               targetname + '" in the database.', 417)
+
+    # Response for datatable
+    output = '[\n'
+    i = 1
+    tlen = len(t.passentries)
+    # We decrypt only 20 first passwords to avoid long waits
+    while i < tlen and i < 21:
+        output = output + t.passentries[tlen-i].notargetjson() + ",\n"
+        i = i+1
+
+    if output == '{\n':
+        return utils.response('=[]', 200)
+    output = output[:-2] + '\n]'
+
+    return utils.response(output, 200) 

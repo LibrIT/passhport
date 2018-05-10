@@ -29,6 +29,7 @@ class Target(db.Model):
     gmembers   = db.relationship("Usergroup", secondary="target_group")
     memberoftg = db.relationship("Targetgroup", secondary="tgroup_target")
     logentries = db.relationship("Logentry", secondary="target_log")
+    passentries = db.relationship("Passentry", secondary="target_pass")
     exttargetaccess = db.relationship("Exttargetaccess", 
                                       secondary="target_extaccess")
 
@@ -120,6 +121,13 @@ class Target(db.Model):
         while len(self.logentries) > 0:
             self.logentries.pop()
 
+
+    # Pass management
+    def addpassentry(self, passentry):
+        """Add a reference on a password changed on this target"""
+        self.passentries.append(passentry)
+        return self
+    
 
     # Log management
     def addlogentry(self, logentry):

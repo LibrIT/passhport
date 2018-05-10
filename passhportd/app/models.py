@@ -5,7 +5,8 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from app import db
-from .models_mod import user, target, usergroup, targetgroup, logentry, exttargetaccess
+from .models_mod import (user, target, usergroup, targetgroup, logentry,
+                        exttargetaccess, passentry)
 
 ###############################################################################
 # Relations tables
@@ -20,6 +21,19 @@ class Target_Log(db.Model):
     logentry_id = db.Column(
         db.Integer,
         db.ForeignKey("logentry.id"),
+        primary_key=True)
+
+
+class Target_Pass(db.Model):
+    """Link between a password and a target"""
+    __tablename__ = "target_pass"
+    target_id = db.Column(
+        db.Integer,
+        db.ForeignKey("target.id"),
+        primary_key=True)
+    logentry_id = db.Column(
+        db.Integer,
+        db.ForeignKey("passentry.id"),
         primary_key=True)
 
 

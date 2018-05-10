@@ -1,12 +1,18 @@
 # -*-coding:Utf-8 -*-
 
 """Contains functions to manage passwords changes"""
+import os, random, crypt, requests, configparser
 
-# Compatibility 2.7-3.4
-from __future__ import absolute_import
-from __future__ import unicode_literals
+conf = configparser.ConfigParser()
+conffile = "passhport.ini"
+if os.path.isfile("/etc/passhport/" + conffile):
+    conf.read("/etc/passhport/" + conffile)
+else:
+    conf.read(sys.path[0] + "/" + conffile)
 
-import os, random, crypt
+# SSL Configuration
+SSL                = conf.getboolean("SSL", "SSL")
+SSL_CERTIFICAT     = conf.get("SSL", "SSL_CERTIFICAT")
 
 def generate():
     """ Generate a random password
@@ -15,7 +21,7 @@ def generate():
     alphabet = "abcdefghijklmnopqrstuvwxyz.&(-_)#{[]}@=+"
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     upperalphabet = alphabet.upper()
-    pw_len = 12
+    pw_len = 16
     pwlist = []
     
     for i in range(pw_len//3):
@@ -32,7 +38,7 @@ def generate():
     return pwstring
 
 
-def reset(server, login, sshoptions, port, PWD_FILE_DIR):
+def reset(tname, server, login, sshoptions, port, isodate):
     """After a session, we reset the user password
        and store the password in a local file"""
     # 1. Generate random passowrd
@@ -48,15 +54,32 @@ def reset(server, login, sshoptions, port, PWD_FILE_DIR):
         user = login
 
     # 3. Propage password (this command HAS to be launched as root)
-    os.system("ssh root@" + server + ' ' + sshoptions + \
+    r = os.popen("ssh -q -o BatchMode=yes root@" + server + ' ' + sshoptions + \
               ' -p ' + str(port) + ' -l root \'echo "' + \
-              user + ':' + pwdstring + '" | chpasswd\'')
+              user + ':' + pwdstring + '" | chpasswd\' ' +\
+              '&& echo -n changed').read()
 
-    # 4. Sore it locally
-    if not os.path.exists(PWD_FILE_DIR):
-        os.mkdir(PWD_FILE_DIR)
+    # 4. Sore it if it has been changed
+    if r == "changed":
 
-    file = open(PWD_FILE_DIR + '/' + server + "_" + user, 'w')
-    file.write(user + " : " + pwdstring)
-    file.close()
+        """Send request to the passhportd """
+        url = "http" + conf.getboolean("SSL", "SSL")*"s" + \
+                    "://" + conf.get("Network", "PASSHPORTD_HOSTNAME") + \
+                    ":" + conf.get("Network", "PORT") + "/"
+        url = url + "target/savepassword"
+        data= {"connectiondate" : isodate,
+               "target"         : tname,
+	       "password"       : pwdstring}
 
+        try:
+            if SSL:
+                r = requests.post(url, data = data, verify=SSL_CERTIFICAT)
+            else:
+                r = requests.post(url, data = data)
+
+        except requests.RequestException as e:
+            print("ERROR: " + str(e.message))
+        else:
+            if r.status_code == requests.codes.ok:
+                return r.text
+        return 1
