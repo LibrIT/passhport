@@ -26,6 +26,9 @@ SQLALCHEMY_DATABASE_URI         = conf.get("Database", \
                                     "SQLALCHEMY_DATABASE_URI")
 SQLALCHEMY_MIGRATE_REPO         = conf.get("Database", \
                                     "SQLALCHEMY_MIGRATE_REPO")
+""" SALT for password storage """
+SALT            = conf.get("Database", "SALT")
+
 """ SSH Keyfile """
 SSH_KEY_FILE    = conf.get("Environment", "SSH_KEY_FILE")
 
@@ -49,6 +52,5 @@ LDAPPASS        = conf.get("LDAP", "LDAP_PASS", fallback='undefined')
 SSL             = conf.get("SSL", "SSL")
 SSL_CERTIFICAT  = conf.get("SSL", "SSL_CERTIFICAT")
 SSL_KEY         = conf.get("SSL", "SSL_KEY")
-
 
 
