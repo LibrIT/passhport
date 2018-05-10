@@ -22,7 +22,7 @@ def imalive():
 @app.route("/reporting/daily")
 def dailyreport():
     """Return text containing previous day connections"""
-    output = "This users didn't connect this week:\n"
+    output = "Yesterday connections:\n"
     # 1. Define yesterday date at midnight.
     yesterday = date.today() - timedelta(1)
     yesterday = yesterday.strftime('%Y%m%d') + "T000000"
@@ -36,7 +36,7 @@ def dailyreport():
                  row.user[0].show_name() + \
                  " -> " + row.target[0].show_name() + "\n"
 
-    if output == "This users didn't connect this week:\n":
+    if output == "Yesterday connections:\n":
         return "No Log yesterday."
 
     return output
