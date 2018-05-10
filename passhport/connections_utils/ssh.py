@@ -20,5 +20,4 @@ def connect(target, filelog, login, port, sshoptions, originalcmd):
         f.close()
         os.system('ssh -p ' + str(port) + " " + login + '@' + target + \
                   ' ' + sshoptions + " '" + originalcmd + "'" )
-
-
+        

@@ -63,10 +63,6 @@ echo '# Installing python34-pip, git and openssl package…'
 echo '##############################################################'
 yum install -y python34-pip git openssl python34-devel gcc
 echo '##############################################################'
-echo '# Updating pip…'
-echo '##############################################################'
-pip3 install -U pip 
-echo '##############################################################'
 echo '# Installing virtualenv with pip…'
 echo '##############################################################'
 pip3 install virtualenv
