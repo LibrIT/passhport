@@ -13,7 +13,6 @@ from .models_mod import user
 from .models_mod import target
 
 
-
 @app.route("/")
 def imalive():
     return """passhportd is running, gratz!\n"""
@@ -22,7 +21,6 @@ def imalive():
 @app.route("/reporting/daily")
 def dailyreport():
     """Return text containing previous day connections"""
-    output = "Yesterday connections:\n"
     # 1. Define yesterday date at midnight.
     yesterday = date.today() - timedelta(1)
     yesterday = yesterday.strftime('%Y%m%d') + "T000000"
@@ -31,20 +29,47 @@ def dailyreport():
     query = logentry.Logentry.query.filter(
             logentry.Logentry.connectiondate >= yesterday).all()
 
-    for row in query:
-        output = output + row.connectiondate + ": " + \
-                 row.user[0].show_name() + \
-                 " -> " + row.target[0].show_name() + "\n"
 
-    if output == "Yesterday connections:\n":
-        return "No Log yesterday."
+    # 3. Format the output
+    #First we create an ordonned list with the tree column
+    olist=[]
+    for row in query:
+        olist.append({"user"   : row.user[0].show_name(),
+                      "target" : row.target[0].show_name(), 
+                      "date"   : row.connectiondate[9:11] + ":" + \
+                                 row.connectiondate[11:13]})
+
+    if len(olist) == 0:
+        return "No connection logged yesterday."
+
+    ucolsize=35
+    tcolsize=20
+    output = "Yesterday connections by user:\n"
+    output = output + "Username" + " "*(ucolsize-len("Username")) + "\t"
+    output = output + "Target" + " "*(tcolsize-len("Target")) + "\t"
+    output = output + "Connection date\n"
+
+    # Then obtain all usernames unicity and loop on usernames
+    for user in set([log["user"] for log in olist]):
+        firstline = True
+        for row in [log for log in olist if log["user"] == user]:
+            if firstline:
+                output = output + user + " "*(ucolsize - len(user)) + "\t"
+                firstline = False
+            else:
+                output = output + " "*(ucolsize) + "\t"
+            output = output + row["target"] + \
+                                " "*(tcolsize - len(row["target"])) + "\t" 
+            output = output + row["date"] + "\n" 
 
     return output
+
 
 @app.route("/reporting/weekly/<weeksnb>")
 def weeklyreport(weeksnb=4):
     """Return text contening unused servers and unused accounts"""
     output = "This users haven't used their account in weeks:\n"
+    output = output + "Username\tWeeks since last connection\n"
     
     #1. Select all users and try them on last week logs
     users = user.User.query.all()
@@ -61,13 +86,14 @@ def weeklyreport(weeksnb=4):
 
     #2. Same for servers
     output = output + "No one connected this targets in weeks:\n"
+    output = output + "Target   \tWeeks since last connection\n"
     daysnotused = int(weeksnb * 7)
     targets = target.Target.query.all()
 
     neverused = [t for t in targets if t.dayssinceconnection() == -1]
     notused = [t for t in targets if t.dayssinceconnection() >= daysnotused]
     for t in notused:
-        output = output + t.show_name() + " -> " + \
+        output = output + t.show_name() + "\t" + \
                  str(int(t.dayssincelastconnection()/7) ) + "\n"
 
     output = output + "\nThis targets has never been used through passhport:\n"
