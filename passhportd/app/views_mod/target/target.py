@@ -665,8 +665,8 @@ def getpassword(targetname):
         output = output + t.passentries[tlen-i].notargetjson() + ",\n"
         i = i+1
 
-    if output == '{\n':
-        return utils.response('=[]', 200)
+    if output == '[\n':
+        return utils.response('[]', 200)
     output = output[:-2] + '\n]'
 
     return utils.response(output, 200) 

@@ -1,7 +1,11 @@
 # -*-coding:Utf-8 -*-
 from app import app, db
 from app.models_mod import target
-from simplecrypt import encrypt, decrypt
+from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+import base64, os
 import config
    
 class Passentry(db.Model):
@@ -9,7 +13,8 @@ class Passentry(db.Model):
     __tablename__ = "passentry"
     id = db.Column(db.Integer, primary_key=True)
     connectiondate = db.Column(db.String(20), index=True)
-    password       = db.Column(db.String(200), index=True)
+    password       = db.Column(db.LargeBinary(500), index=True)
+    salt           = db.Column(db.LargeBinary(500), index=True)
 
     # Relations
     target = db.relationship("Target", secondary="target_pass")
@@ -17,6 +22,7 @@ class Passentry(db.Model):
 
     def __init__(self, connectiondate, password):
         self.connectiondate = connectiondate
+        self.salt = os.urandom(16)
         self.password = self.encryptpassword(password)
     
 
@@ -43,11 +49,23 @@ class Passentry(db.Model):
 
     def encryptpassword(self, password):
         """Encrypt the password"""
-        return password
-        return encrypt(config.SALT, password)
+        return self.generatefernet().encrypt(password.encode())
 
 
     def decryptpassword(self):
         """Decrypt the password"""
-        return self.password
-        return decrypt(config.SALT, self.password).decode('utf8')
+        return self.generatefernet().decrypt(self.password).decode()
+
+
+    def generatefernet(self):
+        """Return a fernet object used to encrypt/decrypt the password"""
+        kdf = PBKDF2HMAC(
+                algorithm = hashes.SHA256(),
+                length = 32,
+                salt = self.salt,
+                iterations = 100000,
+                backend = default_backend())
+        key = base64.urlsafe_b64encode(kdf.derive(config.SALT.encode()))
+        return Fernet(key)
+
+
