@@ -12,7 +12,6 @@ from app.models_mod import user, target, usergroup, exttargetaccess, passentry
 from . import api
 from subprocess import Popen, PIPE
 from datetime import datetime, timedelta
-from simplecrypt import encrypt
 import os
 import config
 
