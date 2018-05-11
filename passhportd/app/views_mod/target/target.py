@@ -660,7 +660,7 @@ def getpassword(targetname):
     i = 1
     tlen = len(t.passentries)
     # We decrypt only 20 first passwords to avoid long waits
-    while i < tlen and i < 21:
+    while i < tlen +1 and i < 21:
         output = output + t.passentries[tlen-i].notargetjson() + ",\n"
         i = i+1
 
