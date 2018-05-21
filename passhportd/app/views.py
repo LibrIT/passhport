@@ -1,16 +1,12 @@
 # -*-coding:Utf-8 -*-
-
-# Compatibility 2.7-3.4
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import psutil, re
+import psutil, re, subprocess
 from datetime import datetime, timedelta, date
 from app import app
 from .views_mod import user, target, usergroup, targetgroup, logentry
 from .models_mod import logentry
 from .models_mod import user
 from .models_mod import target
+from flask import request, stream_with_context, Response
 
 
 @app.route("/")
@@ -154,3 +150,25 @@ def sshdisconnection(pid):
         child.kill()
     parent.kill()
     return "Done"
+
+
+@app.route("/download", methods=["POST"])
+def directdownload():
+    """Return a stream containing file from target"""
+    targetname = request.form["target"]
+    filename = request.form["filename"]
+
+    t = target.Target.query.filter_by(name=targetname).first()
+    if t is None:
+        return utils.response('ERROR: No target with this nale', 417)
+
+    scpdata = ["scp",
+               "-P",
+               str(t.show_port()),
+               t.show_login() + "@" + t.show_hostname() + ":" + filename,
+               "/dev/stdout"]
+
+    p = subprocess.Popen(scpdata, stdout=subprocess.PIPE)
+
+    return Response(stream_with_context(p.stdout))
+

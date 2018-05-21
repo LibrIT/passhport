@@ -175,7 +175,7 @@ def user_memberof(obj, name):
 
 
 @app.route("/user/accessible_targets/<name>")
-def user_accessible_targets(name):
+def user_accessible_targets(name, returnlist = False):
     """Return the list of targets that the user can access"""
     # Check for required fields
     if not name:
@@ -195,7 +195,22 @@ def user_accessible_targets(name):
         if each_target.show_targettype() == "ssh":
             formatted_target_list.append(each_target.show_name() + " " + \
             each_target.show_hostname() + " " + each_target.show_comment())
+    if returnlist:
+        return [target.show_name() for target in target_list 
+                if target.show_targettype() == "ssh"]
     return utils.response("\n".join(formatted_target_list), 200)
+
+
+@app.route("/user/accessible_target/<username>/<targetname>")
+def user_accssible_target(username, targetname):
+    """ Return True if the user can access this target, else return False """
+    # Check for required fields
+    if not username or not targetname:
+        return utils.response("ERROR: Username or targetname is missing ", 417)
+    
+    if targetname in user_accessible_targets(username, returnlist = True):
+        return utils.response("True", 200)
+    return utils.response("False", 200)
 
 
 @app.route("/user/create", methods=["POST"])
