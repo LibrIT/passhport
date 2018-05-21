@@ -650,7 +650,6 @@ def getpassword(targetname):
     root password change by passhport script"""
     
     t = target.Target.query.filter_by(name=targetname).first()
-
     if t is None:
         return utils.response('ERROR: No target with the name "' + \
                                targetname + '" in the database.', 417)

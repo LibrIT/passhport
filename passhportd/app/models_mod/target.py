@@ -80,10 +80,23 @@ class Target(db.Model):
         """Return a string containing the target's hostname"""
         return self.hostname
     
+    
+    def show_login(self):
+        """Return a string containing the targets login"""
+        if not self.login:
+            return "root"
+        return self.login
+
 
     def show_port(self):
-        """Return a string containing the target's port"""
+        """Return an int containing the target's port"""
+        if not self.port:
+            return 22
         return self.port
+
+    def show_options(self):
+        """Return a string with the options"""
+        return self.sshoptions
     
 
     def show_targettype(self):

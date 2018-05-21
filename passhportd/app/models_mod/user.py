@@ -73,6 +73,13 @@ class User(db.Model):
         return self.comment
 
 
+    def is_manager(self):
+        """Return True if this user is a manager of any usergroup"""
+        if self.adminofug:
+            return True
+        return False
+
+
     def accessible_targetname_list(self):
         """Return target names which are accessible to the user"""
         return self.accessible_target_list("names")
@@ -154,6 +161,7 @@ class User(db.Model):
     def togglesuperadmin(self):
         """Change the superadmin flag"""
         self.superadmin = not self.superadmin
+
 
     # Log management
     def addlogentry(self, logentry):
