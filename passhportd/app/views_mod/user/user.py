@@ -528,8 +528,18 @@ def user_delete(name):
 @app.route("/user/lastlog/<name>")
 def user_lastlog(name):
     """Return the 500 last logs as json"""
-    #TODO pagination for ajax call on all logs
     u = utils.get_user(name)
     if not u:
         return "{}"
     return u.get_lastlog()
+
+
+@app.route("/user/ismanager/<name>", methods=["GET"])
+def user_is_manager(name):
+    """Return True if the user is a manager of any usergroup"""
+    u = utils.check_user_get(request, name)
+    if not u:
+        return utils.response("ERROR: The request is not correct", 417)
+
+    return utils.response(str(u.is_manager()), 200)
+    
