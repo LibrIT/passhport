@@ -2,7 +2,7 @@
 import psutil, re, subprocess
 from datetime import datetime, timedelta, date
 from app import app
-from .views_mod import user, target, usergroup, targetgroup, logentry
+from .views_mod import user, target, usergroup, targetgroup, logentry, utils
 from .models_mod import logentry
 from .models_mod import user
 from .models_mod import target
@@ -152,6 +152,35 @@ def sshdisconnection(pid):
     return "Done"
 
 
+@app.route("/prepdownload", methods=["POST"])
+def prepdownload():
+    """Check if the file is a regular avalaible file before any transfer"""
+    targetname = request.form["target"]
+    filename = request.form["filename"]
+
+    t = target.Target.query.filter_by(name=targetname).first()
+    if t is None:
+        return utils.response('ERROR: No target with this name', 417)
+
+    # Prepare commands for connexion
+    options = t.show_options().strip() + " "
+    # Empty options breaks the command so we add " " to it
+    if options != " ":
+        options = " " + options 
+    # midcmd = port option user@target
+    midcmd = str(t.show_port()) + options + \
+                 t.show_login() + "@" + t.show_hostname()
+
+    txtcommand = "ssh -p" + midcmd + \
+                 " ls " + filename +  " | wc -l"
+    command    = [ elt for elt in txtcommand.split(" ")]
+    p = subprocess.check_output(command)
+
+    if str(p.decode()) != "1\n":
+        return utils.response("ERROR: file cannot be found", 404)
+    return utils.response("OK", 200)
+
+
 @app.route("/download", methods=["POST"])
 def directdownload():
     """Return a stream containing file from target"""
@@ -160,15 +189,22 @@ def directdownload():
 
     t = target.Target.query.filter_by(name=targetname).first()
     if t is None:
-        return utils.response('ERROR: No target with this nale', 417)
+        return utils.response('ERROR: No target with this name', 417)
 
-    scpdata = ["scp",
-               "-P",
-               str(t.show_port()),
-               t.show_login() + "@" + t.show_hostname() + ":" + filename,
-               "/dev/stdout"]
+    # Prepare commands for connexion
+    options = t.show_options().strip() + " "
+    # Empty options breaks the command so we add " " to it
+    if options != " ":
+        options = " " + options 
+    # midcmd = port option user@target
+    midcmd = str(t.show_port()) + options + \
+                 t.show_login() + "@" + t.show_hostname()
 
-    p = subprocess.Popen(scpdata, stdout=subprocess.PIPE)
+    txtcommand = "scp -P" + midcmd + \
+                 ":" + filename + " " + "/dev/stdout"
+    command    = [ elt for elt in txtcommand.split(" ")]
+
+    p = subprocess.Popen(command, stdout=subprocess.PIPE)
 
     return Response(stream_with_context(p.stdout))
 
