@@ -11,7 +11,7 @@ import os
 def connect(target, filelog, login, port, sshoptions, originalcmd):
     """ Simply launch the ssh connection or execute the ssh command"""
     if not originalcmd:
-        os.system("script -q --timing=" + filelog + ".timing " + filelog + \
+        os.system("script -q -f --timing=" + filelog + ".timing " + filelog + \
                 ' -c "ssh -t -p ' + str(port) + " " + login + '@' + target + \
                 ' ' + sshoptions + '"')
     else:

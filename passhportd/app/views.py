@@ -100,8 +100,12 @@ def weeklyreport(weeksnb=4):
 
 def hours_minutes(td):
     """Takes timedelta object and express it in hours/min"""
+    minutes = str((td.seconds//60)%60)
+    if len(minutes) == 1:
+        minutes = "0" + minutes
+
     return str((td.days * 24) + (td.seconds//3600)) + "h" + \
-           str((td.seconds//60)%60)
+           minutes + "min"
 
 
 @app.route("/connection/ssh/current")
@@ -122,7 +126,7 @@ def currentsshconnections():
             if len(proc.children()) == 1:
                 sshcmd = proc.children()[0].cmdline()
                 # Check if it's a ssh connection
-                if [s for s in sshcmd if "script -q --timing=" in s]:
+                if [s for s in sshcmd if "script -q -f --timing=" in s]:
                     connection = [log for log in logs \
                               if log.logfilename in sshcmd[2]][-1]
 
