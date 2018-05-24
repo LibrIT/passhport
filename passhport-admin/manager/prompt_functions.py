@@ -35,6 +35,12 @@ def checkaccess(obj):
     return req.checkaccess(obj, {"<pattern>": pattern})
 
 
+def toggleadmin(obj):
+    """Change a user to superadmin or remove this same right to the user"""
+    name = input("E-mail: ")
+    return req.toggleadmin(obj, {"<name>": name})
+
+
 def show(obj):
     """Ask arguments for showing the object"""
     name = input("Name: ")

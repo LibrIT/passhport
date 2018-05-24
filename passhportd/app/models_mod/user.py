@@ -161,6 +161,7 @@ class User(db.Model):
     def togglesuperadmin(self):
         """Change the superadmin flag"""
         self.superadmin = not self.superadmin
+        return "This user is now:" + " NOT"*(1-self.superadmin) + " administrator"
 
 
     # Log management
