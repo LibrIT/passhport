@@ -338,7 +338,7 @@ def usergroup_addmanager():
         return utils.response('ERROR: "' + usergroupname + '" -> ' + \
                               e.message, 409)
 
-    return utils.response('OK: "' + username + '" added to "' + \
+    return utils.response('OK: "' + username + '" is manager of "' + \
                           usergroupname + '"', 200)
 
 
@@ -383,7 +383,8 @@ def usergroup_rmmanager():
         return utils.response('ERROR: "' + usergroupname + '" -> ' + \
                               e.message, 409)
 
-    return utils.response('OK: "' + username + '" removed from "' + \
+    return utils.response('OK: "' + username + \
+                          '" is not anymore manager of "' + \
                           usergroupname + '"', 200)
 
 

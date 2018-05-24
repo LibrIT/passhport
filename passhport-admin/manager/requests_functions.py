@@ -57,6 +57,21 @@ def get(url):
     return 1
 
 
+def silentget(url):
+    """Send the GET request to the server and return a result"""
+    try:
+        r = requests.get(url, verify=config.certificate_path, timeout=3)
+    except requests.exceptions.Timeout:
+        return "ERROR: Connection timed out. Check your configuration."
+    except requests.exceptions.ConnectionError as e:
+        return "ERROR: Connection error. Check your configuration.\n" + str(e)
+    except requests.exceptions.TooManyRedirects:
+        return "ERROR: Too many redirects."
+    except requests.exceptions.RequestException as e:
+        return "Error: " + str(e)
+    else:
+        return r.text
+
 def list(obj):
     """Get the list of all objects of this type"""
     return get(config.url_passhport + obj + "/list")
@@ -90,8 +105,20 @@ def show(obj, param):
     """Get data of the given object"""
     if isinstance(param["<name>"], bytes):
         param["<name>"] = param["<name>"].decode("utf8")
+    
+    ret = get(config.url_passhport + obj + "/show/" + param["<name>"])
 
-    return get(config.url_passhport + obj + "/show/" + param["<name>"])
+    if ret == 0 and obj == "target":
+        passwords = eval(silentget(config.url_passhport + obj + \
+                         "/getpassword/" + param["<name>"]))
+        if len(passwords) >= 1:
+            passout = "Last root passwords for this targets by date:"
+            for password in passwords:
+                passout = passout + "\n" + password["date"] + ": " + \
+                          password["password"]
+            print(passout)
+    
+    return ret
 
 
 def delete(obj, param):

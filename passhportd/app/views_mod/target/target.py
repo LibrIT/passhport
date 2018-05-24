@@ -644,8 +644,9 @@ def savepassword():
     return utils.response("OK", 200)
 
 
+@app.route("/target/getpassword/<targetname>/<number>")
 @app.route("/target/getpassword/<targetname>")
-def getpassword(targetname):
+def getpassword(targetname, number = 20):
     """Get stored passwords associated to a target, used on automatic 
     root password change by passhport script"""
     
@@ -659,7 +660,7 @@ def getpassword(targetname):
     i = 1
     tlen = len(t.passentries)
     # We decrypt only 20 first passwords to avoid long waits
-    while i < tlen +1 and i < 21:
+    while i < tlen +1 and i < int(number)+1:
         output = output + t.passentries[tlen-i].notargetjson() + ",\n"
         i = i+1
 
