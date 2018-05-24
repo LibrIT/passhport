@@ -14,6 +14,7 @@ Usage:
     passhport-admin user edit [(<name> [--newname=<name>] \
 [--newsshkey=<sshkey>] [--newcomment=<comment>])]
     passhport-admin user delete [([-f | --force] <name>)]
+    passhport-admin user toggleadmin [<name>] 
     passhport-admin target list
     passhport-admin target search [<pattern>]
     passhport-admin target checkaccess [<pattern>]
@@ -165,6 +166,7 @@ Usage:
     user create
     user edit 
     user delete
+    user toggleadmin
         """
         getattr(prompt_functions, self.method(arg.items))("user")
 
@@ -238,7 +240,7 @@ def requests_object_method(opt):
     """Call the right method depending of the object type"""
     objects = {"user", "target", "usergroup", "targetgroup"}
     methods = {"list", "search", "checkaccess", "show", "delete", "create", "edit",
-               "adduser", "rmuser", "addusergroup", "rmusergroup",
+               "adduser", "rmuser", "addusergroup", "rmusergroup", "toggleadmin",
                "addtarget", "rmtarget", "addtargetgroup", "rmtargetgroup"}
     param = {}
 

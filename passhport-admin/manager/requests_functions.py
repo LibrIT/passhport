@@ -78,6 +78,14 @@ def checkaccess(obj, param):
     return get(config.url_passhport + obj + "/checkaccess/" + param["<pattern>"])
 
 
+def toggleadmin(obj, param):
+    """Add/remove admin rights on a user"""
+    if isinstance(param["<name>"], bytes):
+        param["<name>"] = param["<name>"].decode("utf8")
+
+    return get(config.url_passhport + obj + "/togglesuperadmin/" + param["<name>"])
+
+
 def show(obj, param):
     """Get data of the given object"""
     if isinstance(param["<name>"], bytes):

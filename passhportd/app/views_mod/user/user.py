@@ -284,14 +284,14 @@ def user_togglesuperadmin(name):
                 "Are you sure this user is register on passhport?", 417)
 
     # Toggle the superadmin flag
-    userobj.togglesuperadmin()
+    new_state = userobj.togglesuperadmin()
 
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
         return utils.response('ERROR: -> ' + e.message, 409)
 
-    return utils.response('OK\n', 200)
+    return utils.response(new_state, 200)
 
 
 @app.route("/user/issuperadmin/<name>", methods=["GET"])
