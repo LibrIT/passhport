@@ -39,7 +39,7 @@ def ask_confirmation(prompt_confirmation):
 def get(url):
     """Send the GET request to the server and print a result"""
     try:
-        r = requests.get(url, verify=config.certificate_path, timeout=3)
+        r = requests.get(url, verify=config.certificate_path, timeout=10)
     except requests.exceptions.Timeout:
         print("ERROR: Connection timed out. Check your configuration.")
     except requests.exceptions.ConnectionError as e:
