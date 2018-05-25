@@ -60,7 +60,7 @@ def get(url):
 def silentget(url):
     """Send the GET request to the server and return a result"""
     try:
-        r = requests.get(url, verify=config.certificate_path, timeout=3)
+        r = requests.get(url, verify=config.certificate_path, timeout=10)
     except requests.exceptions.Timeout:
         return "ERROR: Connection timed out. Check your configuration."
     except requests.exceptions.ConnectionError as e:
