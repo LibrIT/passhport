@@ -631,34 +631,6 @@ def extgetaccess(ip, targetname, username):
     return utils.response(response, 200)
 
 
-@app.route("/target/savepassword", methods=["POST"])
-def savepassword():
-    """Store a password associated to a target, used on automatic 
-    root password change by passhport script"""
-    # Only POST data are handled
-    if request.method != "POST":
-        return utils.response("ERROR: POST method is required ", 405)
-
-    p = passentry.Passentry(request.form["connectiondate"], 
-                            request.form["password"])
-    db.session.add(p)
-
-    # Link this passentry with the target
-    t = utils.get_target(request.form["target"])
-    if not t:
-        return utils.response('ERROR: No target "' + targetname + \
-                              '" in the database ', 417)
-    t.addpassentry(p)
-    
-    # Try to add the Logentry on the database
-    try:
-        db.session.commit()
-    except exc.SQLAlchemyError as e:
-        return utils.response('ERROR: -> ' + e.message , 409)
-
-    return utils.response("OK", 200)
-
-
 @app.route("/target/getpassword/<targetname>/<number>")
 @app.route("/target/getpassword/<targetname>")
 def getpassword(targetname, number = 20):
