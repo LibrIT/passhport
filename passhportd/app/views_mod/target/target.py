@@ -1,9 +1,4 @@
 # -*-coding:Utf-8 -*-
-
-# Compatibility 2.7-3.4
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from flask import request
 from sqlalchemy import exc, and_
 from sqlalchemy.orm import sessionmaker
@@ -216,6 +211,8 @@ def target_create():
     port = request.form["port"]
     sshoptions = request.form["sshoptions"]
     comment = request.form["comment"]
+    changepwd = request.form["changepwd"]
+    sessiondur = request.form["sessiondur"]
 
     # Check for required fields
     if not name or not hostname:
@@ -231,6 +228,12 @@ def target_create():
     if not port:
         port = 22
 
+    if not changepwd:
+        changepwd = False
+
+    if not sessiondur:
+        sessiondur = 240 #4h is the default
+
     # Check unicity for name
     query = db.session.query(target.Target.name)\
         .filter_by(name=name).first()
@@ -240,13 +243,15 @@ def target_create():
                               '" is already used by another target ', 417)
 
     t = target.Target(
-        name=name,
-        hostname=hostname,
-        targettype=targettype,
-        login=login,
-        port=port,
-        sshoptions=sshoptions,
-        comment=comment)
+        name       = name,
+        hostname   = hostname,
+        targettype = targettype,
+        login      = login,
+        port       = port,
+        sshoptions = sshoptions,
+        comment    = comment,
+        changepwd  = changepws,
+        sessiondur = sessiondur)
     db.session.add(t)
 
     # Try to add the target on the database
@@ -274,6 +279,8 @@ def target_edit():
     new_port = request.form["new_port"]
     new_sshoptions = request.form["new_sshoptions"]
     new_comment = request.form["new_comment"]
+    new_changepwd = request.form["new_changepwd"]
+    new_sessiondur = request.form["new_sessiondur"]
 
     # Check required fields
     if not name:
@@ -325,6 +332,13 @@ def target_edit():
             new_targettype = "ssh"
         to_update.update({"targettype": new_targettype})
 
+    if new_changepwd:
+        # changepwd is a boolean so we give him the boolean result of this test
+        to_update.update({"changepwd": new_changepwd == "True"})
+
+    if new_sessiondur:
+        to_update.update({"sessiondur": new_sessiondur})
+
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
@@ -354,6 +368,7 @@ def target_delete(name):
         each_targetgroup.rmtarget(target_data)
 
     # We can now delete the target from the db
+    #TODO change the deletion and add deactivate field to True instead
     t = db.session.query(
                  target.Target).filter(
                  target.Target.name == name)
@@ -614,34 +629,6 @@ def extgetaccess(ip, targetname, username):
                    format(stopdate, '%H:%M')
 
     return utils.response(response, 200)
-
-
-@app.route("/target/savepassword", methods=["POST"])
-def savepassword():
-    """Store a password associated to a target, used on automatic 
-    root password change by passhport script"""
-    # Only POST data are handled
-    if request.method != "POST":
-        return utils.response("ERROR: POST method is required ", 405)
-
-    p = passentry.Passentry(request.form["connectiondate"], 
-                            request.form["password"])
-    db.session.add(p)
-
-    # Link this passentry with the target
-    t = utils.get_target(request.form["target"])
-    if not t:
-        return utils.response('ERROR: No target "' + targetname + \
-                              '" in the database ', 417)
-    t.addpassentry(p)
-    
-    # Try to add the Logentry on the database
-    try:
-        db.session.commit()
-    except exc.SQLAlchemyError as e:
-        return utils.response('ERROR: -> ' + e.message , 409)
-
-    return utils.response("OK", 200)
 
 
 @app.route("/target/getpassword/<targetname>/<number>")

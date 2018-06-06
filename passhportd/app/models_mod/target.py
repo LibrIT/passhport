@@ -1,13 +1,10 @@
 # -*-coding:Utf-8 -*-
-
-# Compatibility 2.7-3.4
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
+import random, crypt, os
 from datetime import datetime, timedelta, date
 from app import app, db
-from app.models_mod import targetgroup
+from app.models_mod import targetgroup, passentry
 from flask import jsonify
+from subprocess import Popen, PIPE
 
 
 class Target(db.Model):
@@ -23,6 +20,13 @@ class Target(db.Model):
     port       = db.Column(db.Integer, index=False)
     sshoptions = db.Column(db.String(500), index=True)
     comment    = db.Column(db.String(500), index=True)
+    changepwd  = db.Column(db.Boolean, index=True, unique=False, default=False)
+    sessiondur = db.Column(db.Integer, index=True, unique=False, default=240) 
+
+    # This is true if the target has been deleted #TODO
+    deleted    = db.Column(db.Boolean, unique=False, default=False)
+    
+
 
     # Relations
     members    = db.relationship("User", secondary="target_user")
@@ -43,6 +47,7 @@ class Target(db.Model):
         output.append("Login: {}".format(self.login))
         output.append("Port: {}".format(str(self.port)))
         output.append("SSH options: {}".format(self.sshoptions))
+        output.append("Change password: {}".format(str(self.show_changepwd())))
         output.append("Comment: {}".format(self.comment))
         output.append("Attached users: " + " ".join(self.username_list()))
         output.append("Usergroup list: " + " ".join(self.usergroupname_list()))
@@ -65,6 +70,10 @@ class Target(db.Model):
         output = output + "\"Login\": \"" + format(self.login) + "\",\n"
         output = output + "\"Port\": \"" + format(self.port) + "\",\n"
         output = output + "\"SSH options\": \"" + format(self.sshoptions) + "\",\n"
+        output = output + "\"Change password\": \"" + \
+                               format(str(self.show_changepwd())) + "\",\n"
+        output = output + "\"Session duration\": \"" + \
+                               format(str(self.show_sessionduration())) + "\",\n"
         output = output + "\"Comment\": \"" + format(self.comment) + "\"\n"
         output = output + "}"
 
@@ -93,6 +102,20 @@ class Target(db.Model):
         if not self.port:
             return 22
         return self.port
+
+
+    def show_sessionduration(self):
+        """Return an int containing session durection in minutes"""
+        if not self.sessiondur:
+            return 240
+        return self.sessiondur
+
+    def show_changepwd(self):
+        """Return an True if this target needs to have the root password
+           changed after each ssh connection"""
+        if not self.changepwd:
+            return False
+        return self.changepwd
 
     def show_options(self):
         """Return a string with the options"""
@@ -400,4 +423,60 @@ class Target(db.Model):
             return int(numberofdays.days)
         else:
             return int(-1)
+
+
+    def generatepass(self):
+        """ Generate a random password
+            interactivepython.org
+            /runestone/static/everyday/2013/01/3_password.html """
+        #alphabet = "abcdefghijklmnopqrstuvwxyz.&(-_)#{[]}@=+"
+        alphabet = "abcdefghijklmnopqrstuvwxyz"
+        upperalphabet = alphabet.upper()
+        pw_len = 16
+        pwlist = []
+    
+        for i in range(pw_len//3):
+            pwlist.append(alphabet[random.randrange(len(alphabet))])
+            pwlist.append(upperalphabet[random.randrange(len(upperalphabet))])
+            pwlist.append(str(random.randrange(10)))
+
+        for i in range(pw_len-len(pwlist)):
+            pwlist.append(alphabet[random.randrange(len(alphabet))])
+
+        random.shuffle(pwlist)
+        pwstring = "".join(pwlist)
+
+        return pwstring
+
+
+    def changepass(self, date):
+        """Change the password for the login on this hostname"""
+        # change password only if conf allow it
+        if not self.show_changepwd():
+            return "Password unchanged"
+
+        # 1. Generate random passowrd
+        pwdstring = self.generatepass()
+
+        # 3. Propage password (this command HAS to be launched as root)
+        r = os.popen("ssh -q -o BatchMode=yes root@" + self.hostname + \
+                     ' ' + self.sshoptions + \
+                     ' -p ' + str(self.show_port()) + ' -l root \'echo "' + \
+                     self.show_login() + ':' + pwdstring + '" | chpasswd\' ' +\
+                     '&& echo -n changed').read()
+
+        # 4. Sore it if it has been changed
+        if r == "changed":
+            p = passentry.Passentry(date, pwdstring)
+            self.addpassentry(p)
+    
+            # Try to add the Logentry on the database
+            try:
+                db.session.commit()
+                return "Password changed"
+            except exc.SQLAlchemyError as e:
+                print ('ERROR: -> ' + e.message)
+        print("Error changing password on " + self.show_name())
+        return "Password unchanged"
+
 

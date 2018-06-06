@@ -25,12 +25,12 @@ def logentry_list():
     query = db.session.query(logentry.Logentry).all()
 
     for row in query:
-        result.append(row)
+        result.append(str(row))
 
     if not result:
         return utils.response("No Log entry in database.", 200)
 
-    return utils.response("\n".join(result), 200)
+    return utils.response("\n\n".join(result), 200)
 
 
 def linklog(logentry, user, target):
@@ -51,6 +51,7 @@ def logentry_create():
     l = logentry.Logentry(
         connectiondate = request.form["connectiondate"],
         connectioncmd  = request.form["connectioncmd"],
+        pid           = request.form["pid"],
         logfilepath   = request.form["logfilepath"],
         logfilename   = request.form["logfilename"])
     db.session.add(l)

@@ -1,7 +1,7 @@
 # -*-coding:Utf-8 -*-
 import psutil, re, subprocess
 from datetime import datetime, timedelta, date
-from app import app
+from app import app, db
 from .views_mod import user, target, usergroup, targetgroup, logentry, utils
 from .models_mod import logentry
 from .models_mod import user
@@ -13,7 +13,8 @@ from flask import request, stream_with_context, Response
 def imalive():
     return """passhportd is running, gratz!\n"""
 
-
+#########################
+#### EMAIL REPORTING ####
 @app.route("/reporting/daily")
 def dailyreport():
     """Return text containing previous day connections"""
@@ -107,55 +108,135 @@ def hours_minutes(td):
     return str((td.days * 24) + (td.seconds//3600)) + "h" + \
            minutes + "min"
 
-
+########################################
+#### Current connections management ####
 @app.route("/connection/ssh/current")
 def currentsshconnections():
     """Return a json presenting the current ssh connections associated 
        to their PID"""
+
+    lentries = logentry.Logentry.query.filter(
+               logentry.Logentry.endsessiondate == None).all()
+
+    if not lentries:
+        return "[]"
+
     output        = "[ "
-    pythonexec    = "/home/passhport/passhport-run-env/bin/python3"
-    passhportexec = "/home/passhport/passhport/passhport/passhport" 
-    
-    logs = logentry.Logentry.query.all()
-    procs = [proc for proc in psutil.process_iter() \
-             if proc.username() == "passhport"]
-
-    for proc in procs:
-        if pythonexec in proc.cmdline() and passhportexec in proc.cmdline():
-            # It's a passhport process, his child is a ssh connection
-            if len(proc.children()) == 1:
-                sshcmd = proc.children()[0].cmdline()
-                # Check if it's a ssh connection
-                if [s for s in sshcmd if "script -q -f --timing=" in s]:
-                    connection = [log for log in logs \
-                              if log.logfilename in sshcmd[2]][-1]
-
-                    cdate = datetime.strptime(connection.connectiondate,
+    for entry in lentries:
+        cdate = datetime.strptime(entry.connectiondate,
                                              '%Y%m%dT%H%M%S')
-                    duration = datetime.now() - cdate
-                    # output json formated
-                    output = output + \
-                             '{"Email" : "' + \
-                             connection.user[0].show_name() + '",' + \
-                             '"Target" : "' + \
-                             connection.target[0].show_name() + '",' + \
-                             '"PID" : "' + str(proc.pid) + '",' + \
-                             '"Date" : "' + \
-                             hours_minutes(duration) + '"},' 
+        duration = datetime.now() - cdate
+        output = output + \
+                '{"Email" : "' + \
+                 entry.user[0].show_name() + '",' + \
+                 '"Target" : "' + \
+                 entry.target[0].show_name() + '",' + \
+                 '"PID" : "' + str(entry.pid) + '",' + \
+                 '"Date" : "' + hours_minutes(duration) + '"},'
                              
     return output[:-1] + "]"
 
 
-@app.route("/connection/ssh/disconnect/<pid>")
-def sshdisconnection(pid):
-    """Kill the pid"""
-    parent = psutil.Process(int(pid))
-    for child in parent.children(): 
-        child.kill()
-    parent.kill()
+@app.route("/connection/ssh/checkandterminate")
+def checkandterminatesshsession():
+    """Check all the connections and close those without a process runing"""
+    isodate    = datetime.now().isoformat().replace(":",""). \
+                 replace("-","").split('.')[0]
+    lentries = logentry.Logentry.query.filter(
+             logentry.Logentry.endsessiondate == None).all()
+
+    if not lentries:
+        return "No active connection."
+
+    for entry in lentries:
+        try:
+            parent = psutil.Process(entry.pid)
+        except Exception as E:
+            if type(E) == psutil.NoSuchProcess:
+                endsshsession(entry.pid)
+                print("Orphan connection with PID:" + str(entry.pid) + \
+                        ". Now closed in the logentry.")
+
+    return "Active connections: check done."
+
+
+@app.route("/connection/ssh/endsession/")
+def oldentriesendsession():
+    """Force old entries without PID to be noted as closed"""
+    isodate    = datetime.now().isoformat().replace(":",""). \
+                 replace("-","").split('.')[0]
+    lentries = logentry.Logentry.query.filter(
+             logentry.Logentry.pid == None).all()
+
+    if not lentries:
+        return "Error: no logentry without PID"
+
+    for entry in lentries:
+        if entry.endsessiondate:
+            return "Already ended"
+        entry.setenddate(isodate)
+
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        return utils.response('ERROR: "' + name + '" -> ' + e.message, 409)
+
     return "Done"
 
 
+@app.route("/connection/ssh/disconnect/<pid>")
+def sshdisconnect(pid):
+    """Check if the session is well terminated and log infos about the end"""
+    # Be sure the session is closed or forceclose
+    sshdisconnection(pid)
+    # Validate logs
+    return endsshsession(pid)
+
+
+@app.route("/connection/ssh/endsession/<pid>")
+def endsshsession(pid):
+    """log infos about the end of a session"""
+    # modify the associated Logentry to signal the end date
+    isodate    = datetime.now().isoformat().replace(":",""). \
+                 replace("-","").split('.')[0]
+    lentry = logentry.Logentry.query.filter(
+             logentry.Logentry.pid == int(pid)).first()
+
+    if not lentry:
+        return "Error: no logentry with this PID"
+
+    if lentry.endsessiondate:
+        return "Already ended"
+    lentry.setenddate(isodate)
+
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        return utils.response('ERROR: "' + name + '" -> ' + e.message, 409)
+
+    #At last change the root password if needed
+    lentry.target[0].changepass(isodate)
+
+    return "Done"
+
+
+def sshdisconnection(pid):
+    """Kill the pid no matter what"""
+    try:
+        parent = psutil.Process(int(pid))
+        for child in parent.children(): 
+            child.kill()
+        parent.kill()
+
+    except Exception as E:
+        if type(E) == psutil.NoSuchProcess:
+            print("Impossible to kill: no such process with PID " + str(pid))
+
+    return "Done"
+
+
+########################
+#### FILES DOWNLOAD ####
 @app.route("/prepdownload", methods=["POST"])
 def prepdownload():
     """Check if the file is a regular avalaible file before any transfer"""

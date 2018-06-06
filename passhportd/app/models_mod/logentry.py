@@ -13,6 +13,7 @@ class Logentry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     pid            = db.Column(db.Integer, index=True)
     connectiondate = db.Column(db.String(20), index=True)
+    endsessiondate = db.Column(db.String(20), index=True)
     connectioncmd  = db.Column(db.String(200), index=True)
     logfilepath    = db.Column(db.String(200)) # Empty if archived or logrotated
     logfilename    = db.Column(db.String(200), nullable=False)
@@ -25,12 +26,13 @@ class Logentry(db.Model):
         """Return main data of the Log entry as a string"""
         output = []
 
-        output.append("Date   : {}".format(self.connectiondate))
-        output.append("PID    : {}".format(str(self.pid)))
-        output.append("Command: {}".format(self.connectioncmd))
+        output.append("Date    : {}".format(self.connectiondate))
+        output.append("End date: {}".format(self.endsessiondate))
+        output.append("PID     : {}".format(str(self.pid)))
+        output.append("Command : {}".format(self.connectioncmd))
         output.append("Logfile:" + self.logfilepath + self.logfilename)
-        output.append("User   : {}".format(self.user[0].show_name()))
-        output.append("Target : {}".format(self.target[0].show_name()))
+        output.append("User    : {}".format(self.user[0].show_name()))
+        output.append("Target  : {}".format(self.target[0].show_name()))
         return "\n".join(output)
 
 
@@ -50,3 +52,7 @@ class Logentry(db.Model):
         return output
 
 
+    def setenddate(self, enddate):
+        """Add a enddate at the moment this is called"""
+        self.endsessiondate = enddate
+        return True

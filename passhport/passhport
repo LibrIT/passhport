@@ -27,9 +27,6 @@ else:
 SSL                = conf.getboolean("SSL", "SSL")
 SSL_CERTIFICAT     = conf.get("SSL", "SSL_CERTIFICAT")
 SCRIPT_LOGS_PATH   = conf.get("Environment", "SCRIPT_LOGS_PATH")
-PWD_FILE_DIR       = conf.get("RootPasswordRest", "PWD_FILE_DIR")
-PWD_RST_AFTER_SESSION = conf.getboolean("RootPasswordRest", \
-                                        "PWD_RST_AFTER_SESSION")
 SCP_THROUGH_TARGET = conf.getboolean("MISC", "SCP_THROUGH_TARGET")
 
 
@@ -151,6 +148,8 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
            "logfilename"    : filename,
            "user"           : username,
            "target"         : targetname}
+
+    # We log with this PID (will be the same than the ssh connection)
     r = post("logentry/create", data)
 
     # It's SCP if scpcmd is set, else ssh.
@@ -163,13 +162,13 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
             scp.specialconnect(target, filelog, login, sshoptions,
                                originalcmd)
     else:
-        ssh.connect(target, filelog, login, port, sshoptions, 
-                    originalcmd)
-
-    # Change password on the target
-    if PWD_RST_AFTER_SESSION:
-        password.reset(targetname, target, login, sshoptions, port,
-                       isodate)
+        if not SSL:
+            cert = "/dev/null"
+        else:
+            cert = SSL_CERTIFICAT
+        SSH_SCRIPT         = conf.get("Environment", "SSH_SCRIPT")
+        ssh.connect(target, filelog, login, port, sshoptions, pid,
+                    url_passhport, cert, SSH_SCRIPT, originalcmd)
 
     return True
 
