@@ -135,9 +135,9 @@ create
 
 `passhport-admin target create [((<name> <hostname>) [--login=<login>] [--type=<ssh>] [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]` creates a new target.
 
-================== ===================================================================
+================== ==========================================================================
 Argument           Description
-================== ===================================================================
+================== ==========================================================================
 <name>             Name of the target to create
 
 hostname           Hostname or IP of the target
@@ -145,21 +145,21 @@ hostname           Hostname or IP of the target
 --login            Login to use when accessing the target (optional)
 
 --type             The type of the target (for the commercial version only). 
-                   It can be `ssh`, `postgresql`, `mysql`, `oracle`.
-                   This is used to know which hook to launch, depending on the server
-                   type. If type is something else than `ssh`, the server won't be 
-                   accessible via SSH. If the target is a PostGreSQL server and you 
-                   want to lauch the corresponding hook (usually a proxy to log user
-                   actions), use `postgresql` type. Same explanations for `mysql` and
-                   `oracle`.
-                   Use the default `ssh`, unless you have the commercial version.
+                   It can be `ssh`, `postgresql`, `mysql`, `oracle`.<br/>
+                   This is used to know which hook to launch, depending on the server<br/>
+                   type. If type is something else than `ssh`, the server won't be <br/> 
+                   accessible via SSH. If the target is a PostGreSQL server and you <br/>
+                   want to lauch the corresponding hook (usually a proxy to log user <br/>
+                   actions, use `postgresql` type). Same explanations for `mysql` and <br/>
+                   `oracle`.<br/>
+                   Use the default `ssh`, unless you have the commercial version.<br/>
 
 --comment          Comment concerning the target (optional)
 
 --sshoptions       SSH options to use when connecting to the target (optional)
 
 --port             SSH port to use when connecting to the target (optional)
-================== ===================================================================
+================== ==========================================================================
 
 **Example :**
 
@@ -191,9 +191,9 @@ edit
 
 `passhport-admin target edit [(<name> [--newname=<name>] [--newhostname=<hostname>] [--newtype=<ssh>] [--newlogin=<login>] [--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>])]` edits an existing target.
 
-================== ===================================================================
+================== ==========================================================================
 Argument           Description
-================== ===================================================================
+================== ==========================================================================
 <name>             Name of the target to edit
 
 --newname          New name of the target if you want to rename it (optional)
@@ -201,14 +201,14 @@ Argument           Description
 --newhostname      New hostname/IP of the target (optional)
 
 --newtype          The type of the target (for the commercial version only). 
-                   It can be `ssh`, `postgresql`, `mysql`, `oracle`.
-                   This is used to know which hook to launch, depending on the server
-                   type. If type is something else than `ssh`, the server won't be 
-                   accessible via SSH. If the target is a PostGreSQL server and you 
-                   want to lauch the corresponding hook (usually a proxy to log user
-                   actions, use `postgresql` type). Same explanations for `mysql` and
-                   `oracle`.
-                   Use the default `ssh`, unless you have the commercial version.
+                   It can be `ssh`, `postgresql`, `mysql`, `oracle`.<br/>
+                   This is used to know which hook to launch, depending on the server<br/>
+                   type. If type is something else than `ssh`, the server won't be <br/> 
+                   accessible via SSH. If the target is a PostGreSQL server and you <br/>
+                   want to lauch the corresponding hook (usually a proxy to log user <br/>
+                   actions, use `postgresql` type). Same explanations for `mysql` and <br/>
+                   `oracle`.<br/>
+                   Use the default `ssh`, unless you have the commercial version.<br/>
 
 --newlogin         New login to use when accessing the target (optional)
 
@@ -217,7 +217,7 @@ Argument           Description
 --newsshoptions    New SSH options to use when connecting to the target (optional)
 
 --newport          New SSH port to use when connecting to the target (optional)
-================== ===================================================================
+================== ==========================================================================
 
 **Example :**
 
