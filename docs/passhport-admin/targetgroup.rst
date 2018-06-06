@@ -312,7 +312,7 @@ If no argument is given, user enters in interactive mode.
   admin@bastion:~$ 
 
 addtargetgroup
--------------
+--------------
 
 `passhport-admin targetgroup addtargetgroup [(<subtargetgroupname> <targetgroupname>)]` connects a subtargetgroup directly to a targetgroup.
 
@@ -345,7 +345,7 @@ If no argument is given, user enters in interactive mode.
   admin@bastion:~$
 
 rmtargetgroup
------------
+-------------
 
 `passhport-admin targetgroup deltargetgroup [(<subtargetgroupname> <targetgroupname>)]` delete the connection between a subtargetgroup and a targetgroup.
 
