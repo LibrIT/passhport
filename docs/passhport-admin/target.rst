@@ -9,7 +9,7 @@ Usages :
   passhport-admin target search [<pattern>]
   passhport-admin target checkaccess [<pattern>]
   passhport-admin target show [<name>]
-  passhport-admin target create [((<name> <hostname>) [--login=<login>] [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]
+  passhport-admin target create [((<name> <hostname>) [--login=<login>] [--type=<ssh>] [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]
   passhport-admin target edit [(<name> [--newname=<name>] [--newhostname=<hostname>] [--newlogin=<login>] [--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>])]
   passhport-admin target (adduser | rmuser) [(<username> <targetname>)]
   passhport-admin target (addusergroup | rmusergroup) [(<usergroupname> <targetname>)]
@@ -133,7 +133,7 @@ If no pattern is given, user enters in interactive mode.
 create
 ----------
 
-`passhport-admin target create [((<name> <hostname>) [--login=<login>] [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]` creates a new target.
+`passhport-admin target create [((<name> <hostname>) [--login=<login>] [--type=<ssh>] [--comment=<comment>] [--sshoptions=<sshoptions>] [--port=<port>])]` creates a new target.
 
 ================== ===================================================================
 Argument           Description
@@ -143,6 +143,16 @@ Argument           Description
 hostname           Hostname or IP of the target
 
 --login            Login to use when accessing the target (optional)
+
+--type             The type of the target (for the commercial version only). 
+                   It can be `ssh`, `postgresql`, `mysql`, `oracle`.
+                   This is used to know which hook to launch, depending on the server
+                   type. If type is something else than `ssh`, the server won't be 
+                   accessible via SSH. If the target is a PostGreSQL server and you 
+                   want to lauch the corresponding hook (usually a proxy to log user
+                   actions), use `postgresql` type. Same explanations for `mysql` and
+                   `oracle`.
+                   Use the default `ssh`, unless you have the commercial version.
 
 --comment          Comment concerning the target (optional)
 
@@ -168,6 +178,7 @@ If no argument is given, user enters in interactive mode.
   admin@bastion:~# passhport-admin target create 
   Name: firewall2.compagny.com
   Hostname: 87.65.43.220
+  Type (default is ssh):
   Login (default is root):
   Port: 22
   SSH Options: 
@@ -178,7 +189,7 @@ If no argument is given, user enters in interactive mode.
 edit
 -----------
 
-`passhport-admin target edit [(<name> [--newname=<name>] [--newhostname=<hostname>] [--newlogin=<login>] [--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>])]` edits an existing target.
+`passhport-admin target edit [(<name> [--newname=<name>] [--newhostname=<hostname>] [--newtype=<ssh>] [--newlogin=<login>] [--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>])]` edits an existing target.
 
 ================== ===================================================================
 Argument           Description
@@ -188,6 +199,16 @@ Argument           Description
 --newname          New name of the target if you want to rename it (optional)
 
 --newhostname      New hostname/IP of the target (optional)
+
+--newtype          The type of the target (for the commercial version only). 
+                   It can be `ssh`, `postgresql`, `mysql`, `oracle`.
+                   This is used to know which hook to launch, depending on the server
+                   type. If type is something else than `ssh`, the server won't be 
+                   accessible via SSH. If the target is a PostGreSQL server and you 
+                   want to lauch the corresponding hook (usually a proxy to log user
+                   actions, use `postgresql` type). Same explanations for `mysql` and
+                   `oracle`.
+                   Use the default `ssh`, unless you have the commercial version.
 
 --newlogin         New login to use when accessing the target (optional)
 
