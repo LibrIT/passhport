@@ -360,6 +360,11 @@ if __name__ == '__main__':
     else:
         # We handle the interactive ssh connection
         print("Welcome {}.".format(username))
+        ugroups = get(url_passhport + "user/attachedto/usergroup/" + \
+                  username)
+        if ugroups != "":
+            print("You are currently attached to this usergroups:\n" + ugroups)
+
         print("Here is the list of servers you can access:")
 
         # Print servers the user can access, 
@@ -367,7 +372,8 @@ if __name__ == '__main__':
         print(build_commented_targets_list(target_list, tabulations=1))
 
         # Let the use chose his server
-        sys.stdout.write("Type the number, name or hostname of the server you want to connect to : ")
+        sys.stdout.write("Type the number, name or hostname of the " + \
+                         "server you want to connect to : ")
         try:
             choice = input("").casefold()
         except EOFError:

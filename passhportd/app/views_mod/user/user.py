@@ -543,3 +543,13 @@ def user_is_manager(name):
 
     return utils.response(str(u.is_manager()), 200)
     
+
+@app.route("/user/attachedto/usergroup/<name>")
+def user_attached_to_usergroup(name):
+    """Return the list of the usergroups that contains this user"""
+    u = utils.check_user_get(request, name)
+    if not u:
+        return utils.response("ERROR: The request is not correct", 417)
+
+    return utils.response(str(u.show_usergroup()), 200)
+    
