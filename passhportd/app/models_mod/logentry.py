@@ -31,8 +31,8 @@ class Logentry(db.Model):
         output.append("PID       : {}".format(str(self.pid)))
         output.append("Command   : {}".format(self.connectioncmd))
         output.append("Logfile:" + self.logfilepath + self.logfilename)
-        output.append("User      : {}".format(self.user[0].show_name()))
-        output.append("Target    : {}".format(self.target[0].show_name()))
+        output.append("User      : {}".format(self.show_username()))
+        output.append("Target    : {}".format(self.show_targetname()))
         return "\n".join(output)
 
 
@@ -47,8 +47,8 @@ class Logentry(db.Model):
         output = output + "\"PID\": \"" + format(str(self.pid)) + "\",\n"
         output = output + "\"Logfile\": \"" + self.logfilepath + \
                           self.logfilename + "\",\n"
-        output = output + "\"User\": \"" + format(self.user[0].show_name()) + "\",\n"
-        output = output + "\"Target\": \"" + format(self.target[0].show_name()) + "\""
+        output = output + "\"User\": \"" + format(self.show_username()) + "\",\n"
+        output = output + "\"Target\": \"" + format(self.show_targetname()) + "\""
         output = output + "}"
 
         return output
@@ -64,3 +64,18 @@ class Logentry(db.Model):
         if self.endsessiondate:
             return self.endsessiondate
         return "Connected"
+
+
+    def show_username(self):
+        """Return the username connected to this logentry"""
+        if len(self.user) != 0:
+            return self.user[0].show_name()
+        return "None"
+
+
+    def show_targetname(self):
+        """Return the targetname connected to this logentry"""
+        if len(self.target) != 0:
+            return self.target[0].show_name()
+        return "None"
+
