@@ -20,10 +20,10 @@ Usage:
     passhport-admin target checkaccess [<pattern>]
     passhport-admin target show [<name>]
     passhport-admin target create [((<name> <hostname>) [--login=<login>] \
-[--type=<ssh>] [--comment=<comment>] [--sshoptions=<sshoptions>] \
+[--type=<ssh>] [--comment=<comment>] [--changepwd=<yes>] [--sshoptions=<sshoptions>] \
 [--port=<port>])]
     passhport-admin target edit [(<name> [--newname=<name>] \
-[--newhostname=<hostname>] [--newtype=<ssh>] [--newlogin=<login>] \
+[--newhostname=<hostname>] [--newtype=<ssh>] [--newlogin=<login>] [--newchangepwd=<Yes|No>>] \
 [--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>])]
     passhport-admin target (adduser | rmuser) \
 [(<username> <targetname>)]
