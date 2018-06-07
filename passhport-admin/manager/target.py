@@ -50,6 +50,7 @@ def prompt_create():
     login = input("Login (default is root): ")
     port = ask_port("Port: ")
     sshoptions = input("SSH Options: ")
+    changepwd = input("Change the password after each connection (type 'Yes' if you really want it): ")
     comment = input("Comment: ")
 
     return {"<name>": name,
@@ -58,6 +59,7 @@ def prompt_create():
         "--login": login,
         "--sshoptions": sshoptions,
         "--port": port,
+        "--changepwd": changepwd,
         "--comment": comment}
 
 
@@ -67,6 +69,7 @@ def create(param):
     login = ""
     port = ""
     sshoptions = ""
+    changepwd = ""
     comment = ""
 
     if "--type" in param:
@@ -92,12 +95,19 @@ def create(param):
     if "--login" in param:
         login = param["--login"]
 
+    if "--changepwd" in param:
+        if param["--changepwd"] == "Yes":
+            changepwd = "True"
+        else:
+            changepwd = "False"
+
     return {"name": param["<name>"],
             "hostname": param["<hostname>"],
             "targettype": targettype,
             "login": login,
             "port": port,
             "sshoptions": sshoptions,
+            "changepwd": changepwd,
             "comment": comment}
 
 
@@ -114,6 +124,7 @@ def prompt_edit(req):
         new_login = input("New Login: ")
         new_port = ask_port("New port: ")
         new_sshoptions = input("New SSH options: ")
+        new_changepwd = input("Change the password after each connection (type 'Yes' if you really want it): ")
         new_comment = input("New comment: ")
         if len(new_comment.strip()) == 0:
             answer = input("Remove original comment? [y/N]")
@@ -127,6 +138,7 @@ def prompt_edit(req):
             "--newlogin": new_login,
             "--newport": new_port,
             "--newsshoptions": new_sshoptions,
+            "--newchangepwd": new_changepwd,
             "--newcomment": new_comment}
 
 
@@ -138,6 +150,7 @@ def edit(param):
     new_login = ""
     new_port = ""
     new_sshoptions = ""
+    new_changepwd = ""
     new_comment = ""
 
     if "--newname" in param:
@@ -158,6 +171,12 @@ def edit(param):
     if "--newsshoptions" in param:
         new_sshoptions = param["--newsshoptions"]
 
+    if "--newchangepwd" in param:
+        if param["--newchangepwd"] == "Yes":
+            new_changepwd = "True"
+        else:
+            new_changepwd = "False"
+
     if "--newcomment" in param:
         new_comment = param["--newcomment"]
 
@@ -168,6 +187,7 @@ def edit(param):
             "new_login": new_login,
             "new_port": new_port,
             "new_sshoptions": new_sshoptions,
+            "new_changepwd": new_changepwd,
             "new_comment": new_comment}
 
 

@@ -212,7 +212,7 @@ def target_create():
     sshoptions = request.form["sshoptions"]
     comment = request.form["comment"]
     changepwd = request.form["changepwd"]
-    sessiondur = request.form["sessiondur"]
+    sessiondur = "" #request.form["sessiondur"]
 
     # Check for required fields
     if not name or not hostname:
@@ -230,6 +230,10 @@ def target_create():
 
     if not changepwd:
         changepwd = False
+    elif changepwd == "True":
+        changepwd = True
+    else:
+        changepwd=False
 
     if not sessiondur:
         sessiondur = 240 #4h is the default
@@ -250,7 +254,7 @@ def target_create():
         port       = port,
         sshoptions = sshoptions,
         comment    = comment,
-        changepwd  = changepws,
+        changepwd  = changepwd,
         sessiondur = sessiondur)
     db.session.add(t)
 
@@ -280,7 +284,7 @@ def target_edit():
     new_sshoptions = request.form["new_sshoptions"]
     new_comment = request.form["new_comment"]
     new_changepwd = request.form["new_changepwd"]
-    new_sessiondur = request.form["new_sessiondur"]
+    new_sessiondur = "" #request.form["new_sessiondur"]
 
     # Check required fields
     if not name:
@@ -334,6 +338,7 @@ def target_edit():
 
     if new_changepwd:
         # changepwd is a boolean so we give him the boolean result of this test
+        print(new_changepwd)
         to_update.update({"changepwd": new_changepwd == "True"})
 
     if new_sessiondur:
