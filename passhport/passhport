@@ -137,7 +137,7 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
               " " + login + '@' + target + \
               ' ' + sshoptions 
         if originalcmd:
-            cmd = cmd + "DIRECT COMMAND: " + originalcmd
+            cmd = cmd + originalcmd
     else:
         cmd = originalcmd
 
