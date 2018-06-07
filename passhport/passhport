@@ -360,9 +360,10 @@ if __name__ == '__main__':
     else:
         # We handle the interactive ssh connection
         print("Welcome {}.".format(username))
-        print("You are currently attached to this usergroups:")
-        print(get(url_passhport + "user/attachedto/usergroup/" + \
-                  username))
+        ugroups = get(url_passhport + "user/attachedto/usergroup/" + \
+                  username)
+        if ugroups != "":
+            print("You are currently attached to this usergroups:\n" + ugroups)
 
         print("Here is the list of servers you can access:")
 
