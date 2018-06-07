@@ -24,7 +24,7 @@ def connect(target, filelog, login, port, sshoptions, pid, url_passhport, cert, 
         os.system('ssh -p ' + str(port) + " " + login + '@' + target + \
                   ' ' + sshoptions + " '" + originalcmd + "'" )
         
-    url = url_passhport + "/connection/ssh/endsession/" + str(pid)
+    url = url_passhport + "connection/ssh/endsession/" + str(pid)
     try:
         if cert != "/dev/null": 
             r = requests.get(url, verify=cert)
