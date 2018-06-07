@@ -6,7 +6,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-import os
+import os, requests
 
 def connect(target, filelog, login, port, sshoptions, pid, url_passhport, cert, ssh_script, originalcmd):
     """ Simply launch the ssh connection or execute the ssh command"""
@@ -19,8 +19,17 @@ def connect(target, filelog, login, port, sshoptions, pid, url_passhport, cert, 
 
     else:
         f = open(filelog, "w")
-        f.write("DIRECT COMMAND --- " + originalcmd)
+        f.write("DIRECT COMMAND --- " + originalcmd + "\n")
         f.close()
         os.system('ssh -p ' + str(port) + " " + login + '@' + target + \
                   ' ' + sshoptions + " '" + originalcmd + "'" )
         
+    url = url_passhport + "/connection/ssh/endsession/" + str(pid)
+    try:
+        if cert != "/dev/null": 
+            r = requests.get(url, verify=cert)
+        else:
+            r = requests.get(url)
+
+    except requests.RequestException as e:
+        print("ERROR: " + str(e.message))

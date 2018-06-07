@@ -13,7 +13,7 @@ OPTION="$@"
 OPTIONS=""
 
 ###### We trap a manual window close to let the script to end ######
-trap "echo Ending script" SIGHUP SIGINT SIGKILL SIGTERM SIGSTOP
+trap "echo 'You are not allowed to stop disconnection'" SIGHUP SIGINT SIGKILL SIGTERM SIGSTOP
 
 #Remove 7 first arguments and put the others in the OPTIONS variable
 i=0
