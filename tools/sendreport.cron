@@ -1,2 +1,2 @@
-1 0 * * * passhport wget --no-check-certificate -qO - https://localhost:5000/reporting/daily | /usr/bin/mail -s "PaSSHport daily report" admin@email.tld
-2 0 * * 0 passhport wget --no-check-certificate -qO - https://localhost:5000/reporting/weekly/4 | /usr/bin/mail -s "PaSSHport weekly report" admin@email.tld
+1 0 * * * passhport wget --no-check-certificate -qO - https://localhost:5000/reporting/daily | /usr/bin/mail -s "$(echo -e "PaSSHport $(date  --date="1 days ago" +%y-%m-%d) report\nContent-Type: text/html")" admin@email.tld
+2 0 * * 0 passhport wget --no-check-certificate -qO - https://localhost:5000/reporting/weekly/4 | /usr/bin/mail -s "PaSSHport  $(date  --date="7 days ago" +%y-%m) weekly report" admin@email.tld
