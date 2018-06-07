@@ -68,6 +68,11 @@ class User(db.Model):
         return self.name
 
 
+    def show_usergroup(self):
+        """Return the usergroup list as str"""
+        return " ".join([u.show_name() for u in self.usergroups])
+
+
     def show_comment(self):
         """Return a string containing the user's comment"""
         return self.comment
