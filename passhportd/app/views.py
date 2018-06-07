@@ -7,6 +7,7 @@ from .models_mod import logentry
 from .models_mod import user
 from .models_mod import target
 from flask import request, stream_with_context, Response
+from tabulate import tabulate
 
 
 @app.route("/")
@@ -28,37 +29,35 @@ def dailyreport():
 
 
     # 3. Format the output
-    #First we create an ordonned list with the tree column
+    headers = ["Start", "End", "User name", "Target name", "Target hostname"] #[SESSION]
+
+    # First we create an ordonned list with the 5 columns
     olist=[]
     for row in query:
-        olist.append({"user"   : row.user[0].show_name(),
-                      "target" : row.target[0].show_name(), 
-                      "date"   : row.connectiondate[9:11] + ":" + \
-                                 row.connectiondate[11:13]})
+        olist.append([row.connectiondate[9:11] + ":" + \
+                      row.connectiondate[11:13], # Start date
+                      row.endsessiondate[9:11] + ":" + \
+                      row.endsessiondate[11:13], # End date
+                      row.user[0].show_name(), # User name
+                      row.target[0].show_name(), # Target name
+                      row.target[0].show_hostname()]) #Target hostname
 
-    if len(olist) == 0:
-        return "No connection logged yesterday."
-
-    ucolsize=35
-    tcolsize=20
-    output = "Yesterday connections by user:\n"
-    output = output + "Username" + " "*(ucolsize-len("Username")) + "\t"
-    output = output + "Target" + " "*(tcolsize-len("Target")) + "\t"
-    output = output + "Connection date\n"
-
-    # Then obtain all usernames unicity and loop on usernames
-    for user in set([log["user"] for log in olist]):
-        firstline = True
-        for row in [log for log in olist if log["user"] == user]:
-            if firstline:
-                output = output + user + " "*(ucolsize - len(user)) + "\t"
-                firstline = False
-            else:
-                output = output + " "*(ucolsize) + "\t"
-            output = output + row["target"] + \
-                                " "*(tcolsize - len(row["target"])) + "\t" 
-            output = output + row["date"] + "\n" 
-
+    # Tabulate construct the table from this list
+    output = tabulate(olist, headers = headers, tablefmt="html")
+    # Add some decorations
+    output = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">' + \
+             '<html>' +  \
+             '<head>' + \
+             '<meta http-equiv=3D"Content-Type" content="text/html; charset=3Diso-8859-1">' + \
+             '<style>table, th, td { border: 1px solid black; border-collapse: collapse; }\n' + \
+             'th, td { padding: 5px; } </style>' + \
+             '</head>' + \
+             '<body>' + \
+             '<center>' + \
+             '<h1>PaSSHport Daily report</h1>' + output + \
+             '</center>' + \
+             '</body>' + \
+             '</html>' 
     return output
 
 
