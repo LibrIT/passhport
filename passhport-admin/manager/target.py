@@ -50,7 +50,7 @@ def prompt_create():
     login = input("Login (default is root): ")
     port = ask_port("Port: ")
     sshoptions = input("SSH Options: ")
-    changepwd = input("Change the password after each connection (type 'Yes' if you really want it): ")
+    changepwd = input("Change the password after each connection (type 'yes' if you really want it): ")
     comment = input("Comment: ")
 
     return {"<name>": name,
@@ -96,7 +96,7 @@ def create(param):
         login = param["--login"]
 
     if "--changepwd" in param:
-        if param["--changepwd"] == "Yes":
+        if param["--changepwd"].casefold() == "yes":
             changepwd = "True"
         else:
             changepwd = "False"
@@ -124,7 +124,7 @@ def prompt_edit(req):
         new_login = input("New Login: ")
         new_port = ask_port("New port: ")
         new_sshoptions = input("New SSH options: ")
-        new_changepwd = input("Change the password after each connection (type 'Yes' if you really want it): ")
+        new_changepwd = input("Change the password after each connection (type 'yes' if you really want it): ")
         new_comment = input("New comment: ")
         if len(new_comment.strip()) == 0:
             answer = input("Remove original comment? [y/N]")
@@ -172,7 +172,7 @@ def edit(param):
         new_sshoptions = param["--newsshoptions"]
 
     if "--newchangepwd" in param:
-        if param["--newchangepwd"] == "Yes":
+        if param["--newchangepwd"].casefold() == "yes":
             new_changepwd = "True"
         else:
             new_changepwd = "False"
