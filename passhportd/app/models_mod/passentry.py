@@ -1,6 +1,5 @@
 # -*-coding:Utf-8 -*-
 from app import app, db
-from app.models_mod import target
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
