@@ -29,18 +29,19 @@ def dailyreport():
 
 
     # 3. Format the output
-    headers = ["Start", "End", "User name", "Target name", "Target hostname"] #[SESSION]
+    headers = ["Start", "End", "User name", "Target name", "Target hostname", "Command"] #[SESSION]
 
     # First we create an ordonned list with the 5 columns
     olist=[]
     for row in query:
         olist.append([row.connectiondate[9:11] + ":" + \
                       row.connectiondate[11:13], # Start date
-                      row.endsessiondate[9:11] + ":" + \
-                      row.endsessiondate[11:13], # End date
-                      row.user[0].show_name(), # User name
-                      row.target[0].show_name(), # Target name
-                      row.target[0].show_hostname()]) #Target hostname
+                      row.show_endsessiondate()[9:11] + ":" + \
+                      row.show_endsessiondate()[11:13], # End date
+                      row.show_username(), # User name
+                      row.show_targetname(), # Target name
+                      row.show_targethostname(), #Target hostname
+                      row.connectioncmd]) # Command
 
     # Tabulate construct the table from this list
     output = tabulate(olist, headers = headers, tablefmt="html")

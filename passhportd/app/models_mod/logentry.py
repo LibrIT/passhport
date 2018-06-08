@@ -79,3 +79,17 @@ class Logentry(db.Model):
             return self.target[0].show_name()
         return "None"
 
+
+    def show_targethostname(self):
+        """Return the target hostname connected to this logentry"""
+        if len(self.target) != 0:
+            return self.target[0].show_hostname()
+        return "None"
+
+
+    def show_endsesssiondate(self):
+        """Return a random date if there is not"""
+        if not self.endsessiondate:
+            return "20180609T000000"
+        return self.endsessiondate
+
