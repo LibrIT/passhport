@@ -87,7 +87,7 @@ class Logentry(db.Model):
         return "None"
 
 
-    def show_endsesssiondate(self):
+    def show_endsessiondate(self):
         """Return a random date if there is not"""
         if not self.endsessiondate:
             return "20180609T000000"
