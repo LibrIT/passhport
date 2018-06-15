@@ -512,6 +512,10 @@ def user_delete(name):
     for each_targetgroup in targetgroup_list:
         each_targetgroup.rmuser(user_data)
 
+    # Delete the log entries
+    for lentry in user_data.logentries:
+        lentry.user.remove(lentry.user[0])
+	
     # Finally delet the user from the db
     db.session.query(
         user.User).filter(
