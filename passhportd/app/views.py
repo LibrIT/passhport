@@ -242,6 +242,9 @@ def prepdownload():
     """Check if the file is a regular avalaible file before any transfer"""
     targetname = request.form["target"]
     filename = request.form["filename"]
+    player = None
+    if "player" in request.form:
+        player = request.form["player"]
 
     t = target.Target.query.filter_by(name=targetname).first()
     if t is None:
@@ -258,8 +261,20 @@ def prepdownload():
 
     txtcommand = "ssh -p" + midcmd + \
                  " ls " + filename +  " | wc -l"
+    if player:
+        #In case of player, we need to create a totally different command
+        # players are target not registred in passhport but accessible
+        # No specific port, no option .. limited.
+        # You need the key in the right place as shown below
+        txtcommand = "ssh -oBatchMode=yes -i /home/passhport/players_keys/" + \
+                     targetname + "/.ssh/" + targetname + " " + \
+                     player + " ls " + filename +  " | wc -l"
+
     command    = [ elt for elt in txtcommand.split(" ")]
-    p = subprocess.check_output(command)
+    try:
+        p = subprocess.check_output(command)
+    except:
+        return utils.response("ERROR: can't connect", 404)
 
     if str(p.decode()) != "1\n":
         return utils.response("ERROR: file cannot be found", 404)
@@ -271,6 +286,9 @@ def directdownload():
     """Return a stream containing file from target"""
     targetname = request.form["target"]
     filename = request.form["filename"]
+    player = None
+    if "player" in request.form:
+        player = request.form["player"]
 
     t = target.Target.query.filter_by(name=targetname).first()
     if t is None:
@@ -287,9 +305,18 @@ def directdownload():
 
     txtcommand = "scp -P" + midcmd + \
                  ":" + filename + " " + "/dev/stdout"
-    command    = [ elt for elt in txtcommand.split(" ")]
+    if player:
+        # Check previous comment about players
+        txtcommand = "scp -i /home/passhport/players_keys/" + \
+                     targetname + "/.ssh/" + targetname + " " + \
+                     player + ":" + filename +  " " + \
+                      "/dev/stdout"
 
-    p = subprocess.Popen(command, stdout=subprocess.PIPE)
+    command    = [ elt for elt in txtcommand.split(" ")]
+    try:
+        p = subprocess.Popen(command, stdout=subprocess.PIPE)
+    except:
+        return utils.response("ERROR: can't connect", 404)
 
     return Response(stream_with_context(p.stdout))
 
