@@ -267,7 +267,8 @@ def prepdownload():
         # No specific port, no option .. limited.
         # You need the key in the right place as shown below
         txtcommand = "ssh -oBatchMode=yes -i /home/passhport/players_keys/" + \
-                     targetname + "/.ssh/" + targetname + " " + \
+                     targetname.split("@",1)[0] + "/.ssh/" + \
+                     targetname.split("@",1)[0] + " " + \
                      player + " ls " + filename +  " | wc -l"
 
     command    = [ elt for elt in txtcommand.split(" ")]
@@ -308,7 +309,8 @@ def directdownload():
     if player:
         # Check previous comment about players
         txtcommand = "scp -i /home/passhport/players_keys/" + \
-                     targetname + "/.ssh/" + targetname + " " + \
+                     targetname.split("@",1)[0] + "/.ssh/" + \
+                     targetname.split("@",1)[0] + " " + \
                      player + ":" + filename +  " " + \
                       "/dev/stdout"
 
