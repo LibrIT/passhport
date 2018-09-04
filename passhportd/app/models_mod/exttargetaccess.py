@@ -59,6 +59,6 @@ class Exttargetaccess(db.Model):
 
 
     def show_targetname(self):
-        if self.user:
+        if self.target:
             return self.target[0].show_name()
         return "None"
