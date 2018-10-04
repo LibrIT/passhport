@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 from datetime import datetime, timedelta, date
 from app import app, db
 from app.models_mod import target,usergroup,targetgroup
+import hashlib, base64 # used to calculate sshky hash
    
 class User(db.Model):
     """User defines information for every adminsys using passhport"""
@@ -17,6 +18,8 @@ class User(db.Model):
                            index=True, unique=True, nullable=False)
     sshkey     = db.Column(db.String(5000), 
                            index=False, unique=True, nullable=False)
+    sshkeyhash = db.Column(db.String(5000),
+                           index=True, unique=False, nullable=True)
     comment    = db.Column(db.String(5000), index=True)
     superadmin = db.Column(db.Boolean, unique=False, default=False)
 
@@ -40,6 +43,7 @@ class User(db.Model):
 
         output.append("Email: {}".format(self.name))
         output.append("SSH key: {}".format(self.sshkey))
+        output.append("SSH key hash: {}".format(self.show_sshkeyhash()))
         output.append("Comment: {}".format(self.comment))
         output.append("Accessible target list: " + \
             " ".join(self.accessible_targetname_list()))
@@ -57,6 +61,8 @@ class User(db.Model):
 
         output = output + "\"email\": \"" + format(self.name) + "\",\n"
         output = output + "\"sshkey\": \"" + format(self.sshkey) + "\",\n"
+        output = output + "\"sshkeyhash\": \"" + \
+                          format(self.show_sshkeyhash()) + "\",\n"
         output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
         output = output + "}"
 
@@ -83,6 +89,15 @@ class User(db.Model):
         if self.adminofug:
             return True
         return False
+
+
+    def show_sshkeyhash(self):
+        """Return the sshkey hash or False it if field is empty"""
+        if self.sshkeyhash:
+            return self.sshkeyhash
+
+        print("WARN: This user sshkey hash is not stored: " + self.name)
+        return self.hash(self.sshkey)
 
 
     def accessible_targetname_list(self):
@@ -206,4 +221,15 @@ class User(db.Model):
         else:
             return (-1)
 
+    @staticmethod
+    def hash(sshkey):
+        """ Return the sshkey hash of sshkey """
+        m = hashlib.sha256()
+        key = sshkey.split(" ")
+        if len(key) != 3:
+            print("ERROR: wrong sshkey format: " + sshkey)
+            return("Wrong ssh key format")
+        m.update(base64.b64decode(key[1]))
+
+        return base64.b64encode(m.digest()).decode('utf-8')
 

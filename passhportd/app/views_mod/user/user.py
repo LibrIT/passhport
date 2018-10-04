@@ -263,6 +263,7 @@ def user_create():
     u = user.User(
         name=name,
         sshkey=sshkey,
+        sshkeyhash=user.User.hash(sshkey),
         comment=comment)
     db.session.add(u)
 
@@ -306,6 +307,7 @@ def user_issuperadmin(name):
     
 
 @app.route("/user/generate_authorized_keys", methods=["GET"])
+@app.route("/user/generate/authorized_keys", methods=["GET"])
 def generate_authorized_keys():
     """Return a authorized_key files with all users"""
     query = db.session.query(user.User).order_by(user.User.name).all()
@@ -420,6 +422,7 @@ def user_edit():
                 return result
        
         to_update.update({"sshkey": new_sshkey})
+        to_update.update({"sshkeyhash": user.User.hash(new_sshkey)})
 
     if new_name:
         # Check unicity for name
@@ -542,7 +545,26 @@ def user_is_manager(name):
         return utils.response("ERROR: The request is not correct", 417)
 
     return utils.response(str(u.is_manager()), 200)
+
+
+@app.route("/user/generate/sshkeyhash", methods=["GET"])
+def generate_sshkeyhash():
+    """Re generate the sshkey hash for all users"""
+    query = db.session.query(user.User).order_by(user.User.name).all()
     
+    for u in query:
+        u.sshkeyhash=u.hash(u.sshkey)
+
+
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        return utils.response('ERROR: "' + name + '" -> ' + e.message, 409)
+
+    return utils.response('OK: All sshkey hash generated', 200)
+
+
+   
 
 @app.route("/user/attachedto/usergroup/<name>")
 def user_attached_to_usergroup(name):
