@@ -335,7 +335,7 @@ _passhportadmin_target_edit()
 	fi
 
 	if [ $COMP_CWORD -ge 4 ]; then
-		COMPREPLY=( $( compgen -W '--newname= --newhostname= --newlogin= --newcomment= --newsshoptions= --newport= ' -- $cur) )
+		COMPREPLY=( $( compgen -W '--newname= --newhostname= --newlogin= --newchangepwd= --newcomment= --newsshoptions= --newport= ' -- $cur) )
 	fi
 }
 
@@ -429,7 +429,7 @@ _passhportadmin_target_create()
 	cur="${COMP_WORDS[COMP_CWORD]}"
 
 	if [ $COMP_CWORD -ge 4 ]; then
-		COMPREPLY=( $( compgen -W '--login= --comment= --sshoptions= --port= ' -- $cur) )
+		COMPREPLY=( $( compgen -W '--login= --comment= --changepwd= --sshoptions= --port= ' -- $cur) )
 	fi
 }
 
