@@ -9,6 +9,7 @@ from datetime import datetime, timedelta, date
 from app import app, db
 from app.models_mod import target,usergroup,targetgroup
 import hashlib, base64 # used to calculate sshky hash
+import sys
    
 class User(db.Model):
     """User defines information for every adminsys using passhport"""
@@ -43,7 +44,6 @@ class User(db.Model):
 
         output.append("Email: {}".format(self.name))
         output.append("SSH key: {}".format(self.sshkey))
-        output.append("SSH key hash: {}".format(self.show_sshkeyhash()))
         output.append("Comment: {}".format(self.comment))
         output.append("Accessible target list: " + \
             " ".join(self.accessible_targetname_list()))
@@ -96,7 +96,8 @@ class User(db.Model):
         if self.sshkeyhash:
             return self.sshkeyhash
 
-        print("WARN: This user sshkey hash is not stored: " + self.name)
+        print("WARN: This user sshkey hash is not stored: " + self.name, 
+                                                         file=sys.stderr)
         return self.hash(self.sshkey)
 
 
@@ -225,11 +226,13 @@ class User(db.Model):
     def hash(sshkey):
         """ Return the sshkey hash of sshkey """
         m = hashlib.sha256()
-        key = sshkey.split(" ")
-        if len(key) != 3:
-            print("ERROR: wrong sshkey format: " + sshkey)
+        try:
+            key = sshkey.split(" ")
+            m.update(base64.b64decode(key[1]))
+            hashkey= base64.b64encode(m.digest()).decode('utf-8')
+        except:
+            print("ERROR: wrong sshkey format: " + sshkey, file=sys.stderr)
             return("Wrong ssh key format")
-        m.update(base64.b64decode(key[1]))
 
-        return base64.b64encode(m.digest()).decode('utf-8')
+        return hashkey
 
