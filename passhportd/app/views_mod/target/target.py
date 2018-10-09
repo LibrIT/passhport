@@ -226,7 +226,14 @@ def target_create():
         login = "root"
 
     if not port:
-        port = 22
+        if targettype == "ssh":
+            port = 22
+        elif targettype == "mysql":
+            port = 3306    
+        elif targettype == "postgresql":
+            port = 5432
+        elif targettype == "oracle" : 
+            port = 1521
 
     if not changepwd:
         changepwd = False
