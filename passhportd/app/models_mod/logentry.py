@@ -31,8 +31,8 @@ class Logentry(db.Model):
         output.append("PID       : {}".format(str(self.pid)))
         output.append("Command   : {}".format(self.connectioncmd))
         output.append("Logfile:" + self.logfilepath + self.logfilename)
-        output.append("User      : {}".format(self.show_username()))
-        output.append("Target    : {}".format(self.show_targetname()))
+        # PERF ISSUE output.append("User      : {}".format(self.show_username()))
+        # PERF ISSUE output.append("Target    : {}".format(self.show_targetname()))
         return "\n".join(output)
 
 
@@ -49,6 +49,21 @@ class Logentry(db.Model):
                           self.logfilename + "\",\n"
         output = output + "\"User\": \"" + format(self.show_username()) + "\",\n"
         output = output + "\"Target\": \"" + format(self.show_targetname()) + "\""
+        output = output + "}"
+
+        return output
+
+
+    def lightjson(self):
+        """Return a json of logentry infos"""
+        output = "{"
+        output = output + "\"Start date\": \"" + format(self.connectiondate) + "\",\n"
+        output = output + "\"End date\": \"" + \
+                          format(self.show_endsessiondate()) + "\",\n"
+        output = output + "\"Command\": \"" + \
+                          format(self.connectioncmd) + "\",\n"
+        output = output + "\"Logfile\": \"" + self.logfilepath + \
+                          self.logfilename + "\""
         output = output + "}"
 
         return output
