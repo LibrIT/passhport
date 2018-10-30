@@ -54,6 +54,21 @@ class Logentry(db.Model):
         return output
 
 
+    def lightjson(self):
+        """Return a json of logentry infos"""
+        output = "{"
+        output = output + "\"Start date\": \"" + format(self.connectiondate) + "\",\n"
+        output = output + "\"End date\": \"" + \
+                          format(self.show_endsessiondate()) + "\",\n"
+        output = output + "\"Command\": \"" + \
+                          format(self.connectioncmd) + "\",\n"
+        output = output + "\"Logfile\": \"" + self.logfilepath + \
+                          self.logfilename + "\""
+        output = output + "}"
+
+        return output
+
+
     def setenddate(self, enddate):
         """Add a enddate at the moment this is called"""
         self.endsessiondate = enddate

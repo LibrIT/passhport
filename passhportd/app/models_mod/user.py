@@ -29,7 +29,7 @@ class User(db.Model):
     targets      = db.relationship("Target", secondary="target_user")
     usergroups   = db.relationship("Usergroup", secondary="group_user")
     targetgroups = db.relationship("Targetgroup", secondary="tgroup_user")
-    logentries   = db.relationship("Logentry", secondary="user_log")
+    logentries   = db.relationship("Logentry", secondary="user_log", order_by="Logentry.connectiondate")
     # Admins - can admin usergroups and targetgroups (add and remove users)
     adminoftg = db.relationship("Targetgroup", secondary="tg_admins")
     adminofug = db.relationship("Usergroup", secondary="ug_admins")
@@ -202,7 +202,7 @@ class User(db.Model):
                 i = 500
             else:
                 output = output + '"' + str(i) + '": ' + \
-                         self.logentries[len(self.logentries) - i].simplejson() + ",\n"
+                         self.logentries[len(self.logentries) - i].lightjson() + ",\n"
         
         return output[:-2] + "\n}"
 
