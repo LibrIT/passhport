@@ -26,7 +26,7 @@ if [ -z "${PASSHPORT_RUN_ENV}" ]
 then
 	if [ -w "${DEFAULT_PASSHPORT_RUN_ENV}" ]
 	then
-		PASSHPORT_DIR="${DEFAULT_PASSHPORT_RUN_ENV}"
+		PASSHPORT_RUN_ENV="${DEFAULT_PASSHPORT_RUN_ENV}"
 	else
 		echo "Error : couldn't find default password. Please pass passhport-run-env directory as second"
 		echo "argument to this script."
