@@ -31,8 +31,8 @@ class Logentry(db.Model):
         output.append("PID       : {}".format(str(self.pid)))
         output.append("Command   : {}".format(self.connectioncmd))
         output.append("Logfile:" + self.logfilepath + self.logfilename)
-        # PERF ISSUE output.append("User      : {}".format(self.show_username()))
-        # PERF ISSUE output.append("Target    : {}".format(self.show_targetname()))
+        output.append("User      : {}".format(self.show_username()))
+        output.append("Target    : {}".format(self.show_targetname()))
         return "\n".join(output)
 
 
