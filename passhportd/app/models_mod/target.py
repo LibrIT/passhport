@@ -156,6 +156,8 @@ class Target(db.Model):
         # Remove the target from targetgroup is handled in the view
         while len(self.logentries) > 0:
             self.logentries.pop()
+        while len(self.passentries) > 0:
+            self.passentries.pop()
 
 
     # Pass management
