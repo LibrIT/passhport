@@ -46,15 +46,15 @@ def parse(originalcmd):
     return [target, cmd, path, nextuser, nexttarget]
     
 
-def connect(target, filelog, login, sshoptions, originalcmd):
+def connect(target, filelog, login, sshoptions, port, originalcmd):
     """ Simply launch the scp connection """
     # The final command should be like
     # ssh -q -t login@target scp -t /path/to/target
     # or to receive
     # ssh -q -t login@target scp -f /path/to/target /local/path/
     # and ssh/scp do magic after that
-    cmd = re.sub("scp -(.) ", "ssh -q -t " + login + "@" + target + 
-            " scp -\\1 ", originalcmd)  
+    cmd = re.sub("scp -(.) ", "ssh -q -p " + port + " -t " + login + "@" +
+            target + " scp -\\1 ", originalcmd)  
 
     # Print the command on a logfile
     filelog = open(filelog + "-scp.log", "a")
