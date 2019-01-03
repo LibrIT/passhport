@@ -182,7 +182,10 @@ def build_targetnames_list(target_list):
     """Return a list with targets names only"""
     targetnames_list = []
     for each_target in target_list:
-        targetnames_list.append(each_target.split(" ", 1)[0]) # target name
+        if not UNIQ_TARGETS_ID:
+            targetnames_list.append(each_target.split(" ", 1)[0]) # target name
+        else:
+            targetnames_list.append(each_target.split(" ",)[1])
 
     return targetnames_list
 
