@@ -204,14 +204,14 @@ def target_create():
         return utils.response("ERROR: POST method is required ", 405)
 
     # Simplification for the reading
-    name = request.form["name"]
-    hostname = request.form["hostname"]
-    targettype = request.form["targettype"]
-    login = request.form["login"]
-    port = request.form["port"]
+    name = request.form["name"].replace(" ", "")
+    hostname = request.form["hostname"].replace(" ", "")
+    targettype = request.form["targettype"].replace(" ", "")
+    login = request.form["login"].replace(" ", "")
+    port = request.form["port"].replace(" ", "")
     sshoptions = request.form["sshoptions"]
     comment = request.form["comment"]
-    changepwd = request.form["changepwd"]
+    changepwd = request.form["changepwd"].replace(" ", "")
     sessiondur = "" #request.form["sessiondur"]
 
     # Check for required fields
@@ -283,14 +283,14 @@ def target_edit():
 
     # Simplification for the reading
     name = request.form["name"]
-    new_name = request.form["new_name"]
-    new_hostname = request.form["new_hostname"]
-    new_targettype = request.form["new_targettype"]
-    new_login = request.form["new_login"]
-    new_port = request.form["new_port"]
+    new_name = request.form["new_name"].replace(" ", "")
+    new_hostname = request.form["new_hostname"].replace(" ", "")
+    new_targettype = request.form["new_targettype"].replace(" ", "")
+    new_login = request.form["new_login"].replace(" ", "")
+    new_port = request.form["new_port"].replace(" ", "")
     new_sshoptions = request.form["new_sshoptions"]
     new_comment = request.form["new_comment"]
-    new_changepwd = request.form["new_changepwd"]
+    new_changepwd = request.form["new_changepwd"].replace(" ", "")
     new_sessiondur = "" #request.form["new_sessiondur"]
 
     # Check required fields
