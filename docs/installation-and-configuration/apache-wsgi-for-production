@@ -23,7 +23,7 @@ Listen 5000:
         WSGIProcessGroup passhport
         WSGIApplicationGroup %{GLOBAL}
         # passhportd don't provides authentication, please filter by IP
-        Require ip 127.0.0.1
+        Require ip 127.0.0.1/8 ::1/128        
     </Directory>
 </VirtualHost>
 
