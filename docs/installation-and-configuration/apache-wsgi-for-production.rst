@@ -12,7 +12,7 @@ On Debian :
 
 .. code-block:: none
 
-apt install apache2 libapache2-mod-wsgi-py3
+    apt install apache2 libapache2-mod-wsgi-py3
  
 Configuration
 -------------
@@ -21,18 +21,18 @@ Create a new apache vhost file with this content:
 
 .. code-block:: none
 
-Listen 5000:
-<VirtualHost *:5000>
-    ServerName passhport
-    WSGIDaemonProcess passhport user=passhport group=passhport threads=5
-    WSGIScriptAlias / /home/passhport/passhport/tools/passhportd.wsgi
-    <Directory /home/passhport/ >
-        WSGIProcessGroup passhport
-        WSGIApplicationGroup %{GLOBAL}
-        # passhportd don't provides authentication, please filter by IP
-        Require ip 127.0.0.1/8 ::1/128        
-    </Directory>
-</VirtualHost>
+    Listen 5000:
+    <VirtualHost *:5000>
+        ServerName passhport
+        WSGIDaemonProcess passhport user=passhport group=passhport threads=5
+        WSGIScriptAlias / /home/passhport/passhport/tools/passhportd.wsgi
+        <Directory /home/passhport/ >
+            WSGIProcessGroup passhport
+            WSGIApplicationGroup %{GLOBAL}
+            # passhportd don't provides authentication, please filter by IP
+            Require ip 127.0.0.1/8 ::1/128        
+        </Directory>
+    </VirtualHost>
 
 then deactivate default website and activate this one:
 
