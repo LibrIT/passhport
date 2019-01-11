@@ -3,7 +3,7 @@ Add a WSGI server in front of PaSSHport
 
 PaSSHport is based on Flask, the builtin web server can handle only one request at a time. It means that you can't really use it in production environnement...
 
-In order to handle more requests, we duplicate the PaSSHport for every connection. Apache provides such a solution with WSGI... And it's quite easy to activate it.
+In order to handle more requests, we duplicate the PaSSHport process for every connection. Apache provides such a solution with WSGI... And it's quite easy to activate it.
 
 Installation
 ------------
@@ -34,7 +34,15 @@ Create a new apache vhost file with this content:
         </Directory>
     </VirtualHost>
 
-then deactivate default website and activate this one:
+Activate
+--------
+First kill the current passhport process
+
+.. code-block:: none
+
+    pkill passhport
+
+Deactivate default website and activate this one:
 
 .. code-block:: none
 
