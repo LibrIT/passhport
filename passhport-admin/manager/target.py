@@ -75,8 +75,9 @@ def create(param):
     if "--type" in param:
         targettype = param["--type"]
         if targettype not in ["ssh", "mysql", "oracle", "postgresql"]:
-            print ("This type is not supported, ssh will be used. Please " + \
-                   "use a type in ssh, mysql, oracle or postgresql")
+            if len(targettype):
+                print ("This type is not supported, ssh will be used. " + \
+                       "Please use a type in ssh, mysql, oracle or postgresql")
             targettype = "ssh"
 
     if "--port" in param:

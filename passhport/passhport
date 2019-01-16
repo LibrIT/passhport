@@ -9,11 +9,13 @@ from datetime import datetime
 from tabulate import tabulate
 
 import os, sys, locale, requests, random, crypt, re, configparser, signal
-import uuid
+import uuid, readline, glob
 
 from connections_utils import ssh
 from connections_utils import scp
 from connections_utils import password
+from ui_utils import completer
+
 
 # Reading configuration from /etc if possible else form the script directory
 conf = configparser.ConfigParser()
@@ -27,7 +29,10 @@ else:
 SSL                = conf.getboolean("SSL", "SSL")
 SSL_CERTIFICAT     = conf.get("SSL", "SSL_CERTIFICAT")
 SCRIPT_LOGS_PATH   = conf.get("Environment", "SCRIPT_LOGS_PATH")
+
+# MISC Confgiruation
 SCP_THROUGH_TARGET = conf.getboolean("MISC", "SCP_THROUGH_TARGET")
+UNIQ_TARGETS_ID    = conf.getboolean("MISC", "UNIQ_TARGETS_ID")
 
 
 def signal_handler(signal, frame):
@@ -177,7 +182,10 @@ def build_targetnames_list(target_list):
     """Return a list with targets names only"""
     targetnames_list = []
     for each_target in target_list:
-        targetnames_list.append(each_target.split(" ", 1)[0]) # target name
+        if not UNIQ_TARGETS_ID:
+            targetnames_list.append(each_target.split(" ", 1)[0]) # target name
+        else:
+            targetnames_list.append(each_target.split(" ",)[1])
 
     return targetnames_list
 
@@ -186,12 +194,18 @@ def build_targets_list(target_list):
     """ Return a list with targets names, hostnames and a number"""
     """ Globaly the list without comments """
     indexed_target_list = []
-    number = 1
+    number = 0
     for each_target in target_list:
-        indexed_target_list.append(str(number) + " " + 
-                each_target.split(" ", 1)[0] + " " +
-                " ".join(each_target.split(" ")[1:2]))
-        number = number + 1
+        number = int(number) + 1
+        if UNIQ_TARGETS_ID:
+            number = each_target.split(" ", 1)[0] # target ID
+            indexed_target_list.append(str(number) + " " + 
+                                   each_target.split(" ")[1] + " " +
+                                   " ".join(each_target.split(" ")[2:3]))
+        else:
+            indexed_target_list.append(str(number) + " " +
+                                    each_target.split(" ", 1)[0] + " " +
+                                    " ".join(each_target.split(" ")[1:2]))
 
     return indexed_target_list
 
@@ -200,18 +214,24 @@ def build_commented_targets_list(target_list, tabulations=0):
     """ Build a targets list in a readable and numbered list format"""
     indexed_target_list = []
     table = []
-    number = 1
+    number = 0
     for each_target in target_list:
+        number = number + 1
         if not tabulations:
             indexed_target_list.append(str(number) + " " + each_target)
         else:
             line=[]
-            line.append(str(number))
-            line.append(each_target.split(" ", 1)[0]) # target name
-            line.append(" ".join(each_target.split(" ")[1:2])) # hostname
-            line.append(" ".join(each_target.split(" ")[2:])) # comment
+            if not UNIQ_TARGETS_ID:
+                line.append(str(number))
+                line.append(each_target.split(" ", 1)[0]) # target name
+                line.append(" ".join(each_target.split(" ")[1:2])) # hostname
+                line.append(" ".join(each_target.split(" ")[2:])) # comment
+            else:
+                line.append(each_target.split(" ", 1)[0]) # target ID
+                line.append(each_target.split(" ")[1]) # target name
+                line.append(" ".join(each_target.split(" ")[2:3])) # hostname
+                line.append(" ".join(each_target.split(" ")[3:])) # comment
             table.append(line)
-        number = number + 1
 
     if tabulations:
         indexed_target_list = tabulate(table, tablefmt="plain")
@@ -334,8 +354,12 @@ if __name__ == '__main__':
     url_passhport = "http" + conf.getboolean("SSL", "SSL")*"s" + \
                     "://" + conf.get("Network", "PASSHPORTD_HOSTNAME") + \
                     ":" + conf.get("Network", "PORT") + "/"
+    if UNIQ_TARGETS_ID:
+        accessible_targets = "/accessible_idtargets/"
+    else:
+        accessible_targets = "/accessible_targets/"
     try:
-        target_list = get(url_passhport + "user" + "/accessible_targets/" + \
+        target_list = get(url_passhport + "user" + accessible_targets + \
                       username).split("\n")
     except AttributeError as e:
         sys.exit("No user exists in database or can't reach passhportd.\n" +
@@ -371,18 +395,26 @@ if __name__ == '__main__':
         # with a blank line between each entry
         print(build_commented_targets_list(target_list, tabulations=1))
 
+
+        # Prepare completion system with a simplified targetname list
+        t = completer.tabCompleter()
+        t.createListCompleter(build_targetnames_list(target_list))
+        readline.set_completer_delims('\t')
+        readline.parse_and_bind("tab: complete")
+        readline.set_completer(t.listCompleter)
+
         # Let the use chose his server
-        sys.stdout.write("Type the number, name or hostname of the " + \
-                         "server you want to connect to : ")
         try:
-            choice = input("").casefold()
+            choice = input("Type the number, name or hostname of the " + \
+                            "server you want to connect to: ").rstrip().casefold()
         except EOFError:
             print("\nExiting at your own sweet will.")
             sys.exit(0)
+
         valid_input = False
 
         # Try to connect the user to the server he choosed or ask to re-type
         while not checkandconnect(indexed_target_list, choice, username, originalcmd):
-            print("You didn't type correctly, please try again.")
-            sys.stdout.write("Type the number, name or hostname of the server you want to connect to : ")
-            choice = input("").casefold()
+            print("You didn't type correctly, please try again.\n")
+            choice = input("Type the number, name or hostname of the " + \
+                           "server you want to connect to: ").rstrip().casefold()

@@ -5,7 +5,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from io import open
 
-import os, sys, stat
+import os, sys, stat, re
 import config
 
 from ldap3 import Server, Connection, ALL
@@ -174,9 +174,20 @@ def user_memberof(obj, name):
     return utils.response(str(user_data.memberof(obj)), 200)
 
 
-@app.route("/user/accessible_targets/<name>")
-def user_accessible_targets(name, returnlist = False):
-    """Return the list of targets that the user can access"""
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+
+def naturalkeys(text):
+    """ stackoverflow how-to-correctly-sort-a-string-with-a-number-inside
+        and http://nedbatchelder.com/blog/200712/human_sorting.html 
+        basically sort a text list taking care of numbers """
+    return [ atoi(c) for c in re.split('(\d+)', text) ]
+
+
+def uaccessible_targets(name, withid = True, returnlist = False):
+    """Return the list of the targets that the user can access
+       with the ID or without the ID of the target"""
     # Check for required fields
     if not name:
         return utils.response("ERROR: The name is required ", 417)
@@ -193,12 +204,32 @@ def user_accessible_targets(name, returnlist = False):
     for each_target in target_list:
         # We show only ssh targets, other types will not be handle here
         if each_target.show_targettype() == "ssh":
-            formatted_target_list.append(each_target.show_name() + " " + \
-            each_target.show_hostname() + " " + each_target.show_comment())
+            data = ""
+            if withid:
+                data = str(each_target.id) + " "
+            data = data + each_target.show_name() + " " + \
+                   each_target.show_hostname() + " " + \
+                   each_target.show_comment()
+            formatted_target_list.append(data)
     if returnlist:
         return [target.show_name() for target in target_list 
                 if target.show_targettype() == "ssh"]
+    if withid:
+        # We need to be sorted by target ID. Not so easy cause ID are strings
+        formatted_target_list.sort(key=naturalkeys) #naturalkey is a method right above
     return utils.response("\n".join(formatted_target_list), 200)
+
+
+@app.route("/user/accessible_targets/<name>")
+def user_accessible_targets(name, returnlist = False):
+    """Return the list of targets that the user can access"""
+    return  uaccessible_targets(name, False, returnlist)
+
+
+@app.route("/user/accessible_idtargets/<name>")
+def user_accessible_idtargets(name, returnlist = False):
+    """Return the list of targets that the user can access with ID"""
+    return  uaccessible_targets(name, True, returnlist)
 
 
 @app.route("/user/accessible_target/<username>/<targetname>")
