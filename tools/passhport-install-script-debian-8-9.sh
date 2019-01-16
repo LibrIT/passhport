@@ -219,7 +219,6 @@ then
 	echo 'Remember : no space in the user name!'
 	su - passhport -c "passhport-admin user create"
 	echo 'Do you want to link this user to the target root@localhost ? Y/n'
-	if [ ${INTERACTIVE} -eq 1 ]
 	read DO_LINK_USER
 	while [ "${DO_LINK_USER,,}" != "y" ] && [ ! -z "${DO_LINK_USER}" ] && [ "${DO_LINK_USER,,}" != "n" ]
 	do
