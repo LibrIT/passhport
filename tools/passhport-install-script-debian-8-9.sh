@@ -68,11 +68,17 @@ echo "Finally you may also purge the following packages if you don't need them"
 echo 'anymore:'
 echo 'python3-pip git openssl (# apt purge python3-pip git openssl)'
 echo ''
-echo 'Once you read and understood the above lines, you may proceed by typing'
-echo '"yes", or exit by the famous "CTRL+C" :'
-read ANSWER;
 
-while [ "${ANSWER}" != 'yes' ] && [ ${INTERACTIVE} -eq 1 ]
+if [ ${INTERACTIVE} -eq 1 ]
+then
+	echo 'Once you read and understood the above lines, you may proceed by typing'
+	echo '"yes", or exit by the famous "CTRL+C" :'
+	read ANSWER;
+else
+	ANSWER='yes'
+fi
+
+while [ "${ANSWER}" != 'yes' ]
 do
 	echo 'Please type excatly "yes" or exit by pressing "CTRL+C".'
 	read ANSWER
