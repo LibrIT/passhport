@@ -160,8 +160,8 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
     # It's SCP if scpcmd is set, else ssh.
     if scpcmd == True: 
         if isinstance(originalcmd, str):
-            scp.connect(target, filelog, login, sshoptions, 
-                        originalcmd)
+            scp.connect(target, filelog, login, sshoptions,
+                        port, originalcmd)
         else:
             #originalcmd is not a string, it's a list of commands
             scp.specialconnect(target, filelog, login, sshoptions,
