@@ -1,4 +1,4 @@
-#/usr/bin/env bash -x
+#/usr/bin/env bash -xv
 # Part of the passhport connection script
 
 ###### INITIALIZATION ########
@@ -10,7 +10,14 @@ PID=$5
 URL=$6
 CERT=$7
 OPTION="$@"
+USERNAME="$8"
 OPTIONS=""
+KEEPCONNECT="$(grep '^KEEPCONNECT[[:space:]]=[[:space:]]True$' /etc/passhport/passhport.ini | wc -l)"
+PASSHHOMEDIR="/home/passhport"
+PYTHONBIN="${PASSHHOMEDIR}/passhport-run-env/bin/python3"
+PASSHPORTBIN="${PASSHHOMEDIR}/passhport/passhport/passhport"
+
+
 
 ###### We trap a manual window close to let the script to end ######
 trap "echo 'You are not allowed to stop disconnection'" SIGHUP SIGINT SIGKILL SIGTERM SIGSTOP
@@ -19,7 +26,7 @@ trap "echo 'You are not allowed to stop disconnection'" SIGHUP SIGINT SIGKILL SI
 i=0
 for option in ${OPTION}
 do
-    if [ "$i" -lt "7" ]
+    if [ "$i" -lt "8" ]
     then
         i=$(($i +1))
     else
@@ -35,4 +42,10 @@ then
     wget -qO - ${URL}connection/ssh/endsession/${PID} &> /dev/null
 else
     wget --ca-certificate=${CERT} -qO - ${URL}connection/ssh/endsession/${PID} &> /dev/null
+fi
+
+# Launch PaSSHport with the same user after the connection
+if [ "${KEEPCONNECT}" -eq "1" ]
+then
+    ${PYTHONBIN} ${PASSHPORTBIN} ${USERNAME} 
 fi
