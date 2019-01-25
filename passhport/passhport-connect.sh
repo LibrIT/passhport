@@ -1,4 +1,4 @@
-#/usr/bin/env bash -xv
+#/usr/bin/env bash 
 # Part of the passhport connection script
 
 ###### INITIALIZATION ########
