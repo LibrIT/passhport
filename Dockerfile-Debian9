@@ -5,7 +5,7 @@ RUN pip3 install -U pip ; pip3 install virtualenv
 RUN useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
 RUN su - passhport -c "virtualenv -p python3 passhport-run-env"
 RUN su - passhport -c "/home/passhport/passhport-run-env/bin/pip install pymysql sqlalchemy-migrate flask-migrate requests docopt configparser tabulate"
-RUN su - passhport -c "git clone https://github.com/Raphux/passhport.git"
+RUN su - passhport -c "git clone https://github.com/LibrIT/passhport.git"
 RUN mkdir -p /var/log/passhport/ ; chown passhport:passhport /var/log/passhport/
 RUN mkdir /etc/passhport ; \
 	cp /home/passhport/passhport/passhportd/passhportd.ini /etc/passhport/. ; \
