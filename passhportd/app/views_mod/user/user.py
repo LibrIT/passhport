@@ -255,6 +255,8 @@ def user_create():
     name = request.form["name"]
     sshkey = request.form["sshkey"]
     comment = request.form["comment"]
+    if request.form.get("logfilesize"):
+        logfilesize = request.form["logfilesize"]
 
     # Check for required fields
     if not name or not sshkey:
@@ -291,11 +293,20 @@ def user_create():
     # set correct read/write permissions
     os.chmod(config.SSH_KEY_FILE, stat.S_IRUSR | stat.S_IWUSR)
 
-    u = user.User(
-        name=name,
-        sshkey=sshkey,
-        sshkeyhash=user.User.hash(sshkey),
-        comment=comment)
+    if request.form.get("logfilesize"):
+        u = user.User(
+            name=name,
+            sshkey=sshkey,
+            sshkeyhash=user.User.hash(sshkey),
+            comment=comment,
+            logfilesize=logfilesize)
+    else:
+        u = user.User(
+            name=name,
+            sshkey=sshkey,
+            sshkeyhash=user.User.hash(sshkey),
+            comment=comment)
+
     db.session.add(u)
 
     # Try to add the user on the database
@@ -413,6 +424,8 @@ def user_edit():
     new_name = request.form["new_name"]
     new_sshkey = request.form["new_sshkey"]
     new_comment = request.form["new_comment"]
+    if request.form.get("new_logfilesize"):
+        new_logfilesize = request.form["new_logfilesize"]
 
     # Check required fields
     if not name:
@@ -472,6 +485,10 @@ def user_edit():
                 return result
 
         to_update.update({"name": new_name})
+
+    if request.form.get("new_logfilesize"):
+        # Only database is concerned
+        to_update.update({"logfilesize": new_logfilesize})
 
     try:
         db.session.commit()
