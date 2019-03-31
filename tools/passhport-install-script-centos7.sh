@@ -33,7 +33,7 @@ echo 'rm /usr/sbin/passhportd'
 echo 'rm /etc/bash_completion.d/passhport-admin'
 echo ''
 echo 'You may also remove virtualenv that has been installed by pip3 :'
-echo '# pip3 uninstall virtualenv'
+echo '# pip3.4 uninstall virtualenv'
 echo ''
 echo 'Remove the systemd service :'
 echo '# systemctl disable passhportd'
@@ -65,7 +65,7 @@ yum install -y python34-pip git openssl python34-devel gcc
 echo '##############################################################'
 echo '# Installing virtualenv with pip…'
 echo '##############################################################'
-pip3 install virtualenv
+pip3.4 install virtualenv
 echo '##############################################################'
 echo '# Creating "passhport" system user'
 echo '##############################################################'
@@ -73,7 +73,7 @@ useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
 echo '##############################################################'
 echo '# Creating the virtual-env for passhport…'
 echo '##############################################################'
-su - passhport -c "virtualenv -p python3 passhport-run-env"
+su - passhport -c "virtualenv -p python3.4 passhport-run-env"
 echo '##############################################################'
 echo '# Installing mandatory packages in the virtual environment…'
 echo '##############################################################'
