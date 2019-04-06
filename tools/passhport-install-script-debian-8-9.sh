@@ -56,9 +56,6 @@ echo 'rm /usr/bin/passhport-admin'
 echo 'rm /usr/sbin/passhportd'
 echo 'rm /etc/bash_completion.d/passhport-admin'
 echo ''
-echo 'You may also remove virtualenv that has been installed by pip3 :'
-echo '# pip3 uninstall virtualenv'
-echo ''
 echo 'Remove the systemd service :'
 echo '# systemctl disable passhportd'
 echo '# rm /etc/systemd/system/passhportd.service'
@@ -66,7 +63,7 @@ echo '# systemctl daemon-reload'
 echo ''
 echo "Finally you may also purge the following packages if you don't need them"
 echo 'anymore:'
-echo 'python3-pip, git, openssl (# apt purge python3-pip git openssl)'
+echo 'python3-pip, git, openssl, virtualenv, libpython3-dev (# apt purge python3-pip git openssl virtualenv libpython3-dev)'
 echo ''
 
 if [ ${INTERACTIVE} -eq 1 ]
@@ -89,13 +86,9 @@ echo '# Updating repos…'
 echo '##############################################################'
 apt update
 echo '##############################################################'
-echo '# Installing python3-pip, git and openssl package…'
+echo '# Installing git, openssl, virtualenv and libpython3-dev package…'
 echo '##############################################################'
-apt install -y python3-pip git openssl
-echo '##############################################################'
-echo '# Installing virtualenv with pip…'
-echo '##############################################################'
-pip3 install virtualenv
+apt install -y python3-pip git openssl virtualenv libpython3-dev
 echo '##############################################################'
 echo '# Creating "passhport" system user'
 echo '##############################################################'
