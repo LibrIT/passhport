@@ -25,7 +25,7 @@ class UserTests(unittest.TestCase):
         pass
 
 
-    def test_root(self):
+    def test_defaultanswer(self):
         """ Test default answer"""
         rv = self.app.get('/', follow_redirects=True)
         self.assertEqual(rv.status_code, 200)
