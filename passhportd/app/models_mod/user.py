@@ -15,21 +15,22 @@ class User(db.Model):
     """User defines information for every adminsys using passhport"""
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
-    name       = db.Column(db.String(120), 
+    name        = db.Column(db.String(120), 
                            index=True, unique=True, nullable=False)
-    sshkey     = db.Column(db.String(5000), 
+    sshkey      = db.Column(db.String(5000), 
                            index=False, unique=True, nullable=False)
-    sshkeyhash = db.Column(db.String(5000),
+    sshkeyhash  = db.Column(db.String(5000),
                            index=True, unique=False, nullable=True)
-    comment    = db.Column(db.String(5000), index=True)
-    superadmin = db.Column(db.Boolean, unique=False, default=False)
+    comment     = db.Column(db.String(5000), index=True)
+    superadmin  = db.Column(db.Boolean, unique=False, default=False)
+    logfilesize = db.Column(db.Integer, unique=False)
 
 
     # Relations (in targetgroups)
     targets      = db.relationship("Target", secondary="target_user")
     usergroups   = db.relationship("Usergroup", secondary="group_user")
     targetgroups = db.relationship("Targetgroup", secondary="tgroup_user")
-    logentries   = db.relationship("Logentry", secondary="user_log")
+    logentries   = db.relationship("Logentry", secondary="user_log", order_by="Logentry.connectiondate")
     # Admins - can admin usergroups and targetgroups (add and remove users)
     adminoftg = db.relationship("Targetgroup", secondary="tg_admins")
     adminofug = db.relationship("Usergroup", secondary="ug_admins")
@@ -63,6 +64,8 @@ class User(db.Model):
         output = output + "\"sshkey\": \"" + format(self.sshkey) + "\",\n"
         output = output + "\"sshkeyhash\": \"" + \
                           format(self.show_sshkeyhash()) + "\",\n"
+        output = output + "\"logfilesize\": \"" + \
+                          format(self.show_logfilesize()) + "\",\n"
         output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
         output = output + "}"
 
@@ -89,6 +92,15 @@ class User(db.Model):
         if self.adminofug:
             return True
         return False
+
+
+    def show_logfilesize(self):
+        """Return the logfile maximum size fore this user, 0 if unlimited"""
+        if not self.logfilesize:
+            if self.logfilesize != 0:
+                return "Default"
+            
+        return self.logfilesize
 
 
     def show_sshkeyhash(self):
@@ -197,12 +209,12 @@ class User(db.Model):
         if len(self.logentries) < 1:
             return "{}"
 
-        for i in range(0, 500):
+        for i in range(1, 500):
             if i >= len(self.logentries):
                 i = 500
             else:
                 output = output + '"' + str(i) + '": ' + \
-                         self.logentries[i].simplejson() + ",\n"
+                         self.logentries[len(self.logentries) - i].lightjson() + ",\n"
         
         return output[:-2] + "\n}"
 

@@ -8,5 +8,4 @@ This chapter shows how to connect to a target, through PaSSHport, from key gener
 
    generate_key
    connect_to_passhport
-   direct_command_through_passhport
    scp

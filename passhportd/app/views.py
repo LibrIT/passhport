@@ -1,5 +1,5 @@
 # -*-coding:Utf-8 -*-
-import psutil, re, subprocess
+import psutil, re, subprocess, os
 from datetime import datetime, timedelta, date
 from app import app, db
 from .views_mod import user, target, usergroup, targetgroup, logentry, utils
@@ -8,7 +8,7 @@ from .models_mod import user
 from .models_mod import target
 from flask import request, stream_with_context, Response
 from tabulate import tabulate
-
+import config
 
 @app.route("/")
 def imalive():
@@ -135,6 +135,31 @@ def currentsshconnections():
                  '"Date" : "' + hours_minutes(duration) + '"},'
                              
     return output[:-1] + "]"
+
+
+@app.route("/connection/ssh/current/killbiglog")
+def currecntsshconnectionskillbiglog():
+    """Kill the actives sessions whith log files too big"""
+    lentries = logentry.Logentry.query.filter(
+               logentry.Logentry.endsessiondate == None).all()
+    killedpid = ""
+    confmaxsize = int(config.MAXLOGSIZE)*1024*1024
+
+    if lentries:
+        for entry in lentries:
+            maxsize = confmaxsize
+            # First we check if the user has a specific file size
+            specsize = entry.user[0].show_logfilesize()
+            if specsize != 0: # 0 means unlimited
+                if specsize != "Default":
+                    maxsize = int(specsize)*1024*1024 # we set the maxsize for this user
+                # Now we check this size against the actual file
+                logsize = os.path.getsize(entry.logfilepath + entry.logfilename)
+                if logsize > maxsize:
+                    sshdisconnect(entry.pid)
+                    killedpid = str(entry.pid) + " " + killedpid
+
+    return killedpid
 
 
 @app.route("/connection/ssh/checkandterminate")

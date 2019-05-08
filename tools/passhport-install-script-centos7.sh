@@ -1,4 +1,29 @@
 #!/bin/bash -e 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+# Should we run as interactive mode ? (-s non interactive mode)
+INTERACTIVE=1
+while getopts ":s" OPTION
+do
+	case ${OPTION} in
+		s) INTERACTIVE=0;;
+		*) echo "Unknown option, exiting..."; exit 1;;   # DEFAULT
+	esac
+done
+
+
 echo 'Hi there ! Please read carefully the following (not long)'.
 echo 'This script will attempt to install PaSSHport on this system.'
 echo 'This script works on Centos 7, WITH EPEL repos configured !!'
@@ -33,7 +58,7 @@ echo 'rm /usr/sbin/passhportd'
 echo 'rm /etc/bash_completion.d/passhport-admin'
 echo ''
 echo 'You may also remove virtualenv that has been installed by pip3 :'
-echo '# pip3 uninstall virtualenv'
+echo '# pip3.4 uninstall virtualenv'
 echo ''
 echo 'Remove the systemd service :'
 echo '# systemctl disable passhportd'
@@ -44,9 +69,15 @@ echo "Finally you may also purge the following packages if you don't need them"
 echo 'anymore:'
 echo 'python34-pip git openssl (# yum remove python34-pip git openssl)'
 echo ''
-echo 'Once you read and understood the above lines, you may proceed by typing'
-echo '"yes", or exit by the famous "CTRL+C" :'
-read ANSWER;
+
+if [ ${INTERACTIVE} -eq 1 ]
+then
+	echo 'Once you read and understood the above lines, you may proceed by typing'
+	echo '"yes", or exit by the famous "CTRL+C" :'
+	read ANSWER;
+else
+	ANSWER='yes'
+fi
 
 while [ "${ANSWER}" != 'yes' ]
 do
@@ -65,7 +96,7 @@ yum install -y python34-pip git openssl python34-devel gcc
 echo '##############################################################'
 echo '# Installing virtualenv with pip…'
 echo '##############################################################'
-pip3 install virtualenv
+pip3.4 install virtualenv
 echo '##############################################################'
 echo '# Creating "passhport" system user'
 echo '##############################################################'
@@ -73,7 +104,7 @@ useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
 echo '##############################################################'
 echo '# Creating the virtual-env for passhport…'
 echo '##############################################################'
-su - passhport -c "virtualenv -p python3 passhport-run-env"
+su - passhport -c "virtualenv -p python3.4 passhport-run-env"
 echo '##############################################################'
 echo '# Installing mandatory packages in the virtual environment…'
 echo '##############################################################'
@@ -178,8 +209,13 @@ sleep 2
 [ ! -d "/root/.ssh" ] && mkdir "/root/.ssh" && chmod 700 "/root/.ssh"
 cat "/home/passhport/.ssh/id_ecdsa.pub" >> "/root/.ssh/authorized_keys"
 su - passhport -c 'passhport-admin target create root@localhost 127.0.0.1 --comment="Localhost target added during the PaSSHport installation process."'
-echo 'Do you want to add your first user now ? Y/n'
-read DO_CREATE_USER
+if [ ${INTERACTIVE} -eq 1 ]
+then
+	echo 'Do you want to add your first user now ? Y/n'
+	read DO_CREATE_USER
+else
+	DO_CREATE_USER='n'
+fi
 while [ "${DO_CREATE_USER,,}" != "y" ] && [ ! -z "${DO_CREATE_USER}" ] && [ "${DO_CREATE_USER,,}" != "n" ]
 do
 	echo 'Do you want to add your first user now ? Y/n'
@@ -211,6 +247,10 @@ echo '# curl -s --insecure https://localhost:5000'
 echo '# if it displays : '
 echo '# "passhportd is running, gratz!"'
 echo '# you successfuly installed PaSSHport. Well done !'
-echo '# If you created your first user, you can connect to PaSSHport'
-echo '# using "ssh -i the_key_you_used passhport@PASSHPORT_HOST"'
+
+if [ ${INTERACTIVE} -eq 1 ]
+then
+	echo '# If you created your first user, you can connect to PaSSHport'
+	echo '# using "ssh -i the_key_you_used passhport@PASSHPORT_HOST"'
+fi
 echo '##############################################################'
