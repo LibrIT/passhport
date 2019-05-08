@@ -1,0 +1,10 @@
+sqlalchemy-migrate
+flask-migrate
+requests
+docopt
+configparser
+tabulate
+flask-login
+ldap3
+psutil
+cryptography
