@@ -11,7 +11,7 @@ from sqlalchemy import exc
 
 from app import app, db
 from app.models_mod import user
-from config import basedir
+#from config import basedir
 
 
 class TestUser:
@@ -23,8 +23,7 @@ class TestUser:
         """
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
-        app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + \
-            os.path.join(basedir, "test.db")
+        app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///:memory:"
         cls.app = app.test_client()
         db.create_all()
 
@@ -49,7 +48,7 @@ class TestUser:
         name = "john@example.com"
         sshkey  = """ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdH3Dwen9fNgBxZ+QrR3wt9TSQt1+kizp9uz6heudbZ9J6+xghvDnTmwhcm7MROLXG9FMHPtDXNviVmwa/Pj/EQp/2390XT8BLy9/yYpfMrbYSSJEcnchd7EA1U1txjc5mQbWTxiXFcM6UifwF1cjJrOda0OZpR+BdoEkpLrkyuTOWgdV5zoVu0pLrSJNdHAFEtPZ0yaTuX3ufk3ScSeIdXyj4qaX/T0mIuXmfP89yy0ipFMiimXvi/D2Q+MMDAjbDQuW1YlX730hgKJTZD+X5RkNHFHpggTLpvvRDffhqxuBvQNNgUk0hPQ6gFgQIgVIgjIiJkM/j0Ayig+k+4hT john@example.com"""
         comment = "This is a great comment"
-        output  = """Name: john@example.com\nSSH key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdH3Dwen9fNgBxZ+QrR3wt9TSQt1+kizp9uz6heudbZ9J6+xghvDnTmwhcm7MROLXG9FMHPtDXNviVmwa/Pj/EQp/2390XT8BLy9/yYpfMrbYSSJEcnchd7EA1U1txjc5mQbWTxiXFcM6UifwF1cjJrOda0OZpR+BdoEkpLrkyuTOWgdV5zoVu0pLrSJNdHAFEtPZ0yaTuX3ufk3ScSeIdXyj4qaX/T0mIuXmfP89yy0ipFMiimXvi/D2Q+MMDAjbDQuW1YlX730hgKJTZD+X5RkNHFHpggTLpvvRDffhqxuBvQNNgUk0hPQ6gFgQIgVIgjIiJkM/j0Ayig+k+4hT john@example.com\nComment: This is a great comment\nAccessible target list: """
+        output  = """Email: john@example.com\nSSH key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdH3Dwen9fNgBxZ+QrR3wt9TSQt1+kizp9uz6heudbZ9J6+xghvDnTmwhcm7MROLXG9FMHPtDXNviVmwa/Pj/EQp/2390XT8BLy9/yYpfMrbYSSJEcnchd7EA1U1txjc5mQbWTxiXFcM6UifwF1cjJrOda0OZpR+BdoEkpLrkyuTOWgdV5zoVu0pLrSJNdHAFEtPZ0yaTuX3ufk3ScSeIdXyj4qaX/T0mIuXmfP89yy0ipFMiimXvi/D2Q+MMDAjbDQuW1YlX730hgKJTZD+X5RkNHFHpggTLpvvRDffhqxuBvQNNgUk0hPQ6gFgQIgVIgjIiJkM/j0Ayig+k+4hT john@example.com\nComment: This is a great comment\nAccessible target list: \n\nDetails in access:\nAccessible directly: \nAccessible through usergroups: \nAccessible through targetgroups: """
 
         u = user.User(
             name=name,
@@ -65,6 +64,10 @@ class TestUser:
         assert_equal(u_db.name, name)
         assert_equal(u_db.sshkey, sshkey)
         assert_equal(u_db.comment, comment)
+        
+        print(u_db)
+        print("\n\n\n")
+        print(output)
         assert_equal(repr(u_db), output)
 
     @raises(exc.IntegrityError)
