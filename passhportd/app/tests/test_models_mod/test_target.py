@@ -11,7 +11,6 @@ from sqlalchemy import exc
 
 from app import app, db, models
 from app.models_mod import user, target, usergroup
-from config import basedir
 
 
 class TestTarget:
@@ -23,8 +22,8 @@ class TestTarget:
         """
         app.config["TESTING"] = True
         app.config["WTF_CSRF_ENABLED"] = False
-        app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + \
-            os.path.join(basedir, "test.db")
+        app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"# /" + \
+#            os.path.join("/tmp/", "test.db")
         cls.app = app.test_client()
         db.create_all()
 
@@ -55,7 +54,7 @@ class TestTarget:
         port        = 54
         sshoptions  = "--zap"
         comment     = "Magnificent target"
-        output      = """Name: clever_server\nHostname: 127.0.0.1\nPort: 54\nSSH options: --zap\nComment: Magnificent target\nAttached users: rocket@man.net\nUsergroup list: Chevaliers_du_zodiaque\nUsers who can access this target: rocket@man.net\nAll usergroups: Chevaliers_du_zodiaque\nMember of the following targetgroups: """
+        output      = """Name: clever_server\nHostname: 127.0.0.1\nTarget type : ssh\nLogin: None\nPort: 54\nSSH options: --zap\nChange password: False\nComment: Magnificent target\nAttached users: rocket@man.net\nUsergroup list: Chevaliers_du_zodiaque\nUsers who can access this target: rocket@man.net\nAll usergroups: Chevaliers_du_zodiaque\nMember of the following targetgroups: """
 
         username = "rocket@man.net"
         sshkey = "railway"
