@@ -24,6 +24,11 @@ Create a new apache vhost file with this content:
     Listen 5000:
     <VirtualHost *:5000>
         ServerName passhport
+        
+        SSLEngine               on
+        SSLCertificateFile      /home/passhport/certs/cert.pem
+        SSLCertificatekeyFile   /home/passhport/certs/key.pem
+        
         WSGIDaemonProcess passhport user=passhport group=passhport threads=5
         WSGIScriptAlias / /home/passhport/passhport/tools/passhportd.wsgi
         <Directory /home/passhport/ >
