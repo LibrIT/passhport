@@ -52,7 +52,9 @@ Deactivate default website and activate this one:
 .. code-block:: none
 
     a2dissite 000-default
+    a2enmod ssl
     a2ensite passhport.conf
+    
     systemctl restart apache2
 
 and Voilà.
