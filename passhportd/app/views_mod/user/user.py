@@ -10,7 +10,7 @@ import config
 
 from ldap3 import Server, Connection, ALL
 from flask import request
-from sqlalchemy import exc, literal
+from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 from app import app, db
 from app.models_mod import user, target
