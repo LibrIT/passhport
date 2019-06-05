@@ -10,7 +10,7 @@ import config
 
 from ldap3 import Server, Connection, ALL
 from flask import request
-from sqlalchemy import exc
+from sqlalchemy import exc, literal
 from sqlalchemy.orm import sessionmaker
 from app import app, db
 from app.models_mod import user, target
@@ -271,12 +271,15 @@ def user_create():
                               '" is already used by another user ', 417)
 
     # Check unicity for SSH key
-    query = db.session.query(user.User.sshkey)\
-        .filter_by(sshkey=sshkey).first()
+    # First determine the real sshkey string
+    sshkeystring=sshkey.split()[1]
+    # And we look into user sshkeys if the key already exist
+    query = db.session.query(user.User).filter(
+            user.User.sshkey.contains(sshkeystring)).first()
 
     if query is not None:
-        return utils.response('ERROR: The SSH key "' + sshkey + \
-                              '" is already used by another user ', 417)
+        return utils.response('ERROR: The SSH key "' + sshkeystring + \
+                              '" is already used by ' + query.name, 417)
 
     # Add the SSH key in the file authorized_keys
     try:
