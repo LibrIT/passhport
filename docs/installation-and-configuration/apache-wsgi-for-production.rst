@@ -21,7 +21,7 @@ Create a new apache vhost file with this content:
 
 .. code-block:: none
 
-    Listen 5000:
+    Listen 5000
     <VirtualHost *:5000>
         ServerName passhport
         
@@ -45,7 +45,7 @@ First kill the current passhport process
 
 .. code-block:: none
 
-    pkill passhport
+    pkill passhportd
 
 Deactivate default website and activate this one:
 
