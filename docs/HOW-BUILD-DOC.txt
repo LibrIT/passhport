@@ -7,5 +7,4 @@ pip3 install sphinx-intl
 make gettext
 
 3 - Update po :
-sphinx-intl update -p _build/gettext -l fr
-
+sphinx-intl update -p _build -l fr
