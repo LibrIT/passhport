@@ -1,0 +1,11 @@
+From here : http://www.sphinx-doc.org/en/master/usage/advanced/intl.html
+
+1 - Install sphinx-intl :
+pip3 install sphinx-intl
+
+2 - built gettext files :
+make gettext
+
+3 - Update po :
+sphinx-intl update -p _build/gettext -l fr
+
