@@ -6,13 +6,13 @@ Install psycopg2 and psycopg2-binary python modules
 
 If you did not use the packaged version of passhport (deb/rpm), proceed as follow. If you used the package version, go directly below, to the `PostgreSQL configuration`_.
 
-Before installing python libs, be sure to have *pg_config* in your $PATH.
+Before installing python libs, be sure to have *pg_config* in your $PATH and some postgres libraries.
 
-For Debian, install postgresql-common
+For Debian, install *postgresql-common* and *postgresql-server-dev-9.6*
 
 .. code-block:: none
 
-  # apt install postgresql-common
+  # apt install postgresql-common postgresql-server-dev-9.6
 
 For CentOS, install postgresql :
 
