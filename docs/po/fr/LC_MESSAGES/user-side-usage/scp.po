@@ -1,0 +1,39 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-24 22:22+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: ../../user-side-usage/scp.rst:2
+msgid "scp through PaSSHport"
+msgstr ""
+
+#: ../../user-side-usage/scp.rst:5
+msgid "Using CLI"
+msgstr ""
+
+#: ../../user-side-usage/scp.rst:7
+msgid "To use SCP throug PaSSHport, use one of the following syntax..."
+msgstr ""
+
+#: ../../user-side-usage/scp.rst:9
+msgid "From target to local :"
+msgstr ""
+
+#: ../../user-side-usage/scp.rst:16
+msgid "From local to target :"
+msgstr ""
+
