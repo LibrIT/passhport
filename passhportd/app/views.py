@@ -159,7 +159,7 @@ def currecntsshconnectionskillbiglog():
                     sshdisconnect(entry.pid)
                     killedpid = str(entry.pid) + " " + killedpid
 
-    return killedpid
+    return "Killed PIDs: " + killedpid
 
 
 @app.route("/connection/ssh/checkandterminate")
