@@ -66,7 +66,7 @@ class User(db.Model):
                           format(self.show_sshkeyhash()) + "\",\n"
         output = output + "\"logfilesize\": \"" + \
                           format(self.show_logfilesize()) + "\",\n"
-        output = output + "\"comment\": \"" + format(self.comment) + "\",\n"
+        output = output + "\"comment\": \"" + format(self.comment) + "\"\n"
         output = output + "}"
 
         return output
