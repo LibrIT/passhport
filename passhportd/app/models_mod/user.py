@@ -20,7 +20,7 @@ class User(db.Model):
     sshkey      = db.Column(db.String(5000), 
                            index=False, unique=True, nullable=False)
     sshkeyhash  = db.Column(db.String(5000),
-                           index=False, unique=True, nullable=True)
+                           index=False, unique=False, nullable=True)
     comment     = db.Column(db.String(5000), index=True)
     superadmin  = db.Column(db.Boolean, unique=False, default=False)
     logfilesize = db.Column(db.String(30), unique=False)
