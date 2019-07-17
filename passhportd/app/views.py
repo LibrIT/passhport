@@ -143,8 +143,12 @@ def currentsshconnections():
 @app.route("/connection/ssh/current/killbiglog")
 def currecntsshconnectionskillbiglog():
     """Kill the actives sessions whith log files too big"""
-    lentries = logentry.Logentry.query.filter(
-               logentry.Logentry.endsessiondate == None).all()
+    lentries = logentry.Logentry.query.filter(db.and_(
+               logentry.Logentry.endsessiondate == None,
+	           logentry.Logentry.target != None,
+               logentry.Logentry.connectioncmd.like('%ssh%'),
+	           logentry.Logentry.user != None)).all()
+
     killedpid = ""
     confmaxsize = int(config.MAXLOGSIZE)*1024*1024
 
