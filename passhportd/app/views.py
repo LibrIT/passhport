@@ -145,9 +145,9 @@ def currecntsshconnectionskillbiglog():
     """Kill the actives sessions whith log files too big"""
     lentries = logentry.Logentry.query.filter(db.and_(
                logentry.Logentry.endsessiondate == None,
-	           logentry.Logentry.target != None,
+               logentry.Logentry.target != None,
                logentry.Logentry.connectioncmd.like('%ssh%'),
-	           logentry.Logentry.user != None)).all()
+               logentry.Logentry.user != None)).all()
 
     killedpid = ""
     confmaxsize = int(config.MAXLOGSIZE)*1024*1024
@@ -161,7 +161,12 @@ def currecntsshconnectionskillbiglog():
                 if specsize != "Default":
                     maxsize = int(specsize)*1024*1024 # we set the maxsize for this user
                 # Now we check this size against the actual file
-                logsize = os.path.getsize(entry.logfilepath + entry.logfilename)
+                try:
+                    logsize = os.path.getsize(entry.logfilepath + entry.logfilename)
+                except:
+                    logsize = 0
+                    print("Error getting info on this file" + entry.logfilename)
+
                 if logsize > maxsize:
                     sshdisconnect(entry.pid)
                     killedpid = str(entry.pid) + " " + killedpid
