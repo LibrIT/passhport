@@ -1,11 +1,6 @@
 # -*-coding:Utf-8 -*-
 
 """Configuration file reader"""
-
-# Compatibility 2.7-3.4
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os, sys, configparser
 
 # Reading configuration from /etc if possible else form the script directory
@@ -54,3 +49,5 @@ SSL_CERTIFICAT  = conf.get("SSL", "SSL_CERTIFICAT")
 SSL_KEY         = conf.get("SSL", "SSL_KEY")
 
 
+""" MISC """
+MAXLOGSIZE      = conf.get("MISC", "MAXLOGSIZE")
