@@ -24,7 +24,6 @@ PORT =  conf.get("Network", "PASSHPORTD_PORT")
 """ SSL Configuration """
 SSL            = conf.getboolean("SSL", "SSL")
 SSL_CERTIFICAT = conf.get("SSL", "SSL_CERTIFICAT")
-SSL_KEY        = conf.get("SSL", "SSL_KEY")
 
 url_passhport = "http" + SSL*"s" + "://" + HOST + ":" + PORT +"/"
 certificate_path = conf.get("SSL", "SSL_CERTIFICAT")
