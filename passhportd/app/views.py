@@ -143,11 +143,13 @@ def currentsshconnections():
 @app.route("/connection/ssh/current/killbiglog")
 def currecntsshconnectionskillbiglog():
     """Kill the actives sessions whith log files too big"""
+    # Request to check only the connections on this node
     lentries = logentry.Logentry.query.filter(db.and_(
                logentry.Logentry.endsessiondate == None,
                logentry.Logentry.target != None,
-               logentry.Logentry.connectioncmd.like('%ssh%'),
-               logentry.Logentry.user != None)).all()
+               logentry.Logentry.user != None,
+               logentry.Logentry.logfilename.like(
+                                    config.NODE_NAME + '-%'))).all()
 
     killedpid = ""
     confmaxsize = int(config.MAXLOGSIZE)*1024*1024
@@ -179,8 +181,10 @@ def checkandterminatesshsession():
     """Check all the connections and close those without a process runing"""
     isodate    = datetime.now().isoformat().replace(":",""). \
                  replace("-","").split('.')[0]
-    lentries = logentry.Logentry.query.filter(
-               logentry.Logentry.endsessiondate == None).all()
+    lentries = logentry.Logentry.query.filter(db.and_(
+               logentry.Logentry.endsessiondate == None,
+               logentry.Logentry.logfilename.like(
+                                    config.NODE_NAME + '-%'))).all()
     
     if not lentries:
         return "No active connection."
