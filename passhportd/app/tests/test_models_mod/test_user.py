@@ -437,4 +437,3 @@ class TestUser:
         res_list = "\n".join(res_list)
 
         assert_equal(res_list, "")
-
