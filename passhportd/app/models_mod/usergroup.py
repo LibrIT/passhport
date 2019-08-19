@@ -71,7 +71,7 @@ class Usergroup(db.Model):
         output = output + "\"Name\": \"" + format(self.name) + "\",\n"
         output = output + "\"Comment\": \"" + format(self.comment) + "\",\n"
         output = output + "\"Directsize\": \"" + format(str(directsize)) + "\",\n"
-        output = output + "\"Totalsize\": \"" + format(str(totalsize)) + "\",\n"
+        output = output + "\"Totalsize\": \"" + format(str(totalsize)) + "\"\n"
         output = output + "}"
 
         return output
@@ -80,7 +80,7 @@ class Usergroup(db.Model):
     def show_name(self):
         """Return a string containing the usergroup's name"""
         return self.name
-    
+
 
     def show_comment(self):
         """Return a string containing the usergroup's comment"""
@@ -189,7 +189,7 @@ class Usergroup(db.Model):
         """
         usernames = self.username_list()
 
-        # Recursive on groups: 
+        # Recursive on groups:
         # we list all usernames but we never parse a group twice
         # to avoid cirular issues.
         for usergroup in self.gmembers:
@@ -217,7 +217,7 @@ class Usergroup(db.Model):
                     members.append(usergroup)
         else:
             return "Error in object type"
-            
+
         ret = "["
         for m in members:
             ret = ret + m.name + ","
@@ -278,7 +278,7 @@ class Usergroup(db.Model):
         in the usergroup
         """
         usergroupnames = self.usergroupname_list() # ["G1","G2"]
- 
+
         # Recursive on usergroups:
         # we list all usergroups but we never parse a group twice
         # to avoid cirular issues.
@@ -351,12 +351,14 @@ class Usergroup(db.Model):
                 accessible_targets.append(target)
 
         # 2. list all targets accessible through usergroups
-        for usergroup in self.gmembers:
+        for usergroup in self.containedin:
             if usergroup not in checked_usergroups:
                 checked_usergroups.append(usergroup)
-                for target in usergroup.accessible_target_list(checked_usergroups):
-                    if target not in self.targets:
-                        if mode == "string": 
+                for target in usergroup.accessible_target_list(
+                                         checked_usergroups, mode="obj"):
+                    if target not in accessible_targets:
+                        if mode == "string":
+                            print(target)
                             accessible_targets.append(target.name)
                         else:
                             accessible_targets.append(target)
@@ -377,7 +379,7 @@ class Usergroup(db.Model):
         """Return all targets the group gives access
         First the targets with this group attached
         Then targets from targetgroups with this group attached
-        Then targets from groups with this group attached 
+        Then targets from groups with this group attached
         Finally We relaunch this on the groups with this groups attached
         """
         listing = []

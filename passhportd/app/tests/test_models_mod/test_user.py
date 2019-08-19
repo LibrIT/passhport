@@ -64,10 +64,7 @@ class TestUser:
         assert_equal(u_db.name, name)
         assert_equal(u_db.sshkey, sshkey)
         assert_equal(u_db.comment, comment)
-        
-        print(u_db)
-        print("\n\n\n")
-        print(output)
+       
         assert_equal(repr(u_db), output)
 
     @raises(exc.IntegrityError)

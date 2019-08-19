@@ -400,7 +400,7 @@ def update_authorized_keys(orig_name, orig_sshkey, new_name, new_sshkey):
                     if line == authorized_keys_line[:-1]:
                         warning = ("WARNING: There is more " + \
                                    "than one line with this name and sshkey " + \
-                                   origname + " - " + orig_sshkey + \
+                                   orig_name + " - " + orig_sshkey + \
                                    ", probably added manually. " + \
                                    "You should edit it manually")
 

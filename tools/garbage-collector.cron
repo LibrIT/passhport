@@ -1,0 +1,1 @@
+0 * * * * passhport /home/passhport/passhport/tools/garbage-collector.sh
