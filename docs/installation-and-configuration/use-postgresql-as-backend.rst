@@ -6,6 +6,20 @@ Install psycopg2 and psycopg2-binary python modules
 
 If you did not use the packaged version of passhport (deb/rpm), proceed as follow. If you used the package version, go directly below, to the `PostgreSQL configuration`_.
 
+Before installing python libs, be sure to have *pg_config* in your $PATH and some postgres libraries.
+
+For Debian, install *postgresql-common* and *postgresql-server-dev-9.6*
+
+.. code-block:: none
+
+  # apt install postgresql-common postgresql-server-dev-9.6
+
+For CentOS, install postgresql :
+
+.. code-block:: none
+
+  # yum install postgresql
+
 If you want to use PostgreSQL as the database backend you'll need to add two python modules : psycopg2 and psycopg2-binary.
 
 As passhport user, install psycopg2 and psycopg2-binary: 

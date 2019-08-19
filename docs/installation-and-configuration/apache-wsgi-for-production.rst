@@ -21,9 +21,14 @@ Create a new apache vhost file with this content:
 
 .. code-block:: none
 
-    Listen 5000:
+    Listen 5000
     <VirtualHost *:5000>
         ServerName passhport
+        
+        SSLEngine               on
+        SSLCertificateFile      /home/passhport/certs/cert.pem
+        SSLCertificatekeyFile   /home/passhport/certs/key.pem
+        
         WSGIDaemonProcess passhport user=passhport group=passhport threads=5
         WSGIScriptAlias / /home/passhport/passhport/tools/passhportd.wsgi
         <Directory /home/passhport/ >
@@ -40,14 +45,16 @@ First kill the current passhport process
 
 .. code-block:: none
 
-    pkill passhport
+    pkill passhportd
 
 Deactivate default website and activate this one:
 
 .. code-block:: none
 
     a2dissite 000-default
+    a2enmod ssl
     a2ensite passhport.conf
+    
     systemctl restart apache2
 
 and Voilà.

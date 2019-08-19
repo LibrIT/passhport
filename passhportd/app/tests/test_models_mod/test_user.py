@@ -8,8 +8,6 @@ import os
 
 from nose.tools import *
 from sqlalchemy import exc
-from sqlalchemy.exc import IntegrityError
-
 
 from app import app, db
 from app.models_mod import user
@@ -66,9 +64,8 @@ class TestUser:
         assert_equal(u_db.name, name)
         assert_equal(u_db.sshkey, sshkey)
         assert_equal(u_db.comment, comment)
-        
+       
         assert_equal(repr(u_db), output)
-
 
     @raises(exc.IntegrityError)
     def test_create_existing_name(self):
@@ -92,7 +89,6 @@ class TestUser:
         db.session.add(u)
         db.session.commit()
 
-
     @raises(exc.IntegrityError)
     def test_create_existing_sshkey(self):
         """User creation in database with an already used sshkey fails
@@ -113,8 +109,7 @@ class TestUser:
             sshkey=sshkey,
             comment=comment)
         db.session.add(u)
-        self.assertRaises(IntegrityError, db.session.commit)
-        #db.session.commit()
+        db.session.commit()
 
     # We should test if an empty name while creating a user raises
     # an error, but it seems that SQLite doesn't check it
@@ -123,29 +118,6 @@ class TestUser:
     # We should test if an empty sshkey while creating a user raises
     # an error, but it seems that SQLite doesn't check it
     # def test_create_empty_sshkey(self):
-
-
-    @raises(exc.IntegrityError)
-    def test_create_existing_sshkey(self):
-        """User creation in database with an already used sshkey fails
-        """
-        name = "john@example.com"
-        sshkey  = """ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAdH3Dwen9fNgBxZ+QrR3wt9TSQt1+kizp9uz6heudbZ9J6+xghvDnTmwhcm7MROLXG9FMHPtDXNviVmwa/Pj/EQp/2390XT8BLy9/yYpfMrbYSSJEcnchd7EA1U1txjc5mQbWTxiXFcM6UifwF1cjJrOda0OZpR+BdoEkpLrkyuTOWgdV5zoVu0pLrSJNdHAFEtPZ0yaTuX3ufk3ScSeIdXyj4qaX/T0mIuXmfP89yy0ipFMiimXvi/D2Q+MMDAjbDQuW1YlX730hgKJTZD+X5RkNHFHpggTLpvvRDffhqxuBvQNNgUk0hPQ6gFgQIgVIgjIiJkM/j0Ayig+k+4hT john@example.com"""
-        comment = "An awesome comment man"
-
-        u = user.User(
-            name=name,
-            sshkey=sshkey,
-            comment=comment)
-        db.session.add(u)
-        db.session.commit()
-
-        u = user.User(
-            name="smith@example.com",
-            sshkey=sshkey,
-            comment=comment)
-        db.session.add(u)
-        db.session.commit()
 
     def test_edit(self):
         """User edition in database succeeds"""
@@ -465,3 +437,4 @@ class TestUser:
         res_list = "\n".join(res_list)
 
         assert_equal(res_list, "")
+

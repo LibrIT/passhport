@@ -79,7 +79,7 @@ class Targetgroup(db.Model):
         output = "{\n"
 
         output = output + "\"Name\": \"" + format(self.name) + "\",\n"
-        output = output + "\"Comment\": \"" + format(self.comment) + "\",\n"
+        output = output + "\"Comment\": \"" + format(self.comment) + "\"\n"
         output = output + "}"
 
         return output
@@ -109,7 +109,7 @@ class Targetgroup(db.Model):
             self.tgadmins.pop()
 
         return self
-    
+
 
     # User management
     def is_members(self, user):
@@ -288,7 +288,7 @@ class Targetgroup(db.Model):
                                             style = "object"):
                     if target not in targets:
                         targets.append(target)
-        # Return target objects or names depending of the style                
+        # Return target objects or names depending of the style
         if style == "names":
             targetnames = []
             for target in targets:
@@ -386,7 +386,7 @@ class Targetgroup(db.Model):
         """Add a targetgroup to the relaton table"""
         if not self.is_tgmembers(targetgroup) and not self == targetgroup:
             self.tgmembers.append(targetgroup)
-        else: 
+        else:
             return False
 
         return self
@@ -410,7 +410,7 @@ class Targetgroup(db.Model):
                     members.append(targetgroup)
         else:
             return "Error in object type"
-            
+
         ret = "["
         for m in members:
             ret = ret + m.name + ","
@@ -456,11 +456,11 @@ class Targetgroup(db.Model):
         return targetgroupnames
 
     def show_targets(self, indentation):
-        """Return a formated list of the targets that the targetgroup 
+        """Return a formated list of the targets that the targetgroup
         provides
         """
         listing = []
-        
+
         indent = ""
         for i in range(indentation):
             indent = indent + "    "
