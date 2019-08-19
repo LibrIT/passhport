@@ -362,7 +362,7 @@ if __name__ == '__main__':
         target_list = get(url_passhport + "user" + accessible_targets + \
                       username).split("\n")
     except AttributeError as e:
-        sys.exit("No user exists in database or can't reach passhportd.\n" +
+        sys.exit("No such user in PaSSHport database.\n" +
                  "tip: it can be a SSL certificate misconfiguration.")
     originalcmd = os.environ.get('SSH_ORIGINAL_COMMAND')
     choice = 0
