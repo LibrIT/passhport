@@ -477,8 +477,8 @@ class Target(db.Model):
                 db.session.commit()
                 return "Password changed"
             except exc.SQLAlchemyError as e:
-                print ('ERROR: -> ' + e.message)
-        print("Error changing password on " + self.show_name())
+                app.loggererror('ERROR: -> ' + e.message)
+        app.loggererror("Error changing password on " + self.show_name())
         return "Password unchanged"
 
 

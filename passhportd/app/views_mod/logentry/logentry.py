@@ -1,13 +1,10 @@
 # -*- coding:Utf-8 -*-
 
-# Compatibility 2.7-3.4
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from io import open
 
 import os, sys, stat
 import config
 
+from io import open
 from ldap3 import Server, Connection, ALL
 from flask import request
 from sqlalchemy import exc

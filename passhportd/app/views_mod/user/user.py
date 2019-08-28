@@ -1,13 +1,10 @@
 # -*- coding:Utf-8 -*-
 
-# Compatibility 2.7-3.4
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from io import open
 
 import os, sys, stat, re
 import config
 
+from io import open
 from ldap3 import Server, Connection, ALL
 from flask import request
 from sqlalchemy import exc
@@ -25,21 +22,21 @@ def useruid(s, login):
                    password=config.LDAPPASS, auto_bind=True)
 
     if c.result["description"] != "success":
-        print("Error connecting to the LDAP with the service account")
+        app.loggererror("Error connecting to the LDAP with the service account")
         return False
 
     # Look for the user entry.
     if not c.search(config.LDAPBASE,
                     "(" + config.LDAPFIELD + "=" + login + ")") :
-        print("Error: Connection to the LDAP with service account failed")
+        app.loggererror("Error: Connection to the LDAP with service account failed")
     else:
         if len(c.entries) >= 1 :
             if len(c.entries) > 1 :
-                print("Error: multiple entries with this login. "+ \
-                      "Trying first entry...")
+                app.loggererror("Error: multiple entries with this login. "+ \
+                          "Trying first entry...")
             uid = c.entries[0].entry_dn
         else:
-            print("Error: Login not found")
+            app.loggererror("Error: Login not found")
         c.unbind()
     
     return uid
@@ -87,11 +84,11 @@ def user_login():
     # Check data validity uppon LDAP/local/whatever...
     result = try_login(login, password)
     if result == "success":
-        print("Authentication ok for {}".format(login))
+        app.loggerinfo("Authentication ok for {}".format(login))
         # If the LDAP connection is ok, user can connect
         return utils.response("Authorized", 200)
     else:
-        print("Authentication error for {} => ".format(login) + str(result))
+        app.loggerwarning("Authentication error for {} => ".format(login) + str(result))
         return utils.response("Refused: " + str(result), 200)
 
 
