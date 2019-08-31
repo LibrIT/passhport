@@ -143,11 +143,13 @@ def currentsshconnections():
 @app.route("/connection/ssh/current/killbiglog")
 def currecntsshconnectionskillbiglog():
     """Kill the actives sessions whith log files too big"""
+    # Request to check only the connections on this node
     lentries = logentry.Logentry.query.filter(db.and_(
                logentry.Logentry.endsessiondate == None,
-	           logentry.Logentry.target != None,
-               logentry.Logentry.connectioncmd.like('%ssh%'),
-	           logentry.Logentry.user != None)).all()
+               logentry.Logentry.target != None,
+               logentry.Logentry.user != None,
+               logentry.Logentry.logfilename.like(
+                                    config.NODE_NAME + '-%'))).all()
 
     killedpid = ""
     confmaxsize = int(config.MAXLOGSIZE)*1024*1024
@@ -161,7 +163,12 @@ def currecntsshconnectionskillbiglog():
                 if specsize != "Default":
                     maxsize = int(specsize)*1024*1024 # we set the maxsize for this user
                 # Now we check this size against the actual file
-                logsize = os.path.getsize(entry.logfilepath + entry.logfilename)
+                try:
+                    logsize = os.path.getsize(entry.logfilepath + entry.logfilename)
+                except:
+                    logsize = 0
+                    print("Error getting info on this file" + entry.logfilename)
+
                 if logsize > maxsize:
                     sshdisconnect(entry.pid)
                     killedpid = str(entry.pid) + " " + killedpid
@@ -174,9 +181,11 @@ def checkandterminatesshsession():
     """Check all the connections and close those without a process runing"""
     isodate    = datetime.now().isoformat().replace(":",""). \
                  replace("-","").split('.')[0]
-    lentries = logentry.Logentry.query.filter(
-             logentry.Logentry.endsessiondate == None).all()
-
+    lentries = logentry.Logentry.query.filter(db.and_(
+               logentry.Logentry.endsessiondate == None,
+               logentry.Logentry.logfilename.like(
+                                    config.NODE_NAME + '-%'))).all()
+    
     if not lentries:
         return "No active connection."
 
@@ -231,14 +240,14 @@ def endsshsession(pid):
     # modify the associated Logentry to signal the end date
     isodate    = datetime.now().isoformat().replace(":",""). \
                  replace("-","").split('.')[0]
-    lentry = logentry.Logentry.query.filter(
-             logentry.Logentry.pid == int(pid)).first()
+    # taking the last connection with this PID (the most recent)
+    lentry = logentry.Logentry.query.filter(db.and_(
+             logentry.Logentry.pid == int(pid),
+             logentry.Logentry.endsessiondate == None)).first()
 
     if not lentry:
         return "Error: no logentry with this PID"
 
-    if lentry.endsessiondate:
-        return "Already ended"
     lentry.setenddate(isodate)
 
     try:
@@ -247,7 +256,8 @@ def endsshsession(pid):
         return utils.response('ERROR: "' + name + '" -> ' + e.message, 409)
 
     #At last change the root password if needed
-    lentry.target[0].changepass(isodate)
+    if lentry.target:
+        lentry.target[0].changepass(isodate)
 
     return "Done"
 

@@ -51,3 +51,4 @@ SSL_KEY         = conf.get("SSL", "SSL_KEY")
 
 """ MISC """
 MAXLOGSIZE      = conf.get("MISC", "MAXLOGSIZE")
+NODE_NAME       = conf.get("MISC", "NODE_NAME")

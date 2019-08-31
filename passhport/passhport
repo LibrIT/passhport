@@ -33,7 +33,7 @@ SCRIPT_LOGS_PATH   = conf.get("Environment", "SCRIPT_LOGS_PATH")
 # MISC Confgiruation
 SCP_THROUGH_TARGET = conf.getboolean("MISC", "SCP_THROUGH_TARGET")
 UNIQ_TARGETS_ID    = conf.getboolean("MISC", "UNIQ_TARGETS_ID")
-
+NODE_NAME          = conf.get("MISC", "NODE_NAME")
 
 def signal_handler(signal, frame):
     """Handle 'ctrl-c' from the users"""
@@ -127,7 +127,7 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
     isodate    = datetime.now().isoformat().replace(":",""). \
                  replace("-","").split('.')[0]
     pid        = os.getpid()
-    filename   = isodate + "-PID" + \
+    filename   = NODE_NAME + "-" + isodate + "-PID" + \
                  str(pid) + "-" + targetname + "-" + \
                  login + "@" + target + "-" + username
     filelog    = pathlog + filename
