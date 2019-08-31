@@ -85,11 +85,11 @@ done
 echo '##############################################################'
 echo '# Updating repos…'
 echo '##############################################################'
-apt update
+apt-get update
 echo '##############################################################'
 echo '# Installing git, openssl, virtualenv and libpython3-dev package…'
 echo '##############################################################'
-apt install -y python3-pip git openssl virtualenv libpython3-dev
+apt-get install -y python3-pip git openssl virtualenv libpython3-dev
 echo '##############################################################'
 echo '# Creating "passhport" system user'
 echo '##############################################################'
@@ -193,57 +193,64 @@ then
 	systemctl start passhportd
 	echo "passhportd has been started."
 	echo 'Please use systemctl to start/stop service.'
+	PASSHPORTD_RUNNING=1
+else
+	echo "Not on systemd system. Will disable further daemon query for now"
+	PASSHPORTD_RUNNING=0	
 fi
+
 echo '##############################################################'
 echo '# Adding root@localhost target…'
-echo '##############################################################'
-# Sleep 2 seconds so passhportd has enough time to start
-sleep 2
-[ ! -d "/root/.ssh" ] && mkdir "/root/.ssh" && chmod 700 "/root/.ssh"
-cat "/home/passhport/.ssh/id_ecdsa.pub" >> "/root/.ssh/authorized_keys"
-su - passhport -c 'passhport-admin target create root@localhost 127.0.0.1 --comment="Localhost target added during the PaSSHport installation process."'
-if [ ${INTERACTIVE} -eq 1 ]
+echo '######################i########################################'
+if [ ${PASSHPORTD_RUNNING} -eq 1 ]
 then
-	echo 'Do you want to add your first user now ? Y/n'
-	read DO_CREATE_USER
-else
-	DO_CREATE_USER='n'
-fi
-while [ "${DO_CREATE_USER,,}" != "y" ] && [ ! -z "${DO_CREATE_USER}" ] && [ "${DO_CREATE_USER,,}" != "n" ]
-do
-	echo 'Do you want to add your first user now ? Y/n'
-	read DO_CREATE_USER
-done
-if [ "${DO_CREATE_USER,,}" == "y" ] || [ -z "${DO_CREATE_USER}" ]
-then
-	echo 'Remember : no space in the user name!'
-	su - passhport -c "passhport-admin user create"
-	echo 'Do you want to link this user to the target root@localhost ? Y/n'
-	read DO_LINK_USER
-	while [ "${DO_LINK_USER,,}" != "y" ] && [ ! -z "${DO_LINK_USER}" ] && [ "${DO_LINK_USER,,}" != "n" ]
+	# Sleep 2 seconds so passhportd has enough time to start
+	sleep 2
+	[ ! -d "/root/.ssh" ] && mkdir "/root/.ssh" && chmod 700 "/root/.ssh"
+	cat "/home/passhport/.ssh/id_ecdsa.pub" >> "/root/.ssh/authorized_keys"
+	su - passhport -c 'passhport-admin target create root@localhost 127.0.0.1 --comment="Localhost target added during the PaSSHport installation process."'
+	if [ ${INTERACTIVE} -eq 1 ]
+	then
+		echo 'Do you want to add your first user now ? Y/n'
+		read DO_CREATE_USER
+	else
+		DO_CREATE_USER='n'
+	fi
+	while [ "${DO_CREATE_USER,,}" != "y" ] && [ ! -z "${DO_CREATE_USER}" ] && [ "${DO_CREATE_USER,,}" != "n" ]
 	do
+		echo 'Do you want to add your first user now ? Y/n'
+		read DO_CREATE_USER
+	done
+	if [ "${DO_CREATE_USER,,}" == "y" ] || [ -z "${DO_CREATE_USER}" ]
+	then
+		echo 'Remember : no space in the user name!'
+		su - passhport -c "passhport-admin user create"
 		echo 'Do you want to link this user to the target root@localhost ? Y/n'
 		read DO_LINK_USER
-	done
-	if [ "${DO_LINK_USER,,}" == "y" ] || [ -z "${DO_LINK_USER}" ]
-	then
-		FIRST_USER=`su - passhport -c "passhport-admin user list"`
-		su - passhport -c "passhport-admin target adduser ${FIRST_USER} root@localhost"
+		while [ "${DO_LINK_USER,,}" != "y" ] && [ ! -z "${DO_LINK_USER}" ] && [ "${DO_LINK_USER,,}" != "n" ]
+		do
+			echo 'Do you want to link this user to the target root@localhost ? Y/n'
+			read DO_LINK_USER
+		done
+		if [ "${DO_LINK_USER,,}" == "y" ] || [ -z "${DO_LINK_USER}" ]
+		then
+			FIRST_USER=`su - passhport -c "passhport-admin user list"`
+			su - passhport -c "passhport-admin target adduser ${FIRST_USER} root@localhost"
+		fi
 	fi
 fi
 
-echo "PaSSHport is now installed on your system."
-
-echo '##############################################################'
-echo '# You can test that passhportd is running by running :'
-echo '# curl -s --insecure https://localhost:5000'
-echo '# if it displays : '
-echo '# "passhportd is running, gratz!"'
-echo '# you successfuly installed PaSSHport. Well done !'
-
 if [ ${INTERACTIVE} -eq 1 ]
 then
+echo "PaSSHport is now installed on your system."
+
+	echo '##############################################################'
+	echo '# You can test that passhportd is running by running :'
+	echo '# curl -s --insecure https://localhost:5000'
+	echo '# if it displays : '
+	echo '# "passhportd is running, gratz!"'
+	echo '# you successfuly installed PaSSHport. Well done !'
 	echo '# If you created your first user, you can connect to PaSSHport'
 	echo '# using "ssh -i the_key_you_used passhport@PASSHPORT_HOST"'
+	echo '##############################################################'
 fi
-echo '##############################################################'
