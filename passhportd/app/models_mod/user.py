@@ -108,7 +108,7 @@ class User(db.Model):
         if self.sshkeyhash:
             return self.sshkeyhash
 
-        app.loggerwarning("WARN: This user sshkey hash is not stored: " + self.name, 
+        app.logger.warning("WARN: This user sshkey hash is not stored: " + self.name, 
                                                          file=sys.stderr)
         return self.hash(self.sshkey)
 
@@ -243,7 +243,7 @@ class User(db.Model):
             m.update(base64.b64decode(key[1]))
             hashkey= base64.b64encode(m.digest()).decode('utf-8')
         except:
-            app.loggererror("ERROR: wrong sshkey format: " + sshkey, file=sys.stderr)
+            app.logger.error("ERROR: wrong sshkey format: " + sshkey, file=sys.stderr)
             return("Wrong ssh key format")
 
         return hashkey
