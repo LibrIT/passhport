@@ -186,7 +186,7 @@ def checkandterminatesshsession():
         except Exception as E:
             if type(E) == psutil.NoSuchProcess:
                 endsshsession(entry.pid)
-                app.loggerwarning("Orphan connection with PID:" + \
+                app.logger.warning("Orphan connection with PID:" + \
                         str(entry.pid) + ". Now closed in the logentry.")
 
     return "Active connections: check done."
@@ -262,7 +262,7 @@ def sshdisconnection(pid):
 
     except Exception as E:
         if type(E) == psutil.NoSuchProcess:
-            app.loggerwarning("Impossible to kill: no such process with PID " + str(pid))
+            app.logger.warning("Impossible to kill: no such process with PID " + str(pid))
 
     return "Done"
 

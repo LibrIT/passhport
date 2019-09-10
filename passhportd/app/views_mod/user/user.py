@@ -84,11 +84,11 @@ def user_login():
     # Check data validity uppon LDAP/local/whatever...
     result = try_login(login, password)
     if result == "success":
-        app.loggerinfo("Authentication ok for {}".format(login))
+        app.logger.info("Authentication ok for {}".format(login))
         # If the LDAP connection is ok, user can connect
         return utils.response("Authorized", 200)
     else:
-        app.loggerwarning("Authentication error for {} => ".format(login) + str(result))
+        app.logger.warning("Authentication error for {} => ".format(login) + str(result))
         return utils.response("Refused: " + str(result), 200)
 
 

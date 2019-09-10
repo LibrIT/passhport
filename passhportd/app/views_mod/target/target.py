@@ -147,7 +147,7 @@ def target_port(name):
 
     # If there is no port declared, we assume it's 22
     if port is None:
-        app.loggerwarning("No port set on " + name + ", 22 is used")
+        app.logger.warning("No port set on " + name + ", 22 is used")
         port = "22"
     else:
         port = str(port).replace(" ","")
@@ -172,7 +172,7 @@ def target_login(name):
 
     # If there is no user declared, we assume it's root
     if login is None:
-        app.loggerwarning("No login set on " + name + ", root is used")
+        app.logger.warning("No login set on " + name + ", root is used")
         login = "root"
     else:
         login = str(login).replace(" ","")
@@ -631,7 +631,7 @@ def extgetaccess(ip, targetname, username):
         try:
             db.session.commit()
         except exc.SQLAlchemyError as e:
-            app.loggererror('ERROR registering connection demand: exttargetaccess "' + \
+            app.logger.error('ERROR registering connection demand: exttargetaccess "' + \
                   str(output) + '" -> ' + str(e))
 
         # Create the output to print
