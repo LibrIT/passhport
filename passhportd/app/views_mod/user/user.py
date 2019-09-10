@@ -22,21 +22,21 @@ def useruid(s, login):
                    password=config.LDAPPASS, auto_bind=True)
 
     if c.result["description"] != "success":
-        app.loggererror("Error connecting to the LDAP with the service account")
+        app.logger.error("Error connecting to the LDAP with the service account")
         return False
 
     # Look for the user entry.
     if not c.search(config.LDAPBASE,
                     "(" + config.LDAPFIELD + "=" + login + ")") :
-        app.loggererror("Error: Connection to the LDAP with service account failed")
+        app.logger.error("Error: Connection to the LDAP with service account failed")
     else:
         if len(c.entries) >= 1 :
             if len(c.entries) > 1 :
-                app.loggererror("Error: multiple entries with this login. "+ \
+                app.logger.error("Error: multiple entries with this login. "+ \
                           "Trying first entry...")
             uid = c.entries[0].entry_dn
         else:
-            app.loggererror("Error: Login not found")
+            app.logger.error("Error: Login not found")
         c.unbind()
     
     return uid
