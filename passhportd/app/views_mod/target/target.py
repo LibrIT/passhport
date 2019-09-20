@@ -583,7 +583,7 @@ def extgetaccess(ip, targetname, username):
 
     #Date to stop access:
     startdate = datetime.now()
-    stopdate  = startdate + timedelta(hours=4)
+    stopdate  = startdate + timedelta(hours=int(config.DB_SESSIONS_TO))
     formatedstop = format(stopdate, '%Y%m%dT%H%M')
     
     #Call the external script

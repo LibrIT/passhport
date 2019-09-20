@@ -105,7 +105,7 @@ class Target(db.Model):
 
 
     def show_sessionduration(self):
-        """Return an int containing session durection in minutes"""
+        """Return an int containing session duraion in minutes"""
         if not self.sessiondur:
             return 240
         return self.sessiondur
