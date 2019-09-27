@@ -612,8 +612,8 @@ def extgetaccess(ip, targetname, username):
         # Transform the ouput on Dict
         output = eval(output)
         if output["execution_status"] != "OK":
-            return utils.response('ERROR: external script execution status.',
-                                   500)
+            return utils.response('ERROR: target seems unreachable.',
+                                   200)
 
         # Create a exttarget object to log the connection
         u = utils.get_user(username)
