@@ -1,5 +1,5 @@
 # -*-coding:Utf-8 -*-
-import random, crypt, os
+import random, crypt, os, config
 from datetime import datetime, timedelta, date
 from app import app, db
 from app.models_mod import targetgroup, passentry
@@ -21,7 +21,8 @@ class Target(db.Model):
     sshoptions = db.Column(db.String(500), index=True)
     comment    = db.Column(db.String(500), index=True)
     changepwd  = db.Column(db.Boolean, index=True, unique=False, default=False)
-    sessiondur = db.Column(db.Integer, index=True, unique=False, default=240) 
+    sessiondur = db.Column(db.Integer, index=True, unique=False, 
+                                       default=60*config.DB_SESSIONS_TO) 
 
     # This is true if the target has been deleted #TODO
     deleted    = db.Column(db.Boolean, unique=False, default=False)
@@ -46,16 +47,24 @@ class Target(db.Model):
         output.append("Target type : {}".format(self.targettype))
         output.append("Login: {}".format(self.login))
         output.append("Port: {}".format(str(self.port)))
-        output.append("SSH options: {}".format(self.sshoptions))
-        output.append("Change password: {}".format(str(self.show_changepwd())))
+        if self.targettype == "ssh":
+            output.append("SSH options: {}".format(self.sshoptions))
+            output.append("Change password: {}".format(
+                                        str(self.show_changepwd())))
+        elif self.targettype in ["ssh", "mysql", "oracle", "postgresql"]:
+            output.append("Session duration: {}".format(str(timedelta(
+                        minutes= self.show_sessionduration()))[:-6] + "h"))
         output.append("Comment: {}".format(self.comment))
         output.append("Attached users: " + " ".join(self.username_list()))
         output.append("Usergroup list: " + " ".join(self.usergroupname_list()))
 
-        output.append("Users who can access this target: " + " ".join(self.list_all_usernames()))
-        output.append("All usergroups: " + " ".join(self.list_all_usergroupnames()))
+        output.append("Users who can access this target: " + \
+                      " ".join(self.list_all_usernames()))
+        output.append("All usergroups: " + \
+                      " ".join(self.list_all_usergroupnames()))
 
-        output.append("Member of the following targetgroups: " + " ".join(self.list_all_targetgroupnames()))
+        output.append("Member of the following targetgroups: " + \
+                      " ".join(self.list_all_targetgroupnames()))
 
         return "\n".join(output)
 
@@ -107,7 +116,7 @@ class Target(db.Model):
     def show_sessionduration(self):
         """Return an int containing session duraion in minutes"""
         if not self.sessiondur:
-            return 240
+            return 60*config.DB_SESSIONS_TO
         return self.sessiondur
 
     def show_changepwd(self):

@@ -212,7 +212,9 @@ def target_create():
     sshoptions = request.form["sshoptions"]
     comment = request.form["comment"]
     changepwd = request.form["changepwd"].replace(" ", "")
-    sessiondur = "" #request.form["sessiondur"]
+    sessiondur = ""
+    if "sessiondur" in request.form:
+        sessiondur = request.form["sessiondur"].replace(" ", "")
 
     # Check for required fields
     if not name or not hostname:
@@ -243,7 +245,7 @@ def target_create():
         changepwd=False
 
     if not sessiondur:
-        sessiondur = 240 #4h is the default
+        sessiondur = 60*int(config.DB_SESSIONS_TO)
 
     # Check unicity for name
     query = db.session.query(target.Target.name)\
@@ -252,6 +254,7 @@ def target_create():
     if query is not None:
         return utils.response('ERROR: The name "' + name + \
                               '" is already used by another target ', 417)
+
 
     t = target.Target(
         name       = name,
@@ -291,7 +294,9 @@ def target_edit():
     new_sshoptions = request.form["new_sshoptions"]
     new_comment = request.form["new_comment"]
     new_changepwd = request.form["new_changepwd"].replace(" ", "")
-    new_sessiondur = "" #request.form["new_sessiondur"]
+    new_sessiondur = ""
+    if "sessiondur" in request.args:
+        new_sessiondur = request.form["sessiondur"]
 
     # Check required fields
     if not name:
