@@ -116,7 +116,7 @@ def currentsshconnections():
        to their PID"""
 
     lentries = logentry.Logentry.query.filter(db.and_(
-               logentry.Logentry.endsessiondate == None,
+               logentry.Logentry.endsessiondate is None,
 	       logentry.Logentry.target != None,
 	       logentry.Logentry.user != None)).all()
 
@@ -144,7 +144,7 @@ def currentsshconnections():
 def currecntsshconnectionskillbiglog():
     """Kill the actives sessions whith log files too big"""
     lentries = logentry.Logentry.query.filter(db.and_(
-               logentry.Logentry.endsessiondate == None,
+               logentry.Logentry.endsessiondate is None,
 	           logentry.Logentry.target != None,
                logentry.Logentry.connectioncmd.like('%ssh%'),
 	           logentry.Logentry.user != None)).all()
@@ -175,7 +175,7 @@ def checkandterminatesshsession():
     isodate    = datetime.now().isoformat().replace(":",""). \
                  replace("-","").split('.')[0]
     lentries = logentry.Logentry.query.filter(
-             logentry.Logentry.endsessiondate == None).all()
+             logentry.Logentry.endsessiondate is None).all()
 
     if not lentries:
         return "No active connection."
@@ -198,7 +198,7 @@ def oldentriesendsession():
     isodate    = datetime.now().isoformat().replace(":",""). \
                  replace("-","").split('.')[0]
     lentries = logentry.Logentry.query.filter(
-             logentry.Logentry.pid == None).all()
+             logentry.Logentry.pid is None).all()
 
     if not lentries:
         return "Error: no logentry without PID"
@@ -353,4 +353,3 @@ def directdownload():
         return utils.response("ERROR: can't connect", 404)
 
     return Response(stream_with_context(p.stdout))
-
