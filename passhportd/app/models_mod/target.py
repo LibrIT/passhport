@@ -432,8 +432,7 @@ class Target(db.Model):
             today = date.today()
             numberofdays = today - date
             return int(numberofdays.days)
-        else:
-            return int(-1)
+        return int(-1)
 
 
     def generatepass(self):
@@ -489,5 +488,3 @@ class Target(db.Model):
                 app.logger.error('ERROR: -> ' + e.message)
         app.logger.error("Error changing password on " + self.show_name())
         return "Password unchanged"
-
-
