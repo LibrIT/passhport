@@ -1,1 +1,4 @@
-0 * * * * passhport /home/passhport/passhport/tools/garbage-collector.sh
+* * * * * passhport /home/passhport/passhport/tools/garbage-collector.sh > /var/log/passhport/garbage-collector.log
+* * * * * passhport sleep 15 && /home/passhport/passhport/tools/garbage-collector.sh >> /var/log/passhport/garbage-collector.log
+* * * * * passhport sleep 30 && /home/passhport/passhport/tools/garbage-collector.sh >> /var/log/passhport/garbage-collector.log
+* * * * * passhport sleep 45 && /home/passhport/passhport/tools/garbage-collector.sh >> /var/log/passhport/garbage-collector.log
