@@ -351,12 +351,14 @@ class Usergroup(db.Model):
                 accessible_targets.append(target)
 
         # 2. list all targets accessible through usergroups
-        for usergroup in self.gmembers:
+        for usergroup in self.containedin:
             if usergroup not in checked_usergroups:
                 checked_usergroups.append(usergroup)
-                for target in usergroup.accessible_target_list(checked_usergroups):
-                    if target not in self.targets:
+                for target in usergroup.accessible_target_list(
+                                         checked_usergroups, mode="obj"):
+                    if target not in accessible_targets:
                         if mode == "string":
+                            print(target)
                             accessible_targets.append(target.name)
                         else:
                             accessible_targets.append(target)
