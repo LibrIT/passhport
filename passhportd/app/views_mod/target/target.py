@@ -214,7 +214,7 @@ def target_create():
     changepwd = request.form["changepwd"].replace(" ", "")
     sessiondur = ""
     if "sessiondur" in request.form:
-        sessiondur = request.form["sessiondur"].replace(" ", "")
+        sessiondur = int(request.form["sessiondur"].replace(" ", ""))*60
 
     # Check for required fields
     if not name or not hostname:
@@ -295,8 +295,9 @@ def target_edit():
     new_comment = request.form["new_comment"]
     new_changepwd = request.form["new_changepwd"].replace(" ", "")
     new_sessiondur = ""
-    if "sessiondur" in request.args:
-        new_sessiondur = request.form["sessiondur"]
+    if "new_sessiondur" in request.form:
+        # session duration is stored in minutes, but created in hours
+        new_sessiondur = int(request.form["new_sessiondur"].replace(" ", ""))*60
 
     # Check required fields
     if not name:

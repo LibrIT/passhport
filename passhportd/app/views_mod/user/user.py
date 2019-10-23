@@ -245,67 +245,48 @@ def user_accssible_target(username, targetname):
 def user_create():
     """Add a user in the database"""
     # Only POST data are handled
-    if request.method != "POST":
+    if not utils.is_post(request):
         return utils.response("ERROR: POST method is required ", 405)
 
-    # Simplification for the reading
-    name = request.form["name"]
-    sshkey = request.form["sshkey"]
-    comment = request.form["comment"]
-    if request.form.get("logfilesize"):
-        logfilesize = request.form["logfilesize"]
+    form = request.form
 
-    # Check for required fields
-    if not name or not sshkey:
+    # Check if fields are OK to be imported
+    # Some fields are mandatory
+    mandatory = ["name","sshkey"]
+    if utils.miss_mandatory(mandatory, form):
         return utils.response("ERROR: The name and SSH key are required ", 417)
 
-    # Check unicity for name
-    query = db.session.query(user.User.name)\
-        .filter_by(name=name).first()
+    # User can't have same username
+    if utils.name_already_taken(form["name"]):
+        return utils.response("ERROR: The name is already taken ", 417)
+    
+    # Check SSHkey format
+    hashkey = utils.sshkey_good_format(form["sshkey"])
+    if not hashkey:
+        return utils.response("ERROR: The SSHkey format is not recognized", 417)
 
-    if query is not None:
-        return utils.response('ERROR: The name "' + name + \
-                              '" is already used by another user ', 417)
-
-    # Check unicity for SSH key
-    # First determine the real sshkey string
-    sshkeystring=sshkey.split()[1]
-    # And we look into user sshkeys if the key already exist
-    query = db.session.query(user.User).filter(
-            user.User.sshkey.contains(sshkeystring)).first()
-
-    if query is not None:
-        return utils.response('ERROR: The SSH key "' + sshkeystring + \
-                              '" is already used by ' + query.name, 417)
+    # Check SSHkey unicity
+    if utils.sshkey_already_taken(hashkey):
+        return utils.response("ERROR: Another user is using this SSHkey ", 417)
 
     # Add the SSH key in the file authorized_keys
-    try:
-        with open(config.SSH_KEY_FILE, "a", encoding="utf8") as \
-            authorized_keys_file:
-            authorized_keys_file.write('command="' + \
-				       config.PYTHON_PATH + \
-                                       " " + config.PASSHPORT_PATH + \
-                                       " " + name + '" ' + sshkey + "\n")
-    except IOError:
+    if not utils.write_authorized_keys(request.form["name"], form["sshkey"]):
         return utils.response('ERROR: cannot write in the file ' + \
                               '"authorized_keys"', 500)
-    
-    # set correct read/write permissions
-    os.chmod(config.SSH_KEY_FILE, stat.S_IRUSR | stat.S_IWUSR)
 
     if request.form.get("logfilesize"):
         u = user.User(
-            name=name,
-            sshkey=sshkey,
-            sshkeyhash=user.User.hash(sshkey),
-            comment=comment,
-            logfilesize=logfilesize)
+            name=request.form["name"],
+            sshkey=request.form["sshkey"],
+            sshkeyhash=hashkey,
+            comment=request.form["comment"],
+            logfilesize=request.form.get("logfilesize"))
     else:
         u = user.User(
-            name=name,
-            sshkey=sshkey,
-            sshkeyhash=user.User.hash(sshkey),
-            comment=comment)
+            name=request.form["name"],
+            sshkey=request.form["sshkey"],
+            sshkeyhash=hashkey,
+            comment=request.form["comment"])
 
     db.session.add(u)
 
@@ -315,7 +296,13 @@ def user_create():
     except exc.SQLAlchemyError as e:
         return utils.response('ERROR: "' + name + '" -> ' + e.message , 409)
 
-    return utils.response('OK: "' + name + '" -> created', 200)
+    # Add the SSH key in the file authorized_keys
+    if not utils.write_authorized_keys(request.form["name"], form["sshkey"]):
+        return utils.response('ERROR: cannot write in the file ' + \
+                              '"authorized_keys". However, the user is ' + \
+                              'stored in the database.', 500)
+
+    return utils.response('OK: "' + request.form["name"] + '" -> created', 200)
 
 
 @app.route("/user/togglesuperadmin/<name>", methods=["GET"])
@@ -453,6 +440,7 @@ def user_edit():
         # Check unicity for SSH key
         query = db.session.query(user.User)\
             .filter_by(sshkey=new_sshkey).first()
+
 
         if query is not None and query != query_check:
             return utils.response('ERROR: The SSH key "' + new_sshkey + \
