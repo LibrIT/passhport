@@ -186,6 +186,8 @@ If no argument is given, user enters in interactive mode.
   OK: "firewall1.compagny.com" -> created
   admin@bastion:~#
 
+Once the target is created, you should add a passhport ssh public key to the target and use "checkaccess" to verify everything is ok.
+
 edit
 -----------
 
