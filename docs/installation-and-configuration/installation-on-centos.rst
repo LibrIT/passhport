@@ -63,7 +63,7 @@ Now that we have our virtual-env, we install the python’s modules we’ll need
 
 .. code-block:: none
 
-  passhport@centos7:~$ /home/passhport/passhport-run-env/bin/pip install sqlalchemy-migrate flask-migrate requests docopt configparser tabulate flask-login ldap3 psutil
+  passhport@centos7:~$ /home/passhport/passhport-run-env/bin/pip install sqlalchemy-migrate flask-migrate requests docopt configparser tabulate flask-login ldap3 psutil cryptography
 
 Now, let’s start the real thing…
 
