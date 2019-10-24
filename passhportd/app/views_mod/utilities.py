@@ -66,7 +66,7 @@ def get_targetgroup(name):
 
 
 def get_key(keyhash):
-    """Return the name of the user with this key or None if there is not"""
+    """Return the user with this key or None if there is not"""
     # We are working with SHA256 hash for performances reason
     return db.session.query(user.User).filter(
             user.User.sshkeyhash.contains(keyhash)).first()
@@ -162,8 +162,26 @@ def write_authorized_keys(name, sshkey):
                                              " " + config.PASSHPORT_PATH + \
                                              " " + name + '" ' + sshkey + "\n")
     except IOError:
-        return False
+        return response('ERROR: cannot write in the file ' + \
+                        '"authorized_keys". However, the user is ' + \
+                        'stored in the database.', 500)
     
     # set correct read/write permissions
     os.chmod(config.SSH_KEY_FILE, stat.S_IRUSR | stat.S_IWUSR)
     return True
+
+
+def db_commit():
+    """Commit on database"""
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        return response('ERROR during database writing: -> ' + e.message , 409)
+    return True 
+
+
+def db_add_commit(elt):
+    """Add an element to database and commit"""
+    db.session.add(elt)
+    return db_commit()
+   

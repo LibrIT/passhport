@@ -240,7 +240,7 @@ class User(db.Model):
         """ Return hash of sshkey """
         key = SSHKey(sshkey, strict = True)
         try:
-            ssh.parse()
+            key.parse()
         except:
             app.logger.error("ERROR: wrong sshkey format: " + sshkey, file=sys.stderr)
             return("Wrong ssh key format")
