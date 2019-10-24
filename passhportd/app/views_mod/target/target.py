@@ -214,7 +214,9 @@ def target_create():
     changepwd = request.form["changepwd"].replace(" ", "")
     sessiondur = ""
     if "sessiondur" in request.form:
-        sessiondur = int(request.form["sessiondur"].replace(" ", ""))*60
+        if utils.is_number(request.form["sessiondur"]):
+            app.logger.error(request.form["sessiondur"])
+            sessiondur = int(request.form["sessiondur"].replace(" ", ""))*60
 
     # Check for required fields
     if not name or not hostname:

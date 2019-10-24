@@ -184,4 +184,11 @@ def db_add_commit(elt):
     """Add an element to database and commit"""
     db.session.add(elt)
     return db_commit()
-   
+
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
