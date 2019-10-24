@@ -606,7 +606,6 @@ def generate_sshkeyhash():
     for u in query:
         u.sshkeyhash=u.hash(u.sshkey)
 
-
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
@@ -614,9 +613,7 @@ def generate_sshkeyhash():
 
     return utils.response('OK: All sshkey hash generated', 200)
 
-
    
-
 @app.route("/user/attachedto/usergroup/<name>")
 def user_attached_to_usergroup(name):
     """Return the list of the usergroups that contains this user"""
