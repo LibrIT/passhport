@@ -44,14 +44,9 @@ else
     wget --ca-certificate=${CERT} -qO - ${URL}connection/ssh/endsession/${PID} &> /dev/null
 fi
 
-# If it's a direct connection, we don't connect again
-if [ "${SSH_ORIGINAL_COMMAND}" != "" ]
-then 
-    KEEPCONNECT=0
-fi
-
 # Launch PaSSHport with the same user after the connection
-if [ "${KEEPCONNECT}" -eq "1" ]
+# If it's a direct connection, we don't connect again
+if [ "${KEEPCONNECT}" -eq "1" ] && [ -z "${SSH_ORIGINAL_COMMAND}" ]
 then
     ${PYTHONBIN} ${PASSHPORTBIN} ${USERNAME} 
 fi
