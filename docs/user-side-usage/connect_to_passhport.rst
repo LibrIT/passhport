@@ -20,4 +20,7 @@ If you want to be directly connected, you have to specify the target name in the
 
   ssh -t passhport@bastion.tld targetname
   
-If you want to launch a command directly, you can use the same syntaxe than belo
+If you want to launch a command directly, you can use the same syntax adding the command at the end
+.. code-block:: none
+
+  ssh -t passhport@bastion.tld targetname cat /proc/cpuinfo
