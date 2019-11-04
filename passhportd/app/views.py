@@ -116,7 +116,7 @@ def currentsshconnections():
        to their PID"""
 
     lentries = logentry.Logentry.query.filter(db.and_(
-               logentry.Logentry.endsessiondate is None,
+               logentry.Logentry.endsessiondate == None,
 	       logentry.Logentry.target != None,
 	       logentry.Logentry.user != None)).all()
 
