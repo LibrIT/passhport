@@ -83,10 +83,6 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
     """Check if the user have entered an accessible target
        then check target type and launch the action"""
 
-    #In order to allow an automatic login name for each user:
-    login = re.split("@", username)[0] #We take the first part of the email
-
-
     # Check the target access and access type
     potential_target = False
     target_found = False
