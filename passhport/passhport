@@ -33,6 +33,7 @@ SCRIPT_LOGS_PATH   = conf.get("Environment", "SCRIPT_LOGS_PATH")
 # MISC Confgiruation
 SCP_THROUGH_TARGET = conf.getboolean("MISC", "SCP_THROUGH_TARGET")
 UNIQ_TARGETS_ID    = conf.getboolean("MISC", "UNIQ_TARGETS_ID")
+SSH_SCRIPT         = conf.get("Environment", "SSH_SCRIPT")
 
 
 def signal_handler(signal, frame):
@@ -167,7 +168,7 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
             cert = "/dev/null"
         else:
             cert = SSL_CERTIFICAT
-        SSH_SCRIPT         = conf.get("Environment", "SSH_SCRIPT")
+        # Standard SSH connection
         ssh.connect(target, filelog, login, port, sshoptions, pid,
                     url_passhport, cert, SSH_SCRIPT, username, originalcmd)
 

@@ -48,5 +48,5 @@ fi
 # If it's a direct connection, we don't connect again
 if [ "${KEEPCONNECT}" -eq "1" ] && [ -z "${SSH_ORIGINAL_COMMAND}" ]
 then
-    ${PYTHONBIN} ${PASSHPORTBIN} ${USERNAME} 
+    exec ${PYTHONBIN} ${PASSHPORTBIN} ${USERNAME} 
 fi
