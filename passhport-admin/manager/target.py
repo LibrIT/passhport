@@ -44,14 +44,26 @@ def prompt_checkaccess():
 
 def prompt_create():
     """Prompt user to obtain data to create a target"""
+    port       = ""
+    sshoptions = ""
+    changepwd  = ""
+    sessiondur = ""
+
     name = input("Name: ")
     hostname = input("Hostname: ")
     targettype = input("Type (default is ssh): ")
+    if targettype == "":
+        targettype = "ssh"
     login = input("Login (default is root): ")
-    port = ask_port("Port: ")
-    sshoptions = input("SSH Options: ")
-    changepwd = input("Change the password after each connection (type 'yes' if you really want it): ")
+    if targettype == "ssh":
+        port = ask_port("Port (default is 22):")
+        sshoptions = input("SSH Options: ")
+        changepwd = input("Change the password after each connection (type 'yes' if you really want it): ")
+    elif targettype in ["mysql", "postgresql", "oracle", "kubernetes"]:
+        port = ask_port("Port:")
+        sessiondur = input("Session duration in minutes (default is 12hours):")
     comment = input("Comment: ")
+
 
     return {"<name>": name,
         "<hostname>": hostname,
@@ -59,6 +71,7 @@ def prompt_create():
         "--login": login,
         "--sshoptions": sshoptions,
         "--port": port,
+        "--sessiondur": sessiondur,
         "--changepwd": changepwd,
         "--comment": comment}
 
@@ -71,6 +84,7 @@ def create(param):
     sshoptions = ""
     changepwd = ""
     comment = ""
+    sessiondur = ""
 
     if "--type" in param:
         targettype = param["--type"]
@@ -102,6 +116,11 @@ def create(param):
         else:
             changepwd = "False"
 
+    if "--sessiondur" in param:
+        sessiondur = param["--sessiondur"]
+
+    print(sessiondur)
+
     return {"name": param["<name>"],
             "hostname": param["<hostname>"],
             "targettype": targettype,
@@ -109,7 +128,8 @@ def create(param):
             "port": port,
             "sshoptions": sshoptions,
             "changepwd": changepwd,
-            "comment": comment}
+            "comment": comment,
+            "sessiondur": sessiondur}
 
 
 def prompt_edit(req):
@@ -117,6 +137,11 @@ def prompt_edit(req):
     name = input("Name of the target you want to modify: ")
     if not name:
         return False
+    
+    new_port       = ""
+    new_sshoptions = ""
+    new_changepwd  = ""
+    new_sessiondur = ""
 
     if req.show("target", {"<name>": name}) == 0:
         new_name = input("New name: ")
@@ -124,8 +149,17 @@ def prompt_edit(req):
         new_targettype = input("New type (ssh, mysql, oracle, postgresql): ")
         new_login = input("New Login: ")
         new_port = ask_port("New port: ")
-        new_sshoptions = input("New SSH options: ")
-        new_changepwd = input("Change the password after each connection (type 'yes' if you really want it): ")
+        if new_targettype == "ssh":
+            new_login = input("New Login: ")
+            new_changepwd = input("Change the password after each connection (type 'yes' if you really want it): ")
+            new_sshoptions = input("New SSH options: ")
+        elif new_targettype in ["mysql", "oracle", "postgresql"]:
+            new_sessiondur = input("New session duration in minutes:")
+        else: # we can't determine which kind of type is, we ask for all
+            new_login = input("New Login: ")
+            new_changepwd = input("Change the password after each connection (type 'yes' if you really want it, ssh root access only): ")
+            new_sshoptions = input("New SSH options: ")
+            new_sessiondur = input("New session duration in minutes (mysql, oracle and postgresql only:")
         new_comment = input("New comment: ")
         if len(new_comment.strip()) == 0:
             answer = input("Remove original comment? [y/N]")
@@ -140,7 +174,8 @@ def prompt_edit(req):
             "--newport": new_port,
             "--newsshoptions": new_sshoptions,
             "--newchangepwd": new_changepwd,
-            "--newcomment": new_comment}
+            "--newcomment": new_comment,
+            "--newsessiondur": new_sessiondur}
 
 
 def edit(param):

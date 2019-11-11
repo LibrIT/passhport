@@ -93,7 +93,7 @@ apt install -y python3-pip git openssl virtualenv libpython3-dev
 echo '##############################################################'
 echo '# Creating "passhport" system user'
 echo '##############################################################'
-useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
+/usr/sbin/useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
 echo '##############################################################'
 echo '# Creating the virtual-env for passhport…'
 echo '##############################################################'

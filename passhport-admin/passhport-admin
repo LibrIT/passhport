@@ -21,10 +21,11 @@ Usage:
     passhport-admin target show [<name>]
     passhport-admin target create [((<name> <hostname>) [--login=<login>] \
 [--type=<ssh>] [--comment=<comment>] [--changepwd=<yes|no>] [--sshoptions=<sshoptions>] \
-[--port=<port>])]
+[--port=<port>] [--sessiondur=<sessiondur>])]
     passhport-admin target edit [(<name> [--newname=<name>] \
 [--newhostname=<hostname>] [--newtype=<ssh>] [--newlogin=<login>] [--newchangepwd=<yes|no>] \
-[--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>])]
+[--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>] \
+[--sessiondur=<sessiondur>]) ]
     passhport-admin target (adduser | rmuser) \
 [(<username> <targetname>)]
     passhport-admin target (addusergroup | rmusergroup) \
@@ -83,6 +84,8 @@ confirmation.
     --sshoptions=<sshoptions>       Set SSH options to the target.
     --port=<port>                   Set port used to connect with \
 the target.
+    --sessiondur=<sessiondur>       Set the session duration in minutes for \
+when supported.
     --newname=<name>                Set the new name of the object.
     --newcomment=<comment>          Set the new comment of the object.
     --newsshkey=<sshkey>            Set the new SSH key of the user.
@@ -91,6 +94,9 @@ the target.
     --newsshoptions=<sshoptions>    Set the new SSH options \
 of the target.
     --newport=<port>                Set the new port used \
+    --newsessiondur=<sessiondur>    Set the new session duration in minutes for \
+when supported.
+
 with the target.
 """
 

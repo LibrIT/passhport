@@ -12,8 +12,8 @@ class Passentry(db.Model):
     __tablename__ = "passentry"
     id = db.Column(db.Integer, primary_key=True)
     connectiondate = db.Column(db.String(20), index=True)
-    password       = db.Column(db.LargeBinary(500), index=True)
-    salt           = db.Column(db.LargeBinary(500), index=True)
+    password       = db.Column(db.LargeBinary(500), index=False)
+    salt           = db.Column(db.LargeBinary(500), index=False)
 
     # Relations
     target = db.relationship("Target", secondary="target_pass")

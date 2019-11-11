@@ -147,9 +147,10 @@ def currecntsshconnectionskillbiglog():
     lentries = logentry.Logentry.query.filter(db.and_(
                logentry.Logentry.endsessiondate == None,
                logentry.Logentry.target != None,
-               logentry.Logentry.user != None,
                logentry.Logentry.logfilename.like(
-                                    config.NODE_NAME + '-%'))).all()
+                                    config.NODE_NAME + '-%'),
+               logentry.Logentry.connectioncmd.like('%ssh%'),
+	           logentry.Logentry.user != None)).all()
 
     killedpid = ""
     confmaxsize = int(config.MAXLOGSIZE)*1024*1024
@@ -195,8 +196,8 @@ def checkandterminatesshsession():
         except Exception as E:
             if type(E) == psutil.NoSuchProcess:
                 endsshsession(entry.pid)
-                print("Orphan connection with PID:" + str(entry.pid) + \
-                        ". Now closed in the logentry.")
+                app.logger.warning("Orphan connection with PID:" + \
+                        str(entry.pid) + ". Now closed in the logentry.")
 
     return "Active connections: check done."
 
@@ -207,7 +208,7 @@ def oldentriesendsession():
     isodate    = datetime.now().isoformat().replace(":",""). \
                  replace("-","").split('.')[0]
     lentries = logentry.Logentry.query.filter(
-             logentry.Logentry.pid == None).all()
+             logentry.Logentry.pid is None).all()
 
     if not lentries:
         return "Error: no logentry without PID"
@@ -272,7 +273,7 @@ def sshdisconnection(pid):
 
     except Exception as E:
         if type(E) == psutil.NoSuchProcess:
-            print("Impossible to kill: no such process with PID " + str(pid))
+            app.logger.warning("Impossible to kill: no such process with PID " + str(pid))
 
     return "Done"
 
@@ -363,4 +364,3 @@ def directdownload():
         return utils.response("ERROR: can't connect", 404)
 
     return Response(stream_with_context(p.stdout))
-

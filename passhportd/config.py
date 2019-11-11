@@ -28,7 +28,7 @@ SALT            = conf.get("Database", "SALT")
 SSH_KEY_FILE    = conf.get("Environment", "SSH_KEY_FILE")
 
 """ PaSSHport path """
-OPEN_ACCESS_PATH  = conf.get("Environment", "OPEN_ACCESS_PATH")
+OPEN_ACCESS_PATH= conf.get("Environment", "OPEN_ACCESS_PATH")
 PASSHPORT_PATH  = conf.get("Environment", "PASSHPORT_PATH")
 PYTHON_PATH     = conf.get("Environment", "PYTHON_PATH")
 
@@ -52,3 +52,4 @@ SSL_KEY         = conf.get("SSL", "SSL_KEY")
 """ MISC """
 MAXLOGSIZE      = conf.get("MISC", "MAXLOGSIZE")
 NODE_NAME       = conf.get("MISC", "NODE_NAME")
+DB_SESSIONS_TO  = conf.get("MISC", "DB_SESSIONS_TO", fallback='4')
