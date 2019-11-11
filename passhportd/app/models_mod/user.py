@@ -1,6 +1,7 @@
 # -*-coding:Utf-8 -*-
 
 import sys
+import uuid
 from datetime import datetime
 from datetime import timedelta
 from datetime import date
@@ -243,7 +244,7 @@ class User(db.Model):
             key.parse()
         except:
             app.logger.error("ERROR: wrong sshkey format: " + sshkey, file=sys.stderr)
-            return("Wrong ssh key format")
+            return("Wrong ssh key format - " + str(uuid.uuid4()))
         # We remove the "SHA256:" header and we add "=" at the end
         return key.hash_sha256()[7:] + "="
 

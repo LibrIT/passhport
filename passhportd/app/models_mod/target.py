@@ -116,7 +116,7 @@ class Target(db.Model):
     def show_sessionduration(self):
         """Return an int containing session duraion in minutes"""
         if not self.sessiondur:
-            return 60*config.DB_SESSIONS_TO
+            return 60*int(config.DB_SESSIONS_TO)
         return self.sessiondur
 
     def show_changepwd(self):
