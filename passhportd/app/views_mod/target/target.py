@@ -586,8 +586,9 @@ def extgetaccess(ip, targetname, username):
 
     t = utils.get_target(targetname)
     if not t:
-        return utils.response('ERROR: No target "' + targetname + \
-                              '" in the database ', 417)
+        msg = 'ERROR: No target "' + targetname + '" in the database '
+        app.logger.error(msg)
+        return utils.response(msg, 417)
 
     #Date to stop access:
     startdate = datetime.now()
@@ -608,13 +609,21 @@ def extgetaccess(ip, targetname, username):
     exit_code = process.wait()
     
     if exit_code != 0:
+        app.logger.error('External script return ' + str(exit_code))
+        app.logger.error('Output message was' + str(output))
         return utils.response('ERROR: external script return ' + \
                                str(exit_code), 500)
 
     if output:
         # Transform the ouput on Dict
-        output = eval(output)
+        try:
+            output = eval(output)
+        except:
+            app.logger.error("Error on openaccess return: " + str(output))
+            return utils.response('Openaccess script is broken', 400)
+
         if output["execution_status"] != "OK":
+            app.logger.error("Error on openaccess return: " + str(output))
             return utils.response('ERROR: target seems unreachable.',
                                    200)
 
@@ -639,14 +648,18 @@ def extgetaccess(ip, targetname, username):
         try:
             db.session.commit()
         except exc.SQLAlchemyError as e:
-            app.logger.error('ERROR registering connection demand: exttargetaccess "' + \
-                  str(output) + '" -> ' + str(e))
+            app.logger.error('ERROR registering connection demand: ' + \
+                             'exttargetaccess "' + str(output) + '" -> ' +
+                             str(e))
 
         # Create the output to print
         response = "Connect via " + output["proxy_ip"] + " on  port " + \
                    output["proxy_port"] + " until " + \
                    format(stopdate, '%H:%M')
+    else:
+        return utils.response("Openaccess script is broken", 400)
 
+    app.logger.info(response)
     return utils.response(response, 200)
 
 
