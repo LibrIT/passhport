@@ -1,5 +1,5 @@
 * * * * * passhport wget --no-check-certificate -qO -  https://localhost:5000/connection/ssh/current/killbiglog >> /var/log/passhport/killed_session.log
-* * * * * passhport sleep 15 && get --no-check-certificate -qO -  https://localhost:5000/connection/ssh/current/killbiglog >> /var/log/passhport/killed_session.log
-* * * * * passhport sleep 30 && get --no-check-certificate -qO -  https://localhost:5000/connection/ssh/current/killbiglog >> /var/log/passhport/killed_session.log
-* * * * * passhport sleep 45 && get --no-check-certificate -qO -  https://localhost:5000/connection/ssh/current/killbiglog >> /var/log/passhport/killed_session.log
+* * * * * passhport sleep 15 && wget --no-check-certificate -qO -  https://localhost:5000/connection/ssh/current/killbiglog >> /var/log/passhport/killed_session.log
+* * * * * passhport sleep 30 && wget --no-check-certificate -qO -  https://localhost:5000/connection/ssh/current/killbiglog >> /var/log/passhport/killed_session.log
+* * * * * passhport sleep 45 && wget --no-check-certificate -qO -  https://localhost:5000/connection/ssh/current/killbiglog >> /var/log/passhport/killed_session.log
 

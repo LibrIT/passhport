@@ -191,6 +191,13 @@ msgstr "Port SSH à utiliser pour se connecter à la target (optionnel)"
 msgid "If no argument is given, user enters in interactive mode."
 msgstr "Si aucun argument n'est donné, l'utilisateur entre en mode interactif."
 
+#: ../../passhport-admin/target.rst:382 ../../passhport-admin/target.rst:189
+msgid "Once the target is created, you should add a passhport ssh public key to "
+"the target and use \"checkaccess\" to verify everything is ok."
+msgstr "Pensez à copier une clé public de passhport sur la target et à tester "
+"avec \"checkaccess\" les accès à votre nouvelle target."
+
+
 #: ../../passhport-admin/target.rst:190
 msgid "edit"
 msgstr "edit"

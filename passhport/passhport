@@ -34,6 +34,7 @@ SCRIPT_LOGS_PATH   = conf.get("Environment", "SCRIPT_LOGS_PATH")
 SCP_THROUGH_TARGET = conf.getboolean("MISC", "SCP_THROUGH_TARGET")
 UNIQ_TARGETS_ID    = conf.getboolean("MISC", "UNIQ_TARGETS_ID")
 NODE_NAME          = conf.get("MISC", "NODE_NAME")
+SSH_SCRIPT         = conf.get("Environment", "SSH_SCRIPT")
 
 def signal_handler(signal, frame):
     """Handle 'ctrl-c' from the users"""
@@ -82,10 +83,6 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
                     scpcmd = False):
     """Check if the user have entered an accessible target
        then check target type and launch the action"""
-
-    #In order to allow an automatic login name for each user:
-    login = re.split("@", username)[0] #We take the first part of the email
-
 
     # Check the target access and access type
     potential_target = False
@@ -171,7 +168,7 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
             cert = "/dev/null"
         else:
             cert = SSL_CERTIFICAT
-        SSH_SCRIPT         = conf.get("Environment", "SSH_SCRIPT")
+        # Standard SSH connection
         ssh.connect(target, filelog, login, port, sshoptions, pid,
                     url_passhport, cert, SSH_SCRIPT, username, originalcmd)
 
@@ -406,7 +403,7 @@ if __name__ == '__main__':
         # Let the use chose his server
         try:
             choice = input("Type the number, name or hostname of the " + \
-                            "server you want to connect to: ").rstrip().casefold()
+                        "server you want to connect to: ").rstrip().casefold()
         except EOFError:
             print("\nExiting at your own sweet will.")
             sys.exit(0)
@@ -414,7 +411,12 @@ if __name__ == '__main__':
         valid_input = False
 
         # Try to connect the user to the server he choosed or ask to re-type
-        while not checkandconnect(indexed_target_list, choice, username, originalcmd):
+        while not checkandconnect(indexed_target_list, choice, 
+                                  username, originalcmd):
             print("You didn't type correctly, please try again.\n")
-            choice = input("Type the number, name or hostname of the " + \
-                           "server you want to connect to: ").rstrip().casefold()
+            try:
+                choice = input("Type the number, name or hostname of the " + \
+                        "server you want to connect to: ").rstrip().casefold()
+            except EOFError:
+                print("\nExiting at your own sweet will.")
+                sys.exit(0)

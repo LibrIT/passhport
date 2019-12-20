@@ -147,7 +147,7 @@ def target_port(name):
 
     # If there is no port declared, we assume it's 22
     if port is None:
-        app.loggerwarning("No port set on " + name + ", 22 is used")
+        app.logger.warning("No port set on " + name + ", 22 is used")
         port = "22"
     else:
         port = str(port).replace(" ","")
@@ -172,7 +172,7 @@ def target_login(name):
 
     # If there is no user declared, we assume it's root
     if login is None:
-        app.loggerwarning("No login set on " + name + ", root is used")
+        app.logger.warning("No login set on " + name + ", root is used")
         login = "root"
     else:
         login = str(login).replace(" ","")
@@ -212,7 +212,11 @@ def target_create():
     sshoptions = request.form["sshoptions"]
     comment = request.form["comment"]
     changepwd = request.form["changepwd"].replace(" ", "")
-    sessiondur = "" #request.form["sessiondur"]
+    sessiondur = ""
+    if "sessiondur" in request.form:
+        if utils.is_number(request.form["sessiondur"]):
+            app.logger.error(request.form["sessiondur"])
+            sessiondur = int(request.form["sessiondur"].replace(" ", ""))*60
 
     # Check for required fields
     if not name or not hostname:
@@ -243,7 +247,7 @@ def target_create():
         changepwd=False
 
     if not sessiondur:
-        sessiondur = 240 #4h is the default
+        sessiondur = 60*int(config.DB_SESSIONS_TO)
 
     # Check unicity for name
     query = db.session.query(target.Target.name)\
@@ -252,6 +256,7 @@ def target_create():
     if query is not None:
         return utils.response('ERROR: The name "' + name + \
                               '" is already used by another target ', 417)
+
 
     t = target.Target(
         name       = name,
@@ -291,7 +296,10 @@ def target_edit():
     new_sshoptions = request.form["new_sshoptions"]
     new_comment = request.form["new_comment"]
     new_changepwd = request.form["new_changepwd"].replace(" ", "")
-    new_sessiondur = "" #request.form["new_sessiondur"]
+    new_sessiondur = ""
+    if "new_sessiondur" in request.form:
+        # session duration is stored in minutes, but created in hours
+        new_sessiondur = int(request.form["new_sessiondur"].replace(" ", ""))*60
 
     # Check required fields
     if not name:
@@ -583,7 +591,7 @@ def extgetaccess(ip, targetname, username):
 
     #Date to stop access:
     startdate = datetime.now()
-    stopdate  = startdate + timedelta(hours=4)
+    stopdate  = startdate + timedelta(hours=int(config.DB_SESSIONS_TO))
     formatedstop = format(stopdate, '%Y%m%dT%H%M')
     
     #Call the external script
@@ -607,8 +615,8 @@ def extgetaccess(ip, targetname, username):
         # Transform the ouput on Dict
         output = eval(output)
         if output["execution_status"] != "OK":
-            return utils.response('ERROR: external script execution status.',
-                                   500)
+            return utils.response('ERROR: target seems unreachable.',
+                                   200)
 
         # Create a exttarget object to log the connection
         u = utils.get_user(username)
@@ -631,7 +639,7 @@ def extgetaccess(ip, targetname, username):
         try:
             db.session.commit()
         except exc.SQLAlchemyError as e:
-            app.loggererror('ERROR registering connection demand: exttargetaccess "' + \
+            app.logger.error('ERROR registering connection demand: exttargetaccess "' + \
                   str(output) + '" -> ' + str(e))
 
         # Create the output to print

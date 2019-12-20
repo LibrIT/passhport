@@ -22,21 +22,21 @@ def useruid(s, login):
                    password=config.LDAPPASS, auto_bind=True)
 
     if c.result["description"] != "success":
-        app.loggererror("Error connecting to the LDAP with the service account")
+        app.logger.error("Error connecting to the LDAP with the service account")
         return False
 
     # Look for the user entry.
     if not c.search(config.LDAPBASE,
                     "(" + config.LDAPFIELD + "=" + login + ")") :
-        app.loggererror("Error: Connection to the LDAP with service account failed")
+        app.logger.error("Error: Connection to the LDAP with service account failed")
     else:
         if len(c.entries) >= 1 :
             if len(c.entries) > 1 :
-                app.loggererror("Error: multiple entries with this login. "+ \
+                app.logger.error("Error: multiple entries with this login. "+ \
                           "Trying first entry...")
             uid = c.entries[0].entry_dn
         else:
-            app.loggererror("Error: Login not found")
+            app.logger.error("Error: Login not found")
         c.unbind()
     
     return uid
@@ -84,12 +84,11 @@ def user_login():
     # Check data validity uppon LDAP/local/whatever...
     result = try_login(login, password)
     if result == "success":
-        app.loggerinfo("Authentication ok for {}".format(login))
+        app.logger.info("Authentication ok for {}".format(login))
         # If the LDAP connection is ok, user can connect
         return utils.response("Authorized", 200)
-    else:
-        app.loggerwarning("Authentication error for {} => ".format(login) + str(result))
-        return utils.response("Refused: " + str(result), 200)
+    app.logger.warning("Authentication error for {} => ".format(login) + str(result))
+    return utils.response("Refused: " + str(result), 200)
 
 
 @app.route("/user/list")
@@ -241,81 +240,73 @@ def user_accssible_target(username, targetname):
     return utils.response("False", 200)
 
 
+def check_user_form(mandatory, request):
+    """Check the user form to test several mandatory elements"""
+    # Must be POST
+    if not utils.is_post(request):
+        return utils.response("ERROR: POST method is required ", 405)
+
+    form = request.form
+    # Check mandatory fields
+    if utils.miss_mandatory(mandatory, form):
+        return utils.response("ERROR: The name and SSH key are required ", 417)
+
+    # User can't have same username
+    if utils.name_already_taken(form["name"]):
+        return utils.response("ERROR: The name is already taken ", 417)
+    # User name can't contain spaces
+    if form["name"] != form["name"].replace(" ",""):
+        return utils.response("ERROR: The name can't contain spaces.", 417)
+    
+    # Check SSHkey format
+    hashkey = utils.sshkey_good_format(form["sshkey"])
+    if not hashkey:
+        return utils.response("ERROR: The SSHkey format is not recognized", 417)
+
+    # Check SSHkey unicity
+    if utils.sshkey_already_taken(hashkey):
+        return utils.response("ERROR: Another user is using this SSHkey ", 417)
+
+    return True
+
+
 @app.route("/user/create", methods=["POST"])
 def user_create():
     """Add a user in the database"""
-    # Only POST data are handled
-    if request.method != "POST":
-        return utils.response("ERROR: POST method is required ", 405)
+    # Check if fields are OK to be imported
+    # Some fields are mandatory
+    res = check_user_form(["name", "sshkey"],
+                          request)
+    if res is not True:
+        return res
 
-    # Simplification for the reading
-    name = request.form["name"]
-    sshkey = request.form["sshkey"]
-    comment = request.form["comment"]
-    if request.form.get("logfilesize"):
-        logfilesize = request.form["logfilesize"]
-
-    # Check for required fields
-    if not name or not sshkey:
-        return utils.response("ERROR: The name and SSH key are required ", 417)
-
-    # Check unicity for name
-    query = db.session.query(user.User.name)\
-        .filter_by(name=name).first()
-
-    if query is not None:
-        return utils.response('ERROR: The name "' + name + \
-                              '" is already used by another user ', 417)
-
-    # Check unicity for SSH key
-    # First determine the real sshkey string
-    sshkeystring=sshkey.split()[1]
-    # And we look into user sshkeys if the key already exist
-    query = db.session.query(user.User).filter(
-            user.User.sshkey.contains(sshkeystring)).first()
-
-    if query is not None:
-        return utils.response('ERROR: The SSH key "' + sshkeystring + \
-                              '" is already used by ' + query.name, 417)
-
-    # Add the SSH key in the file authorized_keys
-    try:
-        with open(config.SSH_KEY_FILE, "a", encoding="utf8") as \
-            authorized_keys_file:
-            authorized_keys_file.write('command="' + \
-				       config.PYTHON_PATH + \
-                                       " " + config.PASSHPORT_PATH + \
-                                       " " + name + '" ' + sshkey + "\n")
-    except IOError:
-        return utils.response('ERROR: cannot write in the file ' + \
-                              '"authorized_keys"', 500)
-    
-    # set correct read/write permissions
-    os.chmod(config.SSH_KEY_FILE, stat.S_IRUSR | stat.S_IWUSR)
+    hashkey = utils.sshkey_good_format(request.form["sshkey"])
 
     if request.form.get("logfilesize"):
         u = user.User(
-            name=name,
-            sshkey=sshkey,
-            sshkeyhash=user.User.hash(sshkey),
-            comment=comment,
-            logfilesize=logfilesize)
+            name=request.form["name"],
+            sshkey=request.form["sshkey"],
+            sshkeyhash= utils.sshkey_good_format(request.form["sshkey"]),
+            comment=request.form["comment"],
+            logfilesize=request.form.get("logfilesize"))
     else:
         u = user.User(
-            name=name,
-            sshkey=sshkey,
-            sshkeyhash=user.User.hash(sshkey),
-            comment=comment)
+            name=request.form["name"],
+            sshkey=request.form["sshkey"],
+            sshkeyhash=hashkey,
+            comment=request.form["comment"])
 
-    db.session.add(u)
+    res = utils.db_add_commit(u)
+    if res is not True:
+        return res
 
-    # Try to add the user on the database
-    try:
-        db.session.commit()
-    except exc.SQLAlchemyError as e:
-        return utils.response('ERROR: "' + name + '" -> ' + e.message , 409)
+    # Add the SSH key in the file authorized_keys
+    res = utils.write_authorized_keys(request.form["name"], 
+                                      request.form["sshkey"])
+    if res is not True:
+        return res
 
-    return utils.response('OK: "' + name + '" -> created', 200)
+    return utils.response('OK: "' + request.form["name"] + '" -> created', 200)
 
 
 @app.route("/user/togglesuperadmin/<name>", methods=["GET"])
@@ -329,10 +320,9 @@ def user_togglesuperadmin(name):
     # Toggle the superadmin flag
     new_state = userobj.togglesuperadmin()
 
-    try:
-        db.session.commit()
-    except exc.SQLAlchemyError as e:
-        return utils.response('ERROR: -> ' + e.message, 409)
+    res = utils.db_commit()
+    if res is not True:
+        return res
 
     return utils.response(new_state, 200)
 
@@ -359,21 +349,25 @@ def generate_authorized_keys():
         r = r + 'command="' + config.PYTHON_PATH + " " + \
                 config.PASSHPORT_PATH + " " + userdata.name + \
                 '" ' + userdata.sshkey + "\n"
-
     return r
 
 
 def update_authorized_keys(orig_name, orig_sshkey, new_name, new_sshkey):
     """Edit the ssh autorized_keys file"""
+    
     warning = "OK"
+    
+    # Set empty fields
     if not new_name:
         new_name = orig_name
     if not new_sshkey:
         new_sshkey = orig_sshkey
+
     # Line supposed to be in the authorized_file
     authorized_keys_line = 'command="' + config.PYTHON_PATH + \
                            " " + config.PASSHPORT_PATH + \
                            " " + orig_name + '" ' + orig_sshkey + "\n"
+    app.logger.error(authorized_keys_line)
 
     # Edit the SSH key in the file authorized_keys
     try:
@@ -412,90 +406,95 @@ def update_authorized_keys(orig_name, orig_sshkey, new_name, new_sshkey):
     return warning
 
 
+def check_user_editform(mandatory, request):
+    """Check the user form to test several mandatory elements"""
+    # Must be POST
+    if not utils.is_post(request):
+        return utils.response("ERROR: POST method is required.", 405)
+
+    form = request.form
+    # Check mandatory fields
+    if utils.miss_mandatory(mandatory, form):
+        return utils.response("ERROR: The name is required.", 417)
+
+    # User must exit in database
+    if not utils.name_already_taken(form["name"]):
+        return utils.response("ERROR: User doesn't exist.", 417)
+
+    if form["new_name"]:
+        # User can't have same username
+        if form["new_name"] != form["new_name"].replace(" ",""):
+            return utils.response("ERROR: The name can't contain spaces.", 417)
+        if utils.name_already_taken(form["new_name"]):
+            return utils.response("ERROR: The name is already takeni.", 417)
+    
+    if form["new_sshkey"]:
+        # Check SSHkey format
+        hashkey = utils.sshkey_good_format(form["new_sshkey"])
+        if not hashkey:
+            return utils.response(
+                             "ERROR: The SSHkey format is not recognized.", 417)
+
+        # Check SSHkey unicity
+        userwiththiskey = utils.get_key(hashkey)
+        if userwiththiskey:
+            if userwiththiskey.name != form["name"]:
+                return utils.response(
+                              "ERROR: Another user is using this SSHkey.", 417)
+
+    return True
+
+
 @app.route("/user/edit", methods=["POST"])
 def user_edit():
     """Edit a user in the database"""
-    # Only POST data are handled
-    if request.method != "POST":
-        return utils.response("ERROR: POST method is required ", 405)
+    # Check if fields are OK to be imported
+    res = check_user_editform(["name"], request)
+    if res is not True:
+        return res
 
-    # Simplification for the reading
-    name = request.form["name"]
-    new_name = request.form["new_name"]
-    new_sshkey = request.form["new_sshkey"]
-    new_comment = request.form["new_comment"]
-    if request.form.get("new_logfilesize"):
-        new_logfilesize = request.form["new_logfilesize"]
+    need_authorizedkey_update = False
+    form = request.form
+    usertoupdate = db.session.query(user.User.name).filter_by(
+                                                     name=form["name"])
+    legacysshkey = db.session.query(user.User.sshkey).filter_by(
+                                            name=form["name"]).first()[0]
 
-    # Check required fields
-    if not name:
-        return utils.response("ERROR: The name is required ", 417)
-
-    # Check if the name exists in the database
-    query_check = db.session.query(user.User).filter_by(
-        name=name).first()
-
-    if query_check is None:
-        return utils.response('ERROR: No user with the name "' + name + \
-                              '" in the database.', 417)
-
-    to_update = db.session.query(user.User.name).filter_by(name=name)
-
-    # Let's modify only relevent fields
-    # Strangely the order is important, have to investigate why
-    if new_comment:
+    # Comment
+    if form["new_comment"]:
         # This specific string allows admins to remove old comments of the user
-        if new_comment == "PASSHPORTREMOVECOMMENT":
-            new_comment = ""
-        to_update.update({"comment": new_comment})
+        if form["new_comment"] == "PASSHPORTREMOVECOMMENT":
+            form["new_comment"] = ""
+        usertoupdate.update({"comment": form["new_comment"]})
 
-    if new_sshkey:
-        # Check unicity for SSH key
-        query = db.session.query(user.User)\
-            .filter_by(sshkey=new_sshkey).first()
+    # SSHkey / Hash
+    if form["new_sshkey"]:
+        usertoupdate.update({"sshkey": form["new_sshkey"]})
+        usertoupdate.update({"sshkeyhash": user.User.hash(form["new_sshkey"])})
+        need_authorizedkey_update = True
 
-        if query is not None and query != query_check:
-            return utils.response('ERROR: The SSH key "' + new_sshkey + \
-                                  '" is already used by another user ', 417)
+    # Username
+    if form["new_name"]:
+        usertoupdate.update({"name": form["new_name"]})
+        need_authorizedkey_update = True
 
-        if new_sshkey != query_check.sshkey:
-            # Edit the SSH key in the file authorized_keys
-            result = update_authorized_keys(name, query_check.sshkey, \
-                     new_name, new_sshkey)
-            if result != "OK":
-                return result
-       
-        to_update.update({"sshkey": new_sshkey})
-        to_update.update({"sshkeyhash": user.User.hash(new_sshkey)})
+    # Logfilesize
+    if form.get("logfilesize"):
+        usertoupdate.update({"logfilesize": form["new_logfilesize"]})
 
-    if new_name:
-        # Check unicity for name
-        query = db.session.query(user.User)\
-            .filter_by(name=new_name).first()
 
-        if query != query_check and query is not None:
-            return utils.response('ERROR: The name "' + new_name + \
-                                  '" is already used by another user ', 417)
-        
-        if new_name != name:
-            # Edit the SSH key in the file authorized_keys
-            result = update_authorized_keys(name, query_check.sshkey, \
-                     new_name, new_sshkey)
-            if result != "OK":
-                return result
+    # Edit authorized_keys to change username or sshkey or both
+    if need_authorizedkey_update:
+        res = update_authorized_keys(form["name"], legacysshkey, \
+                              form["new_name"], form["new_sshkey"])
+        if res != "OK":
+            return res
 
-        to_update.update({"name": new_name})
+    res = utils.db_commit()
+    if res is not True:
+        return res
 
-    if request.form.get("new_logfilesize"):
-        # Only database is concerned
-        to_update.update({"logfilesize": new_logfilesize})
-
-    try:
-        db.session.commit()
-    except exc.SQLAlchemyError as e:
-        return utils.response('ERROR: "' + name + '" -> ' + e.message, 409)
-
-    return utils.response('OK: "' + name + '" -> edited', 200)
+    return utils.response('OK: "' + form["name"] + '" -> edited', 200)
 
 
 @app.route("/user/delete/<name>")
@@ -607,7 +606,6 @@ def generate_sshkeyhash():
     for u in query:
         u.sshkeyhash=u.hash(u.sshkey)
 
-
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
@@ -615,9 +613,7 @@ def generate_sshkeyhash():
 
     return utils.response('OK: All sshkey hash generated', 200)
 
-
    
-
 @app.route("/user/attachedto/usergroup/<name>")
 def user_attached_to_usergroup(name):
     """Return the list of the usergroups that contains this user"""

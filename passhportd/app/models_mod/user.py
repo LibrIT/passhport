@@ -1,15 +1,16 @@
 # -*-coding:Utf-8 -*-
 
-# Compatibility 2.7-3.4
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-
-from datetime import datetime, timedelta, date
-from app import app, db
-from app.models_mod import target,usergroup,targetgroup
-import hashlib, base64 # used to calculate sshky hash
 import sys
+from datetime import datetime
+from datetime import timedelta
+from datetime import date
+from sshpubkeys import SSHKey
+
+from app import app
+from app import db
+from app.models_mod import target
+from app.models_mod import usergroup
+from app.models_mod import targetgroup
    
 class User(db.Model):
     """User defines information for every adminsys using passhport"""
@@ -17,13 +18,13 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name        = db.Column(db.String(120), 
                            index=True, unique=True, nullable=False)
-    sshkey      = db.Column(db.String(5000), 
-                           index=False, unique=True, nullable=False)
-    sshkeyhash  = db.Column(db.String(5000),
-                           index=False, unique=False, nullable=True)
-    comment     = db.Column(db.String(5000), index=True)
+    sshkey      = db.Column(db.String(5000),
+                           index=False, unique=False, nullable=False)
+    sshkeyhash  = db.Column(db.String(64),
+                           index=True, unique=True, nullable=True)
+    comment     = db.Column(db.String(5000), index=False)
     superadmin  = db.Column(db.Boolean, unique=False, default=False)
-    logfilesize = db.Column(db.String(30), unique=False)
+    logfilesize = db.Column(db.String(30), unique=False, index=False)
 
 
     # Relations (in targetgroups)
@@ -108,7 +109,7 @@ class User(db.Model):
         if self.sshkeyhash:
             return self.sshkeyhash
 
-        app.loggerwarning("WARN: This user sshkey hash is not stored: " + self.name, 
+        app.logger.warning("WARN: This user sshkey hash is not stored: " + self.name, 
                                                          file=sys.stderr)
         return self.hash(self.sshkey)
 
@@ -236,15 +237,13 @@ class User(db.Model):
 
     @staticmethod
     def hash(sshkey):
-        """ Return the sshkey hash of sshkey """
-        m = hashlib.sha256()
+        """ Return hash of sshkey """
+        key = SSHKey(sshkey, strict = True)
         try:
-            key = sshkey.split(" ")
-            m.update(base64.b64decode(key[1]))
-            hashkey= base64.b64encode(m.digest()).decode('utf-8')
+            key.parse()
         except:
-            app.loggererror("ERROR: wrong sshkey format: " + sshkey, file=sys.stderr)
+            app.logger.error("ERROR: wrong sshkey format: " + sshkey, file=sys.stderr)
             return("Wrong ssh key format")
-
-        return hashkey
+        # We remove the "SHA256:" header and we add "=" at the end
+        return key.hash_sha256()[7:] + "="
 
