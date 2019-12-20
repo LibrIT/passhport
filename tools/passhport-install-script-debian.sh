@@ -199,11 +199,11 @@ else
 	PASSHPORTD_RUNNING=0	
 fi
 
-echo '##############################################################'
-echo '# Adding root@localhost target…'
-echo '######################i########################################'
 if [ ${PASSHPORTD_RUNNING} -eq 1 ]
 then
+	echo '##############################################################'
+	echo '# Adding root@localhost target…'
+	echo '######################i########################################'
 	# Sleep 2 seconds so passhportd has enough time to start
 	sleep 2
 	[ ! -d "/root/.ssh" ] && mkdir "/root/.ssh" && chmod 700 "/root/.ssh"
