@@ -26,10 +26,12 @@ Pscp command tries to use SFTP protocol leading to this error:
 
 .. code-block:: none
 
-FATAL ERROR: Received unexpected end-of-file from server
+   FATAL ERROR: Received unexpected end-of-file from server
+
 
 In order to use pscp with PaSSHport, consider using this syntax including "-scp" flag:
 
 .. code-block:: none
 
-pscp -scp -i "C:\path\to\sshkeys\my_private_key.ppk"  "C:\path\to\file\totransfer.txt" passhport@my-passhport-server:TARGET_NAME//pah/to/copy
+   pscp -scp -i "C:\path\to\sshkeys\my_private_key.ppk"  "C:\path\to\file\totransfer.txt" passhport@my-passhport-server:TARGET_NAME//pah/to/copy
+
