@@ -147,7 +147,6 @@ def prompt_edit(req):
         new_name = input("New name: ")
         new_hostname = input("New hostname: ")
         new_targettype = input("New type (ssh, mysql, oracle, postgresql): ")
-        new_login = input("New Login: ")
         new_port = ask_port("New port: ")
         if new_targettype == "ssh":
             new_login = input("New Login: ")
