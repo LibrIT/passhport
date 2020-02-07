@@ -592,7 +592,7 @@ def extgetaccess(ip, targetname, username):
 
     #Date to stop access:
     startdate = datetime.now()
-    stopdate  = startdate + timedelta(hours=int(config.DB_SESSIONS_TO))
+    stopdate  = startdate + timedelta(hours=int(t.show_sessionduration())/60)
     formatedstop = format(stopdate, '%Y%m%dT%H%M')
     
     #Call the external script
@@ -633,7 +633,6 @@ def extgetaccess(ip, targetname, username):
             return utils.response('ERROR: No user "' + username + \
                               '" in the database ', 417)
 
-        print(output)
         ta = exttargetaccess.Exttargetaccess(
             startdate = startdate,
             stopdate = stopdate,
