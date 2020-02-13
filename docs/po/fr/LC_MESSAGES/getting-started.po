@@ -387,7 +387,7 @@ msgstr ""
 
 #: ../../getting-started.rst:364
 msgid "Let's connect !"
-msgstr "C"
+msgstr "Connectons-nous !"
 
 #: ../../getting-started.rst:366
 msgid ""
