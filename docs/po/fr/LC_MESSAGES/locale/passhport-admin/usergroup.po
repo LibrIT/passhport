@@ -1,0 +1,297 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2019, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-13 19:51+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../passhport-admin/usergroup.rst:2
+msgid "usergroup"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:4
+msgid "Usages :"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:19
+msgid "list"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:21
+msgid "`passhport-admin usergroup list` show all the configured usergroups."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:23
+#: ../../passhport-admin/usergroup.rst:39
+#: ../../passhport-admin/usergroup.rst:49
+#: ../../passhport-admin/usergroup.rst:65
+#: ../../passhport-admin/usergroup.rst:80
+#: ../../passhport-admin/usergroup.rst:107
+#: ../../passhport-admin/usergroup.rst:117
+#: ../../passhport-admin/usergroup.rst:147
+#: ../../passhport-admin/usergroup.rst:157
+#: ../../passhport-admin/usergroup.rst:190
+#: ../../passhport-admin/usergroup.rst:200
+#: ../../passhport-admin/usergroup.rst:223
+#: ../../passhport-admin/usergroup.rst:233
+#: ../../passhport-admin/usergroup.rst:256
+#: ../../passhport-admin/usergroup.rst:266
+#: ../../passhport-admin/usergroup.rst:289
+#: ../../passhport-admin/usergroup.rst:299
+#: ../../passhport-admin/usergroup.rst:322
+#: ../../passhport-admin/usergroup.rst:339
+msgid "**Example :**"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:35
+msgid "search"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:37
+msgid ""
+"`passhport-admin usergroup search [<PATTERN>]` searches in the usergroup "
+"list for all usergroups that correspond to the given pattern."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:47
+#: ../../passhport-admin/usergroup.rst:78
+msgid "If no pattern is given, user enters in interactive mode."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:61
+msgid "show"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:63
+msgid ""
+"`passhport-admin usergroup show <NAME>` shows informations about the "
+"usergroup <NAME>."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:95
+msgid "create"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:97
+msgid ""
+"`passhport-admin usergroup create [(<name> [--comment=<comment>])]` "
+"creates a new usergroup."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:100
+#: ../../passhport-admin/usergroup.rst:138
+#: ../../passhport-admin/usergroup.rst:183
+#: ../../passhport-admin/usergroup.rst:216
+#: ../../passhport-admin/usergroup.rst:249
+#: ../../passhport-admin/usergroup.rst:282
+#: ../../passhport-admin/usergroup.rst:315
+msgid "Argument"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:100
+#: ../../passhport-admin/usergroup.rst:138
+#: ../../passhport-admin/usergroup.rst:183
+#: ../../passhport-admin/usergroup.rst:216
+#: ../../passhport-admin/usergroup.rst:249
+#: ../../passhport-admin/usergroup.rst:282
+#: ../../passhport-admin/usergroup.rst:315
+msgid "Description"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:102
+#: ../../passhport-admin/usergroup.rst:140
+#: ../../passhport-admin/usergroup.rst:317
+msgid "<name>"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:102
+msgid "Name of the usergroup to create"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:104
+msgid "--comment"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:104
+msgid "Comment concerning the usergroup (optional)"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:115
+#: ../../passhport-admin/usergroup.rst:198
+#: ../../passhport-admin/usergroup.rst:231
+#: ../../passhport-admin/usergroup.rst:264
+#: ../../passhport-admin/usergroup.rst:297
+#: ../../passhport-admin/usergroup.rst:337
+msgid "If no argument is given, user enters in interactive mode."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:133
+msgid "edit"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:135
+msgid ""
+"`passhport-admin usergroup edit [(<name> [--newname=<name>] "
+"[--newcomment=<comment>])]` edits an existing usergroup."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:140
+msgid "Name of the usergroup to edit"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:142
+msgid "--newname"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:142
+msgid "New name of the usergroup if you want to rename it (optional)"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:144
+msgid "--newcomment"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:144
+msgid "New comment concerning the usergroup (optional)"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:155
+msgid ""
+"If no argument is given, user enters in interactive mode. It firsts shows"
+" all parameters of the usergroup, then displays each parameters for a "
+"change. User can keep any previous configured parameter, just by typing "
+"\"Enter\". They only exception is the comment. If user wants to remove "
+"the comment, he just type \"Enter\", and will then be asked if the "
+"original comment should be removed or not."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:175
+msgid ""
+"As you can see above, we only changed the \"New name\" entry. If an entry"
+" is simply replied with \"enter\", it keeps the previous value."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:178
+msgid "adduser"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:180
+msgid ""
+"`passhport-admin usergroup adduser [(<username> <usergroupname>)]` add a "
+"user in a usergroup."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:185
+#: ../../passhport-admin/usergroup.rst:218
+msgid "<username>"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:185
+msgid "Name of the user to add in a usergroup"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:187
+#: ../../passhport-admin/usergroup.rst:220
+#: ../../passhport-admin/usergroup.rst:253
+#: ../../passhport-admin/usergroup.rst:286
+msgid "<usergroupname>"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:187
+msgid "Name of the usergroup in which to add the user"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:211
+msgid "rmuser"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:213
+msgid ""
+"`passhport-admin usergroup rmuser [(<username> <usergroupname>)]` removes"
+" a user from a usergroup."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:218
+msgid "Name of the user to remove from a usergroup"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:220
+msgid "Name of the usergroup of which to remove the user"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:244
+msgid "addusergroup"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:246
+msgid ""
+"`passhport-admin usergroup addusergroup [(<subusergroupname> "
+"<usergroupname>)]` adds a usergroup in another usergroup."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:251
+#: ../../passhport-admin/usergroup.rst:284
+msgid "<subusergroupname>"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:251
+msgid "Name of the usergroup to add in a usergroup"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:253
+msgid "Name of the usergroup in which to add the usergroup"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:277
+msgid "rmusergroup"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:279
+msgid ""
+"`passhport-admin usergroup rmusergroup [(<subusergroupname> "
+"<usergroupname>)]` delete the connection between a usergroup and a "
+"usergroup."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:284
+msgid "Name of the usergroup to remove from a usergroup"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:286
+msgid "Name of the usergroup of which to remove the usergroup"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:310
+msgid "delete"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:312
+msgid ""
+"`passhport-admin usergroup delete [([-f | --force] <name>)]` delete a "
+"usergroup."
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:317
+msgid "Name of the usergroup to delete"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:319
+msgid "-f or --force"
+msgstr ""
+
+#: ../../passhport-admin/usergroup.rst:319
+msgid "If used, user won't be prompt for confirmation"
+msgstr ""
+
