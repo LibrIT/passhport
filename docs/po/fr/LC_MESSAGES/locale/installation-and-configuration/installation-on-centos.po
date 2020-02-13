@@ -1,0 +1,234 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2019, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-13 19:51+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../installation-and-configuration/installation-on-centos.rst:2
+msgid "Installation on CentOS 7"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:4
+msgid ""
+"The followings shows you how to install and run PaSSHport on CentOS 7. We"
+" start from a minimal installation of CentOS (available `here "
+"<https://www.centos.org/download/>`__)."
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:7
+msgid "The easy, automated way"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:8
+msgid ""
+"You can review the installation script `here "
+"<https://raw.githubusercontent.com/Raphux/passhport/master/tools"
+"/passhport-install-script-centos7.sh>`__."
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:10
+msgid "You can run it directly from command line :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:16
+msgid ""
+"Once finished, you can go to the `Getting Started <getting-"
+"started.html>`_ chapter."
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:20
+msgid "The long, manual way"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:22
+msgid ""
+"To understand what you do on your system when you install PaSSHport, "
+"follow the instructions below, that are more or less the step by step "
+"commands from the automated installation script."
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:24
+msgid "Install the EPEL repository :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:30
+msgid ""
+"Install python34-pip and other packages that we’ll need later for this "
+"tutorial (it will get ~100MB from the archives, so be patient) :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:36
+msgid "Let’s update pip :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:42
+msgid "Now, install virtual-env using pip :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:48
+msgid ""
+"Next we will need to add a system user called « passhport », and switch "
+"to it :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:56
+msgid "We now need to create a virtual-env for passhport user :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:62
+msgid ""
+"Now that we have our virtual-env, we install the python’s modules we’ll "
+"need for PaSSHport :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:68
+msgid "Now, let’s start the real thing…"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:70
+msgid "Let’s get passhport sources from github :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:83
+msgid ""
+"PaSSHport will need to write some logs, so, as root, we’ll create a "
+"directory in « /var/log », and give the ownership to the « passhport » "
+"user:"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:90
+msgid ""
+"We’ll also create the config directory, and copy the differents config "
+"file :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:99
+msgid ""
+"We’ll also need to make some modifications in those config file, if you "
+"run passhportd on a distant server. Here we’ll change the default "
+"listening address (localhost) to the real IP of our server."
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:101
+msgid "First, passhportd :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:107
+msgid "Change the « LISTENING_IP » parameter, to the IP address of your server :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:136
+msgid ""
+"Change the following parameter in /etc/passhport/passhport.ini and "
+"/etc/passhport/passhport-admin.ini :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:138
+msgid "``PASSHPORTD_HOSTNAME = 192.168.122.56``"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:140
+msgid "We’ll need ssh publickey, so we generate an 4096 bits RSA key:"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:165
+msgid ""
+"This will be the key that’ll be use by PaSSHport to connect to your "
+"hosts. You can also generate a ECDSA key if you wish :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:171
+msgid ""
+"Again as root, let’s make the directory that’ll contains the database "
+"(because we use SQLite for this tutorial) :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:178
+msgid ""
+"… then we’ll have to change 3 paramaters in the passhportd config file "
+"(as root, edit «/etc/passhport/passhportd.ini») :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:186
+msgid ""
+"Now we can create the database and check that it has correcly been "
+"created:"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:200
+msgid ""
+"We’ll now need to create the certificate to secure the API. First, create"
+" the directory in which will be key and the cert, and make the directory "
+"rwx for passport only :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:207
+msgid "Create the RSA key :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:213
+msgid ""
+"There is a conf file provided for OpenSSL, to generate a minimal correct "
+"SSL cert. The file is :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:215
+msgid "``/home/passhport/passhport/tools/openssl-for-passhportd.cnf``"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:217
+msgid ""
+"Edit it, and add DNS name you’ll use to reach the API. For the tutorial, "
+"we’ll use two hostnames (localhost added) :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:240
+msgid ""
+"Now, generate the certificate using this command (put on multiple lines, "
+"so you can copy/paste easily), but please adapt the subject line (-subj) "
+":"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:251
+msgid "Once executed, you’ll have a cert file next to the key file :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:263
+msgid ""
+"As root, create some symlink to the two main *binaries*, passhportd and "
+"passhport-admin, so you can access it without typing full path :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:270
+msgid "We now create the systemd service, and enables *passhportd* on startup :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:278
+msgid "And now, we’re ready to go, just launch passhportd daemon :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:284
+msgid ""
+"You can check that passhportd is running, by curling the IP you "
+"previously configured in */etc/passhport/passhportd.ini*, on port 5000 :"
+msgstr ""
+
+#: ../../installation-and-configuration/installation-on-centos.rst:292
+msgid ""
+"Bravo ! You successfully installed PaSSHport. You may now go to the "
+"`Getting Started <getting-started.html>`_ chapter."
+msgstr ""
+

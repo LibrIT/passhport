@@ -1,0 +1,69 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2019, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-13 19:51+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../installation-and-configuration/apache-wsgi-for-production.rst:2
+msgid "Add a WSGI server in front of PaSSHport"
+msgstr ""
+
+#: ../../installation-and-configuration/apache-wsgi-for-production.rst:4
+msgid ""
+"PaSSHport is based on Flask, the builtin web server can handle only one "
+"request at a time. It means that you can't really use it in production "
+"environnement..."
+msgstr ""
+
+#: ../../installation-and-configuration/apache-wsgi-for-production.rst:6
+msgid ""
+"In order to handle more requests, we duplicate the PaSSHport process for "
+"every connection. Apache provides such a solution with WSGI... And it's "
+"quite easy to activate it."
+msgstr ""
+
+#: ../../installation-and-configuration/apache-wsgi-for-production.rst:9
+msgid "Installation"
+msgstr ""
+
+#: ../../installation-and-configuration/apache-wsgi-for-production.rst:11
+msgid "On Debian :"
+msgstr ""
+
+#: ../../installation-and-configuration/apache-wsgi-for-production.rst:18
+msgid "Configuration"
+msgstr ""
+
+#: ../../installation-and-configuration/apache-wsgi-for-production.rst:20
+msgid "Create a new apache vhost file with this content:"
+msgstr ""
+
+#: ../../installation-and-configuration/apache-wsgi-for-production.rst:43
+msgid "Activate"
+msgstr ""
+
+#: ../../installation-and-configuration/apache-wsgi-for-production.rst:44
+msgid "First kill the current passhport process"
+msgstr ""
+
+#: ../../installation-and-configuration/apache-wsgi-for-production.rst:50
+msgid "Deactivate default website and activate this one:"
+msgstr ""
+
+#: ../../installation-and-configuration/apache-wsgi-for-production.rst:60
+msgid "and Voilà."
+msgstr ""
+

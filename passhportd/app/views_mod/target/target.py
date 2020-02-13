@@ -586,12 +586,13 @@ def extgetaccess(ip, targetname, username):
 
     t = utils.get_target(targetname)
     if not t:
-        return utils.response('ERROR: No target "' + targetname + \
-                              '" in the database ', 417)
+        msg = 'ERROR: No target "' + targetname + '" in the database '
+        app.logger.error(msg)
+        return utils.response(msg, 417)
 
     #Date to stop access:
     startdate = datetime.now()
-    stopdate  = startdate + timedelta(hours=int(config.DB_SESSIONS_TO))
+    stopdate  = startdate + timedelta(hours=int(t.show_sessionduration())/60)
     formatedstop = format(stopdate, '%Y%m%dT%H%M')
     
     #Call the external script
@@ -608,13 +609,21 @@ def extgetaccess(ip, targetname, username):
     exit_code = process.wait()
     
     if exit_code != 0:
+        app.logger.error('External script return ' + str(exit_code))
+        app.logger.error('Output message was' + str(output))
         return utils.response('ERROR: external script return ' + \
                                str(exit_code), 500)
 
     if output:
         # Transform the ouput on Dict
-        output = eval(output)
+        try:
+            output = eval(output)
+        except:
+            app.logger.error("Error on openaccess return: " + str(output))
+            return utils.response('Openaccess script is broken', 400)
+
         if output["execution_status"] != "OK":
+            app.logger.error("Error on openaccess return: " + str(output))
             return utils.response('ERROR: target seems unreachable.',
                                    200)
 
@@ -629,6 +638,7 @@ def extgetaccess(ip, targetname, username):
             stopdate = stopdate,
             userip = ip,
             proxy_ip = output["proxy_ip"],
+            proxy_pid = output["pid"],
             proxy_port = output["proxy_port"])
         ta.addtarget(t)
         ta.adduser(u)
@@ -639,14 +649,75 @@ def extgetaccess(ip, targetname, username):
         try:
             db.session.commit()
         except exc.SQLAlchemyError as e:
-            app.logger.error('ERROR registering connection demand: exttargetaccess "' + \
-                  str(output) + '" -> ' + str(e))
+            app.logger.error('ERROR registering connection demand: ' + \
+                             'exttargetaccess "' + str(output) + '" -> ' +
+                             str(e))
 
         # Create the output to print
         response = "Connect via " + output["proxy_ip"] + " on  port " + \
                    output["proxy_port"] + " until " + \
                    format(stopdate, '%H:%M')
+    else:
+        return utils.response("Openaccess script is broken", 400)
 
+    app.logger.info(response)
+    return utils.response(response, 200)
+
+
+@app.route("/exttargetaccess/close/<targetname>/<username>")
+def extcloseaccessbyname(targetname, username):
+    """Close a connection determined by target name and user name"""
+    # Determine associated pid
+    et = exttargetaccess.Exttargetaccess
+    pidlist = et.query.filter(and_(et.target.any(name = targetname), 
+                                   et.user.any(name = username),
+                                   et.proxy_pid != 0))
+
+    if not pidlist:
+        return utils.response("Error: this connection is not registered", 400)
+    return extcloseaccess(pidlist[0].proxy_pid, pidlist[0])
+
+
+@app.route("/exttargetaccess/close/<pid>/<extaccess>")
+def extcloseaccess(pid, extaccess):
+    """Close a connection determined by the PID"""
+    #Call the external script
+    process = Popen([config.OPEN_ACCESS_PATH, 
+                    "db-close",
+                    str(pid)], stdout=PIPE)
+
+    (output, err) = process.communicate()
+    exit_code = process.wait()
+    
+    if exit_code != 0:
+        app.logger.error('External script return ' + str(exit_code))
+        app.logger.error('Output message was' + str(output))
+        return utils.response('ERROR: external script return ' + \
+                               str(exit_code), 500)
+
+    if output:
+        # Transform the ouput on Dict
+        try:
+            output = eval(output)
+        except:
+            app.logger.error("Error on openaccess return: " + str(output))
+            return utils.response('Openaccess script is broken', 400)
+
+        if output["execution_status"] != "OK":
+            app.logger.error("Error on openaccess return: " + str(output))
+            return utils.response('ERROR: connection can not be closed.',
+                                   200)
+
+    # Set the exttargetaccess proxy_pid to 0
+    extaccess.set_proxy_pid(0)
+
+    try:
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        return utils.response('ERROR:  impossible to change the pid ' + \
+                    'on extarget with pid: "' + pid + '" -> ' + e.message, 409)
+
+    response = "Connection closed. Click to reopen."
     return utils.response(response, 200)
 
 

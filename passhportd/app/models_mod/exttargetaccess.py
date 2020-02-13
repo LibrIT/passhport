@@ -10,6 +10,7 @@ class Exttargetaccess(db.Model):
     stopdate  = db.Column(db.String(50), index=True)
     userip    = db.Column(db.String(20), index=True)
     proxy_ip  = db.Column(db.String(20), index=True)
+    proxy_pid = db.Column(db.Integer, index=True, default=0) #0 means closed
     proxy_port= db.Column(db.Integer, index=True)
 
     # Relations
@@ -25,6 +26,7 @@ class Exttargetaccess(db.Model):
         output.append("User IP : {}".format(self.userip))
         output.append("User   : {}".format(self.user[0].show_name()))
         output.append("Target : {}".format(self.target[0].show_name()))
+        output.append("PID : {}".format(self.proxy_pid))
         return "\n".join(output)
 
 
@@ -62,3 +64,8 @@ class Exttargetaccess(db.Model):
         if self.target:
             return self.target[0].show_name()
         return "None"
+
+
+    def set_proxy_pid(self, pid):
+        self.proxy_pid = pid
+        return self

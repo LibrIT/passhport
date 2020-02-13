@@ -147,7 +147,6 @@ def prompt_edit(req):
         new_name = input("New name: ")
         new_hostname = input("New hostname: ")
         new_targettype = input("New type (ssh, mysql, oracle, postgresql): ")
-        new_login = input("New Login: ")
         new_port = ask_port("New port: ")
         if new_targettype == "ssh":
             new_login = input("New Login: ")
@@ -159,7 +158,7 @@ def prompt_edit(req):
             new_login = input("New Login: ")
             new_changepwd = input("Change the password after each connection (type 'yes' if you really want it, ssh root access only): ")
             new_sshoptions = input("New SSH options: ")
-            new_sessiondur = input("New session duration in minutes (mysql, oracle and postgresql only:")
+            new_sessiondur = input("New session duration in minutes (mysql, oracle and postgresql only):")
         new_comment = input("New comment: ")
         if len(new_comment.strip()) == 0:
             answer = input("Remove original comment? [y/N]")

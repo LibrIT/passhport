@@ -1,0 +1,86 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2019, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-13 19:51+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../user-side-usage/generate_key.rst:2
+msgid "Generate private keys"
+msgstr ""
+
+#: ../../user-side-usage/generate_key.rst:5
+msgid "On Windows :"
+msgstr ""
+
+#: ../../user-side-usage/generate_key.rst:7
+msgid ""
+"To generate the private key that you'll give to your PaSSHport admin, use"
+" `puttygen` that you can download from `here "
+"<https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`__ "
+"(search for `puttygen.exe`)."
+msgstr ""
+
+#: ../../user-side-usage/generate_key.rst:9
+msgid ""
+"Start puttygen, and on the main windows, select the type of key you want "
+"to generate (`1`), the key length (`2`), then click `Generate` button "
+"(`3`). Here, we selected RSA and a key length of 4096 (2048 is a "
+"considered as a minimum for RSA) :"
+msgstr ""
+
+#: ../../user-side-usage/generate_key.rst:13
+msgid "Move your mouse in the blank space, until the key is generated :"
+msgstr ""
+
+#: ../../user-side-usage/generate_key.rst:17
+msgid ""
+"Once generated, insert a comment (`1`), a strong passphrase (`2`), then "
+"save your private key (`3`)."
+msgstr ""
+
+#: ../../user-side-usage/generate_key.rst:21
+msgid ""
+"You now have to send your RSA public key to your PaSSHport admin. Select "
+"your public key as shown in this screen capture, and copy/paste it into a"
+" mail to your PaSSHport admin :"
+msgstr ""
+
+#: ../../user-side-usage/generate_key.rst:25
+msgid ""
+"You now have to wait until your PaSSHport admin add your key to your "
+"account into PaSSHport."
+msgstr ""
+
+#: ../../user-side-usage/generate_key.rst:28
+msgid "On Linux / Unix :"
+msgstr ""
+
+#: ../../user-side-usage/generate_key.rst:30
+msgid ""
+"Simply open a terminal, and use the `ssh-keygen` command. Here we "
+"generate à 4096bits length RSA key :"
+msgstr ""
+
+#: ../../user-side-usage/generate_key.rst:58
+msgid "Display your newly created public key :"
+msgstr ""
+
+#: ../../user-side-usage/generate_key.rst:66
+msgid ""
+"And send this content to your PaSSHport admin. You now have to wait until"
+" your PaSSHport admin add your key to your account into PaSSHport."
+msgstr ""
+

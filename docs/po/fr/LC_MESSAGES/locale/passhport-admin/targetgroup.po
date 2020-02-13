@@ -1,0 +1,352 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2019, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-13 19:51+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../passhport-admin/targetgroup.rst:2
+msgid "targetgroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:4
+msgid "Usages :"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:20
+msgid "list"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:22
+msgid "`passhport-admin targetgroup list` show all the configured targetgroups."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:24
+#: ../../passhport-admin/targetgroup.rst:39
+#: ../../passhport-admin/targetgroup.rst:50
+#: ../../passhport-admin/targetgroup.rst:64
+#: ../../passhport-admin/targetgroup.rst:83
+#: ../../passhport-admin/targetgroup.rst:114
+#: ../../passhport-admin/targetgroup.rst:124
+#: ../../passhport-admin/targetgroup.rst:149
+#: ../../passhport-admin/targetgroup.rst:159
+#: ../../passhport-admin/targetgroup.rst:195
+#: ../../passhport-admin/targetgroup.rst:205
+#: ../../passhport-admin/targetgroup.rst:228
+#: ../../passhport-admin/targetgroup.rst:238
+#: ../../passhport-admin/targetgroup.rst:261
+#: ../../passhport-admin/targetgroup.rst:271
+#: ../../passhport-admin/targetgroup.rst:294
+#: ../../passhport-admin/targetgroup.rst:304
+#: ../../passhport-admin/targetgroup.rst:327
+#: ../../passhport-admin/targetgroup.rst:337
+#: ../../passhport-admin/targetgroup.rst:360
+#: ../../passhport-admin/targetgroup.rst:370
+#: ../../passhport-admin/targetgroup.rst:393
+#: ../../passhport-admin/targetgroup.rst:414
+msgid "**Example :**"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:35
+msgid "search"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:37
+msgid ""
+"`passhport-admin targetgroup search [<PATTERN>]` searches in the "
+"targetgroup list for all targetgroups that correspond to the given "
+"pattern."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:48
+#: ../../passhport-admin/targetgroup.rst:81
+msgid "If no pattern is given, user enters in interactive mode."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:60
+msgid "show"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:62
+msgid ""
+"`passhport-admin targetgroup show <NAME>` shows informations about the "
+"targetgroup <NAME>."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:102
+msgid "create"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:104
+msgid ""
+"`passhport-admin targetgroup create [(<name> [--comment=<comment>])]` "
+"creates a new targetgroup."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:107
+#: ../../passhport-admin/targetgroup.rst:140
+#: ../../passhport-admin/targetgroup.rst:188
+#: ../../passhport-admin/targetgroup.rst:221
+#: ../../passhport-admin/targetgroup.rst:254
+#: ../../passhport-admin/targetgroup.rst:287
+#: ../../passhport-admin/targetgroup.rst:320
+#: ../../passhport-admin/targetgroup.rst:353
+#: ../../passhport-admin/targetgroup.rst:386
+msgid "Argument"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:107
+#: ../../passhport-admin/targetgroup.rst:140
+#: ../../passhport-admin/targetgroup.rst:188
+#: ../../passhport-admin/targetgroup.rst:221
+#: ../../passhport-admin/targetgroup.rst:254
+#: ../../passhport-admin/targetgroup.rst:287
+#: ../../passhport-admin/targetgroup.rst:320
+#: ../../passhport-admin/targetgroup.rst:353
+#: ../../passhport-admin/targetgroup.rst:386
+msgid "Description"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:109
+#: ../../passhport-admin/targetgroup.rst:142
+#: ../../passhport-admin/targetgroup.rst:388
+msgid "<name>"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:109
+msgid "Name of the targetgroup to create"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:111
+msgid "--comment"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:111
+msgid "Comment concerning the targetgroup (optional)"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:122
+#: ../../passhport-admin/targetgroup.rst:203
+#: ../../passhport-admin/targetgroup.rst:236
+#: ../../passhport-admin/targetgroup.rst:269
+#: ../../passhport-admin/targetgroup.rst:302
+#: ../../passhport-admin/targetgroup.rst:335
+#: ../../passhport-admin/targetgroup.rst:368
+#: ../../passhport-admin/targetgroup.rst:412
+msgid "If no argument is given, user enters in interactive mode."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:135
+msgid "edit"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:137
+msgid ""
+"`passhport-admin targetgroup edit [(<name> [--newname=<name>] "
+"[--newcomment=<comment>])]` edits an existing targetgroup."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:142
+msgid "Name of the targetgroup to edit"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:144
+msgid "--newname"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:144
+msgid "New name of the targetgroup (optional)"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:146
+msgid "--newcomment"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:146
+msgid "New comment concerning the targetgroup (optional)"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:157
+msgid ""
+"If no argument is given, user enters in interactive mode. It firsts shows"
+" all parameters of the target, then displays each parameters for a "
+"change. User can keep any previous configured parameter, just by typing "
+"\"Enter\". They only exception is the comment. If user wants to remove "
+"the comment, he just type \"Enter\", and will then be asked if the "
+"original comment should be removed or not."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:180
+msgid ""
+"As you can see above, we only changed the \"New comment\" entry. If an "
+"entry is simply replied with \"enter\", it keeps the previous value."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:183
+msgid "adduser"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:185
+msgid ""
+"`passhport-admin targetgroup adduser [(<username> <targetgroupname>)]` "
+"connects a targetgroup directly to a user."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:190
+#: ../../passhport-admin/targetgroup.rst:223
+msgid "<username>"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:190
+msgid "Name of the user to connect to the targetgroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:192
+#: ../../passhport-admin/targetgroup.rst:225
+#: ../../passhport-admin/targetgroup.rst:258
+#: ../../passhport-admin/targetgroup.rst:291
+#: ../../passhport-admin/targetgroup.rst:324
+#: ../../passhport-admin/targetgroup.rst:357
+msgid "<targetname>"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:192
+msgid "Name of the targetgroup on which to connect the user"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:216
+msgid "rmuser"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:218
+msgid ""
+"`passhport-admin targetgroup rmuser [(<username> <targetgroupname>)]` "
+"deletes the direct connection between a targetgroup and a user."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:223
+msgid "Name of the user to disconnect to the targetgroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:225
+msgid "Name of the targetgroup of which to disconnect the user"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:249
+msgid "addusergroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:251
+msgid ""
+"`passhport-admin targetgroup addusergroup [(<usergroupname> "
+"<targetgroupname>)]` connects a targetgroup directly to a usergroup."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:256
+#: ../../passhport-admin/targetgroup.rst:289
+msgid "<usergroupname>"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:256
+msgid "Name of the usergroup to connect to a targetgroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:258
+msgid "Name of the targetgroup on which to connect the usergroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:282
+msgid "rmusergroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:284
+msgid ""
+"`passhport-admin targetgroup delusergroup [(<usergroupname> "
+"<targetgroupname>)]` delete the connection between a targetgroup and a "
+"usergroup."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:289
+msgid "Name of the usergroup to disconnect to the targetgroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:291
+msgid "Name of the targetgroup of which to disconnect the usergroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:315
+msgid "addtargetgroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:317
+msgid ""
+"`passhport-admin targetgroup addtargetgroup [(<subtargetgroupname> "
+"<targetgroupname>)]` connects a subtargetgroup directly to a targetgroup."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:322
+#: ../../passhport-admin/targetgroup.rst:355
+msgid "<subtargetgroupname>"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:322
+msgid "Name of the subtargetgroup to connect to a targetgroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:324
+msgid "Name of the targetgroup with which to connect the subtargetgroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:348
+msgid "rmtargetgroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:350
+msgid ""
+"`passhport-admin targetgroup deltargetgroup [(<subtargetgroupname> "
+"<targetgroupname>)]` delete the connection between a subtargetgroup and a"
+" targetgroup."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:355
+msgid "Name of the subtargetgroup to disconnect to a targetgroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:357
+msgid "Name of the targetgroup of which to disconnect the subtargetgroup"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:381
+msgid "delete"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:383
+msgid ""
+"`passhport-admin targetgroup delete [([-f | --force] <name>)]` delete a "
+"target."
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:388
+msgid "Name of the targetgroup to delete"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:390
+msgid "-f or --force"
+msgstr ""
+
+#: ../../passhport-admin/targetgroup.rst:390
+msgid "If used, user won't be prompt for confirmation"
+msgstr ""
+

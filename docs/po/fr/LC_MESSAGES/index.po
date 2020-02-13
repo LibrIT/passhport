@@ -27,7 +27,7 @@ msgid ""
 "are revoked? What about the interns? The consultants?... Let's fix this."
 msgstr ""
 "Votre admin sys quitte votre société. Êtes-vous sûrs que tous ses accès "
-"ssh sont révoqué ? Et les stagières ? Les prestataires ?... Réglons ça."
+"ssh sont révoqués ? Et les stagiaires ? Les prestataires ?... Réglons ça."
 
 #: ../../index.rst:7
 msgid "Table of content :"
