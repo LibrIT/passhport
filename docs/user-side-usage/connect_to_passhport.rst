@@ -7,8 +7,8 @@ On Windows
 You can use Putty to connect to the passhport bastion indicating your private key.
 
 
-On Linux / *nix
----------------
+On Linux / \*nix
+--------------------
 
 Use your standard SSH client and connect to the bastion as passhport user:
 .. code-block:: none
