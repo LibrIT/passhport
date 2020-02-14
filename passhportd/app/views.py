@@ -114,7 +114,6 @@ def hours_minutes(td):
 def currentsshconnections():
     """Return a json presenting the current ssh connections associated 
        to their PID"""
-
     lentries = logentry.Logentry.query.filter(db.and_(
                logentry.Logentry.endsessiondate == None,
 	       logentry.Logentry.target != None,
@@ -177,21 +176,30 @@ def currecntsshconnectionskillbiglog():
     return "Killed PIDs: " + killedpid
 
 
+def is_pid_running(pid):
+    """Check if the process is still running"""
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return False
+    return True
+
+
 @app.route("/connection/ssh/checkandterminate")
 def checkandterminatesshsession():
     """Check all the connections and close those without a process runing"""
-    isodate    = datetime.now().isoformat().replace(":",""). \
-                 replace("-","").split('.')[0]
     lentries = logentry.Logentry.query.filter(db.and_(
-               logentry.Logentry.endsessiondate == None,
-               logentry.Logentry.logfilename.like(
-                                    config.NODE_NAME + '-%'))).all()
+               logentry.Logentry.endsessiondate == None)).all()
+               #,
+               #logentry.Logentry.logfilename.like(
+               #                     config.NODE_NAME + '-%'))).all()
     
+    app.logger.error(lentries)
     if not lentries:
         return "No active connection."
 
     for entry in lentries:
-        if not psutil.pid_exists(entry.pid):
+        if not is_pid_running(entry.pid):
             endsshsession(entry.pid)
             app.logger.warning("Orphan connection with PID:" + \
                         str(entry.pid) + ". Now closed in the logentry.")
@@ -252,10 +260,6 @@ def endsshsession(pid):
         db.session.commit()
     except exc.SQLAlchemyError as e:
         return utils.response('ERROR: "' + name + '" -> ' + e.message, 409)
-
-    #At last change the root password if needed
-    if lentry.target:
-        lentry.target[0].changepass(isodate)
 
     return "Done"
 
