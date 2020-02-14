@@ -189,10 +189,9 @@ def is_pid_running(pid):
 def checkandterminatesshsession():
     """Check all the connections and close those without a process runing"""
     lentries = logentry.Logentry.query.filter(db.and_(
-               logentry.Logentry.endsessiondate == None)).all()
-               #,
-               #logentry.Logentry.logfilename.like(
-               #                     config.NODE_NAME + '-%'))).all()
+               logentry.Logentry.endsessiondate == None,
+               logentry.Logentry.logfilename.like(
+                                   config.NODE_NAME + '-%'))).all()
     
     app.logger.error(lentries)
     if not lentries:
