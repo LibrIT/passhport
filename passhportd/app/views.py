@@ -191,12 +191,9 @@ def checkandterminatesshsession():
         return "No active connection."
 
     for entry in lentries:
-        try:
-            parent = psutil.Process(entry.pid)
-        except Exception as E:
-            if type(E) == psutil.NoSuchProcess:
-                endsshsession(entry.pid)
-                app.logger.warning("Orphan connection with PID:" + \
+        if not psutil.pid_exists(entry.pid):
+            endsshsession(entry.pid)
+            app.logger.warning("Orphan connection with PID:" + \
                         str(entry.pid) + ". Now closed in the logentry.")
 
     return "Active connections: check done."
