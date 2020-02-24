@@ -1,14 +1,28 @@
 # -*-coding:Utf-8 -*-
-import psutil, re, subprocess, os
-from datetime import datetime, timedelta, date
-from app import app, db
-from .views_mod import user, target, usergroup, targetgroup, logentry, utils
+import psutil
+import re
+import subprocess
+import os
+import config
+from datetime import datetime
+from datetime import timedelta
+from datetime import date
+from app import app
+from app import db
+from .views_mod import user
+from .views_mod import target
+from .views_mod import usergroup
+from .views_mod import targetgroup
+from .views_mod import logentry
+from .views_mod import utils
 from .models_mod import logentry
 from .models_mod import user
 from .models_mod import target
-from flask import request, stream_with_context, Response
+from .models_mod import exttargetaccess
+from flask import request
+from flask import stream_with_context
+from flask import  Response
 from tabulate import tabulate
-import config
 
 @app.route("/")
 def imalive():
@@ -134,6 +148,33 @@ def currentsshconnections():
                  '"Target" : "' + \
                  entry.target[0].show_name() + '",' + \
                  '"PID" : "' + str(entry.pid) + '",' + \
+                 '"Date" : "' + hours_minutes(duration) + '"},'
+                             
+    return output[:-1] + "]"
+
+
+@app.route("/connection/db/current")
+def currentdbconnections():
+    """Return a json presenting the current database connections associated 
+       to their PID"""
+    now = datetime.now()
+    access = exttargetaccess.Exttargetaccess.query.filter(db.and_(
+               exttargetaccess.Exttargetaccess.stopdate >= str(now),
+               exttargetaccess.Exttargetaccess.proxy_pid != 0 )).all()
+
+    if not access:
+        return "[]"
+
+    output = "[ "
+
+    for entry in access:
+        duration = now - datetime.strptime(entry.startdate,'%Y-%m-%d %H:%M:%S.%f')
+        output = output + \
+                '{"Email" : "' + \
+                 entry.show_username() + '",' + \
+                 '"Target" : "' + \
+                 entry.show_targetname() + '",' + \
+                 '"PID" : "' + str(entry.proxy_pid) + '",' + \
                  '"Date" : "' + hours_minutes(duration) + '"},'
                              
     return output[:-1] + "]"
