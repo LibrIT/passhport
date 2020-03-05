@@ -437,6 +437,8 @@ def target_adduser():
         return utils.response('ERROR: "' + targetname + '" -> ' + \
                                e.message, 409)
 
+    utils.notif("User " + username + " has now access to " + targetname + ".", 
+                "[PaSSHport] " + username + " can access " + targetname )
     return utils.response('OK: "' + username + '" added to "' + \
                           targetname + '"', 200)
 
@@ -482,6 +484,8 @@ def target_rmuser():
         return utils.response('ERROR: "' + targetname + '" -> ' + \
                               e.message, 409)
 
+    utils.notif("User " + username + " lost access to " + targetname + ".", 
+                "[PaSSHport] " + username + " removed from " + targetname )
     return utils.response('OK: "' + username + '" removed from "' + \
                           targetname + '"', 200)
 
@@ -521,6 +525,10 @@ def target_addusergroup():
         return utils.response('ERROR: "' + targetname + '" -> ' + \
                               e.message, 409)
 
+    utils.notif("Users from group" + usergroupname + " can now access " + \
+                targetname + ".\n\nAffected users:\n" + \
+                str(ug.all_username_list()), "[PaSSHport] " + usergroupname + \
+                " can now access " + targetname)
     return utils.response('OK: "' + usergroupname + '" added to "' + \
                           targetname + '"', 200)
 
@@ -566,6 +574,10 @@ def target_rmusergroup():
         return utils.response('ERROR: "' + targetname + '" -> ' + \
                               e.message, 409)
 
+    utils.notif("Users from group" + usergroupname + " lost access to " + \
+                targetname + ".\n\nAffected users:\n" + \
+                str(ug.all_username_list()), "[PaSSHport] " + usergroupname + \
+                " removed from " + targetname)
     return utils.response('OK: "' + usergroupname + '" removed from "' + \
                           targetname + '"', 200)
 
@@ -664,7 +676,7 @@ def extgetaccess(ip, targetname, username):
     return utils.response(response, 200)
 
 
-@app.route("/exttargetaccess/close/<targetname>/<username>")
+@app.route("/exttargetaccess/closebyname/<targetname>/<username>")
 def extcloseaccessbyname(targetname, username):
     """Close a connection determined by target name and user name"""
     # Determine associated pid

@@ -3,6 +3,7 @@
 import config
 import os
 import stat
+import smtplib
 
 from io import open
 from sshpubkeys import SSHKey
@@ -192,3 +193,23 @@ def is_number(s):
         return True
     except ValueError:
         return False
+
+# Notifications
+def send_email(msg, subject, recipient):
+    """Simply send the email to recipient"""
+    server = smtplib.SMTP(config.NOTIF_SMTP)
+    from_mail = config.NOTIF_FROM
+    app.logger.info("Notification sent to: " + recipient)
+    server.sendmail(from_mail, recipient, "Subject: " + subject + "\n\n" +msg)
+    server.quit()
+
+
+def notif(msg,subject="PaSSHport Notification", emergency="log"):
+    """Send the msg via parmeters notification"""
+    if emergency == "log":
+            if config.NOTIF_LOG_TYPE == "email":
+                for recipient in config.NOTIF_TO.split(","):
+                    try:
+                        send_email(msg, subject, recipient)
+                    except:
+                        app.logger.error("Error sending email. Check config.")

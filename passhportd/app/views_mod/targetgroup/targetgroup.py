@@ -239,6 +239,8 @@ def targetgroup_adduser():
         return utils.response('ERROR: "' + targetgroupname + '" -> ' + \
                               e.message, 409)
 
+    utils.notif("User " + username + " is now in " + targetgroupname + ".", 
+                "[PaSSHport] " + username + " joins " + targetgroupname )
     return utils.response('OK: "' + username + '" added to "' + \
                           targetgroupname + '"', 200)
 
@@ -284,6 +286,8 @@ def targetgroup_rmuser():
         return utils.response('ERROR: "' + targetgroupname + '" -> ' + \
                               e.message, 409)
 
+    utils.notif("User " + username + " has been removed from " + targetgroupname + ".", 
+                "[PaSSHport] " + username + " removed from " + targetgroupname )
     return utils.response('OK: "' + username + '" removed from "' + \
                           targetgroupname + '"', 200)
 
@@ -322,7 +326,9 @@ def targetgroup_addtarget():
     except exc.SQLAlchemyError as e:
         return utils.response('ERROR: "' + targetgroupname + '" -> ' + \
                               e.message, 409)
-
+ 
+    utils.notif("Users from " + targetgroupname+ " can now access to " + targetame + ".", 
+                "[PaSSHport] " + targetname + " access granted to " + targetgroupname )
     return utils.response('OK: "' + targetname + '" added to "' + \
                           targetgroupname + '"', 200)
 
@@ -368,6 +374,10 @@ def targetgroup_rmtarget():
         return utils.response('ERROR: "' + targetgroupname + '" -> ' + \
                               e.message, 409)
 
+    utils.notif("Users from " + targetgroupname+ " can not access to " + \
+                                                     targetame + "anymore.",
+                "[PaSSHport] " + targetname + " removed from " + \
+                                                        targetgroupname )
     return utils.response('OK: "' + targetname + '" removed from "' + \
                           targetgroupname + '"', 200)
 
@@ -407,6 +417,9 @@ def targetgroup_addusergroup():
         return utils.response('ERROR: "' + targetgroupname + '" -> ' + \
                               e.message, 409)
 
+    utils.notif("Users from " + usergroupname + \
+               " can now access to the targets from " + targetgroupame + ".", 
+                "[PaSSHport] " + usergroupname + " added to " + targetgroupname)
     return utils.response('OK: "' + usergroupname + '" added to "' + \
                           targetgroupname + '"', 200)
 
@@ -452,6 +465,10 @@ def targetgroup_rmusergroup():
         return utils.response('ERROR: "' + targetgroupname + '" -> ' + \
                               e.message, 409)
 
+    utils.notif("Users from " + usergroupname + \
+               " lost access to the targets from " + targetgroupame + ".", 
+               "[PaSSHport] " + usergroupname + " removed from " + \
+                                                          targetgroupname)
     return utils.response('OK: "' + usergroupname + '" removed from "' + \
                           targetgroupname + '"', 200)
 
@@ -497,6 +514,10 @@ def targetgroup_addtargetgroup():
         return utils.response('ERROR: "' + targetgroupname + '" -> ' + \
                               e.message, 409)
 
+    utils.notif("Users from " + subtargetgroupname + \
+               " can access to the targets from " + targetgroupame + ".", 
+               "[PaSSHport] " + subtargetgroupname + " added to " + \
+                                                          targetgroupname)
     return utils.response('OK: "' + subtargetgroupname + '" added to "' + \
                           targetgroupname + '"', 200)
 
@@ -544,6 +565,11 @@ def targetgroup_rmtargetgroup():
         return utils.response('ERROR: "' + targetgroupname + '" -> ' + \
                               e.message, 409)
 
+    utils.notif("Users from " + subtargetgroupname + \
+               " removed access to " + targetgroupame + ".", 
+               "[PaSSHport] " + subtargetgroupname + " removed from " + \
+                                                          targetgroupname)
+    return utils.response('OK: "' + subtargetgroupname + '" added to "' + \
     return utils.response('OK: "' + subtargetgroupname + '" removed from "' + \
                           targetgroupname + '"', 200)
 

@@ -49,6 +49,12 @@ SSL_CERTIFICAT  = conf.get("SSL", "SSL_CERTIFICAT")
 SSL_KEY         = conf.get("SSL", "SSL_KEY")
 
 
+""" NOTIFICATIONS """
+NOTIF_LOG_TYPE  = conf.get("NOTIFICATIONS", "NOTIF_LOG_TYPE", fallback='None')
+NOTIF_TO        = conf.get("NOTIFICATIONS", "NOTIF_TO", fallback='root')
+NOTIF_FROM      = conf.get("NOTIFICATIONS", "NOTIF_FROM", fallback='passhport@bastion')
+NOTIF_SMTP      = conf.get("NOTIFICATIONS", "SMTP", fallback='127.0.0.1')
+
 """ MISC """
 MAXLOGSIZE      = conf.get("MISC", "MAXLOGSIZE")
 NODE_NAME       = conf.get("MISC", "NODE_NAME")
