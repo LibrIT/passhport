@@ -15,10 +15,13 @@
 
 # Should we run as interactive mode ? (-s non interactive mode)
 INTERACTIVE=1
-while getopts ":s" OPTION
+USE_CURRENT_LOCAL_DIR=0
+while getopts ":sc" OPTION
 do
 	case ${OPTION} in
-		s) INTERACTIVE=0;;
+		s) INTERACTIVE=0;; 		# Do not prompt any question, absolutely no interaction with user
+		c) USE_CURRENT_LOCAL_DIR=1;;	# Do not git clone the project, use current dir as source
+						# (this is usually for building step in package or container)
 		*) echo "Unknown option, exiting..."; exit 1;;   # DEFAULT
 	esac
 done
@@ -101,7 +104,22 @@ su - passhport -c "virtualenv -p python3 passhport-run-env"
 echo '##############################################################'
 echo '# Cloning passhport git from github'
 echo '##############################################################'
-su - passhport -c "git clone https://github.com/LibrIT/passhport.git"
+pwd
+ls -la
+if [ ${USE_CURRENT_LOCAL_DIR} -eq 0 ]
+then
+	su - passhport -c "git clone https://github.com/LibrIT/passhport.git"
+else
+	# We check if SOURCE_DIR contains some mandatory directories
+	# (this is not very elegant…)
+	if [ ! -d "passhportd" ] || [ ! -d "passhport" ] || [ ! -d "passhport-admin" ]
+	then
+		echo "Error : can't find PaSSHport source. Exiting."
+		exit 1
+	fi
+	cp -r "${PASSHPORT_SOURCES_DIR}" /home/passhport/passhport
+	chown -R passhport:passhport /home/passhport/passhport
+fi
 echo '##############################################################'
 echo '# Installing mandatory packages in the virtual environment…'
 echo '##############################################################'
