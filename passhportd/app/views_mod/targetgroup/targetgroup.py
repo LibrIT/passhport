@@ -569,7 +569,6 @@ def targetgroup_rmtargetgroup():
                " removed access to " + targetgroupame + ".", 
                "[PaSSHport] " + subtargetgroupname + " removed from " + \
                                                           targetgroupname)
-    return utils.response('OK: "' + subtargetgroupname + '" added to "' + \
     return utils.response('OK: "' + subtargetgroupname + '" removed from "' + \
                           targetgroupname + '"', 200)
 
