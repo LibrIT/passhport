@@ -254,8 +254,8 @@ def usergroup_adduser():
         return utils.response('ERROR: "' + usergroupname + '" -> ' + \
                               e.message, 409)
 
-    utils.notif(username + " added to " + usergroupame + ".\n" + \
-            "He can now access to: \n" + usergroupame.accessible_target_list(),
+    utils.notif(username + " added to " + usergroupname + ".\n" + \
+            "He can now access to: \n" + usergroupname.accessible_target_list(),
             "[PaSSHport] " + username + " added to " + usergroupname)
     return utils.response('OK: "' + username + '" added to "' + \
                           usergroupname + '"', 200)
@@ -302,7 +302,7 @@ def usergroup_rmuser():
         return utils.response('ERROR: "' + usergroupname + '" -> ' + \
                               e.message, 409)
 
-    utils.notif(username + " removed from " + usergroupam2Ye + ".",
+    utils.notif(username + " removed from " + usergroupname + ".",
             "[PaSSHport] " + username + " removed from " + usergroupname)
     return utils.response('OK: "' + username + '" removed from "' + \
                           usergroupname + '"', 200)
