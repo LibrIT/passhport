@@ -166,7 +166,7 @@ def write_authorized_keys(name, sshkey):
         return response('ERROR: cannot write in the file ' + \
                         '"authorized_keys". However, the user is ' + \
                         'stored in the database.', 500)
-    
+
     # set correct read/write permissions
     os.chmod(config.SSH_KEY_FILE, stat.S_IRUSR | stat.S_IWUSR)
     return True

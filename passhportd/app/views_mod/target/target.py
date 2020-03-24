@@ -215,7 +215,6 @@ def target_create():
     sessiondur = ""
     if "sessiondur" in request.form:
         if utils.is_number(request.form["sessiondur"]):
-            app.logger.error(request.form["sessiondur"])
             sessiondur = int(request.form["sessiondur"].replace(" ", ""))*60
 
     # Check for required fields

@@ -367,7 +367,6 @@ def update_authorized_keys(orig_name, orig_sshkey, new_name, new_sshkey):
     authorized_keys_line = 'command="' + config.PYTHON_PATH + \
                            " " + config.PASSHPORT_PATH + \
                            " " + orig_name + '" ' + orig_sshkey + "\n"
-    app.logger.error(authorized_keys_line)
 
     # Edit the SSH key in the file authorized_keys
     try:
@@ -425,8 +424,8 @@ def check_user_editform(mandatory, request):
         # User can't have same username
         if form["new_name"] != form["new_name"].replace(" ",""):
             return utils.response("ERROR: The name can't contain spaces.", 417)
-        if utils.name_already_taken(form["new_name"]):
-            return utils.response("ERROR: The name is already takeni.", 417)
+        if form["new_name"] != form["name"] and  utils.name_already_taken(form["new_name"]):
+            return utils.response("ERROR: The name is already taken.", 417)
     
     if form["new_sshkey"]:
         # Check SSHkey format
@@ -479,7 +478,7 @@ def user_edit():
         need_authorizedkey_update = True
 
     # Logfilesize
-    if form.get("logfilesize"):
+    if form.get("new_logfilesize"):
         usertoupdate.update({"logfilesize": form["new_logfilesize"]})
 
 
