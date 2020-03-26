@@ -286,8 +286,10 @@ def targetgroup_rmuser():
         return utils.response('ERROR: "' + targetgroupname + '" -> ' + \
                               e.message, 409)
 
-    utils.notif("User " + username + " has been removed from " + targetgroupname + ".",
-                "[PaSSHport] " + username + " removed from " + targetgroupname )
+    utils.notif("User " + username + " has been removed from " + \
+                                                   targetgroupname + ".",
+                "[PaSSHport] " + username + " removed from " + \
+                                                      targetgroupname )
     return utils.response('OK: "' + username + '" removed from "' + \
                           targetgroupname + '"', 200)
 
@@ -327,8 +329,10 @@ def targetgroup_addtarget():
         return utils.response('ERROR: "' + targetgroupname + '" -> ' + \
                               e.message, 409)
 
-    utils.notif("Users from " + targetgroupname+ " can now access to " + targetname + ".",
-                "[PaSSHport] " + targetname + " access granted to " + targetgroupname )
+    utils.notif("Users from " + targetgroupname+ " can now access to " + \
+                                                              targetname + ".",
+                "[PaSSHport] " + targetname + " access granted to " + \
+                                                              targetgroupname )
     return utils.response('OK: "' + targetname + '" added to "' + \
                           targetgroupname + '"', 200)
 
@@ -375,7 +379,7 @@ def targetgroup_rmtarget():
                               e.message, 409)
 
     utils.notif("Users from " + targetgroupname+ " can not access to " + \
-                                                     targetname + "anymore.",
+                                 targetname + " via this targetgroup anymore.",
                 "[PaSSHport] " + targetname + " removed from " + \
                                                         targetgroupname )
     return utils.response('OK: "' + targetname + '" removed from "' + \
