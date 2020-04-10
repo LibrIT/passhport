@@ -1,5 +1,6 @@
 PaSSHport
 =========
+[![Documentation Status](https://readthedocs.org/projects/passhport-fr/badge/?version=latest)](http://docs.passhport.org/fr/latest/?badge=latest)
 
 Your main adminsys goes away of your company. Are you sure all his ssh access are revoked? What about the interns? The consultants?... Let's fix this!
 
