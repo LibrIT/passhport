@@ -13,7 +13,7 @@ You can run it directly from command line ( please ensure that curl is installed
 
   root@debian:~# bash <(curl -s https://raw.githubusercontent.com/librit/passhport/master/tools/passhport-install-script-debian.sh)
 
-Once finished, you can go to the `Getting Started </getting-started.html>`_ chapter.
+Once finished, you can go to the `Getting Started <../getting-started.html>`_ chapter.
 
 
 The long, manual way
@@ -279,4 +279,4 @@ You can check that passhportd is running, by curling the IP you previously confi
   passhportd is running, gratz!
   root@debian:~#
 
-Bravo ! You successfully installed PaSSHport. You may now go to the `Getting Started </getting-started.html>`_ chapter.
+Bravo ! You successfully installed PaSSHport. You may now go to the `Getting Started <../getting-started.html>`_ chapter.
