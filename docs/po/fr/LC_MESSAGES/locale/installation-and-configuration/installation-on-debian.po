@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PaSSHport \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-13 19:51+0100\n"
+"POT-Creation-Date: 2020-04-10 17:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,7 +48,7 @@ msgstr ""
 
 #: ../../installation-and-configuration/installation-on-debian.rst:16
 msgid ""
-"Once finished, you can go to the `Getting Started <getting-"
+"Once finished, you can go to the `Getting Started </getting-"
 "started.html>`_ chapter."
 msgstr ""
 
@@ -226,6 +226,19 @@ msgstr ""
 #: ../../installation-and-configuration/installation-on-debian.rst:282
 msgid ""
 "Bravo ! You successfully installed PaSSHport. You may now go to the "
-"`Getting Started <getting-started.html>`_ chapter."
+"`Getting Started </getting-started.html>`_ chapter."
 msgstr ""
+
+#~ msgid ""
+#~ "Once finished, you can go to the"
+#~ " `Getting Started <getting-started.html>`_ "
+#~ "chapter."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Bravo ! You successfully installed "
+#~ "PaSSHport. You may now go to the"
+#~ " `Getting Started <getting-started.html>`_ "
+#~ "chapter."
+#~ msgstr ""
 
