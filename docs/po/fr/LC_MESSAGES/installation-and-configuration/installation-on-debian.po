@@ -5,61 +5,67 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PaSSHport\n"
+"Project-Id-Version:  PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-06 23:11+0100\n"
-"PO-Revision-Date: 2017-11-07 03:52+0100\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.5.1\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"POT-Creation-Date: 2020-04-11 16:32+0200\n"
+"PO-Revision-Date: 2020-04-10 17:31+0200\n"
 "Last-Translator: \n"
-"Language-Team: \n"
 "Language: fr\n"
-"X-Generator: Poedit 1.8.11\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
 
 #: ../../installation-and-configuration/installation-on-debian.rst:2
-msgid "Installation on Debian 8 or 9"
+#, fuzzy
+msgid "Installation on Debian 8, 9 or 10"
 msgstr "Installation sur Debian 8 ou 9"
 
 #: ../../installation-and-configuration/installation-on-debian.rst:4
+#, fuzzy
 msgid ""
-"The followings shows you how to install and run PaSSHport on Debian 8 (Jessie) "
-"or 9 (Stretch). We start from a minimal installation of Debian (available "
-"`here <http://www.debian.org>`__), **with openssh-server and curl** packages "
-"installed."
+"The followings shows you how to install and run PaSSHport on Debian 8 "
+"(Jessie), 9 (Stretch) or 10 (Buster). We start from a minimal "
+"installation of Debian (available `here <http://www.debian.org>`__), "
+"**with openssh-server and curl** packages installed."
 msgstr ""
 "Les paragraphes suivant expliquent comment installer et faire tourner "
-"PaSSHport sur Debian 8 (Jessie) ou 9 (Stretch). On part d'une installation de "
-"minimal de Debian (disponible `ici <http://www.debian.org>`__), **avec les "
-"paquets openssh-server et curl** installés."
+"PaSSHport sur Debian 8 (Jessie) ou 9 (Stretch). On part d'une "
+"installation de minimal de Debian (disponible `ici "
+"<http://www.debian.org>`__), **avec les paquets openssh-server et curl** "
+"installés."
 
 #: ../../installation-and-configuration/installation-on-debian.rst:7
 msgid "The easy, automated way"
 msgstr "La manière simple, et automatisée"
 
 #: ../../installation-and-configuration/installation-on-debian.rst:8
+#, fuzzy
 msgid ""
-"You can review the installation script `here <https://raw.githubusercontent."
-"com/Raphux/passhport/master/tools/passhport-install-script-debian-8-9.sh>`__."
+"You can review the installation script `here "
+"<https://raw.githubusercontent.com/LibrIT/passhport/master/tools"
+"/passhport-install-script-debian.sh>`__."
 msgstr ""
-"Le script d'installation est disponible pour relecture `ici <https://raw."
-"githubusercontent.com/Raphux/passhport/master/tools/passhport-install-script-"
-"debian-8-9.sh>`__."
+"Le script d'installation est disponible pour relecture `ici "
+"<https://raw.githubusercontent.com/Raphux/passhport/master/tools"
+"/passhport-install-script-debian-8-9.sh>`__."
 
 #: ../../installation-and-configuration/installation-on-debian.rst:10
 msgid ""
 "You can run it directly from command line ( please ensure that curl is "
 "installed : ``apt install curl`` ):"
 msgstr ""
-"Vous pouvez le lancer directement depuis la ligne de commande (assurez-vous "
-"une fois de plus que curl est bien installé : ``apt install curl`` ):"
+"Vous pouvez le lancer directement depuis la ligne de commande (assurez-"
+"vous une fois de plus que curl est bien installé : ``apt install curl`` "
+"):"
 
 #: ../../installation-and-configuration/installation-on-debian.rst:16
+#, fuzzy
 msgid ""
-"Once finished, you can go to the `Getting Started <getting-started.html>`_ "
-"chapter."
+"Once finished, you can go to the `Getting Started <../getting-"
+"started.html>`_ chapter."
 msgstr ""
 "Une fois l'installation terminée, rendez-vous au chapitre `Première "
 "configuration <getting-started.html>`_."
@@ -70,14 +76,14 @@ msgstr "La manière longue, manuelle"
 
 #: ../../installation-and-configuration/installation-on-debian.rst:22
 msgid ""
-"To understand what you do on your system when you install PaSSHport, follow "
-"the instructions below, that are more or less the step by step commands from "
-"the automated installation script."
+"To understand what you do on your system when you install PaSSHport, "
+"follow the instructions below, that are more or less the step by step "
+"commands from the automated installation script."
 msgstr ""
 "Si vous voulez comprendre ce qui se passe sur votre système, quand vous "
 "installez PaSSHport, suivez les instruction suivantes, qui sont "
-"(grossièrement) les commandes, une à une, du script d'installation automatisé "
-"sus-mentionné."
+"(grossièrement) les commandes, une à une, du script d'installation "
+"automatisé sus-mentionné."
 
 #: ../../installation-and-configuration/installation-on-debian.rst:24
 msgid "First of all, we’ll need to update your repositories :"
@@ -85,208 +91,218 @@ msgstr "Tout d'abord, on update les dépots :"
 
 #: ../../installation-and-configuration/installation-on-debian.rst:30
 msgid ""
-"We will install python3-pip, and other packages that we’ll need later for this "
-"tutorial (it will get ~+100MB from the archives, so be patient) :"
+"We will install python3-pip, and other packages that we’ll need later for"
+" this tutorial (it will get ~+100MB from the archives, so be patient) :"
 msgstr ""
-"On installe python3-pip, et d'autre packages dont nous aurons besoin plus tard "
-"pour ce tuto (il y a environ 100Mo à récupérer sur les dépôts, donc soyer "
-"patient) :"
+"On installe python3-pip, et d'autre packages dont nous aurons besoin plus"
+" tard pour ce tuto (il y a environ 100Mo à récupérer sur les dépôts, donc"
+" soyer patient) :"
 
 #: ../../installation-and-configuration/installation-on-debian.rst:36
-msgid "Let’s update pip :"
-msgstr "On met à jour pip :"
-
-#: ../../installation-and-configuration/installation-on-debian.rst:42
-msgid "Now, install virtual-env using pip :"
-msgstr "On installe virtual-env, en utilisant pip :"
-
-#: ../../installation-and-configuration/installation-on-debian.rst:48
 msgid ""
-"Next we will need to add a system user called « passhport », and switch to it :"
+"Next we will need to add a system user called « passhport », and switch "
+"to it :"
 msgstr ""
-"Ensuite, nous aurons besoin d'ajouter un utilisateur appelé « passhport », et "
-"exécuter quelques commande en tant que lui :"
+"Ensuite, nous aurons besoin d'ajouter un utilisateur appelé « passhport "
+"», et exécuter quelques commande en tant que lui :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:56
-msgid "We now need to create a virtual-env for passhport user :"
-msgstr ""
-"On crée un environnement «virtuel-env» pour cette utilisateur passhport :"
-
-#: ../../installation-and-configuration/installation-on-debian.rst:62
-msgid ""
-"Now that we have our virtual-env, we install the python’s modules we’ll need "
-"for PaSSHport :"
-msgstr ""
-"Maintenant que nous avons notre «virtual-env», on installe les modules python "
-"nécessaires au fonctionnement de PaSSHport :"
-
-#: ../../installation-and-configuration/installation-on-debian.rst:68
-msgid "Now, let’s start the real thing…"
-msgstr "Commençons les choses sérieuses…"
-
-#: ../../installation-and-configuration/installation-on-debian.rst:70
+#: ../../installation-and-configuration/installation-on-debian.rst:44
 msgid "Let’s get passhport sources from github :"
 msgstr "On récupère les sources de PaSSHport sur github :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:83
+#: ../../installation-and-configuration/installation-on-debian.rst:57
+msgid "We now need to create a virtual-env for passhport user :"
+msgstr "On crée un environnement «virtuel-env» pour cette utilisateur passhport :"
+
+#: ../../installation-and-configuration/installation-on-debian.rst:63
 msgid ""
-"PaSSHport will need to write some logs, so, as root, we’ll create a directory "
-"in « /var/log », and give the ownership to the « passhport » user:"
+"Now that we have our virtual-env, we install the python’s modules we’ll "
+"need for PaSSHport :"
 msgstr ""
-"PaSSHport a besoin d'écrire des logs, il faut donc créer un répertoire dans «/"
-"var/log», et en attribuer la propriété à l'utilisateur «passhport» :"
+"Maintenant que nous avons notre «virtual-env», on installe les modules "
+"python nécessaires au fonctionnement de PaSSHport :"
+
+#: ../../installation-and-configuration/installation-on-debian.rst:69
+msgid "Now, let’s start the real thing…"
+msgstr "Commençons les choses sérieuses…"
+
+#: ../../installation-and-configuration/installation-on-debian.rst:72
+msgid ""
+"PaSSHport will need to write some logs, so, as root, we’ll create a "
+"directory in « /var/log », and give the ownership to the « passhport » "
+"user:"
+msgstr ""
+"PaSSHport a besoin d'écrire des logs, il faut donc créer un répertoire "
+"dans «/var/log», et en attribuer la propriété à l'utilisateur «passhport»"
+" :"
+
+#: ../../installation-and-configuration/installation-on-debian.rst:79
+msgid ""
+"We’ll also create the config directory, and copy the differents config "
+"file :"
+msgstr ""
+"On crée aussi le répertoire qui contiendra la configuration, et on copie "
+"les différents fichiers de configuration dedans :"
+
+#: ../../installation-and-configuration/installation-on-debian.rst:88
+msgid ""
+"We’ll also need to make some modifications in those config file, if you "
+"run passhportd on a distant server. Here we’ll change the default "
+"listening address (localhost) to the real IP of our server."
+msgstr ""
+"Nous devons faire quelques modifications dans ces fichiers de "
+"configurations, surtout si on souhaite séparer les composants sur "
+"différentes machines. On remplace ici l'adresse d'écoute par défaut "
+"(localhost), avec la *vrai* IP du serveur."
 
 #: ../../installation-and-configuration/installation-on-debian.rst:90
-msgid ""
-"We’ll also create the config directory, and copy the differents config file :"
-msgstr ""
-"On crée aussi le répertoire qui contiendra la configuration, et on copie les "
-"différents fichiers de configuration dedans :"
-
-#: ../../installation-and-configuration/installation-on-debian.rst:99
-msgid ""
-"We’ll also need to make some modifications in those config file, if you run "
-"passhportd on a distant server. Here we’ll change the default listening "
-"address (localhost) to the real IP of our server."
-msgstr ""
-"Nous devons faire quelques modifications dans ces fichiers de configurations, "
-"surtout si on souhaite séparer les composants sur différentes machines. On "
-"remplace ici l'adresse d'écoute par défaut (localhost), avec la *vrai* IP du "
-"serveur."
-
-#: ../../installation-and-configuration/installation-on-debian.rst:101
 msgid "First, passhportd :"
 msgstr "D'abord passhportd :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:107
+#: ../../installation-and-configuration/installation-on-debian.rst:96
 msgid "Change the « LISTENING_IP » parameter, to the IP address of your server :"
 msgstr "On change la directive « LISTENING_IP », par l'adresse IP du serveur :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:136
+#: ../../installation-and-configuration/installation-on-debian.rst:125
 msgid ""
-"Change the following parameter in /etc/passhport/passhport.ini and /etc/"
-"passhport/passhport-admin.ini :"
+"Change the following parameter in /etc/passhport/passhport.ini and "
+"/etc/passhport/passhport-admin.ini :"
 msgstr ""
-"On change le paramètre suivante dans /etc/passhport/passhport.ini et /etc/"
-"passhport/passhport-admin.ini :"
+"On change le paramètre suivante dans /etc/passhport/passhport.ini et "
+"/etc/passhport/passhport-admin.ini :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:138
+#: ../../installation-and-configuration/installation-on-debian.rst:127
 msgid "``PASSHPORTD_HOSTNAME = 192.168.122.56``"
-msgstr ""
+msgstr "``PASSHPORTD_HOSTNAME = 192.168.122.56``"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:140
-msgid "We’ll need ssh publickey, so we generate an 4096 bits RSA key:"
-msgstr ""
-"Nous aurons besoin d'une clef SSH. On en génère donc une RSA de 4096 bits :"
-
-#: ../../installation-and-configuration/installation-on-debian.rst:165
+#: ../../installation-and-configuration/installation-on-debian.rst:129
+#, fuzzy
 msgid ""
-"This will be the key that’ll be use by PaSSHport to connect to your hosts. You "
-"can also generate a ECDSA key if you wish :"
+"We’ll need ssh publickey, so we generate a 4096 bits RSA key (keys lengh "
+"can be longer):"
+msgstr ""
+"Nous aurons besoin d'une clef SSH. On en génère donc une RSA de 4096 bits"
+" :"
+
+#: ../../installation-and-configuration/installation-on-debian.rst:154
+msgid ""
+"This will be the key that’ll be use by PaSSHport to connect to your "
+"hosts. You can also generate a ECDSA key if you wish :"
 msgstr ""
 "Cette clé sera utilisé par passhport pour se connecter aux différents "
 "serveurs. On peut aussi générer une clef ECDSA si on veut :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:171
+#: ../../installation-and-configuration/installation-on-debian.rst:160
 msgid ""
-"Again as root, let’s make the directory that’ll contains the database (because "
-"we use SQLite for this tutorial) :"
+"Again as root, let’s make the directory that’ll contains the database "
+"(because we use SQLite for this tutorial) :"
 msgstr ""
-"Une fois encore en tant que root, on crée le répertoire qui contiendra la base "
-"de données (parce qu'on utilise SQLite pour ce tuto) :"
+"Une fois encore en tant que root, on crée le répertoire qui contiendra la"
+" base de données (parce qu'on utilise SQLite pour ce tuto) :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:178
+#: ../../installation-and-configuration/installation-on-debian.rst:167
 msgid ""
-"… then we’ll have to change 3 paramaters in the passhportd config file (as "
-"root, edit «/etc/passhport/passhportd.ini») :"
+"… then we’ll have to change 3 paramaters in the passhportd config file "
+"(as root, edit «/etc/passhport/passhportd.ini») :"
 msgstr ""
-"… on a alors 3 paramètres à changer dans le fichier de conf de passhportd (en "
-"tant que root, on édite «/etc/passhport/passhportd.ini») :"
+"… on a alors 3 paramètres à changer dans le fichier de conf de passhportd"
+" (en tant que root, on édite «/etc/passhport/passhportd.ini») :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:186
+#: ../../installation-and-configuration/installation-on-debian.rst:175
 msgid ""
-"Now we can create the database and check that it has correcly been created:"
+"Now we can create the database and check that it has correcly been "
+"created:"
 msgstr ""
-"On peut maintenant créer la base de données, et vérifier que celle-ci a été "
-"correctement créé :"
+"On peut maintenant créer la base de données, et vérifier que celle-ci a "
+"été correctement créé :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:200
+#: ../../installation-and-configuration/installation-on-debian.rst:189
 msgid ""
-"We’ll now need to create the certificate to secure the API. First, create the "
-"directory in which will be key and the cert, and make the directory rwx for "
-"passport only :"
+"We’ll now need to create the certificate to secure the API. First, create"
+" the directory in which will be key and the cert, and make the directory "
+"rwx for passport only :"
 msgstr ""
-"On va maintenant créer un certificat pour sécuriser les échanges avec l'API. "
-"D'abord, on crée le répertoire dans lequel se trouveront la clé privée et le "
-"certificat. Il faut aussi attribué les droits rwx à l'utilisateur «passhport» "
-"seulement :"
+"On va maintenant créer un certificat pour sécuriser les échanges avec "
+"l'API. D'abord, on crée le répertoire dans lequel se trouveront la clé "
+"privée et le certificat. Il faut aussi attribué les droits rwx à "
+"l'utilisateur «passhport» seulement :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:207
+#: ../../installation-and-configuration/installation-on-debian.rst:196
 msgid "Create the RSA key :"
 msgstr "On crée la clé RSA :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:213
+#: ../../installation-and-configuration/installation-on-debian.rst:202
 msgid ""
-"There is a conf file provided for OpenSSL, to generate a minimal correct SSL "
-"cert. The file is :"
+"There is a conf file provided for OpenSSL, to generate a minimal correct "
+"SSL cert. The file is :"
 msgstr ""
-"Il y a un fichier de configuration pour OpenSSL fourni avec les sources de "
-"PaSSHport, pour générer un certificat minimal SSL correcte. Le fichier est :"
+"Il y a un fichier de configuration pour OpenSSL fourni avec les sources "
+"de PaSSHport, pour générer un certificat minimal SSL correcte. Le fichier"
+" est :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:215
+#: ../../installation-and-configuration/installation-on-debian.rst:204
 msgid "``/home/passhport/passhport/tools/openssl-for-passhportd.cnf``"
-msgstr ""
+msgstr "``/home/passhport/passhport/tools/openssl-for-passhportd.cnf``"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:217
+#: ../../installation-and-configuration/installation-on-debian.rst:206
 msgid ""
-"Edit it, and add DNS name you’ll use to reach the API. For the tutorial, we’ll "
-"use two hostnames :"
+"Edit it, and add DNS name you’ll use to reach the API. For the tutorial, "
+"we’ll use two hostnames :"
 msgstr ""
-"On l'édite, et on ajoute de nom DNS dont on se servira pour joindre l'API. "
-"Pour ce tuto, on utilisera deux noms d'hôtes :"
+"On l'édite, et on ajoute de nom DNS dont on se servira pour joindre "
+"l'API. Pour ce tuto, on utilisera deux noms d'hôtes :"
+
+#: ../../installation-and-configuration/installation-on-debian.rst:230
+msgid ""
+"Now, generate the certificate using this command (put on multiple lines, "
+"so you can copy/paste easily), but please adapt the subject line (-subj) "
+":"
+msgstr ""
+"On génère le certificat avec la commande suivante (on peut faire un "
+"copié/collé des lignes suivantes). Par contre, il faut bien entendu "
+"adapter la ligne du sujet (-subj) à votre installation :"
 
 #: ../../installation-and-configuration/installation-on-debian.rst:241
-msgid ""
-"Now, generate the certificate using this command (put on multiple lines, so "
-"you can copy/paste easily), but please adapt the subject line (-subj) :"
-msgstr ""
-"On génère le certificat avec la commande suivante (on peut faire un copié/"
-"collé des lignes suivantes). Par contre, il faut bien entendu adapter la ligne "
-"du sujet (-subj) à votre installation :"
-
-#: ../../installation-and-configuration/installation-on-debian.rst:252
 msgid "Once executed, you’ll have a cert file next to the key file :"
 msgstr "Une fois exécuté, vous aurez un certificat à côté d'une clé :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:264
+#: ../../installation-and-configuration/installation-on-debian.rst:253
 msgid ""
 "As root, create some symlink to the two main *binaries*, passhportd and "
 "passhport-admin, so you can access it without typing full path :"
 msgstr ""
-"En tant que root, on crée deux liens symboliques vers les deux principaux, "
-"passhportd et passhport-admin, pour ne plus avoir à besoin"
+"En tant que root, on crée deux liens symboliques vers les deux "
+"principaux, passhportd et passhport-admin, pour ne plus avoir à besoin"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:271
+#: ../../installation-and-configuration/installation-on-debian.rst:260
 msgid "We now create the systemd service, and enables *passhportd* on startup :"
 msgstr "On peut créer un service systemd, et activer *passhportd* au démarrage :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:279
+#: ../../installation-and-configuration/installation-on-debian.rst:268
 msgid "And now, we’re ready to go, just launch passhportd daemon :"
 msgstr "Il n'y a plus qu'à démarrer le démon passhportd :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:285
+#: ../../installation-and-configuration/installation-on-debian.rst:274
 msgid ""
-"You can check that passhportd is running, by curling the IP you previously "
-"configured in */etc/passhport/passhportd.ini*, on port 5000 :"
+"You can check that passhportd is running, by curling the IP you "
+"previously configured in */etc/passhport/passhportd.ini*, on port 5000 :"
 msgstr ""
-"On peut maintenant vérifier que passhportd tourne correctement, en \"curlant\" "
-"l'IP qu'on a précédemment configurée dans */etc/passhport/passhportd.ini*, sur "
-"le port 5000 :"
+"On peut maintenant vérifier que passhportd tourne correctement, en "
+"\"curlant\" l'IP qu'on a précédemment configurée dans "
+"*/etc/passhport/passhportd.ini*, sur le port 5000 :"
 
-#: ../../installation-and-configuration/installation-on-debian.rst:293
+#: ../../installation-and-configuration/installation-on-debian.rst:282
+#, fuzzy
 msgid ""
-"Bravo ! You successfully installed PaSSHport. You may now go to the `Getting "
-"Started <getting-started.html>`_ chapter."
+"Bravo ! You successfully installed PaSSHport. You may now go to the "
+"`Getting Started <../getting-started.html>`_ chapter."
 msgstr ""
 "Well done ! Vous avez installé PaSSHport. Vous pouvez maintenant lire le "
 "chapitre `Première utilisation <getting-started.html>`_."
+
+#~ msgid "Let’s update pip :"
+#~ msgstr "On met à jour pip :"
+
+#~ msgid "Now, install virtual-env using pip :"
+#~ msgstr "On installe virtual-env, en utilisant pip :"
+
