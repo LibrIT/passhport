@@ -50,7 +50,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'PaSSHport'
-copyright = '2019, LibrIT'
+copyright = '2020, LibrIT'
 author = 'LibrIT'
 
 # The version info for the project you're documenting, acts as replacement for
