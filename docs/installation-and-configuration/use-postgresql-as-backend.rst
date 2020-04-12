@@ -14,7 +14,7 @@ For Debian, install *postgresql-common* and *postgresql-server*
 
   # apt install postgresql-common postgresql-server
 
-For CentOS, install postgresql :
+For CentOS, install `postgresql` :
 
 .. code-block:: none
 
@@ -51,7 +51,7 @@ Add a password to postgreSQL passhport user :
   postgres=# \q
   $
 
-passhportd configuration
+Passhportd configuration
 -------------------------
 
 Change the configuration of the *passhportd.ini* file (``/etc/passhport/passhportd.ini``). You need to change the ``SQLALCHEMY_DATABASE_URI`` parameter to :

@@ -21,7 +21,7 @@ From local to target :
 
 
 For Windows, you have to consider using "pscp" command. You can find it here: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
-Be aware that you will need a private key file in "ppk" format. You can use puttygen to generate one or converrt your current private key.
+Be aware that you will need a private key file in "ppk" format. You can use puttygen to generate one or convert your current private key.
 Pscp command tries to use SFTP protocol leading to this error: 
 
 .. code-block:: none

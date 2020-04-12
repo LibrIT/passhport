@@ -3,52 +3,62 @@
 # This file is distributed under the same license as the PaSSHport package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PaSSHport \n"
+"Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-11 16:32+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2020-04-12 15:03+0200\n"
+"PO-Revision-Date: 2020-04-12 17:20+0200\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: \n"
+"Language-Team: LibrIT\n"
+"Language: fr_FR\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: ../../user-side-usage/scp.rst:2
 msgid "scp through PaSSHport"
-msgstr ""
+msgstr "scp à travers PaSSHport"
 
 #: ../../user-side-usage/scp.rst:5
 msgid "Using CLI"
-msgstr ""
+msgstr "En utilisant la CLI"
 
 #: ../../user-side-usage/scp.rst:7
 msgid "To use SCP throug PaSSHport, use one of the following syntax..."
 msgstr ""
+"Pour utiliser SCP à travers PaSSHport, utilisez l'une des syntaxe "
+"suivante…"
 
 #: ../../user-side-usage/scp.rst:9
 msgid "From target to local :"
-msgstr ""
+msgstr "Depuis la target distante vers la machine local :"
 
 #: ../../user-side-usage/scp.rst:16
 msgid "From local to target :"
-msgstr ""
+msgstr "Depuis la machine locale vers la target distante :"
 
 #: ../../user-side-usage/scp.rst:23
 msgid ""
-"For Windows, you have to consider using \"pscp\" command. You can find it"
-" here: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html Be "
-"aware that you will need a private key file in \"ppk\" format. You can "
-"use puttygen to generate one or converrt your current private key. Pscp "
-"command tries to use SFTP protocol leading to this error:"
+"For Windows, you have to consider using \"pscp\" command. You can find "
+"it here: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html "
+"Be aware that you will need a private key file in \"ppk\" format. You "
+"can use puttygen to generate one or convert your current private key. "
+"Pscp command tries to use SFTP protocol leading to this error:"
 msgstr ""
+"Pour Windows, vous devez utiliser la commande \"pscp\". Vous pouvez la "
+"trouver ici :  https://www.chiark.greenend.org.uk/~sgtatham/putty/"
+"latest.html . Attention, vous devrez avoir votre clé au format \"ppk\". "
+"Vous pouvez utiliser puttygen pour en générer une, ou convertir votre "
+"clé privée actuelle. La commande pscp, par défaut, utilise le protocole "
+"SFTP, ce qui ne peut pas fonctionner, et mène à l'erreur suivante :"
 
 #: ../../user-side-usage/scp.rst:32
 msgid ""
-"In order to use pscp with PaSSHport, consider using this syntax including"
-" \"-scp\" flag:"
+"In order to use pscp with PaSSHport, consider using this syntax "
+"including \"-scp\" flag:"
 msgstr ""
-
+"Pour pouvoir utiliser pscp avec PaSSHport, ajouter l'option \"-scp\":"

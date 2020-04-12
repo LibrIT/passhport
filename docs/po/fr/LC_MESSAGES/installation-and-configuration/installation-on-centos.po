@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-24 22:22+0200\n"
-"PO-Revision-Date: 2020-04-10 17:32+0200\n"
+"PO-Revision-Date: 2020-04-12 17:21+0200\n"
 "Last-Translator: \n"
 "Language: fr\n"
 "Language-Team: Raphaël Berlamont <raphael.berlamont@librit.fr>\n"
@@ -164,7 +164,7 @@ msgstr ""
 
 #: ../../installation-and-configuration/installation-on-centos.rst:138
 msgid "``PASSHPORTD_HOSTNAME = 192.168.122.56``"
-msgstr ""
+msgstr "``PASSHPORTD_HOSTNAME = 192.168.122.56``"
 
 #: ../../installation-and-configuration/installation-on-centos.rst:140
 msgid "We’ll need ssh publickey, so we generate an 4096 bits RSA key:"
@@ -227,7 +227,7 @@ msgstr ""
 
 #: ../../installation-and-configuration/installation-on-centos.rst:215
 msgid "``/home/passhport/passhport/tools/openssl-for-passhportd.cnf``"
-msgstr ""
+msgstr "``/home/passhport/passhport/tools/openssl-for-passhportd.cnf``"
 
 #: ../../installation-and-configuration/installation-on-centos.rst:217
 msgid ""
