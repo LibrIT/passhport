@@ -149,7 +149,7 @@ hostname           Hostname or IP of the target
                    This is used to know which hook to launch, depending on the server<br/>
                    type. If type is something else than `ssh`, the server won't be <br/> 
                    accessible via SSH. If the target is a PostGreSQL server and you <br/>
-                   want to lauch the corresponding hook (usually a proxy to log user <br/>
+                   want to launch the corresponding hook (usually a proxy to log user <br/>
                    actions, use `postgresql` type). Same explanations for `mysql` and <br/>
                    `oracle`.<br/>
                    Use the default `ssh`, unless you have the commercial version.<br/>

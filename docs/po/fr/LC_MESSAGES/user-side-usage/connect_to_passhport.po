@@ -3,72 +3,61 @@
 # This file is distributed under the same license as the PaSSHport package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PaSSHport \n"
+"Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-24 22:22+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2020-04-12 17:12+0200\n"
+"PO-Revision-Date: 2020-04-12 17:15+0200\n"
+"Last-Translator: \n"
+"Language: fr_FR\n"
+"Language-Team: LibrIT\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.7.0\n"
+"Generated-By: Babel 2.8.0\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: ../../user-side-usage/connect_to_passhport.rst:2
 msgid "Connect to PaSSHport"
-msgstr ""
+msgstr "Se connecter à PaSSHport"
 
 #: ../../user-side-usage/connect_to_passhport.rst:5
 msgid "On Windows"
-msgstr ""
+msgstr "Sur Windows"
 
 #: ../../user-side-usage/connect_to_passhport.rst:7
-msgid "Well take the"
-msgstr ""
-
-#: ../../user-side-usage/connect_to_passhport.rst:10
 msgid ""
-"You can call passhport-admin's CLI, by calling ``passhport-admin`` with "
-"the ``-i``."
+"You can use Putty to connect to the passhport bastion indicating your private "
+"key."
 msgstr ""
+"Vous pouvez utiliser le client `Putty` pour vous connecter à PaSSHport, en "
+"indiquant votre clé privée."
 
-#: ../../user-side-usage/connect_to_passhport.rst:12
+#: ../../user-side-usage/connect_to_passhport.rst:11
+msgid "On Linux / \\*nix"
+msgstr "Sur Linux / \\*nix"
+
+#: ../../user-side-usage/connect_to_passhport.rst:13
+msgid "Use your standard SSH client and connect to the bastion as passhport user:"
+msgstr ""
+"Utilisez votre client standard SSH et connectez vous à PaSSHport en tant "
+"qu'utilisateur `passhport`:"
+
+#: ../../user-side-usage/connect_to_passhport.rst:19
 msgid ""
-"You can then configure passhportd through this command line. Refer to the"
-" good section in the submodule doc to know how to use them."
+"If you want to be directly connected, you have to specify the target name in "
+"the command AND to activate the -t option:"
 msgstr ""
+"Si vous voulez vous connecter directement à une target, vous devez spécifier le "
+"nom de la target dans la commande ET utiliser l'option `-t` (pour forcer le "
+"rattachement à un terminal, sans quoi vous aurez un comportement incertain) :"
 
-#: ../../user-side-usage/connect_to_passhport.rst:30
-msgid "Usages :"
-msgstr ""
-
-#: ../../user-side-usage/connect_to_passhport.rst:45
-msgid "list"
-msgstr ""
-
-#: ../../user-side-usage/connect_to_passhport.rst:47
-msgid "`passhport-admin target list` show all the configured targets."
-msgstr ""
-
-#: ../../user-side-usage/connect_to_passhport.rst:49
-#: ../../user-side-usage/connect_to_passhport.rst:66
-msgid "**Example :**"
-msgstr ""
-
-#: ../../user-side-usage/connect_to_passhport.rst:62
-msgid "search"
-msgstr ""
-
-#: ../../user-side-usage/connect_to_passhport.rst:64
+#: ../../user-side-usage/connect_to_passhport.rst:25
 msgid ""
-"`passhport-admin target search [<PATTERN>]` searches in the target list "
-"for all targets that correspond to the given pattern."
+"If you want to launch a command directly, you can use the same syntax adding "
+"the command at the end"
 msgstr ""
-
-#: ../../user-side-usage/connect_to_passhport.rst:75
-msgid "If no pattern is given, user enters in interactive mode."
-msgstr ""
-
+"Si vous voulez lancer directement une commande, vous pouvez utiliser la même "
+"syntaxe, en ajoutant la commande à la fin"

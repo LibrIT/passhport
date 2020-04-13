@@ -4,7 +4,7 @@ Generate private keys
 On Windows :
 -------------
 
-To generate the private key that you'll give to your PaSSHport admin, use `puttygen` that you can download from `here <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`__ (search for `puttygen.exe`).
+To generate the public key (extract from the along side generated private key) that you'll give to your PaSSHport admin, use `puttygen` that you can download from `here <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`__ (search for `puttygen.exe`).
 
 Start puttygen, and on the main windows, select the type of key you want to generate (`1`), the key length (`2`), then click `Generate` button (`3`). Here, we selected RSA and a key length of 4096 (2048 is a considered as a minimum for RSA) :
 

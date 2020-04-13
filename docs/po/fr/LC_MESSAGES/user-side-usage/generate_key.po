@@ -3,35 +3,42 @@
 # This file is distributed under the same license as the PaSSHport package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PaSSHport \n"
+"Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-24 22:22+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2020-04-12 15:20+0200\n"
+"PO-Revision-Date: 2020-04-12 15:39+0200\n"
+"Last-Translator: \n"
+"Language: fr_FR\n"
+"Language-Team: LibrIT\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.7.0\n"
+"Generated-By: Babel 2.8.0\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: ../../user-side-usage/generate_key.rst:2
 msgid "Generate private keys"
-msgstr ""
+msgstr "Générer des clés privées"
 
 #: ../../user-side-usage/generate_key.rst:5
 msgid "On Windows :"
-msgstr ""
+msgstr "Sur Windows :"
 
 #: ../../user-side-usage/generate_key.rst:7
 msgid ""
-"To generate the private key that you'll give to your PaSSHport admin, use"
-" `puttygen` that you can download from `here "
-"<https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`__ "
-"(search for `puttygen.exe`)."
+"To generate the public key (extract from the along side generated "
+"private key) that you'll give to your PaSSHport admin, use `puttygen` "
+"that you can download from `here <https://www.chiark.greenend.org.uk/"
+"~sgtatham/putty/latest.html>`__ (search for `puttygen.exe`)."
 msgstr ""
+"Pour générer la clé publique (extraite de la clé privée créée) que vous "
+"transmettrez à votre administrateur qui s'occupe de PaSSHport, utilisez "
+"`puttygen`, qui vous pouvez télécharger `ici <https://www.chiark."
+"greenend.org.uk/~sgtatham/putty/latest.html>`__ (cherchez `puttygen.exe` "
+"sur la page)."
 
 #: ../../user-side-usage/generate_key.rst:9
 msgid ""
@@ -40,47 +47,67 @@ msgid ""
 "(`3`). Here, we selected RSA and a key length of 4096 (2048 is a "
 "considered as a minimum for RSA) :"
 msgstr ""
+"Démarrez puttygen, et sur la fenêtre principale, sélectionnez le type de "
+"clé que vous voulez générer (`1`), la longueur de la clé (`2`), et "
+"cliquez ensuite sur le bouton `Generate` (`3`). On a sélectionné dans "
+"cette exemple que clé de type RSA avec une taille de 4096 bits (as of "
+"2019, une longueur de 2048 bits est considéré comme un minimum pour une "
+"clé RSA) :"
 
 #: ../../user-side-usage/generate_key.rst:13
 msgid "Move your mouse in the blank space, until the key is generated :"
 msgstr ""
+"Faites bouger aléatoirement votre curseur dans l'espace blanc, jusqu'à "
+"ce que la clé soit générée :"
 
 #: ../../user-side-usage/generate_key.rst:17
 msgid ""
 "Once generated, insert a comment (`1`), a strong passphrase (`2`), then "
 "save your private key (`3`)."
 msgstr ""
+"Une fois générée, mettez un commentaire (`1`), un mot de passe fort "
+"(`2`), sauvez ensuite votre clé privée (`3`)."
 
 #: ../../user-side-usage/generate_key.rst:21
 msgid ""
 "You now have to send your RSA public key to your PaSSHport admin. Select "
-"your public key as shown in this screen capture, and copy/paste it into a"
-" mail to your PaSSHport admin :"
+"your public key as shown in this screen capture, and copy/paste it into "
+"a mail to your PaSSHport admin :"
 msgstr ""
+"Vous devez maintenant envoyez votre clé public RSA à votre "
+"administrateur PaSSHport. Sélectionnez votre clé publique comme montré "
+"dans cette capture d'écran, et copiez/collez la dans un courriel à "
+"destination de votre administrateur PaSSHport :"
 
 #: ../../user-side-usage/generate_key.rst:25
 msgid ""
 "You now have to wait until your PaSSHport admin add your key to your "
 "account into PaSSHport."
 msgstr ""
+"Vous devez maintenant attendre que votre administrateur PaSSHport ajoute "
+"votre clé à votre compte dans PaSSHport."
 
 #: ../../user-side-usage/generate_key.rst:28
 msgid "On Linux / Unix :"
-msgstr ""
+msgstr "Sur Linux / Unix :"
 
 #: ../../user-side-usage/generate_key.rst:30
 msgid ""
 "Simply open a terminal, and use the `ssh-keygen` command. Here we "
 "generate à 4096bits length RSA key :"
 msgstr ""
+"Ouvrez simplement un terminal, et utilisez la commande `ssh-keygen`. "
+"Ici, non générerons une clé RSA d'une longueur de 4096 bits :"
 
 #: ../../user-side-usage/generate_key.rst:58
 msgid "Display your newly created public key :"
-msgstr ""
+msgstr "Affichez votre clé nouvellement créée :"
 
 #: ../../user-side-usage/generate_key.rst:66
 msgid ""
-"And send this content to your PaSSHport admin. You now have to wait until"
-" your PaSSHport admin add your key to your account into PaSSHport."
+"And send this content to your PaSSHport admin. You now have to wait "
+"until your PaSSHport admin add your key to your account into PaSSHport."
 msgstr ""
-
+"Et envoyez le contenu à votre administrateur PaSSHport. Vous devez "
+"maintenant attendre que votre administrateur PaSSHport ajoute votre clé "
+"à votre compte dans PaSSHport."

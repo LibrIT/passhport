@@ -8,20 +8,20 @@ msgstr ""
 "Project-Id-Version: PaSSHport\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-24 22:22+0200\n"
-"PO-Revision-Date: 2019-06-24 22:34+0200\n"
+"PO-Revision-Date: 2020-04-10 17:39+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: en\n"
-"X-Generator: Poedit 1.8.11\n"
+"Language: fr_FR\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: ../../installation-and-configuration/apache-wsgi-for-production.rst:2
 msgid "Add a WSGI server in front of PaSSHport"
-msgstr "Ajout d'un servur M"
+msgstr "Ajouter un serveur WSGI devant PaSSHport"
 
 #: ../../installation-and-configuration/apache-wsgi-for-production.rst:4
 msgid ""
@@ -29,6 +29,9 @@ msgid ""
 "request at a time. It means that you can't really use it in production "
 "environnement..."
 msgstr ""
+"PaSSHport est basé sur Flask, le serveur embarqué ne peut gérer qu'une "
+"seule connexion à la fois. Il faut donc éviter de l'utiliser tel-quel en "
+"environnement de production…"
 
 #: ../../installation-and-configuration/apache-wsgi-for-production.rst:6
 msgid ""
@@ -36,35 +39,38 @@ msgid ""
 "every connection. Apache provides such a solution with WSGI... And it's "
 "quite easy to activate it."
 msgstr ""
+"Afin de gérer plus de requêtes, on duplique le nombre de processus "
+"PaSSHport pour chaque connexion. Apache permet de faire ça avec WSGI… Et "
+"c'est finalement assez simple à activer."
 
 #: ../../installation-and-configuration/apache-wsgi-for-production.rst:9
 msgid "Installation"
-msgstr ""
+msgstr "Installation"
 
 #: ../../installation-and-configuration/apache-wsgi-for-production.rst:11
 msgid "On Debian :"
-msgstr ""
+msgstr "Su Debian :"
 
 #: ../../installation-and-configuration/apache-wsgi-for-production.rst:18
 msgid "Configuration"
-msgstr ""
+msgstr "Configuration"
 
 #: ../../installation-and-configuration/apache-wsgi-for-production.rst:20
 msgid "Create a new apache vhost file with this content:"
-msgstr ""
+msgstr "Créez un nouveau vhost apache avec ce contenu :"
 
 #: ../../installation-and-configuration/apache-wsgi-for-production.rst:43
 msgid "Activate"
-msgstr ""
+msgstr "Activez"
 
 #: ../../installation-and-configuration/apache-wsgi-for-production.rst:44
 msgid "First kill the current passhport process"
-msgstr ""
+msgstr "Tout d'abord, tuez le processus passhportd existant"
 
 #: ../../installation-and-configuration/apache-wsgi-for-production.rst:50
 msgid "Deactivate default website and activate this one:"
-msgstr ""
+msgstr "Désactivez le site par défaut, et activez celui-ci:"
 
 #: ../../installation-and-configuration/apache-wsgi-for-production.rst:60
 msgid "and Voilà."
-msgstr ""
+msgstr "et voilà."
