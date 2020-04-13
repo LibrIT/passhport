@@ -1,29 +1,38 @@
 #!/bin/bash
 
+DEFAULT_PASSHPORT_DIR="/home/passhport/passhport"
+DEFAULT_PASSHPORT_RUN_ENV="/home/passhport/passhport-run-env"
 
 PASSHPORT_DIR=$1
 PASSHPORT_RUN_ENV=$2
 
-DEFAULT_PASSHPORT_DIR="/home/passhport/passhport"
-DEFAULT_PASSHPORT_RUN_ENV="/home/passhport/passhport-run-env"
-
+# If no PaSSHport directory has been defined (as first arg), then check the defaults
 if [ -z "${PASSHPORT_DIR}" ]
 then
+	# We should check that the default PaSSHport directory exists and is writeable
+	# if not we should exit.
 	if [ -w "${DEFAULT_PASSHPORT_DIR}" ]
 	then
 		PASSHPORT_DIR="${DEFAULT_PASSHPORT_DIR}"
 	else
-		echo "Error : couldn't find default password. Please pass passhport directory as first"
-		echo "argument to this script."
+		echo "Error : couldn't find default passhport directory. Please pass passhport"
+		echo "directory as first argument to this script."
 		exit 1
 	fi
-elif [ ! -d "${DEFAULT_PASSHPORT_DIR}" ]
+# If the defined PaSSHport dir is not writeable, I guess there is a problem
+# with the defined 
+elif [ ! -w "${PASSHPORT_DIR}" ]
 then
-	echo "Error : couldn't find the passhport directory. Please verify."
+	echo "Error : couldn't find the specified passhport directory."
+	echo "Please check the passhport path (first arg)."
 	exit 1
 fi
+
+# If no PaSSHport run-env has been defined (as second arg), the we check the defaults
 if [ -z "${PASSHPORT_RUN_ENV}" ]
 then
+	# We should check that the default PaSSHport run-env (/home/passhport/passhport-run-env)
+	# exists and is writeable.
 	if [ -w "${DEFAULT_PASSHPORT_RUN_ENV}" ]
 	then
 		PASSHPORT_RUN_ENV="${DEFAULT_PASSHPORT_RUN_ENV}"
@@ -32,9 +41,11 @@ then
 		echo "argument to this script."
 		exit 1
 	fi
-elif [ ! -d "${DEFAULT_PASSHPORT_RUN_ENV}" ]
+# if the defined PaSSHport dir is not writeable, I guess there is a problem w
+elif [ ! -d "${PASSHPORT_RUN_ENV}" ]
 then
-	echo "Error : couldn't find the passhport run-env directory. Please verify."
+	echo "Error : couldn't find the specified passhport run-env directory."
+	echo "Please check the passhport run-env path (second arg)."
 	exit 1
 fi
 
