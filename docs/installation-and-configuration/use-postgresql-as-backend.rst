@@ -8,11 +8,11 @@ If you did not use the packaged version of passhport (deb/rpm), proceed as follo
 
 Before installing python libs, be sure to have *pg_config* in your $PATH and some postgres libraries.
 
-For Debian, install *postgresql-common* and *postgresql-server*
+For Debian, install *postgresql*
 
 .. code-block:: none
 
-  # apt install postgresql-common postgresql-server
+  # apt install postgresql
 
 For CentOS, install `postgresql` :
 
