@@ -22,6 +22,9 @@ def api_target_list(name=None):
                 target.Target.name).all()
     else:
         q = user.User.query.filter_by(name=name).first()
+        if not q:
+            app.logger.info("No such user:" + name)
+            return utils.response("[]", 200)
         query = [target for target in q.accessible_target_list() if target.targettype != "ssh"]
 
     i = 0
@@ -36,7 +39,7 @@ def api_target_list(name=None):
 
 
     if not result:
-        return utils.response("No target in database.", 200)
+        return utils.response("[]", 200)
 
     return utils.response("".join(result), 200)
 
