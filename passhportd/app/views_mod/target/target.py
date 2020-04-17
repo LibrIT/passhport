@@ -483,8 +483,6 @@ def target_rmuser():
         return utils.response('ERROR: "' + targetname + '" -> ' + \
                               e.message, 409)
 
-    app.logger.error("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-    app.logger.error(request.args)
     utils.notif("User " + username + " lost access to " + targetname + ".", 
                 "[PaSSHport] " + username + " removed from " + targetname, request)
     return utils.response('OK: "' + username + '" removed from "' + \
