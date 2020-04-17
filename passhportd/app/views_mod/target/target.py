@@ -437,7 +437,7 @@ def target_adduser():
                                e.message, 409)
 
     utils.notif("User " + username + " has now access to " + targetname + ".", 
-                "[PaSSHport] " + username + " can access " + targetname )
+               "[PaSSHport] " + username + " can access " + targetname, request)
     return utils.response('OK: "' + username + '" added to "' + \
                           targetname + '"', 200)
 
@@ -484,7 +484,7 @@ def target_rmuser():
                               e.message, 409)
 
     utils.notif("User " + username + " lost access to " + targetname + ".", 
-                "[PaSSHport] " + username + " removed from " + targetname )
+                "[PaSSHport] " + username + " removed from " + targetname, request)
     return utils.response('OK: "' + username + '" removed from "' + \
                           targetname + '"', 200)
 
@@ -527,7 +527,7 @@ def target_addusergroup():
     utils.notif("Users from group" + usergroupname + " can now access " + \
                 targetname + ".\n\nAffected users:\n" + \
                 str(ug.all_username_list()), "[PaSSHport] " + usergroupname + \
-                " can now access " + targetname)
+                " can now access " + targetname, request)
     return utils.response('OK: "' + usergroupname + '" added to "' + \
                           targetname + '"', 200)
 
@@ -576,7 +576,7 @@ def target_rmusergroup():
     utils.notif("Users from group" + usergroupname + " lost access to " + \
                 targetname + ".\n\nAffected users:\n" + \
                 str(ug.all_username_list()), "[PaSSHport] " + usergroupname + \
-                " removed from " + targetname)
+                " removed from " + targetname, request)
     return utils.response('OK: "' + usergroupname + '" removed from "' + \
                           targetname + '"', 200)
 
