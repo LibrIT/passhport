@@ -255,7 +255,7 @@ def usergroup_adduser():
                               e.message, 409)
 
     utils.notif(username + " added to usergroup " + usergroupname + ".\n" ,
-            "[PaSSHport] " + username + " added to usergroup " + usergroupname)
+            "[PaSSHport] " + username + " added to usergroup " + usergroupname, request)
     return utils.response('OK: "' + username + '" added to "' + \
                           usergroupname + '"', 200)
 
@@ -302,7 +302,7 @@ def usergroup_rmuser():
                               e.message, 409)
 
     utils.notif(username + " removed from usergroup " + usergroupname + ".",
-            "[PaSSHport] " + username + " removed from usergroup " + usergroupname)
+            "[PaSSHport] " + username + " removed from usergroup " + usergroupname, request)
     return utils.response('OK: "' + username + '" removed from "' + \
                           usergroupname + '"', 200)
 
@@ -343,7 +343,7 @@ def usergroup_addmanager():
                               e.message, 409)
 
     utils.notif(username + " is now manager of " + usergroupname + ".",
-            "[PaSSHport] " + username + " promoted manager of " + usergroupname)
+            "[PaSSHport] " + username + " promoted manager of " + usergroupname, request)
     return utils.response('OK: "' + username + '" is manager of "' + \
                           usergroupname + '"', 200)
 
@@ -390,7 +390,7 @@ def usergroup_rmmanager():
                               e.message, 409)
 
     utils.notif(username + " is no more manager of " + usergroupname + ".",
-            "[PaSSHport] " + username + " manager rights removed of " + usergroupname)
+            "[PaSSHport] " + username + " manager rights removed of " + usergroupname, request)
     return utils.response('OK: "' + username + \
                           '" is not anymore manager of "' + \
                           usergroupname + '"', 200)
@@ -448,7 +448,7 @@ def usergroup_addusergroup():
     utils.notif(subusergroupname + " added to usergroup " + \
                                                       usergroupname + ".",
             "[PaSSHport] " + subusergroupname + " added to usergroup " + \
-                                                      usergroupname)
+                                                      usergroupname, request)
     return utils.response('OK: "' + subusergroupname + '" added to "' + \
                           usergroupname + '"', 200)
 
@@ -497,6 +497,6 @@ def usergroup_rmusergroup():
     utils.notif(subusergroupname + " removed from usergroup " + \
                                                       usergroupname + ".",
             "[PaSSHport] " + subusergroupname + " removed from usergroup " + \
-                                                      usergroupname)
+                                                      usergroupname, request)
     return utils.response('OK: "' + subusergroupname + '" removed from "' + \
                           usergroupname + '"', 200)

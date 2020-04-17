@@ -204,12 +204,16 @@ def send_email(msg, subject, recipient):
     server.quit()
 
 
-def notif(msg,subject="PaSSHport Notification", emergency="log"):
+def notif(msg,subject="PaSSHport Notification", request=None, emergency="log"):
     """Send the msg via parmeters notification"""
     if emergency == "log":
             if config.NOTIF_LOG_TYPE == "email":
                 for recipient in config.NOTIF_TO.split(","):
                     try:
-                        send_email(msg, subject, recipient)
+                        author = ""
+                        if request and "author" in request.form:
+                            author =  "\nModification made by " + \
+                                                 request.form["author"] + "."
+                        send_email(msg + author, subject, recipient)
                     except:
                         app.logger.error("Error sending email. Check config.")
