@@ -14,8 +14,8 @@ Table of content :
    getting-started
    passhport-admin/index
    user-side-usage/index
-..   advanced-usage
-   api
+   advanced-usage
+..   api
    limitations
    get-involved
 
