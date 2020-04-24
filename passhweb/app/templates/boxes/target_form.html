@@ -1,0 +1,133 @@
+<div class="box box-primary">
+    <div class="box-header with-border text-center">
+        <h3 class="box-title">Infos</h3>
+    </div>
+    <div class="box-body">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
+            <div class="input-group" data-toggle="tooltip" title="Target name, must be unique">
+                <span class="input-group-addon"><i class="fa fa-desktop"></i></span>
+                {% if elt %}
+                    {% if superadmin %}
+                        {{ form.name(size=80, class_="form-control", placeholder="Name", value=elt[0]['Name']) }}
+                    {% else %}
+                        {{ form.name(size=80, class_="form-control", placeholder="Name", value=elt[0]['Name'], disabled="") }}
+                    {% endif %}
+                {% else %}
+                    {{ form.name(size=80, class_="form-control", placeholder="Name") }}
+                {% endif %}
+            </div>
+            <br>
+            <div class="input-group" data-toggle="tooltip" title="Type of target in supported list">
+                <span class="input-group-addon"><i class="fa fa-dot-circle-o"></i></span>
+                {% if superadmin %}
+                    {{ form.targettype(class_="form-control select2") }}
+                {% else %}
+                    {{ form.targettype(class_="form-control select2", disabled="") }}
+                {% endif %}
+            </div>
+            <br>
+            <div class="input-group" data-toggle="tooltip" title="Hostname or IP">
+                <span class="input-group-addon"><i class="fa fa-link"></i></span>
+                {%if elt%}
+                    {% if superadmin %}
+                        {{ form.hostname(size=80, class_="form-control", placeholder="Hostname", value=elt[0]['Hostname']) }}
+                    {% else %}
+                        {{ form.hostname(size=80, class_="form-control", placeholder="Hostname", value=elt[0]['Hostname'], disabled="") }}
+                    {% endif %}
+                {%else%}
+                    {{ form.hostname(size=80, class_="form-control", placeholder="Hostname") }}
+                {%endif%}
+            </div>
+            <br>
+            <div class="input-group" data-toggle="tooltip" title="Port">
+                <span class="input-group-addon"><i class="fa fa-anchor"></i></span>
+                {%if elt%}
+                    {% if superadmin %}
+                        {{ form.port(size=80, class_="form-control", placeholder="Port (default is 22)", value=elt[0]['Port']) }}
+                    {% else %}
+                        {{ form.port(size=80, class_="form-control", placeholder="Port (default is 22)", value=elt[0]['Port'], disabled="") }}
+                    {% endif %}
+                {%else%}
+                    {{ form.port(size=80, class_="form-control", placeholder="Port (default is 22)") }}
+                {%endif%}
+            </div>
+            <br>
+            <div class="input-group" data-toggle="tooltip" title="User login">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                {%if elt%}
+                    {% if superadmin %}
+                        {{ form.login(size=80, class_="form-control", placeholder="Login (default is root)", value=elt[0]['Login']) }}
+                    {% else %}
+                        {{ form.login(size=80, class_="form-control", placeholder="Login (default is root)", value=elt[0]['Login'], disabled="") }}
+                    {% endif %}
+                {%else%}
+                    {{ form.login(size=80, class_="form-control", placeholder="Login (default is root)") }}
+                {%endif%}
+            </div>
+            <br>
+            <div class="input-group" data-toggle="tooltip" title="Session duration">
+                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                {%if elt%}
+                    {% if superadmin %}
+                        {{ form.sessiondur(size=80, class_="form-control", placeholder="Maximum session duration (in hours)", value=(elt[0]['Session duration']|int/60)|int) }}
+                    {% else %}
+                        {{ form.sessiondur(size=80, class_="form-control", placeholder="Maximum session duration (in hours)", value=(elt[0]['Session duration']|int/60)|int, disabled="") }}
+                    {% endif %}
+                {%else%}
+                    {{ form.sessiondur(size=80, class_="form-control", placeholder="Maximum session duration (in hours)") }}
+                {%endif%}
+            </div>
+            <br>
+            <div class="input-group" data-toggle="tooltip" title="Options passed to SSH on every connection">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                {%if elt%}
+                    {% if superadmin %}
+                        {{ form.options(size=80, class_="form-control", placeholder="Options", value=elt[0]['SSH options']) }}
+                    {% else %}
+                        {{ form.options(size=80, class_="form-control", placeholder="Options", value=elt[0]['SSH options'], disabled="") }}
+                    {% endif %}
+                {%else%}
+                    {{ form.options(size=80, class_="form-control", placeholder="Options") }}
+                {%endif%}
+            </div>
+            <br>
+            <div class="input-group" data-toggle="tooltip" title="After every user SSH session, the root password will be reset (login has to be root)">
+                <span class="input-group-addon" id="changepwd"><i class="fa fa-exchange"></i></span>
+                <span class="form-control">Change the root password after every sesssion</span>
+                <span class="input-group-addon">
+                {%if elt%}
+                    {% if superadmin %}
+                        <!-- Trick to put a boolean in checked: we test value against True-->
+                        {{ form.changepwd(class_="flat-blue", checked= "True" == elt[0]['Change password']) }}
+                    {% else %}
+                        {{ form.changepwd(class_="flat-blue", checked= "True" == elt[0]['Change password'], disabled="") }}
+                    {% endif %}
+                {%else%}
+                    {{ form.changepwd(class_="flat-blue") }}
+                {%endif%}
+                </span>
+            </div>
+            <br>
+            <div class="input-group" data-toggle="tooltip" title="Any comment or description of the server">
+                <span class="input-group-addon"><i class="fa fa-commenting-o"></i></span>
+                {%if elt%}
+                    {% if superadmin %}
+                        {{ form.comment(size=80, class_="form-control", placeholder="Comment", value=elt[0]['Comment']) }}
+                    {% else %}
+                        {{ form.comment(size=80, class_="form-control", placeholder="Comment", value=elt[0]['Comment'], disabled="") }}
+                    {% endif %}
+                {%else%}
+                    {{ form.comment(size=80, class_="form-control", placeholder="Comment") }}
+                {%endif%}
+            </div>
+            <br>
+            {% if superadmin %}
+                <div class="col-xs-offset-5 col-xs-2 lbtn-bot15">
+                    <button type="submit" class="btn btn-block btn-primary">Save</button>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+</div>

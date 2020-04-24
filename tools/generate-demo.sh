@@ -89,11 +89,11 @@ function generate_targets(){
 
 function create_usergroups(){
 	passhport-admin usergroup create linux-admins --comment "Ensembles des administrateurs Linux/Unix"
-	passhport-admin usergroup create windows-admins --comment "Ensembles des administrateurs Linux/Unix"
-	passhport-admin usergroup create network-admins --comment "Ensembles des administrateurs Linux/Unix"
-	passhport-admin usergroup create network-switches-admins --comment "Ensembles des administrateurs Linux/Unix"
-	passhport-admin usergroup create network-access-points-admins --comment "Ensembles des administrateurs Linux/Unix"
-	passhport-admin usergroup create network-routers-admins --comment "Ensembles des administrateurs Linux/Unix"
+	passhport-admin usergroup create windows-admins --comment "Ensembles des administrateurs Windows"
+	passhport-admin usergroup create network-admins --comment "Ensembles des administrateurs généraliste réseaux"
+	passhport-admin usergroup create network-switches-admins --comment "Ensembles des administrateurs de switch"
+	passhport-admin usergroup create network-access-points-admins --comment "Ensembles des administrateurs des points d'accès"
+	passhport-admin usergroup create network-routers-admins --comment "Ensembles des administrateurs de routeurs"
 }
 
 function generate_users(){

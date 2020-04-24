@@ -1,0 +1,55 @@
+{% extends "skels/with_sidebar.html" %}
+
+
+{% block head %}
+<link rel="stylesheet" href="/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+{% endblock %}
+
+
+{% block links %}
+    {{ links.sidebarlinks('/list/user', superadmin, managesomething, player) }}
+{% endblock links %}
+
+
+{% block headtitle %}
+    {{ header.header('User', 'Create or edit a user') }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-6">
+            {% include "boxes/user_form.html" %}
+            {% if superadmin and elt %}
+                {% include "boxes/delete.html" %}
+            {% endif %}
+            {% if elt %}
+                {% include "boxes/user_access.html" %}
+            {% endif %} 
+        </div>
+        <!-- right-column -->
+        <div class="col-md-6">
+            {% if elt %}
+                {% if superadmin or me %}
+                    {% include "boxes/user_last_access_list.html" %}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+    {% include "scripts/lists_common.html" %}
+    {% if elt and superadmin %}
+        {% include "scripts/element_delete.html" %}
+    {% endif %}
+    {% if elt %}
+        {% if superadmin or me %}
+            {% include "scripts/user_last_access_list.html" %}
+        {% endif %}
+        {% include "scripts/user_access.html" %}
+    {% endif %}
+{% endblock %}
+

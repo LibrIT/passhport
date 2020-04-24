@@ -1,0 +1,29 @@
+<div class="box box-primary">
+    <div class="box-header with-border text-center">
+        <h3 class="box-title">Attached users</h3>
+    </div>
+    <div class="box-body">
+        <table id="attachedusers" class="ltable table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>E-mail</th>
+                    <th>Comment</th>
+                    {% if superadmin or manager %}
+                        <th name="remove" class="nosort"></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <!-- Data loaded via javascript -->
+            </tbody-->
+            <tfoot>
+                <tr>
+                    <th>E-mail</th>
+                    <th>Comment</th>
+                    {% if superadmin or manager %}
+                        <th name="remove" class="nosort"></th>
+                    {% endif %}
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

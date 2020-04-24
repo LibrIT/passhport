@@ -1,0 +1,14 @@
+{
+  "name": "jvectormap",
+  "homepage": "https://github.com/bjornd/jvectormap",
+  "version": "2.0.5",
+  "_release": "2.0.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.5",
+    "commit": "4328a16194d6803d8e297d8a0a8ae451a8643af6"
+  },
+  "_source": "https://github.com/bjornd/jvectormap.git",
+  "_target": "^2.0.4",
+  "_originalSource": "jvectormap"
+}

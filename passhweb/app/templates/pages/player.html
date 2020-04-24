@@ -1,0 +1,33 @@
+{% extends "skels/with_sidebar.html" %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+{% endblock %}
+
+
+{% block links %}
+    {{ links.sidebarlinks('/list/player', superadmin, managesomething, player) }}
+{% endblock links %}
+
+
+{% block headtitle %}
+    {{ header.header(pagename, 'Download a file from a ' + pagename + ' player') }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {% if is_allowed %}
+                {% include "boxes/player_download_file.html" %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+    {% include "scripts/player_download_file.html" %}
+{% endblock %}
+

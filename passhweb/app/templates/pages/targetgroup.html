@@ -1,0 +1,73 @@
+{% extends "skels/with_sidebar.html" %}
+
+
+{% block head %}
+<link rel="stylesheet" href="/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+{% endblock %}
+
+
+{% block links %}
+    {{ links.sidebarlinks('/list/targetgroup', superadmin, managesomething, player) }}
+{% endblock links %}
+
+
+{% block headtitle %}
+    {{ header.header('Targetgroup', 'Create or edit a targetgroup') }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-6">
+            {% include "boxes/targetgroup_form.html" %}
+            {% if superadmin and elt %}
+                {% include "boxes/delete.html" %}
+            {% endif %}
+            {% if elt %}
+                {% include "boxes/targetgroup_access.html" %}
+            {% endif %} 
+        </div>
+        <!-- right-column -->
+        <div class="col-md-6">
+            {% if elt %}
+                {% if superadmin %} 
+                    {% include "boxes/target_add.html" %}
+                {% endif %}
+                {% include "boxes/target_attached_table.html" %}
+                {% if superadmin %} 
+                    {% include "boxes/usergroup_add.html" %}
+                {% endif %}
+                {% include "boxes/usergroup_attached_table.html" %} 
+                {% if superadmin %} 
+                    {% include "boxes/targetgroup_add.html" %}
+                {% endif %}
+                {% include "boxes/targetgroup_attached_table.html" %} 
+                {% if superadmin %} 
+                    {% include "boxes/user_add.html" %}
+                {% endif %}
+                {% include "boxes/user_attached_table.html" %} 
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+    {% include "scripts/lists_common.html" %}
+    {% if elt and superadmin %}
+        {% include "scripts/element_delete.html" %}
+        {% include "scripts/targetgroup_attach_target.html" %}
+        {% include "scripts/targetgroup_attach_usergroup.html" %}
+        {% include "scripts/targetgroup_attach_targetgroup.html" %}
+        {% include "scripts/targetgroup_attach_user.html" %}
+    {% endif %}
+    {% if elt %}
+        {% include "scripts/targetgroup_attached_target_list.html" %}
+        {% include "scripts/targetgroup_attached_usergroup_list.html" %}
+        {% include "scripts/targetgroup_attached_targetgroup_list.html" %}
+        {% include "scripts/targetgroup_attached_user_list.html" %}
+        {% include "scripts/targetgroup_access.html" %}
+    {% endif %}
+{% endblock %}
+

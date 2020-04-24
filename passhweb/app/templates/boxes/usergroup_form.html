@@ -1,0 +1,42 @@
+<div class="box box-primary">
+    <div class="box-header with-border text-center">
+        <h3 class="box-title">Infos</h3>
+    </div>
+    <div class="box-body">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="input-group" data-toggle="tooltip" title="Usergroup name, must be unique">
+                <span class="input-group-addon"><i class="fa fa-desktop"></i></span>
+                {% if elt %}
+                    {% if superadmin %}
+                        {{ form.name(size=80, class_="form-control", placeholder="Name", value=elt[0]['Name']) }}
+                    {% else %}
+                        {{ form.name(size=80, class_="form-control", placeholder="Name", value=elt[0]['Name'], disabled="") }}
+                    {% endif %}
+                {% else %}
+                    <!-- if it's a creation, user is superadmin (and will not be able to save the elt if not) -->
+                    {{ form.name(size=80, class_="form-control", placeholder="Name") }}
+                {% endif %}
+            </div>
+            <br>
+            <div class="input-group" data-toggle="tooltip" title="Any comment or description of the usergroup">
+                <span class="input-group-addon"><i class="fa fa-commenting-o"></i></span>
+                {% if elt %}
+                    {% if superadmin %}
+                        {{ form.comment(size=80, class_="form-control", placeholder="Comment", value=elt[0]['Comment']) }}
+                    {% else %}
+                        {{ form.comment(size=80, class_="form-control", placeholder="Comment", value=elt[0]['Comment'], disabled="") }}
+                    {% endif %}
+                {% else %}
+                    {{ form.comment(size=80, class_="form-control", placeholder="Comment") }}
+                {% endif %}
+            </div>
+            <br>
+            {% if superadmin %}
+            <div class="col-xs-offset-5 col-xs-2 lbtn-bot15">
+                <button type="submit" class="btn btn-block btn-primary ">Save</button>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</div>

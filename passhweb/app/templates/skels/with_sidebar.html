@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include 'html_elements/minimal_header.html' %}
+        {% block head %}
+        {% endblock %}
+    </head>
+
+    <body class="hold-transition skin-blue sidebar-mini">
+        <div class="wrapper">
+            {% include 'html_elements/pageheader.html' %}
+             <!-- links on left bar -->
+            <aside class="main-sidebar"> 
+                <section class="sidebar">
+                    <ul class="sidebar-menu" data-widget="tree">
+                        {% import 'html_elements/macros/links.html' as links %}
+                        {% block links %}
+                            {{ links.sidebarlinks('none','none', 'none') }}
+                        {% endblock %}
+                    </ul>
+                </section>
+            </aside>
+            <div class="content-wrapper">
+                {% import 'html_elements/headers.html' as header with context %}
+                {% block headtitle %}
+                {% endblock %}
+                <div class="content">
+                    {% block body %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        {% include 'scripts/with_sidebar.html' %}
+        {% block script %}
+        {% endblock %}
+    </body>
+</html>

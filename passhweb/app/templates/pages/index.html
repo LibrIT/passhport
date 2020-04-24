@@ -1,0 +1,41 @@
+{% extends "skels/with_sidebar.html" %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+{% endblock %}
+
+{% block links %}
+    {{ links.sidebarlinks('/index', superadmin, managesomething, player) }}
+{% endblock links %}
+
+
+{% block headtitle %} 
+    {% if "passhadmin" != userid %}
+        {{ header.header("Dashboard" | title, "Open access to databases") }}
+    {% else %}
+        {{ header.header("Dashboard" | title, "PaSSHport administration panel") }}
+    {% endif %}
+{% endblock %}
+
+
+{% block body %}
+<div class="row">
+    <div class="col-xs-12">
+        {% if "passhadmin" != userid %}
+            {% include "boxes/welcome_message.html" %}
+            {% include "boxes/accessible_database_list.html" %}
+        {% else %}
+            {% include "boxes/welcome_message_passhmin.html" %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+    {% if "passhadmin" != userid %}
+        {% include "scripts/lists_common.html" %}
+        {% include "scripts/accessible_database_list.html" %}
+    {% endif %}
+{% endblock %}

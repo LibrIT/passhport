@@ -1,0 +1,33 @@
+{% extends "skels/with_sidebar.html" %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+{% endblock %}
+
+{% block links %}
+    {{ links.sidebarlinks('/list/' + element, superadmin, managesomething, player) }}
+{% endblock links %}
+
+
+{% block headtitle %} 
+    {{ header.header(element | title, 'Manage: create, list, modify') }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12">
+            {% if superadmin and element != "player" %}
+                {% include "boxes/element_create.html" %}
+            {% endif %}
+            {% include "boxes/" + element + "_list.html" %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+    {% include "scripts/lists_common.html" %}
+    {% include "scripts/" + element + "_list.html" %}
+{% endblock %}

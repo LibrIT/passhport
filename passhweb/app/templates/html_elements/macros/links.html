@@ -1,0 +1,45 @@
+{% macro sidebarlinks(link='', superadmin='', manager='', player='') -%}
+    <li{% if link == '/index' %} class="active"{% endif %}>
+        <a href="/index">
+            <i class="fa fa-home"></i> <span>Dashboard</span>
+        </a>
+    </li>
+    {% if manager or superadmin %}
+        {% if superadmin %}
+            <li{% if link == '/admin' %} class="active"{% endif %}>
+                <a href="/admin">
+                    <i class="fa fa-gears"></i> <span>Administration</span>
+                </a>
+            </li>
+        {% endif %}
+    <li{% if link == '/list/user' %} class="active"{% endif %}>
+        <a href="/list/user">
+            <i class="fa fa-user"></i> <span>Users</span>
+        </a>
+    </li>
+    <li{% if link == '/list/usergroup' %} class="active"{% endif %}>
+        <a href="/list/usergroup">
+            <i class="fa fa-group"></i> <span>Usergroups</span>
+        </a>
+    </li>
+    <li{% if link == '/list/target' %} class="active"{% endif %}>
+        <a href="/list/target">
+            <i class="fa fa-desktop"></i> <span>Targets</span>
+        </a>
+    </li>
+    <li{% if link == '/list/targetgroup' %} class="active"{% endif %}>
+        <a href="/list/targetgroup">
+            <i class="fa fa-server"></i> <span>Targetgroups</span>
+        </a>
+    </li>
+    {% endif %}
+    {% if player %}
+    <li{% if link == '/list/player' %} class="active"{% endif %}>
+        <a href="/list/player">
+            <i class="fa fa-paper-plane"></i> <span>Players</span>
+        </a>
+    </li>
+    {% endif %}
+{%- endmacro %}
+
+
