@@ -37,6 +37,8 @@ a2ensite passhportd.conf
 
 echo 'Stop current passhportd'
 systemctl stop passhportd
+systemctl disable passhportd
 
 echo 'Restarting apache2'
 systemctl restart apache2 || journalctl -xeu apache2
+systemctl enable apache2

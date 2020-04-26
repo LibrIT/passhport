@@ -27,10 +27,6 @@ su - postgres -c "psql postgres -c \"ALTER USER \\\"passhport\\\" WITH PASSWORD 
 echo "Updating passhportd configuration"
 sed -i -e "s#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = postgresql://passhport:${PASSHPORT_POSTGRESQL_PASSWORD}@localhost/passhport#" '/etc/passhport/passhportd.ini'
 
-echo "======================="
-cat /etc/passhport/passhportd.ini
-echo "======================"
-
 # Init new database
 echo "Initializing database (db_create)"
 su - passhport -c '/home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/db_create.py'
