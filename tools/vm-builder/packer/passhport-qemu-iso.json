@@ -20,6 +20,7 @@
         "console-setup/ask_detect=false ",
         "console-keymaps-at/keymap=fr ",
         "grub-installer/bootdev=/dev/sda ",
+	"net.ifnames=0 ",
         "<enter><wait>"
       ],
       "boot_wait": "1s",
@@ -43,11 +44,32 @@
       "source":      "../../passhport-install-script-debian.sh",
       "destination": "/tmp/passhport-install-script-debian.sh"
     },
+     {
+      "type":        "file",
+      "source":      "debian-provisionning/disable-net-interface-naming.sh",
+      "destination": "/tmp/disable-net-interface-naming.sh"
+    },
+     {
+      "type":        "file",
+      "source":      "../../passhport-install-postgresql-backend-debian.sh",
+      "destination": "/tmp/passhport-install-postgresql-backend-debian.sh"
+    },
+     {
+      "type":        "file",
+      "source":      "../../passhport-install-apache2-frontend-debian.sh",
+      "destination": "/tmp/passhport-install-apache2-frontend-debian.sh"
+    },
     {
       "type": "shell",
       "inline": [
         "chmod u+x /tmp/passhport-install-script-debian.sh",
-        "echo 'passhport' | sudo -S /tmp/passhport-install-script-debian.sh -s"
+        "echo 'passhport' | sudo -S /tmp/passhport-install-script-debian.sh -s",
+        "chmod u+x /tmp/disable-net-interface-naming.sh",
+	"echo 'passhport' | sudo -S /tmp/disable-net-interface-naming.sh",
+	"chmod +x /tmp/passhport-install-postgresql-backend-debian.sh",
+	"echo 'passhport' | sudo -S /tmp/passhport-install-postgresql-backend-debian.sh",
+	"chmod +x /tmp/passhport-install-apache2-frontend-debian.sh",
+	"echo 'passhport' | sudo -S /tmp/passhport-install-apache2-frontend-debian.sh"
       ]
     }
   ]

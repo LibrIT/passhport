@@ -25,6 +25,6 @@ sed -e 's/^DEBUG\s*=.*/DEBUG = false/g' '/home/passhport/passhport/passhweb/pass
 apt install -y apache2 libapache2-mod-wsgi-py3
 
 # Copy wsgi configuration file to apache2 mods directory
-cp /home/passhport/passhweb/tools/apache.conf /etc/apache2/conf-available/passhweb.conf
+cp /home/passhport/passhport/tools/passhweb-apache.conf /etc/apache2/conf-available/passhweb.conf
 a2enconf passhweb
 systemctl restart apache2

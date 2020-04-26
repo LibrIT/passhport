@@ -3,3 +3,5 @@ passhportd/config.pyc
 *.py[cod]
 *$py.class
 *~
+output-qemu
+packer_cache
