@@ -19,7 +19,7 @@ while getopts ":sb:" OPTION
 do
 	case ${OPTION} in
 		s) INTERACTIVE=0;;
-		b) GITBRANCH=${OPTARG}
+		b) GITBRANCH=${OPTARG};;
 		*) echo "Unknown option, exiting..."; exit 1;;   # DEFAULT
 	esac
 done

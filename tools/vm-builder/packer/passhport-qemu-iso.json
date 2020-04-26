@@ -59,17 +59,24 @@
       "source":      "../../passhport-install-apache2-frontend-debian.sh",
       "destination": "/tmp/passhport-install-apache2-frontend-debian.sh"
     },
+     {
+      "type":        "file",
+      "source":      "../../passhweb-install-script-debian.sh",
+      "destination": "/tmp/passhweb-install-script-debian.sh"
+    },
     {
       "type": "shell",
       "inline": [
         "chmod u+x /tmp/passhport-install-script-debian.sh",
-        "echo 'passhport' | sudo -S /tmp/passhport-install-script-debian.sh -s",
+        "echo 'passhport' | sudo -S /tmp/passhport-install-script-debian.sh -s -b passhweb-release",
         "chmod u+x /tmp/disable-net-interface-naming.sh",
 	"echo 'passhport' | sudo -S /tmp/disable-net-interface-naming.sh",
 	"chmod +x /tmp/passhport-install-postgresql-backend-debian.sh",
 	"echo 'passhport' | sudo -S /tmp/passhport-install-postgresql-backend-debian.sh",
 	"chmod +x /tmp/passhport-install-apache2-frontend-debian.sh",
-	"echo 'passhport' | sudo -S /tmp/passhport-install-apache2-frontend-debian.sh"
+	"echo 'passhport' | sudo -S /tmp/passhport-install-apache2-frontend-debian.sh",
+	"chmod +x /tmp/passhweb-install-script-debian.sh",
+	"echo 'passhport' | sudo -S /tmp/passhweb-install-script-debian.sh"
       ]
     }
   ]
