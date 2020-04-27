@@ -2,7 +2,6 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, SelectField, IntegerField
 from wtforms.validators import DataRequired, NumberRange, Optional
 from wtforms.widgets import TextArea
-import config
 
 class LoginForm(FlaskForm):
     email = StringField('email', validators=[DataRequired()])
@@ -12,22 +11,20 @@ class LoginForm(FlaskForm):
 
 class TargetForm(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
-    if config.DBP:
-        choices = [('ssh', 'SSH'),
-                   ('mysql', 'MySQL'),
-                   ('oracle', 'Oracle'),
-                   ('postgresql', 'PostgreSQL')]
-    else:
-        choices = [('ssh', 'SSH')]
+    choices = [('ssh', 'SSH'),
+               ('mysql', 'MySQL'),
+               ('oracle', 'Oracle'),
+               ('postgresql', 'PostgreSQL')]
     targettype = SelectField('targettype', choices = choices,
                              default = ("ssh", "SSH"))
     hostname = StringField('hostname', validators=[DataRequired()])
     login = StringField('login', validators=[])
     port = IntegerField('port', validators=[NumberRange(min=0, max=7200)])
-    sessiondur = IntegerField('sesssiondur', validators=[NumberRange(min=0, max=7200)])
+
     options = StringField('options', validators=[])
     comment = StringField('comment', validators=[])
     changepwd = BooleanField('changepwd', default=False)
+    sessiondur = IntegerField('changepwd', default=240, validators=[NumberRange(min=1, max=65535)])
     
 
 class UserForm(FlaskForm):

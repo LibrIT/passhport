@@ -449,9 +449,6 @@ Boolean.  Default: true
 
 If false, the datepicker will not append the names of the weekdays to its view. Default behavior is appending the weekdays.
 
-.. figure:: _static/screenshots/option_showweekdays.png
-    :align: center
-
 
 title
 -----

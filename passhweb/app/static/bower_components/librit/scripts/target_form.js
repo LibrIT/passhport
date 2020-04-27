@@ -13,9 +13,6 @@ $(document).ready(function () {
     if (type != "ssh") {
         othertype()
     }
-    else {
-        sshtype()
-    }
 })
 
 // Refresh the form fields if we change the type
@@ -34,7 +31,6 @@ function othertype() {
     $('#login').parent().hide();
     $('#options').parent().hide();
     $('#changepwd').parent().hide();
-    $('#sessiondur').parent().show();
     // Remove useless br
     $('#login').parent().next('br').hide();
     if  ($('#targettype').val() == "mysql") {
@@ -48,7 +44,6 @@ function othertype() {
             $('#port').attr('placeholder','Port (default is 1521)');
         }
     }
-    $('#sessiondur').parent().next('br').show();
     $('#options').parent().next('br').hide();
     $('#changepwd').parent().next('br').hide();
 }
@@ -58,9 +53,9 @@ function sshtype() {
     $('#login').parent().show();
     $('#options').parent().show();
     $('#changepwd').parent().show();
+    // add decorating br
+    $('#login').parent().next('br').show();
     $('#port').attr('placeholder','Port (default is 22)');
     $('#options').parent().next('br').show();
     $('#changepwd').parent().next('br').show();
-    $('#sessiondur').parent().hide();
-    $('#sessiondur').parent().next('br').hide();
 }

@@ -58,7 +58,7 @@ def edit_form(element, form, name=None):
                 formated["logfilesize"] = "Default"
             else:
                 formated["logfilesize"] = form.logfilesize.data
-
+        
     return formated
 
 
@@ -81,8 +81,6 @@ def is_manager(element=None, usergroupname=None):
 
 def is_superadmin():
     """ Return true if the user is superadmin and can handle all objects """
-    if config.LDAP == False:
-        return True
     result = rf.get("user/issuperadmin/" + current_user.id)
     if result == "True":
         return True
@@ -154,33 +152,24 @@ def login():
         #Verify user/password through passhportd
         r = rf.post("user/login", {"login" : form.email.data,
                                    "password" : form.password.data})
-        login_user(User(form.email.data))
+        if r == "Authorized":
+            login_user(User(form.email.data))
+        else:
+            login_manager.login_message = ""
+            flash("Wrong credentials... try again!", "warning")
+            return render_template('pages/login.html', 
+                                    pagename = "Login",  
+                                    form=form)
 
-        if not config.DEBUG == True:
-            if r == "Authorized":
-                login_user(User(form.email.data))
-            else:
-                login_manager.login_message = ""
-                flash("Wrong credentials... try again!", "warning")
-                return render_template('pages/login.html', 
-                                        pagename = "Login",  
-                                        form=form)
+        next = request.args.get('next')
+        if not is_safe_url(next):
+            return redirect(url_for('index'))
+        return redirect(next or url_for('index'))
 
     # GET :
-    if config.LDAP == True:
-        return render_template('pages/login.html', 
-                               pagename = "Login",
-                               form=form)
-    else:
-        login_user(User("passhadmin"))
-
-    # Next page
-    next = request.args.get('next')
-    if not is_safe_url(next):
-        return redirect(url_for('index'))
-    return redirect(next or url_for('index'))
-
-
+    return render_template('pages/login.html', 
+                           pagename = "Login",
+                           form=form)
 
 
 @app.route('/')
@@ -224,7 +213,6 @@ def adminindex():
     return render_template('pages/superadmin.html',
                             pagename = "Administration",
                             superadmin = is_superadmin(),
-                            DBP = config.DBP,
                             userid = current_user.id)
 
 
@@ -235,8 +223,9 @@ def edit_element(element, name):
     """Return a page with element to create or edit an element"""
     # Form for the called element
     form = getattr(f, element.capitalize() + "Form")()
+
     # POST
-    if request.method == "POST":
+    if form.validate_on_submit():
         # If we are on a specific name, it's an edition
         if name:
             print("Edition of " + element + ": " + name)
@@ -275,16 +264,14 @@ def edit_element(element, name):
                                manager = is_manager(element, name),
                                managesomething = is_manager(),
                                is_allowed = is_allowed(name),
-                               player = player(),
-                               DBP = config.DBP)
+                               player = player())
     # Else print an empty form
     return render_template('pages/' + element + '.html',
                             pagename = element,
                             userid = current_user.id, 
                             superadmin =  is_superadmin(),
                             form = form,
-                            player = player(),
-                            DBP = config.DBP)
+                            player = player())
 
 
 @app.route('/show/player/<name>', methods=['GET'])
@@ -421,7 +408,7 @@ def rm_todel(act, element, todel):
             return "Not allowed", 403, \
                    {"content-type": "text/plain; charset=utf-8"}
 
-    return rf.addrmelt(element, todel, act, request.form, current_user.id)
+    return rf.addrmelt(element, todel, act, request.form)
 
 
 @app.route('/ajax/access/<element>/<name>')
@@ -461,16 +448,6 @@ def acurrentsshconnections():
     return str(rf.get_current_ssh_connections())
 
 
-@app.route('/ajax/connection/db/current')
-@login_required
-def acurrentdbconnections():
-    """Return a datable list of current databases connections"""
-    if not is_superadmin():
-        return "Not allowed", 403, \
-               {"content-type": "text/plain; charset=utf-8"}
-    return str(rf.get_current_db_connections())
-
-
 @app.route('/ajax/connection/ssh/disconnect/<pid>')
 @login_required
 def asshdiconnection(pid):
@@ -492,27 +469,8 @@ def aaccessible_database_list():
 @login_required
 def aaskaccess(targetname):
     """Ask passhportd to open a connection for this IP"""
-    # IP can be hidden by proxy... except if it propagate it
-    if request.headers.getlist("X-Forwarded-For"):
-        ip = request.headers.getlist("X-Forwarded-For")[0]
-    else:
-        ip = request.remote_addr
-    
-    return rf.get("exttargetaccess/open/" + ip + \
+    return rf.get("exttargetaccess/open/" + request.remote_addr + \
                   "/" + targetname + \
-                  "/" + current_user.id)
-
-
-@app.route('/ajax/user/database/access/close/<targetname>')
-@app.route('/ajax/user/database/access/close/<targetname>/<username>')
-@login_required
-def acloseaccess(targetname, username = None):
-    """Ask passhportd to close a connection (between user/target)"""
-    if is_superadmin() and username != None:
-        app.logger.error(targetname)
-        app.logger.error(username)
-        return rf.get("exttargetaccess/closebyname/" + targetname + "/" + username)
-    return rf.get("exttargetaccess/closebyname/" + targetname + \
                   "/" + current_user.id)
 
 

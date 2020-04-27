@@ -10,14 +10,15 @@
   },
   "ignore": [],
   "homepage": "https://github.com/eternicode/bootstrap-datepicker",
-  "version": "1.9.0",
-  "_release": "1.9.0",
+  "version": "1.7.0",
+  "_release": "1.7.0",
   "_resolution": {
     "type": "version",
-    "tag": "v1.9.0",
-    "commit": "fb8776d65825068b9f914ab37d6fd847c951f488"
+    "tag": "v1.7.0",
+    "commit": "82b98904ad3c11f00af63764c06c1b86fc65df98"
   },
   "_source": "https://github.com/eternicode/bootstrap-datepicker.git",
   "_target": "^1.7.0",
-  "_originalSource": "bootstrap-datepicker"
+  "_originalSource": "bootstrap-datepicker",
+  "_direct": true
 }

@@ -30,7 +30,6 @@ export default moment.defineLocale('en-au', {
         future : 'in %s',
         past : '%s ago',
         s : 'a few seconds',
-        ss : '%d seconds',
         m : 'a minute',
         mm : '%d minutes',
         h : 'an hour',
@@ -56,3 +55,4 @@ export default moment.defineLocale('en-au', {
         doy : 4  // The week that contains Jan 4th is the first week of the year.
     }
 });
+

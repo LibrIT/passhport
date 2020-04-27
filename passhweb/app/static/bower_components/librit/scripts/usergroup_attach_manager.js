@@ -1,11 +1,6 @@
 $(document).ready(function () {
-
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     // Api calls
-    async function apicall() {
+    function apicall() {
         addurl = '/ajax/addrm/add/usergroup/manager'
         var pathArray = window.location.pathname.split( '/' );
         var usergroupname = pathArray[pathArray.length -1];
@@ -26,7 +21,7 @@ $(document).ready(function () {
             })
         })
         // Sometimes needs to be reloaded twice... dirty but works
-        await sleep(100)
+        $('#attachedmanager').DataTable().ajax.reload();
         $('#inputadduser').val('');
         $('#attachedmanager').DataTable().ajax.reload();
     }

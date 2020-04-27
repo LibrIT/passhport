@@ -1,11 +1,6 @@
 $(document).ready(function () {
-    
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     // Api calls
-    async function apicall() {
+    function apicall() {
         addurl = '/ajax/addrm/add/targetgroup/usergroup'
         var pathArray = window.location.pathname.split( '/' );
         var targetgroupname = pathArray[pathArray.length -1];
@@ -25,9 +20,10 @@ $(document).ready(function () {
                 }
             })
         })
-        // Reload
-        await sleep(100)
-        $('#attachedusergroups').DataTable().ajax.reload(null,false);
+        // Sometimes needs to be reloaded twice... dirty but works
+        $('#attachedusergroups').DataTable().ajax.reload();
+        $('#inputaddusergroup').val('');
+        $('#attachedusergroups').DataTable().ajax.reload();
     }
 
 

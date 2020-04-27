@@ -67,19 +67,6 @@
                 {%endif%}
             </div>
             <br>
-            <div class="input-group" data-toggle="tooltip" title="Session duration">
-                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                {%if elt%}
-                    {% if superadmin %}
-                        {{ form.sessiondur(size=80, class_="form-control", placeholder="Maximum session duration (in hours)", value=(elt[0]['Session duration']|int/60)|int) }}
-                    {% else %}
-                        {{ form.sessiondur(size=80, class_="form-control", placeholder="Maximum session duration (in hours)", value=(elt[0]['Session duration']|int/60)|int, disabled="") }}
-                    {% endif %}
-                {%else%}
-                    {{ form.sessiondur(size=80, class_="form-control", placeholder="Maximum session duration (in hours)") }}
-                {%endif%}
-            </div>
-            <br>
             <div class="input-group" data-toggle="tooltip" title="Options passed to SSH on every connection">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                 {%if elt%}

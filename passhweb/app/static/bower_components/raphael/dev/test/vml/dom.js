@@ -1,5 +1,5 @@
 (function() {
 
-QUnit.module('DOM');
+module('DOM');
 
 })();

@@ -86,7 +86,6 @@ export default moment.defineLocale('ar-ly', {
         future : 'بعد %s',
         past : 'منذ %s',
         s : pluralize('s'),
-        ss : pluralize('s'),
         m : pluralize('m'),
         mm : pluralize('m'),
         h : pluralize('h'),
@@ -99,7 +98,7 @@ export default moment.defineLocale('ar-ly', {
         yy : pluralize('y')
     },
     preparse: function (string) {
-        return string.replace(/،/g, ',');
+        return string.replace(/\u200f/g, '').replace(/،/g, ',');
     },
     postformat: function (string) {
         return string.replace(/\d/g, function (match) {
@@ -108,6 +107,6 @@ export default moment.defineLocale('ar-ly', {
     },
     week : {
         dow : 6, // Saturday is the first day of the week.
-        doy : 12  // The week that contains Jan 12th is the first week of the year.
+        doy : 12  // The week that contains Jan 1st is the first week of the year.
     }
 });

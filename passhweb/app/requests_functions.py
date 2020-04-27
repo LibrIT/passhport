@@ -3,18 +3,17 @@
 """Contains functions which make requests to the passhportd server"""
 import sys, locale, requests
 from flask import jsonify
-from app import app
 import config
 
 def get(path):
     """Send the GET request to the passhport server and print a result"""
     url = config.url_passhportd + path
-    app.logger.info("==> Connection to passhportd: " + url)
+    print("==> Connection to passhportd: " + url)
     try:
         r = requests.get(url, verify=False)
     except requests.RequestException as e:
-        app.logger.error("ERROR connecting to PaSSHportd")
-        app.logger.error(e)
+        print("ERROR connecting to PaSSHportd")
+        print(e)
     else:
         if r.status_code == requests.codes.ok:
             return r.text
@@ -22,34 +21,26 @@ def get(path):
     return None
 
 
-def post(path, data, author = None):
+def post(path, data):
     """Send the POST request to the server and print a result"""
     url = config.url_passhportd + path
-    app.logger.info("Connection to passhportd: " + url)
-
-    # Add request author on data
-    if author:
-        data = data.copy()
-        data["author"] = author
-
+    print("==> Connection to passhportd: " + url)
 
     try:
         r = requests.post(url, data = data, verify=False)
     except requests.exceptions.Timeout:
-        app.logger.error("ERROR: Connection timed out." + \
-                                            "Check your configuration.")
+        print("ERROR: Connection timed out. Check your configuration.")
     except requests.exceptions.ConnectionError as e:
-        app.logger.errror("ERROR: Connection error. " + \
-                                  "Check your configuration.\n" + str(e))
+        print("ERROR: Connection error. Check your configuration.\n" + str(e))
     except requests.exceptions.TooManyRedirects:
-        app.logger.error("ERROR: Too many redirects.")
+        print("ERROR: Too many redirects.")
     except requests.exceptions.RequestException as e:
-        app.logger.error("Error: " + str(e))
+        print("Error: " + str(e))
     else:
         if r.status_code == requests.codes.ok:
             return r.text
         else:
-            app.logger.error(r.text)
+            print(r.text)
 
     return None
 
@@ -90,9 +81,9 @@ def get_element(element, name):
     return check_list(get("api/" + element + "/show/" + name))
 
 
-def addrmelt(obj, elt, operation, data, author = None):
+def addrmelt(obj, elt, operation, data):
     """Remove or add an element from an object on passhportd via API""" 
-    return post(obj + "/" + operation + elt, data, author)
+    return post(obj + "/" + operation + elt, data)
 
 
 def listeltlink(element, data):
@@ -118,7 +109,7 @@ def htmllink(link, text):
 def htmldelbutton(obj1, obj2):
     """Return html code for  delete button of obj1 from obj2"""
     return "<button id='deleteclose' type='button' " + \
-           "class='deleteclose btn btn-block btn-danger' data-toggle=" + \
+           "class='deleteclose' data-toggle=" + \
            "'tooltip' title='Remove " + obj1 + " from this " + obj2 +\
            "'>\\n" + \
            "<span id='butdelspan'>&times;</span>\\n" + \
@@ -127,50 +118,19 @@ def htmldelbutton(obj1, obj2):
 
 def htmlaskbutton(targetname, data):
     """Return html code for access ask button"""
-    msg = "Click here to open a temporary access to this target"
-    tooltip = "Create a temporary access for this computer"
+    msg = "Click here to open a 4 hours access to this target"
     butclass = "btn-primary"
-    if data:
-        if targetname in data:
-            msg = "Connect via " + data[targetname]["proxy_ip"] + \
-                  " on port " + data[targetname]["proxy_port"] + \
-                  " until " + data[targetname]["enddate"] 
-            tooltip = "Close this connection"
-            butclass = "btn-success"
+    if targetname in data:
+        msg = "Connect via " + data[targetname]["proxy_ip"] + \
+              " on port " + data[targetname]["proxy_port"] +\
+              " until " + data[targetname]["enddate"]
+        butclass = "btn-success"
 
     return "<button id='accessask' type='button' " + \
            "class='accessask btn btn-block " + butclass + "' data-toggle=" + \
-           "'tooltip' title='"+ tooltip + "'" + \
-           "'>\\n" + msg + "\\n" + \
-           "</button>"
-
-
-def htmldbcloseaccess(targetname, data, ishidden=True):
-    """Return html code for closing opened access"""
-    msg = "X"
-    hidden = ""
-    buttondef = "button id='accessclose' type='button' " + \
-                "class='accessclose btn btn-block btn-danger' data-toggle=" + \
-                "'tooltip' title='Close this access'"
-    #TODO put this in a css
-    if ishidden:
-        hidden = " style='visibility: hidden'"
-    if data:
-        if targetname in data:
-            return "<" + buttondef + ">\\n" + msg + "\\n" + \
-                  "</button>"
-
-    return "<" + buttondef + hidden + ">\\n" + msg + "\\n" + \
-           "</button>"
-
-
-def htmlclosebutton(targetname):
-    """Return html code for closing opened access"""
-    msg = "X"
-    return "<button id='accessclose' type='button' " + \
-           "class='accessclose btn btn-block btn-error' data-toggle=" + \
-           "'tooltip' title='Close this access" + \
-           "'>\\n" + msg + "\\n" + \
+           "'tooltip' title='Create a temporary access for this computer" + \
+           "'>\\n" + \
+           "<span id='accessask'>" + msg + "</span>\\n" + \
            "</button>"
 
 
@@ -466,30 +426,6 @@ def get_current_ssh_connections():
     return output
 
 
-def get_current_db_connections():
-    """Return a datatable compatible list of current db connections"""
-    output = "{\"data\":[]}"
-    r = check_list(get("connection/db/current"))
-    if r:
-        output = '{"data":['
-        for data in r:
-            output = output + "\n["
-            output = output + "\"" + data["Date"] + "\","
-            output = output + "\"" + \
-                     htmllink("/edit/user/" + data["Email"], 
-                                         data["Email"]) + "\","
-            output = output + "\"" + \
-                     htmllink("/edit/target/" + \
-                     data["Target"], data["Target"]) + "\","
-            output = output + "\"" + data["PID"] + "\","
-            output = output + "\""+ htmldbcloseaccess("user",
-                                         "db connection", False) + "\""
-            output = output + "],"
-        output = output[:-1] + "]}"""
-
-    return output
-
-
 def get_accessible_database_datatable(user):
     """Return a datatable compatible list of current user accessible DB"""
     output = "{\"data\":[]}"
@@ -503,9 +439,7 @@ def get_accessible_database_datatable(user):
                  htmllink("/edit/target/" + data["Name"], data["Name"]) + "\","
             output = output + "\""+ data["Hostname"] + "\","
             output = output + "\""+ data["Target type"] + "\","
-            output = output + "\"" + htmlaskbutton(data["Name"], useraccess) + "\","
-            output = output + "\"" + \
-                 htmldbcloseaccess(data["Name"], useraccess) + "\""
+            output = output + "\"" + htmlaskbutton(data["Name"], useraccess) + "\""
             output = output + "],"
         output = output[:-1] + "]}"
 

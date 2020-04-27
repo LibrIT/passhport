@@ -1272,15 +1272,15 @@ define(["./raphael.core"], function(R) {
     };
     R._engine.create = function () {
         var con = R._getContainer.apply(0, arguments),
-            container = con && con.container;
+            container = con && con.container,
+            x = con.x,
+            y = con.y,
+            width = con.width,
+            height = con.height;
         if (!container) {
             throw new Error("SVG container not found.");
         }
-        var x = con.x,
-            y = con.y,
-            width = con.width,
-            height = con.height,
-            cnvs = $("svg"),
+        var cnvs = $("svg"),
             css = "overflow:hidden;",
             isFloating;
         x = x || 0;

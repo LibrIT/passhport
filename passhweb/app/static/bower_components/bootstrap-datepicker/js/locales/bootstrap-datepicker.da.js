@@ -13,7 +13,6 @@
 		today: "I Dag",
 		weekStart: 1,
 		clear: "Nulstil",
-        format: "dd/mm/yyyy",
-        monthsTitle:"Måneder"
+        format: "dd/mm/yyyy"
 	};
 }(jQuery));
