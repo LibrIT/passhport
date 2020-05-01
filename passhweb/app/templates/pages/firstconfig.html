@@ -1,0 +1,27 @@
+{% extends "skels/with_sidebar.html" %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+{% endblock %}
+
+{% block links %}
+{% endblock links %}
+
+
+{% block headtitle %} 
+        {{ header.header("Dashboard" | title, "PaSSHport initialisation page") }}
+{% endblock %}
+
+
+{% block body %}
+<div class="row">
+    <div class="col-xs-12">
+            {% include "boxes/config_form.html" %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+{% endblock %}

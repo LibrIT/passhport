@@ -1,6 +1,11 @@
 $(document).ready(function () {
+
+    function sleep(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     // Api calls
-    function apicall() {
+    async function apicall() {
         addurl = '/ajax/addrm/add/target/user'
         var pathArray = window.location.pathname.split( '/' );
         var targetname = pathArray[pathArray.length -1];
@@ -20,11 +25,46 @@ $(document).ready(function () {
                 }
             })
         })
-        // Sometimes needs to be reloaded twice... dirty but works
-        $('#attachedusers').DataTable().ajax.reload();
-        $('#inputadduser').val('');
-        $('#attachedusers').DataTable().ajax.reload();
+        // Refresh datatables on apicall
+        await sleep(100)
+        $('#attachedusers').DataTable().ajax.reload(null, false);
     }
+
+
+//   var availableTags = [
+//      "ActionScript",
+//        "AppleScript",
+//        "Asp",
+//        "BASIC",
+//        "C",
+//        "C++",
+//        "Clojure",
+//        "COBOL",
+//        "ColdFusion",
+//        "Erlang",
+//        "Fortran",
+//        "Groovy",
+//        "Haskell",
+//        "Java",
+//        "JavaScript",
+//        "Lisp",
+//        "Perl",
+//        "PHP",
+//        "Python",
+//        "Ruby",
+//        "Scala",
+//        "Scheme"
+//    ];
+//
+//    $( "#inputadduser" ).autocomplete({
+//       source: availableTags
+//    });
+
+
+    // Add when clicking add button
+    $(document).on( 'click', '#adduser', function () {
+        apicall();
+    })  
 
 
     // Add when pressing enter
@@ -35,14 +75,7 @@ $(document).ready(function () {
         }
     })
 
-
-    // Add when clicking add button
-    $(document).on( 'click', '#adduser', function () {
-        apicall()
-    })  
 });
 
-$("#inputadduser").autocomplete({
-    source: ["c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ]
-});
+
 

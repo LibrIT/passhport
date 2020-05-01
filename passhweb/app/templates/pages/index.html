@@ -11,21 +11,31 @@
 
 
 {% block headtitle %} 
-    {{ header.header("Dashboard" | title, "Open access to databases") }}
+    {% if "passhadmin" != userid %}
+        {{ header.header("Dashboard" | title, "Open access to databases") }}
+    {% else %}
+        {{ header.header("Dashboard" | title, "PaSSHport administration panel") }}
+    {% endif %}
 {% endblock %}
 
 
 {% block body %}
-    <div class="row">
-        <div class="col-xs-12">
+<div class="row">
+    <div class="col-xs-12">
+        {% if "passhadmin" != userid %}
             {% include "boxes/welcome_message.html" %}
             {% include "boxes/accessible_database_list.html" %}
-        </div>
+        {% else %}
+            {% include "boxes/welcome_message_passhmin.html" %}
+        {% endif %}
     </div>
+</div>
 {% endblock %}
 
 
 {% block script %}
-    {% include "scripts/lists_common.html" %}
-    {% include "scripts/accessible_database_list.html" %}
+    {% if "passhadmin" != userid %}
+        {% include "scripts/lists_common.html" %}
+        {% include "scripts/accessible_database_list.html" %}
+    {% endif %}
 {% endblock %}

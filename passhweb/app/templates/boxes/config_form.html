@@ -1,0 +1,17 @@
+    <div class="box-body">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
+            {% include "boxes/welcome_message_firstlaunch.html" %}
+            {% include "boxes/config_url_form_boxpart.html" %}
+            {% include "boxes/config_certs_form_boxpart.html" %}
+            {% include "boxes/config_sshkeys_form_boxpart.html" %}
+            {% include "boxes/warning_config_message.html" %}
+            <br>
+            {% if superadmin %}
+                <div class="col-xs-offset-5 col-xs-2 lbtn-bot15">
+                    <button type="submit" class="btn btn-block btn-primary">I've read the warning :</br>Apply and restart</button>
+                </div>
+            {% endif %}
+        </form>
+    </div>

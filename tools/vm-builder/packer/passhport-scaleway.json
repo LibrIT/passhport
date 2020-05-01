@@ -1,0 +1,65 @@
+{
+  "min_packer_version": "1.3.3",
+  "variables": {
+    "organization_id": "{{env `SCW_DEFAULT_ORGANIZATION_ID`}}",
+    "api_token": "{{env `SCW_SECRET_KEY`}}",
+    "git_sha": "none"
+  },
+  "builders": [
+    {
+      "type": "scaleway",
+      "organization_id": "{{ user `organization_id` }}",
+      "api_token": "{{ user `api_token` }}",
+      "image": "cc9188b3-3938-47d7-b091-c9ecad1fe507",
+      "region": "par1",
+      "commercial_type": "DEV1-S",
+      "ssh_username": "root",
+      "snapshot_name": "PaSSHport-{{ user  `git_sha` }}",
+      "image_name": "PaSSHport-{{ user  `git_sha` }}",
+      "remove_volume": "true"
+    }
+  ],
+
+  "provisioners": [
+     {
+      "type":        "file",
+      "source":      "../../passhport-install-script-debian.sh",
+      "destination": "/tmp/passhport-install-script-debian.sh"
+    },
+     {
+      "type":        "file",
+      "source":      "debian-provisionning/disable-net-interface-naming.sh",
+      "destination": "/tmp/disable-net-interface-naming.sh"
+    },
+     {
+      "type":        "file",
+      "source":      "../../passhport-install-postgresql-backend-debian.sh",
+      "destination": "/tmp/passhport-install-postgresql-backend-debian.sh"
+    },
+     {
+      "type":        "file",
+      "source":      "../../passhport-install-apache2-frontend-debian.sh",
+      "destination": "/tmp/passhport-install-apache2-frontend-debian.sh"
+    },
+     {
+      "type":        "file",
+      "source":      "../../passhweb-install-script-debian.sh",
+      "destination": "/tmp/passhweb-install-script-debian.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "chmod u+x /tmp/passhport-install-script-debian.sh",
+        "echo 'passhport' | sudo -S /tmp/passhport-install-script-debian.sh -s -b passhweb-release",
+        "chmod u+x /tmp/disable-net-interface-naming.sh",
+	"echo 'passhport' | sudo -S /tmp/disable-net-interface-naming.sh",
+	"chmod +x /tmp/passhport-install-postgresql-backend-debian.sh",
+	"echo 'passhport' | sudo -S /tmp/passhport-install-postgresql-backend-debian.sh",
+	"chmod +x /tmp/passhport-install-apache2-frontend-debian.sh",
+	"echo 'passhport' | sudo -S /tmp/passhport-install-apache2-frontend-debian.sh",
+	"chmod +x /tmp/passhweb-install-script-debian.sh",
+	"echo 'passhport' | sudo -S /tmp/passhweb-install-script-debian.sh"
+      ]
+    }
+  ]
+}

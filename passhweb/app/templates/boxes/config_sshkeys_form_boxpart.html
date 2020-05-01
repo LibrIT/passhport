@@ -1,0 +1,25 @@
+            <div class="input-group" data-toggle="tooltip" title="PaSSHport SSH private key">
+                <span class="input-group-addon"><i class="fa fa-desktop"></i></span>
+                {% if elt %}
+                    {% if superadmin %}
+                        {{ form.privsshkey(size=80, class_="form-control", placeholder="Privatekey", value=elt[0]['Privatekey']) }}
+                    {% else %}
+                        {{ form.privsshkey(size=80, class_="form-control", placeholder="Privatekey", value=elt[0]['Privatekey'], disabled="") }}
+                    {% endif %}
+                {% else %}
+                    {{ form.privsshkey(size=80, class_="form-control", placeholder="Privatekey") }}
+                {% endif %}
+            </div>
+            <div class="input-group" data-toggle="tooltip" title="PaSSHport SSH public key">
+                <span class="input-group-addon"><i class="fa fa-desktop"></i></span>
+                {% if elt %}
+                    {% if superadmin %}
+                        {{ form.pubsshkey(size=80, class_="form-control", placeholder="Publickey", value=elt[0]['Publickey']) }}
+                    {% else %}
+                        {{ form.pubsshkey(size=80, class_="form-control", placeholder="Publickey", value=elt[0]['Publickey'], disabled="") }}
+                    {% endif %}
+                {% else %}
+                    {{ form.pubsshkey(size=80, class_="form-control", placeholder="Publickey") }}
+                {% endif %}
+            </div>
+            </br>
