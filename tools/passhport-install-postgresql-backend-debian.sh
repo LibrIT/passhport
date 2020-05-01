@@ -1,6 +1,9 @@
 #!/bin/bash
 # From https://docs.passhport.org/en/latest/installation-and-configuration/use-postgresql-as-backend.html
 
+echo '###################################'
+echo '# PostgreSQL Backend installation #'
+echo '###################################'
 # install postgresql
 echo "Installing postgresql"
 apt -y install postgresql postgresql-server-dev-11
