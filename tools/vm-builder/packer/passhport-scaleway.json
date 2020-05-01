@@ -58,7 +58,8 @@
 	"chmod +x /tmp/passhport-install-apache2-frontend-debian.sh",
 	"echo 'passhport' | sudo -S /tmp/passhport-install-apache2-frontend-debian.sh",
 	"chmod +x /tmp/passhweb-install-script-debian.sh",
-	"echo 'passhport' | sudo -S /tmp/passhweb-install-script-debian.sh"
+	"echo 'passhport' | sudo -S /tmp/passhweb-install-script-debian.sh",
+	"echo 'passhport' | sudo -S touch /home/passhport/passhport/passhweb/.neverlaunched"
       ]
     }
   ]

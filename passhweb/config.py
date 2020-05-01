@@ -31,7 +31,7 @@ certificate_path = conf.get("SSL", "SSL_CERTIFICAT")
 
 """ Misc """
 FIRSTLAUNCH   = conf.get("Misc", "FIRSTLAUNCH",
-            fallback=os.path.exists("/home/passhport/passhweb/.neverlaunched"))
+            fallback=os.path.exists("/home/passhport/passhport/passhweb/.neverlaunched"))
 
 """ Module configuration """
 # To enable LDAP you must configure passhportd
