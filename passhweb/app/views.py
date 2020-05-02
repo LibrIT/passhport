@@ -81,7 +81,7 @@ def is_manager(element=None, usergroupname=None):
 
 def is_superadmin():
     """ Return true if the user is superadmin and can handle all objects """
-    if config.LDAP == False:
+    if config.LDAP == "False" or config.LDAP == False:
         return True
     result = rf.get("user/issuperadmin/" + current_user.id)
     if result == "True":
