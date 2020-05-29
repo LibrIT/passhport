@@ -1,0 +1,19 @@
+{%- if userid != "passhadmin" -%}
+<!-- User Account: style can be found in dropdown.less -->
+<ul class="nav navbar-nav ml-auto">
+    <li class="nav-item dropdown user user-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fas fa-user"> </i>
+            <span>{{ userid }}</span>
+        </a>
+        <ul class="dropdown-menu">
+            <!-- Menu Footer-->
+            <li class="user-footer">
+                <div class="text-center" >
+                    <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+            </li>
+        </ul>
+    </li>
+</ul>
+{% endif %}

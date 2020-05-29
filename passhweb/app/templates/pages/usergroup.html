@@ -1,0 +1,77 @@
+{% extends "skels/with_sidebar.html" %}
+
+
+{% block head %}
+<link rel="stylesheet" href="/static/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+
+{% block links %}
+    {{ links.sidebarlinks('/list/usergroup', superadmin, managesomething, player) }}
+{% endblock links %}
+
+
+{% block headtitle %}
+    {{ header.header('Usergroup', 'Create or edit a usergroup') }}
+{% endblock %}
+
+
+{% block body %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                {% include "boxes/usergroup_form.html" %}
+                {% if superadmin and elt %}
+                    {% include "boxes/delete.html" %}
+                {% endif %}
+                {% if elt %}
+                    {% include "boxes/usergroup_access.html" %}
+                {% endif %} 
+            </div>
+            <!-- right-column -->
+            <div class="col-md-6">
+                {% if elt %}
+                    {% if superadmin and "passhadmin" != userid %}
+                        {% include "boxes/manager_add.html" %}
+                    {% endif %}
+                    {% if "passhadmin" != userid %}
+                        {% include "boxes/manager_attached_table.html" %}
+                    {% endif %}
+                    {% if manager or superadmin %} 
+                        {% include "boxes/user_add.html" %}
+                    {% endif %}
+                    {% include "boxes/user_attached_table.html" %}
+                    {% if manager or superadmin %} 
+                        {% include "boxes/usergroup_add.html" %}
+                    {% endif %}
+                    {% include "boxes/usergroup_attached_table.html" %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+    {% include "scripts/lists_common.html" %}
+    {% if elt and superadmin %}
+        {% include "scripts/element_delete.html" %}
+        {% include "scripts/usergroup_attach_manager.html" %}
+    {% endif %}
+    {% if elt %}
+        {% include "scripts/usergroup_attached_manager_list.html" %}
+        {% include "scripts/usergroup_access.html" %}
+        {% if manager or superadmin %}
+            {% include "scripts/usergroup_attach_user.html" %}
+        {% endif %}
+        {% include "scripts/usergroup_attached_user_list.html" %}
+        {% if manager or superadmin %}
+            {% include "scripts/usergroup_attach_usergroup.html" %}
+        {% endif %}
+        {% include "scripts/usergroup_attached_usergroup_list.html" %}
+    {% endif %}
+{% endblock %}
+

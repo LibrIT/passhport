@@ -1,0 +1,37 @@
+{% extends "skels/with_sidebar.html" %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="/static/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+    <!--link rel="stylesheet" href="/static/node_modules/datatables/media/css/jquery.dataTables.min.css"-->
+{% endblock %}
+
+
+{% block links %}
+    {{ links.sidebarlinks('/admin', superadmin, managesomething, player) }}
+{% endblock links %}
+
+
+{% block headtitle %}
+    {{ header.header('Administration', 'Manage active connections') }}
+{% endblock %}
+
+
+{% block body %}
+<section class="content">
+    <div class="container-fluid">
+            {% if superadmin %}
+                {% include "boxes/live_ssh_sessions.html" %}
+            {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+
+{% block script %}
+    {% include "scripts/lists_common.html" %}
+    {% if superadmin %}
+        {% include "scripts/current_ssh_sessions.html" %}
+    {% endif %}
+{% endblock %}
+

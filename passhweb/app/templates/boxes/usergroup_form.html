@@ -1,0 +1,44 @@
+<div class="card">
+    <div class="card-header with-border text-center">
+        <h3 class="card-title">Infos</h3>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="input-group" data-toggle="tooltip" title="Usergroup name, must be unique">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-desktop"></i></span></div>
+                {% if elt %}
+                    {% if superadmin %}
+                        {{ form.name(size=80, class_="form-control", placeholder="Name", value=elt[0]['Name']) }}
+                    {% else %}
+                        {{ form.name(size=80, class_="form-control", placeholder="Name", value=elt[0]['Name'], disabled="") }}
+                    {% endif %}
+                {% else %}
+                    <!-- if it's a creation, user is superadmin (and will not be able to save the elt if not) -->
+                    {{ form.name(size=80, class_="form-control", placeholder="Name") }}
+                {% endif %}
+            </div>
+            <br>
+            <div class="input-group" data-toggle="tooltip" title="Any comment or description of the usergroup">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-comment"></i></span></div>
+                {% if elt %}
+                    {% if superadmin %}
+                        {{ form.comment(size=80, class_="form-control", placeholder="Comment", value=elt[0]['Comment']) }}
+                    {% else %}
+                        {{ form.comment(size=80, class_="form-control", placeholder="Comment", value=elt[0]['Comment'], disabled="") }}
+                    {% endif %}
+                {% else %}
+                    {{ form.comment(size=80, class_="form-control", placeholder="Comment") }}
+                {% endif %}
+            </div>
+            <br>
+            {% if superadmin %}
+            <div class="card-footer bg-white">
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-primary float-right">Save</button>
+                </div>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</div>

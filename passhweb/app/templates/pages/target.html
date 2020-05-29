@@ -1,0 +1,84 @@
+{% extends "skels/with_sidebar.html" %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="/static/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/static/node_modules/icheck/skins/all.css">
+
+{% endblock %}
+
+
+{% block links %}
+    {{ links.sidebarlinks('/list/target', superadmin, managesomething, player) }}
+{% endblock links %}
+
+
+{% block headtitle %}
+    {{ header.header('Target', 'Create or edit a target') }}
+{% endblock %}
+
+
+{% block body %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                {% include "boxes/target_form.html" %}
+                {% if elt %}
+                    {% if superadmin %}
+                        {% include "boxes/delete.html" %}
+                    {% endif %}
+                    {% include "boxes/target_infos.html" %}
+                    {% if superadmin %}
+                        {% include "boxes/target_lastconnections.html" %}
+                        {% if  elt[0]["Target type"] == "ssh" %}
+                            {% include "boxes/target_password_list.html" %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+            <!-- right-column -->
+            <div class="col-md-6">
+                {% if elt %}
+                    {% if  elt[0]["Target type"] == "ssh" %}
+                        {% if is_allowed %}
+                            {% include "boxes/target_download_file.html" %}
+                        {% endif %}
+                    {% endif %}
+                    {% if superadmin %}
+                        {% include "boxes/user_add.html" %}
+                    {% endif %}
+                    {% include "boxes/user_attached_table.html" %}
+                    {% if superadmin %}
+                        {% include "boxes/usergroup_add.html" %}
+                    {% endif %}
+                    {% include "boxes/usergroup_attached_table.html" %}
+                {%endif%}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block script %}
+    {% include "scripts/lists_common.html" %}
+    {% include "scripts/target_form.html" %}
+    {% if superadmin and elt %}
+        {% include "scripts/element_delete.html" %}
+        {% include "scripts/target_lastconnections.html" %}
+        {% include "scripts/target_password_list.html" %}
+    {% endif %}
+    {% if elt %}
+        {% include "scripts/target_infos.html" %}
+        {% if superadmin %}
+            {% include "scripts/target_attach_user.html" %}
+            {% include "scripts/target_attach_usergroup.html" %}
+        {% endif %}
+        {% include "scripts/target_download_file.html" %}
+        {% include "scripts/target_attached_user_list.html" %}
+        {% include "scripts/target_attached_usergroup_list.html" %}
+    {% endif %}
+{% endblock %}
+

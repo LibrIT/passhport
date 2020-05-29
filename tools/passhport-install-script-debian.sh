@@ -15,10 +15,11 @@
 
 # Should we run as interactive mode ? (-s non interactive mode)
 INTERACTIVE=1
-while getopts ":s" OPTION
+while getopts ":sb:" OPTION
 do
 	case ${OPTION} in
 		s) INTERACTIVE=0;;
+		b) GITBRANCH=${OPTARG};;
 		*) echo "Unknown option, exiting..."; exit 1;;   # DEFAULT
 	esac
 done
@@ -101,7 +102,12 @@ su - passhport -c "virtualenv -p python3 passhport-run-env"
 echo '##############################################################'
 echo '# Cloning passhport git from github'
 echo '##############################################################'
-su - passhport -c "git clone https://github.com/LibrIT/passhport.git"
+if [ ! -z "${GITBRANCH}" ]
+then
+	su - passhport -c "git clone --single-branch --branch ${GITBRANCH} https://github.com/LibrIT/passhport.git"
+else
+	su - passhport -c "git clone https://github.com/LibrIT/passhport.git"
+fi
 echo '##############################################################'
 echo '# Installing mandatory packages in the virtual environment…'
 echo '##############################################################'

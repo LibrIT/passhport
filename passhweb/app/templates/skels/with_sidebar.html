@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include 'html_elements/minimal_header.html' %}
+        {% block head %}
+        {% endblock %}
+    </head>
+
+    <body class="layout-fixed sidebar-dark-primary hold-transition sidebar-mini">
+        <div class="wrapper">
+            {% include 'html_elements/pageheader.html' %}
+            <!-- links on left bar -->
+            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+                {% include 'html_elements/logo.html' %}
+                 <div class="sidebar">
+                     <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            {% import 'html_elements/macros/links.html' as links %}
+                            {% block links %}
+                                {{ links.sidebarlinks('none','none', 'none') }}
+                            {% endblock %}
+                        </ul>
+                     </nav>
+                </div>
+            </aside>
+            <div class="content-wrapper">
+                {% import 'html_elements/headers.html' as header with context %}
+                {% block headtitle %}
+                {% endblock %}
+                {% block body %}
+                {% endblock %}
+            </div>
+        </div>
+        {% include 'scripts/with_sidebar.html' %}
+        {% block script %}
+        {% endblock %}
+    </body>
+</html>
