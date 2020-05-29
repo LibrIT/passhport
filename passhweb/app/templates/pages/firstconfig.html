@@ -2,7 +2,7 @@
 
 
 {% block head %}
-    <link rel="stylesheet" href="/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="/static/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
 {% endblock %}
 
 {% block links %}
@@ -15,11 +15,15 @@
 
 
 {% block body %}
-<div class="row">
-    <div class="col-xs-12">
-            {% include "boxes/config_form.html" %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                    {% include "boxes/config_form.html" %}
+            </div>
+        </div>
     </div>
-</div>
+</section>
 {% endblock %}
 
 

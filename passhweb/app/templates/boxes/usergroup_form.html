@@ -1,12 +1,12 @@
-<div class="box box-primary">
-    <div class="box-header with-border text-center">
-        <h3 class="box-title">Infos</h3>
+<div class="card">
+    <div class="card-header with-border text-center">
+        <h3 class="card-title">Infos</h3>
     </div>
-    <div class="box-body">
+    <div class="card-body">
         <form method="post">
             {{ form.hidden_tag() }}
             <div class="input-group" data-toggle="tooltip" title="Usergroup name, must be unique">
-                <span class="input-group-addon"><i class="fa fa-desktop"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-desktop"></i></span></div>
                 {% if elt %}
                     {% if superadmin %}
                         {{ form.name(size=80, class_="form-control", placeholder="Name", value=elt[0]['Name']) }}
@@ -20,7 +20,7 @@
             </div>
             <br>
             <div class="input-group" data-toggle="tooltip" title="Any comment or description of the usergroup">
-                <span class="input-group-addon"><i class="fa fa-commenting-o"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-comment"></i></span></div>
                 {% if elt %}
                     {% if superadmin %}
                         {{ form.comment(size=80, class_="form-control", placeholder="Comment", value=elt[0]['Comment']) }}
@@ -33,8 +33,10 @@
             </div>
             <br>
             {% if superadmin %}
-            <div class="col-xs-offset-5 col-xs-2 lbtn-bot15">
-                <button type="submit" class="btn btn-block btn-primary ">Save</button>
+            <div class="card-footer bg-white">
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-primary float-right">Save</button>
+                </div>
             </div>
             {% endif %}
         </form>

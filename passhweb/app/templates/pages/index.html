@@ -2,7 +2,7 @@
 
 
 {% block head %}
-    <link rel="stylesheet" href="/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="/static/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
 {% endblock %}
 
 {% block links %}
@@ -14,14 +14,14 @@
     {% if "passhadmin" != userid %}
         {{ header.header("Dashboard" | title, "Open access to databases") }}
     {% else %}
-        {{ header.header("Dashboard" | title, "PaSSHport administration panel") }}
+        {{ header.header("Dashboard" | title, "Administration panel") }}
     {% endif %}
 {% endblock %}
 
 
 {% block body %}
-<div class="row">
-    <div class="col-xs-12">
+<section class="content">
+    <div class="container-fluid">
         {% if "passhadmin" != userid %}
             {% include "boxes/welcome_message.html" %}
             {% include "boxes/accessible_database_list.html" %}
@@ -29,7 +29,7 @@
             {% include "boxes/welcome_message_passhmin.html" %}
         {% endif %}
     </div>
-</div>
+</section>
 {% endblock %}
 
 

@@ -19,7 +19,6 @@ HOSTNAME =  conf.get("Network", "LISTENING_IP")
 PORT =  conf.get("Network", "PORT")
 PASSHPORTD_HOSTNAME =  conf.get("Network", 'PASSHPORTD_HOSTNAME')
 PASSHPORTD_PORT =  conf.get("Network", "PASSHPORTD_PORT")
-DEBUG = conf.getboolean("Misc", "DEBUG")
 
 """ SSL Configuration """
 SSL            = conf.getboolean("SSL", "SSL")
@@ -30,12 +29,16 @@ url_passhportd = "http" + SSL*"s" + "://" + \
 certificate_path = conf.get("SSL", "SSL_CERTIFICAT")
 
 """ Misc """
-FIRSTLAUNCH   = conf.get("Misc", "FIRSTLAUNCH",
+DEBUG = conf.getboolean("Misc", "DEBUG", fallback=False)
+# Allow a username to connect without the right password when LDAP enabled
+LOGINNOPWD  = conf.get("Misc", "LOGINNOPWD", fallback=False)
+FIRSTLAUNCH = conf.get("Misc", "FIRSTLAUNCH",
             fallback=os.path.exists("/home/passhport/passhport/passhweb/.neverlaunched"))
+SECRET = conf.get("Misc", "SECRET")
 
 """ Module configuration """
 # To enable LDAP you must configure passhportd
-LDAP           = conf.get("Modules", "LDAP", fallback=False)
+LDAP           = conf.getboolean("Modules", "LDAP", fallback=False)
 # Databases protection module is reserved for enterprise version
 DBP            = conf.get("Modules", "DBP", 
                             fallback=os.path.exists("/home/passhport/passhdb"))

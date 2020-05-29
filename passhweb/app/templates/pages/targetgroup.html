@@ -2,7 +2,7 @@
 
 
 {% block head %}
-<link rel="stylesheet" href="/static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="/static/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
 {% endblock %}
 
 
@@ -17,39 +17,43 @@
 
 
 {% block body %}
-    <div class="row">
-        <!-- left column -->
-        <div class="col-md-6">
-            {% include "boxes/targetgroup_form.html" %}
-            {% if superadmin and elt %}
-                {% include "boxes/delete.html" %}
-            {% endif %}
-            {% if elt %}
-                {% include "boxes/targetgroup_access.html" %}
-            {% endif %} 
-        </div>
-        <!-- right-column -->
-        <div class="col-md-6">
-            {% if elt %}
-                {% if superadmin %} 
-                    {% include "boxes/target_add.html" %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                {% include "boxes/targetgroup_form.html" %}
+                {% if superadmin and elt %}
+                    {% include "boxes/delete.html" %}
                 {% endif %}
-                {% include "boxes/target_attached_table.html" %}
-                {% if superadmin %} 
-                    {% include "boxes/usergroup_add.html" %}
+                {% if elt %}
+                    {% include "boxes/targetgroup_access.html" %}
+                {% endif %} 
+            </div>
+            <!-- right-column -->
+            <div class="col-md-6">
+                {% if elt %}
+                    {% if superadmin %} 
+                        {% include "boxes/target_add.html" %}
+                    {% endif %}
+                    {% include "boxes/target_attached_table.html" %}
+                    {% if superadmin %} 
+                        {% include "boxes/usergroup_add.html" %}
+                    {% endif %}
+                    {% include "boxes/usergroup_attached_table.html" %} 
+                    {% if superadmin %} 
+                        {% include "boxes/targetgroup_add.html" %}
+                    {% endif %}
+                    {% include "boxes/targetgroup_attached_table.html" %} 
+                    {% if superadmin %} 
+                        {% include "boxes/user_add.html" %}
+                    {% endif %}
+                    {% include "boxes/user_attached_table.html" %} 
                 {% endif %}
-                {% include "boxes/usergroup_attached_table.html" %} 
-                {% if superadmin %} 
-                    {% include "boxes/targetgroup_add.html" %}
-                {% endif %}
-                {% include "boxes/targetgroup_attached_table.html" %} 
-                {% if superadmin %} 
-                    {% include "boxes/user_add.html" %}
-                {% endif %}
-                {% include "boxes/user_attached_table.html" %} 
-            {% endif %}
+            </div>
         </div>
     </div>
+</section>
 {% endblock %}
 
 

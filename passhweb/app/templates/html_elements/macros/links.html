@@ -1,42 +1,42 @@
 {% macro sidebarlinks(link='', superadmin='', manager='', player='') -%}
-    <li{% if link == '/index' %} class="active"{% endif %}>
-        <a href="/index">
-            <i class="fa fa-home"></i> <span>Dashboard</span>
+    <li{% if link == '/index' %} class="nav-item nav-item active"{% endif %}>
+        <a href="/index" class="nav-link">
+            <i class="fa fa-home"></i> <p>Dashboard</p>
         </a>
     </li>
     {% if manager or superadmin %}
         {% if superadmin %}
-            <li{% if link == '/admin' %} class="active"{% endif %}>
-                <a href="/admin">
-                    <i class="fa fa-gears"></i> <span>Administration</span>
+            <li{% if link == '/admin' %} class="nav-item active"{% endif %}>
+                <a class="nav-link" href="/admin">
+                    <i class="fa fa-cog"></i> <p>Administration</p>
                 </a>
             </li>
         {% endif %}
-    <li{% if link == '/list/user' %} class="active"{% endif %}>
-        <a href="/list/user">
-            <i class="fa fa-user"></i> <span>Users</span>
+    <li{% if link == '/list/user' %} class="nav-item active"{% endif %}>
+        <a class="nav-link" href="/list/user">
+            <i class="fa fa-user"></i> <p>Users</p>
         </a>
     </li>
-    <li{% if link == '/list/usergroup' %} class="active"{% endif %}>
-        <a href="/list/usergroup">
-            <i class="fa fa-group"></i> <span>Usergroups</span>
+    <li{% if link == '/list/usergroup' %} class="nav-item active"{% endif %}>
+        <a class="nav-link" href="/list/usergroup">
+            <i class="fa fa-users"></i> <p>Usergroups</p>
         </a>
     </li>
-    <li{% if link == '/list/target' %} class="active"{% endif %}>
-        <a href="/list/target">
-            <i class="fa fa-desktop"></i> <span>Targets</span>
+    <li{% if link == '/list/target' %} class="nav-item active"{% endif %}>
+        <a class="nav-link" href="/list/target">
+            <i class="fa fa-desktop"></i> <p>Targets</p>
         </a>
     </li>
-    <li{% if link == '/list/targetgroup' %} class="active"{% endif %}>
-        <a href="/list/targetgroup">
-            <i class="fa fa-server"></i> <span>Targetgroups</span>
+    <li{% if link == '/list/targetgroup' %} class="nav-item active"{% endif %}>
+        <a class="nav-link" href="/list/targetgroup">
+            <i class="fa fa-server"></i> <p>Targetgroups</p>
         </a>
     </li>
     {% endif %}
     {% if player %}
-    <li{% if link == '/list/player' %} class="active"{% endif %}>
-        <a href="/list/player">
-            <i class="fa fa-paper-plane"></i> <span>Players</span>
+    <li{% if link == '/list/player' %} class="nav-item active"{% endif %}>
+        <a class="nav-link" href="/list/player">
+            <i class="fa fa-paper-plane"></i> <p>Players</p>
         </a>
     </li>
     {% endif %}

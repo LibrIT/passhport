@@ -1,11 +1,14 @@
 {% macro header(title, subtitle) -%}
     <!-- Content Header (Page header) -->
-    <section id="windowtilte" class="content-header">
-        <h1>
-            {{ title }}
-            <small>{{ subtitle }}</small>
-        </h1>
-    </section>
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">{{ title }} - <small>{{ subtitle }}</small></h1>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id = "alert_placeholder"></div>
 

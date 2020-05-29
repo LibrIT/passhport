@@ -1,13 +1,13 @@
-<div class="box box-primary">
-    <div class="box-header with-border text-center">
-        <h3 class="box-title">Infos</h3>
+<div class="card card">
+    <div class="card-header with-border text-center">
+        <h3 class="card-title">Infos</h3>
     </div>
-    <div class="box-body">
+    <div class="card-body">
         <form method="post">
             {{ form.hidden_tag() }}
             {{ form.csrf_token }}
             <div class="input-group" data-toggle="tooltip" title="Target name, must be unique">
-                <span class="input-group-addon"><i class="fa fa-desktop"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-desktop"></i></span></div>
                 {% if elt %}
                     {% if superadmin %}
                         {{ form.name(size=80, class_="form-control", placeholder="Name", value=elt[0]['Name']) }}
@@ -20,7 +20,7 @@
             </div>
             <br>
             <div class="input-group" data-toggle="tooltip" title="Type of target in supported list">
-                <span class="input-group-addon"><i class="fa fa-dot-circle-o"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-crosshairs"></i></span></div>
                 {% if superadmin %}
                     {{ form.targettype(class_="form-control select2") }}
                 {% else %}
@@ -29,7 +29,7 @@
             </div>
             <br>
             <div class="input-group" data-toggle="tooltip" title="Hostname or IP">
-                <span class="input-group-addon"><i class="fa fa-link"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
                 {%if elt%}
                     {% if superadmin %}
                         {{ form.hostname(size=80, class_="form-control", placeholder="Hostname", value=elt[0]['Hostname']) }}
@@ -42,7 +42,7 @@
             </div>
             <br>
             <div class="input-group" data-toggle="tooltip" title="Port">
-                <span class="input-group-addon"><i class="fa fa-anchor"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-anchor"></i></span></div>
                 {%if elt%}
                     {% if superadmin %}
                         {{ form.port(size=80, class_="form-control", placeholder="Port (default is 22)", value=elt[0]['Port']) }}
@@ -55,7 +55,7 @@
             </div>
             <br>
             <div class="input-group" data-toggle="tooltip" title="User login">
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-user"></i></span></div>
                 {%if elt%}
                     {% if superadmin %}
                         {{ form.login(size=80, class_="form-control", placeholder="Login (default is root)", value=elt[0]['Login']) }}
@@ -68,7 +68,7 @@
             </div>
             <br>
             <div class="input-group" data-toggle="tooltip" title="Session duration">
-                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock"></i></span></div>
                 {%if elt%}
                     {% if superadmin %}
                         {{ form.sessiondur(size=80, class_="form-control", placeholder="Maximum session duration (in hours)", value=(elt[0]['Session duration']|int/60)|int) }}
@@ -81,7 +81,7 @@
             </div>
             <br>
             <div class="input-group" data-toggle="tooltip" title="Options passed to SSH on every connection">
-                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-lock"></i></span></div>
                 {%if elt%}
                     {% if superadmin %}
                         {{ form.options(size=80, class_="form-control", placeholder="Options", value=elt[0]['SSH options']) }}
@@ -94,9 +94,9 @@
             </div>
             <br>
             <div class="input-group" data-toggle="tooltip" title="After every user SSH session, the root password will be reset (login has to be root)">
-                <span class="input-group-addon" id="changepwd"><i class="fa fa-exchange"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text" id="changepwd"><i class="fa fa-random"></i></span></div>
                 <span class="form-control">Change the root password after every sesssion</span>
-                <span class="input-group-addon">
+                <div class="input-group-prepend"><span class="input-group-text">
                 {%if elt%}
                     {% if superadmin %}
                         <!-- Trick to put a boolean in checked: we test value against True-->
@@ -107,11 +107,11 @@
                 {%else%}
                     {{ form.changepwd(class_="flat-blue") }}
                 {%endif%}
-                </span>
+                </span></div>
             </div>
             <br>
             <div class="input-group" data-toggle="tooltip" title="Any comment or description of the server">
-                <span class="input-group-addon"><i class="fa fa-commenting-o"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-comment"></i></span></div>
                 {%if elt%}
                     {% if superadmin %}
                         {{ form.comment(size=80, class_="form-control", placeholder="Comment", value=elt[0]['Comment']) }}
@@ -124,8 +124,10 @@
             </div>
             <br>
             {% if superadmin %}
-                <div class="col-xs-offset-5 col-xs-2 lbtn-bot15">
-                    <button type="submit" class="btn btn-block btn-primary">Save</button>
+                <div class="card-footer bg-white">
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-primary float-right">Save</button>
+                    </div>
                 </div>
             {% endif %}
         </form>

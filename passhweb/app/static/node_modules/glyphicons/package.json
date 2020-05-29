@@ -1,0 +1,33 @@
+{
+  "name": "glyphicons",
+  "version": "0.2.0",
+  "description": "An icon set based on Unicode glyphs",
+  "main": "glyphicons.js",
+  "scripts": {
+    "test": "mocha glyphicons.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/download/glyphicons.git"
+  },
+  "keywords": [
+    "icons",
+    "glyphs",
+    "unicode",
+    "unicons",
+    "glyph icons",
+    "font icons",
+    "1kB"
+  ],
+  "author": "Stijn de Witt",
+  "license": "CC-BY-4.0",
+  "bugs": {
+    "url": "https://github.com/download/glyphicons/issues"
+  },
+  "homepage": "https://github.com/download/glyphicons#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2",
+    "ulog": "^0.3.0"
+  }
+}

@@ -74,6 +74,13 @@ def get_dict(element):
     """Return a list of existing element"""
     return check_list(get("api/" + element + "/list"))
 
+def get_names_dict(element):
+    """Return a list of existing elements names"""
+    elements=check_list(get("api/" + element + "/list"))
+    if elements and element == "user":
+        return str([e["email"] for e in elements])
+    return "[]"
+
 
 def get_specific_dict(element, name):
     """Return a list of existing element accessible by name"""

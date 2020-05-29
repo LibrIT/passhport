@@ -81,7 +81,7 @@ def is_manager(element=None, usergroupname=None):
 
 def is_superadmin():
     """ Return true if the user is superadmin and can handle all objects """
-    if config.LDAP == "False" or config.LDAP == False:
+    if config.LDAP == False:
         return True
     result = rf.get("user/issuperadmin/" + current_user.id)
     if result == "True":
@@ -151,12 +151,13 @@ def login():
     form = f.LoginForm()
     # POST :
     if form.validate_on_submit():
-        #Verify user/password through passhportd
-        r = rf.post("user/login", {"login" : form.email.data,
-                                   "password" : form.password.data})
-        login_user(User(form.email.data))
+        if config.LOGINNOPWD == form.email.data:
+            login_user(User(form.email.data))
+        else:
+            #Verify user/password through passhportd
+            r = rf.post("user/login", {"login" : form.email.data,
+                                       "password" : form.password.data})
 
-        if not config.DEBUG == True:
             if r == "Authorized":
                 login_user(User(form.email.data))
             else:
@@ -166,16 +167,18 @@ def login():
                                         pagename = "Login",  
                                         form=form)
 
-    # GET :
-    if config.LDAP == True:
-        return render_template('pages/login.html', 
-                               pagename = "Login",
-                               form=form)
-    else:
-        login_user(User("passhadmin"))
+    else :
+        # GET :
+        if config.LDAP == True:
+            return render_template('pages/login.html', 
+                                   pagename = "Login",
+                                   form=form)
+        else:
+            login_user(User("passhadmin"))
 
     # Next page
     next = request.args.get('next')
+    app.logger.error(next)
     if not is_safe_url(next):
         return redirect(url_for('index'))
     return redirect(next or url_for('index'))
@@ -198,7 +201,19 @@ def index():
                             player = player())
 
 
-@app.route('/genconfig', methods=['GET', 'POST'])
+def writeonfile(data, filename):
+    # Write text on a file, erasing the old one
+    try:
+        f = open(filename, "w")
+        f.write(data)
+        f.close()
+    except:
+        app.logger.error("Error writing " + filename + ". Contact support.")
+        return False
+    return True
+
+
+@app.route('/config', methods=['GET', 'POST'])
 @login_required
 def genconfig():
     # Cofiguration generation,
@@ -206,9 +221,10 @@ def genconfig():
 
     if request.method == "POST":
         #Prepare different files
-        f_ssh_pubkey = open(config.PUBSSH, "w")
-        f_ssh_pubkey.write(request.form["pubsshkey"])
-        f_ssh_pubkey.close()
+        writeonfile(request.form["pubsshkey"], config.PUBSSH)
+        writeonfile(request.form["privsshkey"], config.PRIVSSH)
+        writeonfile(request.form["sslkey"], config.SSLKEY)
+        writeonfile(request.form["sslcert"], config.SSLCERT)
         app.logger.error(request.form)
         return redirect(url_for('index'))
 
@@ -549,3 +565,22 @@ def agetpassword(targetname):
         return "Not allowed", 403, \
                {"content-type": "text/plain; charset=utf-8"}
     return rf.get_password_datatable(targetname)
+
+
+@app.route('/ajax/namelist/<element>')
+@login_required
+def anamelist(element):
+    """List all the elements of this kind"""
+    names = rf.get_names_dict(element)
+    if not names:
+        return "[]"
+    names = eval(names)
+    # Format in json
+    ret ="["
+    for name in names:
+        ret = ret + '{"value" : "' + name + '"},'
+    ret = ret[:-1] + "]"
+    return ret
+
+
+

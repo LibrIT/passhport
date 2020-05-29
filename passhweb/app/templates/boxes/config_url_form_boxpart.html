@@ -1,5 +1,5 @@
             <div class="input-group" data-toggle="tooltip" title="PaSSHport hostname">
-                <span class="input-group-addon"><i class="fa fa-desktop"></i></span>
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-desktop"></i></span></div>
                 {% if elt %}
                     {% if superadmin %}
                         {{ form.url(size=80, class_="form-control", placeholder="URL", value=elt[0]['URL']) }}
