@@ -64,6 +64,11 @@
       "source":      "../../passhweb-install-script-debian.sh",
       "destination": "/tmp/passhweb-install-script-debian.sh"
     },
+     {
+      "type":        "file",
+      "source":      "../../passhweb-config-vm.sh",
+      "destination": "/tmp/passhweb-config-vm.sh"
+    },
     {
       "type": "shell",
       "inline": [
@@ -76,7 +81,9 @@
 	"chmod +x /tmp/passhport-install-apache2-frontend-debian.sh",
 	"echo 'passhport' | sudo -S /tmp/passhport-install-apache2-frontend-debian.sh",
 	"chmod +x /tmp/passhweb-install-script-debian.sh",
-	"echo 'passhport' | sudo -S /tmp/passhweb-install-script-debian.sh"
+	"echo 'passhport' | sudo -S /tmp/passhweb-install-script-debian.sh",
+	"chmod +x /tmp/passhweb-config-vm.sh",
+	"echo 'passhport' | sudo -S /tmp/passhweb-config-vm.sh"
       ]
     }
   ]

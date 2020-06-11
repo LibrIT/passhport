@@ -32,8 +32,8 @@ certificate_path = conf.get("SSL", "SSL_CERTIFICAT")
 DEBUG = conf.getboolean("Misc", "DEBUG", fallback=False)
 # Allow a username to connect without the right password when LDAP enabled
 LOGINNOPWD  = conf.get("Misc", "LOGINNOPWD", fallback=False)
-FIRSTLAUNCH = conf.get("Misc", "FIRSTLAUNCH",
-            fallback=os.path.exists("/home/passhport/passhport/passhweb/.neverlaunched"))
+FIRSTLAUNCH = conf.getboolean("Misc", "FIRSTLAUNCH",
+            fallback=os.path.exists("/home/passhport/passhport/.firstlaunch"))
 SECRET = conf.get("Misc", "SECRET")
 
 """ Module configuration """
