@@ -10,13 +10,12 @@
 
 HD="/home/passhport"
 DATE="$(date +%Y%m%d%H%M%S)"
-DIR_TO_SAVE=".ssh passhport.sql passhport_config"
+DIR_TO_SAVE=".ssh passhport.sql passhport_config certs"
 OUTPUT_FILE="passhport_${DATE}.tar.gz"
 
 # 0 remove old saves
 #or not?
 echo "SAVING..."
-exit 0
 
 # 1. save the database
 cd ${HD}

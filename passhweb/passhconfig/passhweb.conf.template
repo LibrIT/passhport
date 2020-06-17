@@ -1,0 +1,23 @@
+Listen 443
+<VirtualHost *:443>
+    servername    passhweburl
+
+    SSLEngine               on
+    SSLCertificateFile      /home/passhport/certs/cert.pem
+    SSLCertificatekeyFile   /home/passhport/certs/key.pem
+
+    WSGIDaemonProcess passhweb user=passhport group=passhport threads=5
+    WSGIScriptAlias / /home/passhport/passhport/tools/passhweb.wsgi
+
+    <Directory /home/passhport>
+                WSGIProcessGroup passhweb
+                WSGIApplicationGroup %{GLOBAL}
+            Require all granted
+                Order deny,allow
+                Allow from all
+    </Directory>
+
+    LogLevel warn
+    CustomLog /var/log/apache2/passhweb-access.log combined
+    ErrorLog /var/log/apache2/passhweb-error.log
+</VirtualHost>
