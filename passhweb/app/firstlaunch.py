@@ -18,7 +18,14 @@ def genconfig():
         writeonfile(request.form["privsshkey"], config.PRIVSSH)
         writeonfile(request.form["sslkey"], config.SSLKEY)
         writeonfile(request.form["sslcert"], config.SSLCERT)
-        app.logger.error(request.form)
+
+        # Launch the configuration script... 
+        # It will restart apache and stop this process
+        process = Popen([config.CONFIGSCRIPT,
+                         request.form["url"]], stdout=PIPE)
+
+        (output, err) = process.communicate()
+        exit_code = process.wait()
         return redirect(url_for('index'))
 
     # GET

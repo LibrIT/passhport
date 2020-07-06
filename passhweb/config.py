@@ -35,6 +35,7 @@ LOGINNOPWD  = conf.get("Misc", "LOGINNOPWD", fallback=False)
 FIRSTLAUNCH = conf.getboolean("Misc", "FIRSTLAUNCH",
             fallback=os.path.exists("/home/passhport/passhport/.firstlaunch"))
 SECRET = conf.get("Misc", "SECRET")
+CONFIGSCRIPT = conf.get("Misc", "CONFIGSCRIPT", fallback="/home/passhport/passhport/passhweb/passhconfig/deployconf.sh")
 
 """ Module configuration """
 # To enable LDAP you must configure passhportd

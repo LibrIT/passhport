@@ -23,6 +23,7 @@ pg_dump passhport > passhport.sql
 
 # Copy configuration
 cp -r /etc/passhport passhport_config
+cp -r /etc/apache2/sites-available/passhweb.conf passhport_config/
 
 # 2. save in an archive
 tar czf ${OUTPUT_FILE} ${DIR_TO_SAVE} &> /dev/null
