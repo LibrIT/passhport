@@ -26,4 +26,4 @@ If you want to launch a command directly, you can use the same syntax adding the
 
 .. code-block:: none
 
-  ssh -t passhport@bastion.tld targetname cat /proc/cpuinfo
+  ssh -t passhport@bastion.tld targetname 'cat /proc/cpuinfo'
