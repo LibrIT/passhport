@@ -500,6 +500,8 @@ def user_edit():
 def user_delete(name):
     """Delete a user in the database
        in the authorizedkey file
+       in the external target tables
+       in associated usergroup
        in the associated targets
        and in the associated groups"""
     if not name:
@@ -564,7 +566,19 @@ def user_delete(name):
     # Delete the log entries
     for lentry in user_data.logentries:
         lentry.user.remove(lentry.user[0])
+
+    # Delete from TG admins
+    for adminrights in user_data.adminoftg:
+        adminrights.user.remove(adminrights.user[0])
 	
+    # Delete from UG admins 
+    for adminrights in user_data.adminofug:
+        adminrights.user.remove(adminrights.user[0])
+
+    # Delete connections demands
+    for demand in user_data.exttargetaccess:
+        demand.user.remove(demand.user[0])
+    
     # Finally delet the user from the db
     db.session.query(
         user.User).filter(
