@@ -15,10 +15,11 @@
 
 # Should we run as interactive mode ? (-s non interactive mode)
 INTERACTIVE=1
-while getopts ":s" OPTION
+while getopts ":sb:" OPTION
 do
 	case ${OPTION} in
 		s) INTERACTIVE=0;;
+		b) GITBRANCH=${OPTARG};;
 		*) echo "Unknown option, exiting..."; exit 1;;   # DEFAULT
 	esac
 done
@@ -27,8 +28,6 @@ done
 echo 'Hi there ! Please read carefully the following (not long)'.
 echo 'This script will attempt to install PaSSHport on this system.'
 echo 'This script works on Centos 7, WITH EPEL repos configured !!'
-echo ''
-echo 'PLEASE enable EPEL repository BEFORE running this script !!'
 echo ''
 echo 'What this script will do to your existing system:'
 echo '- install "python34-pip", "git" and "openssl" packages.'
@@ -92,27 +91,32 @@ yum install -y epel-release
 echo '##############################################################'
 echo '# Installing python34-pip, git and openssl package…'
 echo '##############################################################'
-yum install -y python34-pip git openssl python34-devel gcc
+yum install -y python34-pip git openssl python34-devel gcc libffi-devel
 echo '##############################################################'
 echo '# Installing virtualenv with pip…'
 echo '##############################################################'
-pip3.4 install virtualenv
+pip3.4 install virtualenv pathlib2
 echo '##############################################################'
 echo '# Creating "passhport" system user'
 echo '##############################################################'
-useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
+/usr/sbin/useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
 echo '##############################################################'
 echo '# Creating the virtual-env for passhport…'
 echo '##############################################################'
 su - passhport -c "virtualenv -p python3.4 passhport-run-env"
 echo '##############################################################'
-echo '# Installing mandatory packages in the virtual environment…'
-echo '##############################################################'
-su - passhport -c "/home/passhport/passhport-run-env/bin/pip install sqlalchemy-migrate flask-migrate requests docopt configparser tabulate flask-login ldap3 psutil cryptography"
-echo '##############################################################'
 echo '# Cloning passhport git from github'
 echo '##############################################################'
-su - passhport -c "git clone https://github.com/LibrIT/passhport.git"
+if [ ! -z "${GITBRANCH}" ]
+then
+	su - passhport -c "git clone --single-branch --branch ${GITBRANCH} https://github.com/LibrIT/passhport.git"
+else
+	su - passhport -c "git clone https://github.com/LibrIT/passhport.git"
+fi
+echo '##############################################################'
+echo '# Installing mandatory packages in the virtual environment…'
+echo '##############################################################'
+su - passhport -c "/home/passhport/passhport-run-env/bin/pip install -r /home/passhport/passhport/requirements.txt"
 echo '##############################################################'
 echo '# Creating "/var/log/passhport" log directory'
 echo '##############################################################'
@@ -127,6 +131,15 @@ cp /home/passhport/passhport/passhport/passhport.ini /etc/passhport/.
 cp /home/passhport/passhport/passhport-admin/passhport-admin.ini /etc/passhport/.
 cp /home/passhport/passhport/passhportd/passhportd.ini /etc/passhport/.
 echo '##############################################################'
+echo '# Editing PaSSHport conf files…'
+echo '##############################################################'
+sed -i -e 's#SQLALCHEMY_DATABASE_DIR\s*=.*#SQLALCHEMY_DATABASE_DIR        = /var/lib/passhport/#' /etc/passhport/passhportd.ini
+sed -i -e 's#LISTENING_IP\s*=.*#LISTENING_IP = 0.0.0.0#' /etc/passhport/passhportd.ini
+sed -i -e 's#SQLALCHEMY_MIGRATE_REPO\s*=.*#SQLALCHEMY_MIGRATE_REPO        = /var/lib/passhport/db_repository#' /etc/passhport/passhportd.ini
+sed -i -e 's#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = sqlite:////var/lib/passhport/app.db#' /etc/passhport/passhportd.ini
+sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport-admin.ini
+sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport.ini
+echo '##############################################################'
 echo '# Generating PaSSHport RSA (4096b) and ecdsa (521b) keys…'
 echo '##############################################################'
 su - passhport -c '/usr/bin/ssh-keygen -t rsa -b 4096 -N "" -f "/home/passhport/.ssh/id_rsa"'
@@ -136,15 +149,6 @@ echo '# Creating PaSSHport database directory…'
 echo '##############################################################'
 mkdir -p /var/lib/passhport
 chown -R passhport:passhport /var/lib/passhport/
-echo '##############################################################'
-echo '# Editing PaSSHport conf files…'
-echo '##############################################################'
-sed -i -e 's#SQLALCHEMY_DATABASE_DIR\s*=.*#SQLALCHEMY_DATABASE_DIR        = /var/lib/passhport/#' /etc/passhport/passhportd.ini
-sed -i -e 's#LISTENING_IP\s*=.*#LISTENING_IP = 0.0.0.0#' /etc/passhport/passhportd.ini
-sed -i -e 's#SQLALCHEMY_MIGRATE_REPO\s*=.*#SQLALCHEMY_MIGRATE_REPO        = /var/lib/passhport/db_repository#' /etc/passhport/passhportd.ini
-sed -i -e 's#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = sqlite:////var/lib/passhport/app.db#' /etc/passhport/passhportd.ini
-sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport-admin.ini
-sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport.ini
 echo '##############################################################'
 echo '# Creating database for PaSSHport (SQLite)…'
 echo '##############################################################'
