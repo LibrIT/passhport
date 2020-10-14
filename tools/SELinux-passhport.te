@@ -1,0 +1,11 @@
+
+module passhport 1.0;
+
+require {
+	type user_home_t;
+	type init_t;
+	class lnk_file read;
+}
+
+#============= init_t ==============
+allow init_t user_home_t:lnk_file read;
