@@ -84,6 +84,18 @@ do
 	read ANSWER
 done
 
+# SELinux
+if [[ "$(getenforce)" == 'Enforcing' ]]
+then
+	echo "Dear SELinux user, we actually do not officialy support SELinux."
+	echo "Please set SELinux enforcement to \"permissive\" (or \"disabled\") for"
+	echo "the installation process to run correctly."
+	echo "Once installed, you'll may set SELinux to \"enforcing\" again, and read" 
+	echo "the documentation to load a SELinux module that allow PaSSHport to run"
+	echo "correctly under \"enforcing\" mode."
+	exit 1
+fi
+
 echo '##############################################################'
 echo '# Installing EPEL repository…'
 echo '##############################################################'
