@@ -23,7 +23,7 @@ msgstr "Renouveler le certificat TLS de passhportd
 
 #: ../../installation-and-configuration/renew-certificate.rst:5
 msgid "Explanation"
-msgstr "Quelques explication"
+msgstr "Quelques explications"
 
 #: ../../installation-and-configuration/renew-certificate.rst:7
 msgid ""
