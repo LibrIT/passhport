@@ -12,3 +12,4 @@ This chapter describes the installation on different distro, and the main config
    use-mysql-mariadb-as-backend
    add-bash_completion-to-passhport-admin
    apache-wsgi-for-production
+   renew-certificate

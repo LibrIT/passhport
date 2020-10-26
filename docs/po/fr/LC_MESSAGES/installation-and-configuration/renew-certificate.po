@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, LibrIT
+# This file is distributed under the same license as the PaSSHport package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PaSSHport \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-26 16:28+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../installation-and-configuration/renew-certificate.rst:2
+msgid "Renew passhportd TLS certificate"
+msgstr "Renouveler le certificat TLS de passhportd
+
+#: ../../installation-and-configuration/renew-certificate.rst:5
+msgid "Explanation"
+msgstr "Quelques explication"
+
+#: ../../installation-and-configuration/renew-certificate.rst:7
+msgid ""
+"If you installed PaSSHport a year from now, you may encounter this "
+"message when you try to connect :"
+msgstr ""
+"Si vous avez installé PaSSHport il y a 1 an, vous rencontrez peut-être "
+"le message suivant lorsque vous essayez de vous connecter :"
+
+#: ../../installation-and-configuration/renew-certificate.rst:17
+msgid ""
+"This usually means that passhport (the script) can't connect to "
+"passhportd, and the most common cause is that the TLS certificate "
+"generated on installation is outdated."
+msgstr ""
+"Ceci est généraleument du au fait que passhport (le script) n'arrive "
+"pas à se connecter à passhportd, et la cause la plus probable est l'expiration "
+"du certificat TLS généré lors de l'installation de PaSSHport."
+
+#: ../../installation-and-configuration/renew-certificate.rst:27
+msgid ""
+"As you can see above, the cert is only generated for a year. It has been "
+"created on PaSSHport automated installation."
+msgstr ""
+"Comme on peut le voir ci-dessus, le certificat n'est valable que "
+"pour 1 an. Ce dernier a été généré lors de l'installation de PaSSHport."
+
+#: ../../installation-and-configuration/renew-certificate.rst:31
+msgid "Renew certificate with OpenSSL"
+msgstr "Renouvellement du certificat avec OpenSSL"
+
+#: ../../installation-and-configuration/renew-certificate.rst:33
+msgid "To renew the certificate, use the openssl command, as follow :"
+msgstr "Pour renouveler le certificat, utilisez la commande openssl comme suit :"
+
+#: ../../installation-and-configuration/renew-certificate.rst:47
+msgid ""
+"This will generate a self-signed certificate, like the one generated "
+"during the installation. It will be valid for 1 year. Change the values "
+"to your needs."
+msgstr ""
+"Ceci générera un certificat auto-signé, comme celui généré lors de l'installation. "
+"Il sera valide pour 1 an. Bien sur, vous pouvez changer ces valeurs selon vos besoins."
+
+#: ../../installation-and-configuration/renew-certificate.rst:51
+msgid "Restart passhportd"
+msgstr "Redémarrer passhportd"
+
+#: ../../installation-and-configuration/renew-certificate.rst:53
+msgid "You now just need to restart passhportd :"
+msgstr "Il suffit de redémarrer passhportd :"
+
+#: ../../installation-and-configuration/renew-certificate.rst:60
+msgid "You should now be able to use PaSSHport again."
+msgstr "Vous devriez être désormais en mesure d'utiliser de nouveau PaSSHport."
+
