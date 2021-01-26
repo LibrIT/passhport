@@ -6,6 +6,7 @@ import config
 
 from io import open
 from ldap3 import Server, Connection, ALL
+from ldap3.utils.dn import escape_rdn
 from flask import request
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
@@ -80,6 +81,8 @@ def user_login():
     # Check for required fields
     if not login or not password:
         return utils.response("ERROR: The login and password are required ", 417)
+    elif login != escape_rdn(login):
+        return utils.response("ERROR: Bad input", 417)
 
     # Check data validity uppon LDAP/local/whatever...
     result = try_login(login, password)
