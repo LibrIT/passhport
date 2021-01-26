@@ -28,7 +28,7 @@ def useruid(s, login):
 
     # Look for the user entry.
     if not c.search(config.LDAPBASE,
-                    "(" + config.LDAPFIELD + "=" + login + ")") :
+                    "(" + config.LDAPFIELD + "=" + escape_rdn(login) + ")") :
         app.logger.error("Error: Connection to the LDAP with service account failed")
     else:
         if len(c.entries) >= 1 :
@@ -49,7 +49,7 @@ def try_ldap_login(login, password):
     s = Server(config.LDAPURI, port=config.LDAPPORT,
                use_ssl=False, get_info=ALL)
     # 1. connection with service account to find the user uid
-    uid = useruid(s, login)
+    uid = useruid(s, escape_rdn(login))
    
     if uid: 
         # 2. Try to bind the user to the LDAP
