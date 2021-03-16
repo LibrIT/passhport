@@ -46,7 +46,7 @@ fi
 
 # Launch PaSSHport with the same user after the connection
 # If it's a direct connection, we don't connect again
-if [ "${KEEPCONNECT}" -eq "1" ] && [ -z "${SSH_ORIGINAL_COMMAND}" ]
+if [ "${KEEPCONNECT}" -eq "1" ] && [ -z "${SSH_ORIGINAL_COMMAND}" ] && [ -z "${PASSHPORT_TARGET}" ]
 then
     exec ${PYTHONBIN} ${PASSHPORTBIN} ${USERNAME} 
 fi
