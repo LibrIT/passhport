@@ -6,7 +6,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-import os, requests
+import os, requests, shlex, sys
 
 def connect(target, filelog, login, port, sshoptions, pid, url_passhport, 
             cert, ssh_script, username, originalcmd):
@@ -19,18 +19,36 @@ def connect(target, filelog, login, port, sshoptions, pid, url_passhport,
                  url_passhport, cert, username, sshoptions)
 
     else:
-        f = open(filelog, "w")
-        f.write("DIRECT COMMAND --- " + originalcmd + "\n")
-        f.close()
-        os.system('ssh -p ' + str(port) + " " + login + '@' + target + \
-                  ' ' + sshoptions + " '" + originalcmd + "'" )
-        
-    url = url_passhport + "connection/ssh/endsession/" + str(pid)
-    try:
-        if cert != "/dev/null": 
-            r = requests.get(url, verify=cert)
-        else:
-            r = requests.get(url)
+        ssh_args = [
+                '-p' + str(port),
+                login + '@' + target,
+            ]
+        ssh_args += shlex.split(sshoptions)
+        ssh_args += [ originalcmd ]
 
-    except requests.RequestException as e:
-        print("ERROR: " + str(e.message))
+        newpid = os.fork()
+        if newpid == 0:
+            os.execv('/usr/bin/ssh', ssh_args)
+        else:
+            # Close stdin & stdout to not interfere with the ssh command
+            sys.stdin.close()
+            sys.stdout.close()
+
+            # Log stuff
+            f = open(filelog, "w")
+            f.write("DIRECT COMMAND --- " + originalcmd + "\n")
+            f.close()
+
+            # Wait the end of the child process execution
+            os.waitpid(newpid, 0)
+
+            # Log stuff
+            url = url_passhport + "connection/ssh/endsession/" + str(pid)
+            try:
+                if cert != "/dev/null": 
+                    r = requests.get(url, verify=cert)
+                else:
+                    r = requests.get(url)
+
+            except requests.RequestException as e:
+                print("ERROR: " + str(e.message), file=sys.stderr)
