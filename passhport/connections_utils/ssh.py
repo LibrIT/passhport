@@ -20,6 +20,7 @@ def connect(target, filelog, login, port, sshoptions, pid, url_passhport,
 
     else:
         ssh_args = [
+                '/usr/bin/ssh', # argv[0] in C, ignored in execv
                 '-p' + str(port),
                 login + '@' + target,
             ]
