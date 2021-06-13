@@ -1,0 +1,12 @@
+---
+image: debian:buster
+
+stages:
+  - install
+
+install debian:
+  stage: install
+  image: debian:buster 
+  script:
+    - bash passhport/tools/passhport-install-script-debian.sh 
+
