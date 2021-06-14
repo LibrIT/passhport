@@ -9,4 +9,7 @@ install debian:
   image: debian:buster 
   script:
     - env
+    - apt update
+    - apt install -y tree
+    - tree -d /
     - bash -xv /builds/Raphux/passhport/tools/passhport-install-script-debian.sh -s -b "${CI_COMMIT_BRANCH}"
