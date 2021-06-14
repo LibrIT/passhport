@@ -8,5 +8,5 @@ install debian:
   stage: install
   image: debian:buster 
   script:
-    - bash passhport/tools/passhport-install-script-debian.sh 
-
+    - env
+    - bash -xv /builds/Raphux/passhport/tools/passhport-install-script-debian.sh -s -b "${CI_COMMIT_BRANCH}"
