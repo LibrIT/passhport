@@ -9,4 +9,6 @@ install debian:
   image: debian:buster 
   script:
     - env
-    - bash -xv ${CI_PROJECT_DIR}/tools/passhport-install-script-debian.sh -s -b "${CI_COMMIT_BRANCH}"
+    - ls -la "${CI_PROJECT_DIR}"
+    - ls -la ${CI_PROJECT_DIR}
+    - bash -xv "${CI_PROJECT_DIR}/tools/passhport-install-script-debian.sh" -s -b "${CI_COMMIT_BRANCH}"
