@@ -6,7 +6,7 @@ stages:
 
 install debian:
   stage: install
-  image: debian:buster 
+  image: debian:buster
   script:
     - env
     - bash -xv ${CI_PROJECT_DIR}/tools/passhport-install-script-debian.sh -s -b "${CI_COMMIT_BRANCH}"
