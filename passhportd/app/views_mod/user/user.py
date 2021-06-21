@@ -81,7 +81,7 @@ def user_login():
     # Check for required fields
     if not login or not password:
         return utils.response("ERROR: The login and password are required ", 417)
-    elif login != escape_rdn(login):
+    elif login != escape_filter_chars(login):
         return utils.response("ERROR: Bad input", 417)
 
     # Check data validity uppon LDAP/local/whatever...
