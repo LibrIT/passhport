@@ -55,6 +55,7 @@ def try_ldap_login(login, password):
         # 2. Try to bind the user to the LDAP
         c = Connection(s, user = uid , password = password, auto_bind = True)
         c.open()
+        c.start_tls()
         c.bind()
         result =  c.result["description"] # "success" if bind is ok
         c.unbind()
