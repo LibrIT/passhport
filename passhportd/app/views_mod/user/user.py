@@ -55,6 +55,7 @@ def try_ldap_login(login, password):
         # 2. Try to bind the user to the LDAP
         c = Connection(s, user = uid , password = password, auto_bind = True)
         c.open()
+        c.start_tls()
         c.bind()
         result =  c.result["description"] # "success" if bind is ok
         c.unbind()
@@ -81,7 +82,7 @@ def user_login():
     # Check for required fields
     if not login or not password:
         return utils.response("ERROR: The login and password are required ", 417)
-    elif login != escape_rdn(login):
+    elif login != escape_filter_chars(login):
         return utils.response("ERROR: Bad input", 417)
 
     # Check data validity uppon LDAP/local/whatever...
