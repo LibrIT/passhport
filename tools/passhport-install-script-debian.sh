@@ -15,7 +15,7 @@
 
 # Should we run as interactive mode ? (-s non interactive mode)
 INTERACTIVE=1
-while getopts ":sb:" OPTION
+while getopts ":sdb:" OPTION
 do
 	case ${OPTION} in
 		s) INTERACTIVE=0;;
