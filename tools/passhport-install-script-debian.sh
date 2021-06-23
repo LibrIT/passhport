@@ -200,7 +200,7 @@ then
 	systemctl start passhportd
 	echo "passhportd has been started."
 	echo 'Please use systemctl to start/stop service.'
-elif [ "${DOCKER}" == '1' ]
+elif [ "${DOCKER_BUILD}" == '1' ]
 then
   /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/passhportd &
 fi
