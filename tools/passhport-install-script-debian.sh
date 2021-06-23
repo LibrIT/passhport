@@ -20,7 +20,7 @@ do
 	case ${OPTION} in
 		s) INTERACTIVE=0;;
 		b) GITBRANCH=${OPTARG};;
-    d) DOCKER_BUILD=1;;
+		d) DOCKER_BUILD=1;;
 		*) echo "Unknown option, exiting..."; exit 1;;   # DEFAULT
 	esac
 done
