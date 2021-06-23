@@ -202,7 +202,7 @@ then
 	echo 'Please use systemctl to start/stop service.'
 elif [ "${DOCKER}" == '1' ]
 then
-  /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/passhportd &&
+  /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/passhportd &
 fi
 echo '##############################################################'
 echo '# Adding root@localhost target…'
