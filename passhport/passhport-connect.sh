@@ -11,6 +11,7 @@ URL=$6
 CERT=$7
 OPTION="$@"
 USERNAME="$8"
+TARGETNAME="$9"
 OPTIONS=""
 KEEPCONNECT="$(grep '^KEEPCONNECT[[:space:]]=[[:space:]]True$' /etc/passhport/passhport.ini | wc -l)"
 PASSHHOMEDIR="/home/passhport"
@@ -26,7 +27,7 @@ trap "echo 'You are not allowed to stop disconnection. Consider Ctrl-D.'" SIGHUP
 i=0
 for option in ${OPTION}
 do
-    if [ "$i" -lt "8" ]
+    if [ "$i" -lt "9" ]
     then
         i=$(($i +1))
     else
@@ -40,8 +41,10 @@ script -q --timing=${FILELOG}.timing ${FILELOG} -c "ssh -t -p ${PORT} ${LOGIN}@$
 if [ "${CERT}" == "/dev/null" ]
 then
     wget -qO - ${URL}connection/ssh/endsession/${PID} &> /dev/null
+    wget -qO - ${URL}target/changepassword/${TARGETNAME} &> /dev/null
 else
     wget --ca-certificate=${CERT} -qO - ${URL}connection/ssh/endsession/${PID} &> /dev/null
+    wget --ca-certificate=${CERT} -qO - ${URL}target/changepassword/${TARGETNAME} &> /dev/null
 fi
 
 # Launch PaSSHport with the same user after the connection

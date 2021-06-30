@@ -234,7 +234,6 @@ def checkandterminatesshsession():
                logentry.Logentry.logfilename.like(
                                    config.NODE_NAME + '-%'))).all()
     
-    app.logger.error(lentries)
     if not lentries:
         return "No active connection."
 

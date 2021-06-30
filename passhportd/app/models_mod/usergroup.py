@@ -358,7 +358,6 @@ class Usergroup(db.Model):
                                          checked_usergroups, mode="obj"):
                     if target not in accessible_targets:
                         if mode == "string":
-                            print(target)
                             accessible_targets.append(target.name)
                         else:
                             accessible_targets.append(target)
