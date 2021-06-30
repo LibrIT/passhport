@@ -13,7 +13,6 @@ import uuid, readline, glob
 
 from connections_utils import ssh
 from connections_utils import scp
-from connections_utils import password
 from ui_utils import completer
 
 
@@ -170,7 +169,7 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
             cert = SSL_CERTIFICAT
         # Standard SSH connection
         ssh.connect(target, filelog, login, port, sshoptions, pid,
-                    url_passhport, cert, SSH_SCRIPT, username, originalcmd)
+                    url_passhport, cert, SSH_SCRIPT, username, targetname, originalcmd)
 
     return True
 

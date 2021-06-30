@@ -757,3 +757,19 @@ def getpassword(targetname, number = 20):
     output = output[:-2] + '\n]'
 
     return utils.response(output, 200) 
+
+@app.route("/target/changepassword/<targetname>")
+def changetargetpassword(targetname):
+    """Change the password for the target if and only if the target
+    is defined with automatic root password change option"""
+    
+    t = target.Target.query.filter_by(name=targetname).first()
+    if t is None:
+        return utils.response('ERROR: No target with the name "' + \
+                               targetname + '" in the database.', 417)
+
+    t.changepass(format(datetime.now(), '%Y%m%dT%H%M'))
+
+    return utils.response("Automatic password change routine done on: " + \
+                               targetname, 200)
+    
