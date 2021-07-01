@@ -6,7 +6,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-      - run: mkdir /usr/local/lib/node_modules
       - run: ls -la /usr/local/lib/node_modules
       - run: chown $(id -u):$(id -g) /usr/local/lib/node_modules
       - run: npm install -g bats
