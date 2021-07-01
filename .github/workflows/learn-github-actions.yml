@@ -7,6 +7,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
       - run: ls -la /usr/local/lib/node_modules
+      - run: id
+      - run: env
       - run: chown $(id -u):$(id -g) /usr/local/lib/node_modules
       - run: npm install -g bats
       - run: bats -v
