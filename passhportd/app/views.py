@@ -24,6 +24,23 @@ from flask import stream_with_context
 from flask import  Response
 from tabulate import tabulate
 
+def reduce_daily_list(dailylist):
+    """Reduce a dailyt list by factorizing the entries for a given user."""
+    
+    reducedlist = [dailylist[0] + [1]]
+    count = 1
+    for i in range(0, len(dailylist) -1):
+        if dailylist[i][2] != dailylist[i + 1][2]:
+            reducedlist[-1][1] = dailylist[i][1]
+            reducedlist[-1][6] = count
+            reducedlist.append(dailylist[i+1] + [1])
+            count = 1
+        else:
+            count += 1
+            reducedlist[-1][5] = 'Multiple connections'
+            reducedlist[-1][6] = count
+    return reducedlist
+
 @app.route("/")
 def imalive():
     return """passhportd is running, gratz!\n"""
@@ -43,7 +60,7 @@ def dailyreport():
 
 
     # 3. Format the output
-    headers = ["Start", "End", "User name", "Target name", "Target hostname", "Command"] #[SESSION]
+    headers = ["Start", "End", "User name", "Target name", "Target hostname", "Command", "Connection count"] #[SESSION]
 
     # First we create an ordonned list with the 5 columns
     olist=[]
@@ -57,8 +74,10 @@ def dailyreport():
                       row.show_targethostname(), #Target hostname
                       row.connectioncmd]) # Command
 
+    reducedlist = reduce_daily_list(olist)
+
     # Tabulate construct the table from this list
-    output = tabulate(olist, headers = headers, tablefmt="html")
+    output = tabulate(reducedlist, headers = headers, tablefmt="html")
     # Add some decorations
     output = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">' + \
              '<html>' +  \
