@@ -37,7 +37,7 @@ def reduce_daily_list(dailylist):
             count = 1
         else:
             count += 1
-            reducedlist[-1][5] = 'Multiple connections'
+            reducedlist[-1][5] = 'Multiple sessions'
             reducedlist[-1][6] = count
     return reducedlist
 
@@ -60,7 +60,7 @@ def dailyreport():
 
 
     # 3. Format the output
-    headers = ["Start", "End", "User name", "Target name", "Target hostname", "Command", "Connection count"] #[SESSION]
+    headers = ["Start", "End", "User name", "Target name", "Target hostname", "Command", "Sessions"] #[SESSION]
 
     # First we create an ordonned list with the 5 columns
     olist=[]
