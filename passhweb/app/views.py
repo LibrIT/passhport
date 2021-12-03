@@ -21,7 +21,7 @@ def edit_form(element, form, name=None):
     if name:
         formated = {"name"        : name,
                     "new_name"    : form.name.data,
-                    "new_comment" : form.comment.data}
+                    "new_comment" : form.comment.data+ " "}
     else:
         formated = {"name"    : form.name.data,
                     "comment" : form.comment.data}
@@ -31,7 +31,7 @@ def edit_form(element, form, name=None):
             formated["new_hostname"]   = form.hostname.data
             formated["new_login"]      = form.login.data
             formated["new_port"]       = form.port.data
-            formated["new_sshoptions"] = form.options.data
+            formated["new_sshoptions"] = form.sshoptions.data + " "
             formated["new_targettype"] = form.targettype.data
             formated["new_changepwd"]  = form.changepwd.data
             formated["new_sessiondur"] = form.sessiondur.data
@@ -39,7 +39,7 @@ def edit_form(element, form, name=None):
             formated["hostname"]   = form.hostname.data
             formated["login"]      = form.login.data
             formated["port"]       = form.port.data
-            formated["sshoptions"] = form.options.data
+            formated["sshoptions"] = form.sshoptions.data
             formated["targettype"] = form.targettype.data
             formated["changepwd"]  = form.changepwd.data
             formated["sessiondur"] = form.sessiondur.data

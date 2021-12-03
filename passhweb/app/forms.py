@@ -25,7 +25,7 @@ class TargetForm(FlaskForm):
     login = StringField('login', validators=[])
     port = IntegerField('port', validators=[NumberRange(min=0, max=7200)])
     sessiondur = IntegerField('sesssiondur', validators=[NumberRange(min=0, max=7200)])
-    options = StringField('options', validators=[])
+    sshoptions = StringField('sshoptions', validators=[])
     comment = StringField('comment', validators=[])
     changepwd = BooleanField('changepwd', default=False)
     
