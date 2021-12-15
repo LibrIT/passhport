@@ -25,20 +25,24 @@ from flask import  Response
 from tabulate import tabulate
 
 def reduce_daily_list(dailylist):
-    """Reduce a dailyt list by factorizing the entries for a given user."""
+    """Reduce a daily list.
+
+    If two or more consecutive entries have the same user or the same target, then replace those entries
+    with a single one with 'Multiple sessions' written instead of the command.
+    """
     
+    # Initialize the first entry with a count of 1
     reducedlist = [dailylist[0] + [1]]
-    count = 1
     for i in range(0, len(dailylist) -1):
-        if dailylist[i][2] != dailylist[i + 1][2]:
+        # Case where the user ([2]) or the target ([3]) of the next entry are different than the ones in the current entry
+        if (dailylist[i][2] != dailylist[i + 1][2]) or (dailylist[i][3] != dailylist[i + 1][3]):
             reducedlist[-1][1] = dailylist[i][1]
-            reducedlist[-1][6] = count
             reducedlist.append(dailylist[i+1] + [1])
-            count = 1
+        # Case where the user ([2]) or the target ([3]) of the next entry are the same than the ones in the current entry
         else:
-            count += 1
+            # Change the command entry to 'Multiple sessions'
             reducedlist[-1][5] = 'Multiple sessions'
-            reducedlist[-1][6] = count
+            reducedlist[-1][6] += 1
     return reducedlist
 
 @app.route("/")
