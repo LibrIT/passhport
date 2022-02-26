@@ -1,4 +1,5 @@
 Flask_Migrate==2.5.2
+itsdangerous==1.1.0
 alembic==1.1.0
 SQLAlchemy==1.3.7
 cryptography==3.3.2
