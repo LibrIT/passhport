@@ -30,11 +30,9 @@
                         {% include "boxes/delete.html" %}
                     {% endif %}
                     {% include "boxes/target_infos.html" %}
-                    {% if superadmin %}
-                        {% include "boxes/target_lastconnections.html" %}
-                        {% if  elt[0]["Target type"] == "ssh" %}
-                            {% include "boxes/target_password_list.html" %}
-                        {% endif %}
+                    {% include "boxes/target_lastconnections.html" %}
+                    {% if  elt[0]["Target type"] == "ssh" %}
+                        {% include "boxes/target_password_list.html" %}
                     {% endif %}
                 {% endif %}
             </div>
@@ -67,9 +65,9 @@
     {% include "scripts/target_form.html" %}
     {% if superadmin and elt %}
         {% include "scripts/element_delete.html" %}
+    {% endif %}
         {% include "scripts/target_lastconnections.html" %}
         {% include "scripts/target_password_list.html" %}
-    {% endif %}
     {% if elt %}
         {% include "scripts/target_infos.html" %}
         {% if superadmin %}

@@ -243,9 +243,6 @@ def genconfig():
 @login_required
 def listelement(element):
     """Return a listing page for the element type entered (target, user...)"""
-    if not is_superadmin() and not is_manager() and element != "player":
-        return redirect('/')
-        
     return render_template('pages/listelement.html', 
                            pagename = element + " list",
                            superadmin = is_superadmin(),
@@ -485,11 +482,11 @@ def amemberof(element, obj, name):
 @login_required
 def atargetlastconnections(name):
     """Return a datatable list of las logs dates and users for this target"""
-    if not is_superadmin():
-        return "Not allowed", 403, \
+    if is_superadmin() or  is_allowed(name):
+        lastconnections = rf.get_target_lastconnections_datatable(name)
+        return str(lastconnections)
+    return "Not allowed", 403, \
                {"content-type": "text/plain; charset=utf-8"}
-    lastconnections = rf.get_target_lastconnections_datatable(name)
-    return str(lastconnections)
 
 
 @app.route('/ajax/connection/ssh/current')
@@ -561,10 +558,10 @@ def acloseaccess(targetname, username = None):
 @login_required
 def agetpassword(targetname):
     """List the last known root passwords of a target"""
-    if not is_superadmin():
-        return "Not allowed", 403, \
+    if is_superadmin() or is_allowed(targetname):
+        return rf.get_password_datatable(targetname)
+    return "Not allowed", 403, \
                {"content-type": "text/plain; charset=utf-8"}
-    return rf.get_password_datatable(targetname)
 
 
 @app.route('/ajax/namelist/<element>')

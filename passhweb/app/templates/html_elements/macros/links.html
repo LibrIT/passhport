@@ -22,11 +22,13 @@
             <i class="fa fa-users"></i> <p>Usergroups</p>
         </a>
     </li>
+    {% endif %}
     <li{% if link == '/list/target' %} class="nav-item active"{% endif %}>
         <a class="nav-link" href="/list/target">
             <i class="fa fa-desktop"></i> <p>Targets</p>
         </a>
     </li>
+    {% if manager or superadmin %}
     <li{% if link == '/list/targetgroup' %} class="nav-item active"{% endif %}>
         <a class="nav-link" href="/list/targetgroup">
             <i class="fa fa-server"></i> <p>Targetgroups</p>
