@@ -15,63 +15,22 @@
 
 # Should we run as interactive mode ? (-s non interactive mode)
 INTERACTIVE=1
-while getopts ":sb:" OPTION
-do
-	case ${OPTION} in
-		s) INTERACTIVE=0;;
-		b) GITBRANCH=${OPTARG};;
-		*) echo "Unknown option, exiting..."; exit 1;;   # DEFAULT
-	esac
-done
+PASSHPORTDO="su - passhport -c"
+POSTGRESDO="su - postgres -c"
+POSTGRESPASS=$(cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 22) # or force it
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+LGREEN='\033[1;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
 
 
-echo 'Hi there ! Please read carefully the following (not long)'.
-echo 'This script will attempt to install PaSSHport on this system.'
-echo 'This script works on Debian 8 (Jessy), Debian 9 (Stretch),'
-echo 'and Debian 10 (Buster).'
-echo "It may also work on Debian 7, but it hasn't been tested."
-echo ''
-echo 'What this script will do to your existing system:'
-echo '- install "python3-pip", "git" and "openssl" packages.'
-echo '- update PIP via pip3 script, installed previously'
-echo '- install virtualenv via pip3 script'
-echo '- add a "passhport" system user'
-echo '- create an "/etc/passhport" directory'
-echo '- create a "/var/lib/passhport" directory'
-echo '- create a "/var/log/passhport" directory'
-echo ''
-echo 'The remaining process will only create and/or modify files and'
-echo 'directories WITHIN the directories mentionned above, so which includes:'
-echo '- /home/passhport'
-echo '- /etc/passhport'
-echo '- /var/lib/passhport'
-echo '- /var/log/passhport'
-echo ''
-echo 'If you want to remove passhportd from this system, run the following,'
-echo 'as root:'
-echo 'userdel passhport'
-echo 'rm -rf /home/passhport'
-echo 'rm -rf /etc/passhport'
-echo 'rm -rf /var/lib/passhport'
-echo 'rm -rf /var/log/passhport'
-echo 'rm /usr/bin/passhport-admin'
-echo 'rm /usr/sbin/passhportd'
-echo 'rm /etc/bash_completion.d/passhport-admin'
-echo ''
-echo 'Remove the systemd service :'
-echo '# systemctl disable passhportd'
-echo '# rm /etc/systemd/system/passhportd.service'
-echo '# systemctl daemon-reload'
-echo ''
-echo "Finally you may also purge the following packages if you don't need them"
-echo 'anymore:'
-echo 'python3-pip, git, openssl, virtualenv, libpython3-dev (# apt purge python3-pip git openssl virtualenv libpython3-dev)'
-echo ''
-
-if [ ${INTERACTIVE} -eq 1 ]
-then
-	echo 'Once you read and understood the above lines, you may proceed by typing'
-	echo '"yes", or exit by the famous "CTRL+C" :'
+purge()
+{
+	if [ ${INTERACTIVE} -eq 1 ]
+	then
+		echo -e "${RED}Be warned that ALL your installation will be erased. You will LOST DATA. ALL appache conf and postgresql databases will be erased by apt... this function should be used by devs only${NC}"
+		echo -e "${RED}Last chance! Type yes if you accept to lose data and configuration, or exit with 'CTRL+C' :${NC}"
 	read ANSWER;
 else
 	ANSWER='yes'
@@ -83,101 +42,123 @@ do
 	read ANSWER
 done
 
-echo '##############################################################'
-echo '# Updating repos…'
-echo '##############################################################'
+echo -e "${BLUE}Purge database/apache and dependances… ${NC}"
+apt purge -f python3-pip python3-venv git openssl  libpython3-dev postgresql apache2 libapache2-mod-wsgi-py3 libpq-dev
+echo
+
+echo -e "${BLUE}Remove directories${NC}"
+rm -rf /etc/passhport/ /var/log/passhport/ /home/passhport /etc/bash_completion.d/passhport-admin
+rm -rf /usr/local/bin/passhport-admin
+
+echo -e "${BLUE}Remove user${NC}"
+userdel  passhport
+}
+
+
+install()
+{
+echo -e "This script will install ${GREEN}PaSSHport${NC} on a fresh Debian 11 (Bullseye)."
+echo 
+echo 'This script will:'
+echo '- install PaSSHport Python dependancies'
+echo '- install a venv (virtualenv for PaSSHport dependancies execution)'
+echo '- add a "passhport" system user'
+echo '- add a local postgresql installation and link passhport to it'
+echo '- add a local apache with wsgi to run passhport service'
+echo '- create various directories to store conf, log and databases'
+echo
+echo -e "${RED}Be warned that this script needs to be run on a fresh system, no guarantees here"
+echo 
+echo -e "${BLUE}If you want to ${RED}remove${BLUE} passhportd from this system, run this script with option '-p'.${NC}"
+echo ''
+
+if [ ${INTERACTIVE} -eq 1 ]
+then
+	echo -e "${BLUE}Once you read and understood the above lines, you may proceed by typing"
+	echo -e "'${GREEN}yes${BLUE}', or exit by the famous '${RED}CTRL+C${BLUE}' :${NC}"
+	read ANSWER;
+else
+	ANSWER='yes'
+fi
+
+while [ "${ANSWER}" != 'yes' ]
+do
+	echo -e "${BLUE}Please type excatly "${GREEN}yes${BLUE}" or exit by pressing '${RED}CTRL+C${BLUE}'.${NC}"
+	read ANSWER
+done
+
+################################################## GENERAL ##################################################
+# Install dependances
+echo -e "${BLUE}Installing dependances via APT… ${NC}"
 apt update
-echo '##############################################################'
-echo '# Installing git, openssl, virtualenv and libpython3-dev package…'
-echo '##############################################################'
-apt install -y python3-pip git openssl virtualenv libpython3-dev
-echo '##############################################################'
-echo '# Creating "passhport" system user'
-echo '##############################################################'
+apt install -y python3-pip python3-venv git openssl  libpython3-dev postgresql apache2 libapache2-mod-wsgi-py3 libpq-dev
+echo
+
+# Passhport user creation
+echo -e "${BLUE}Create passhport user...${NC}"
 /usr/sbin/useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
-echo '##############################################################'
-echo '# Creating the virtual-env for passhport…'
-echo '##############################################################'
-su - passhport -c "virtualenv -p python3 passhport-run-env"
-echo '##############################################################'
-echo '# Cloning passhport git from github'
-echo '##############################################################'
+#in case the user exists but the homedir didn't... (happens if the purge is launched from a passhport ssh session)
+[ ! -e "/home/passhport/" ] && mkdir /home/passhport && chown passhport:passhport /home/passhport
+echo
+
+# Download passhport code
+echo -e "${BLUE}Cloning passhport git from github...${NC}"
 if [ ! -z "${GITBRANCH}" ]
 then
-	su - passhport -c "git clone --single-branch --branch ${GITBRANCH} https://github.com/LibrIT/passhport.git"
+	${PASSHPORTDO} "git clone --single-branch --branch ${GITBRANCH} https://github.com/LibrIT/passhport.git"
 else
-	su - passhport -c "git clone https://github.com/LibrIT/passhport.git"
+	${PASSHPORTDO} "git clone https://github.com/LibrIT/passhport.git"
 fi
-echo '##############################################################'
-echo '# Installing mandatory packages in the virtual environment…'
-echo '##############################################################'
-su - passhport -c "/home/passhport/passhport-run-env/bin/pip install -r /home/passhport/passhport/requirements.txt"
-echo '##############################################################'
-echo '# Creating "/var/log/passhport" log directory'
-echo '##############################################################'
+echo 
+
+# Configure initial system and create env
+echo -e "${BLUE}Create conf and log directories...${NC}"
 mkdir -p /var/log/passhport/
 chown passhport:passhport /var/log/passhport/
-echo '##############################################################'
-echo '# Creating "/etc/passhport" conf directory '
-echo '##############################################################'
-mkdir /etc/passhport
+mkdir -p /etc/passhport
 cp /home/passhport/passhport/passhportd/passhportd.ini /etc/passhport/.
 cp /home/passhport/passhport/passhport/passhport.ini /etc/passhport/.
 cp /home/passhport/passhport/passhport-admin/passhport-admin.ini /etc/passhport/.
 cp /home/passhport/passhport/passhportd/passhportd.ini /etc/passhport/.
-echo '##############################################################'
-echo '# Editing PaSSHport conf files…'
-echo '##############################################################'
 sed -i -e 's#SQLALCHEMY_DATABASE_DIR\s*=.*#SQLALCHEMY_DATABASE_DIR        = /var/lib/passhport/#' /etc/passhport/passhportd.ini
 sed -i -e 's#LISTENING_IP\s*=.*#LISTENING_IP = 0.0.0.0#' /etc/passhport/passhportd.ini
 sed -i -e 's#SQLALCHEMY_MIGRATE_REPO\s*=.*#SQLALCHEMY_MIGRATE_REPO        = /var/lib/passhport/db_repository#' /etc/passhport/passhportd.ini
-sed -i -e 's#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = sqlite:////var/lib/passhport/app.db#' /etc/passhport/passhportd.ini
+sed -i -e "s#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = postgresql://passhport:${POSTGRESPASS}@localhost/passhport#" /etc/passhport/passhportd.ini
 sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport-admin.ini
 sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport.ini
-echo '##############################################################'
-echo '# Generating PaSSHport RSA (4096b) and ecdsa (521b) keys…'
-echo '##############################################################'
-su - passhport -c '/usr/bin/ssh-keygen -t rsa -b 4096 -N "" -f "/home/passhport/.ssh/id_rsa"'
-su - passhport -c '/usr/bin/ssh-keygen -t ecdsa -b 521 -N "" -f "/home/passhport/.ssh/id_ecdsa"'
-echo '##############################################################'
-echo '# Creating PaSSHport database directory…'
-echo '##############################################################'
-mkdir -p /var/lib/passhport
-chown -R passhport:passhport /var/lib/passhport/
-echo '##############################################################'
-echo '# Creating database for PaSSHport (SQLite)…'
-echo '##############################################################'
-su - passhport -c "/home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/db_create.py"
-echo '##############################################################'
-echo '# Creating bash_completion file for passhport-admin script…'
-echo '##############################################################'
+echo
+
+# Prepare venv
+echo -e "${BLUE}Installing mandatory packages in a new python3 venv...${NC}"
+${PASSHPORTDO} "python3 -m venv passhport-run-env"
+${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/pip install -r /home/passhport/passhport/requirements.txt"
+${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/pip install psycopg2 psycopg2-binary"
+echo
+
+# Generate keys to be put on targes
+echo -e "${BLUE}Generating PaSSHport Legacy RSA (avoid to use it), legacy ecdsa (avoid to use it) and the modern ed25519 keys you will have to put on target…${NC}"
+${PASSHPORTDO} '/usr/bin/ssh-keygen -t rsa -b 4096 -N "" -f "/home/passhport/.ssh/id_legacy_rsa"'
+${PASSHPORTDO} '/usr/bin/ssh-keygen -t ecdsa -b 521 -N "" -f "/home/passhport/.ssh/id_legacy_ecdsa"'
+${PASSHPORTDO} '/usr/bin/ssh-keygen -t ed25519 -b 521 -N "" -f "/home/passhport/.ssh/id_ed25519"'
+echo
+
+# Bash completion and binaries paths
+echo -e "${BLUE}Add passhport-admin in the pash and activate completion…${NC}"
 if [ ! -d "/etc/bash_completion.d/" ]
 then
 	mkdir "/etc/bash_completion.d/"
 fi
 cp /home/passhport/passhport/tools/passhport-admin.bash_completion /etc/bash_completion.d/passhport-admin
 . /etc/bash_completion.d/passhport-admin
-echo '##############################################################'
-echo '# Creating symbolink links to binaries…'
-echo '##############################################################'
-ln -s /home/passhport/passhport/tools/passhport-admin.sh /usr/bin/passhport-admin
-ln -s /home/passhport/passhport/tools/passhportd.sh /usr/sbin/passhportd
-echo '##############################################################'
-echo '# Creating Web-API cert directory…'
-echo '##############################################################'
-su - passhport -c "mkdir /home/passhport/certs"
-su - passhport -c "chmod 700 /home/passhport/certs"
-echo '##############################################################'
-echo '# Generating Web-API RSA key (4096b)'
-echo '##############################################################'
-su - passhport -c "openssl genrsa -out "/home/passhport/certs/key.pem" 4096"
-echo '##############################################################'
-echo '# Adding choosen IP to the certificate…'
-echo '##############################################################'
+ln -s /home/passhport/passhport/tools/passhport-admin.sh /usr/local/bin/passhport-admin
+echo
+
+# SSL Certificates time! 
+echo -e "${BLUE}Creating some http certificates for the passhportd service${NC}"
+${PASSHPORTDO} "mkdir /home/passhport/certs"
+${PASSHPORTDO} "chmod 700 /home/passhport/certs"
+${PASSHPORTDO} "openssl genrsa -out "/home/passhport/certs/key.pem" 4096"
 sed -i -e "s#^\(DNS.*\s*=\s*\)TO_CHANGE#\1`hostname -f`#g" /home/passhport/passhport/tools/openssl-for-passhportd.cnf 
-echo '##############################################################'
-echo '# Generating Web-API certificate…'
-echo '##############################################################'
 openssl req -new -key "/home/passhport/certs/key.pem" \
 	-config "/home/passhport/passhport/tools/openssl-for-passhportd.cnf" \
 	-out "/home/passhport/certs/cert.pem" \
@@ -186,70 +167,117 @@ openssl req -new -key "/home/passhport/certs/key.pem" \
 	-days 365 \
 	-sha256 \
 	-extensions v3_req
-# We try to detect if we run on a systemd OS.
-if (stat /proc/1/exe | head -n 1 | grep systemd &>/dev/null)
-then
-	echo '##############################################################'
-	echo '# Importing passhportd service in systemd…'
-	echo '##############################################################'
-	cp /home/passhport/passhport/tools/passhportd.service /etc/systemd/system/passhportd.service
-	systemctl daemon-reload
-	systemctl enable passhportd
-	echo "passhportd has been enabled at startup."
-	systemctl start passhportd
-	echo "passhportd has been started."
-	echo 'Please use systemctl to start/stop service.'
-fi
-echo '##############################################################'
-echo '# Adding root@localhost target…'
-echo '##############################################################'
-# Sleep 2 seconds so passhportd has enough time to start
+echo
+
+
+################################################## DATABASE ##################################################
+
+# Postgresql
+echo -e "${BLUE}Configure access to postgresql database and initialize it...${NC}"
+${POSTGRESDO} "createuser -D -S -R passhport && createdb -O passhport 'passhport'"
+${POSTGRESDO} "psql -U postgres -d passhport -c \"alter user passhport with password '${POSTGRESPASS}';\""
+${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/db_create.py"
+echo
+
+
+################################################## APACHE/WSGI ##################################################
+echo -e "${BLUE}Create apache2 configuration for passhport and restart apache2...${NC}"
+echo "Listen 5000
+<VirtualHost *:5000>
+    ServerName passhport
+
+    SSLEngine               on
+    SSLCertificateFile      /home/passhport/certs/cert.pem
+    SSLCertificatekeyFile   /home/passhport/certs/key.pem
+
+    WSGIDaemonProcess passhport user=passhport group=passhport threads=5  python-home=/home/passhport/passhport-run-env/
+    WSGIScriptAlias / /home/passhport/passhport/tools/passhportd.wsgi
+    <Directory /home/passhport/ >
+        WSGIProcessGroup passhport
+        WSGIApplicationGroup %{GLOBAL}
+        # passhportd don't provides authentication, please filter by IP
+        Require ip 127.0.0.1/8 ::1/128
+    </Directory>
+</VirtualHost>" > /etc/apache2/sites-available/passhport.conf
+
+systemctl restart apache2
+# Sleep 2 seconds so apache has enough time to start
 sleep 2
+echo
+
+
+################################################## INITIAL CONF ##################################################
+echo -e "${BLUE}Adding root@localhost target…${NC}"
 [ ! -d "/root/.ssh" ] && mkdir "/root/.ssh" && chmod 700 "/root/.ssh"
-cat "/home/passhport/.ssh/id_ecdsa.pub" >> "/root/.ssh/authorized_keys"
-su - passhport -c 'passhport-admin target create root@localhost 127.0.0.1 --comment="Localhost target added during the PaSSHport installation process."'
+cat "/home/passhport/.ssh/id_ed25519.pub" >> "/root/.ssh/authorized_keys"
+${PASSHPORTDO} 'passhport-admin target create root@localhost 127.0.0.1 --comment="Localhost target added during the PaSSHport installation process."'
 if [ ${INTERACTIVE} -eq 1 ]
 then
-	echo 'Do you want to add your first user now ? Y/n'
+	echo -e "${GREEN}Do you want to add your first user now ? Y/n${NC}"
 	read DO_CREATE_USER
 else
 	DO_CREATE_USER='n'
 fi
 while [ "${DO_CREATE_USER,,}" != "y" ] && [ ! -z "${DO_CREATE_USER}" ] && [ "${DO_CREATE_USER,,}" != "n" ]
 do
-	echo 'Do you want to add your first user now ? Y/n'
+	echo -e "${GREEN}Do you want to add your first user now ? Y/n${NC}"
 	read DO_CREATE_USER
 done
 if [ "${DO_CREATE_USER,,}" == "y" ] || [ -z "${DO_CREATE_USER}" ]
 then
-	echo 'Remember : no space in the user name!'
-	su - passhport -c "passhport-admin user create"
-	echo 'Do you want to link this user to the target root@localhost ? Y/n'
+	echo -e "${LGREEN}Remember : no space in the user name!${NC}"
+	${PASSHPORTDO} "passhport-admin user create"
+	echo -e "${LGREEN}Do you want to link this user to the target root@localhost ? Y/n${NC}"
 	read DO_LINK_USER
 	while [ "${DO_LINK_USER,,}" != "y" ] && [ ! -z "${DO_LINK_USER}" ] && [ "${DO_LINK_USER,,}" != "n" ]
 	do
-		echo 'Do you want to link this user to the target root@localhost ? Y/n'
+		echo -e "${LGREEN}Do you want to link this user to the target root@localhost ? Y/n${NC}"
 		read DO_LINK_USER
 	done
 	if [ "${DO_LINK_USER,,}" == "y" ] || [ -z "${DO_LINK_USER}" ]
 	then
-		FIRST_USER=`su - passhport -c "passhport-admin user list"`
-		su - passhport -c "passhport-admin target adduser ${FIRST_USER} root@localhost"
+		FIRST_USER=`${PASSHPORTDO} "passhport-admin user list"`
+		${PASSHPORTDO} "passhport-admin target adduser ${FIRST_USER} root@localhost"
 	fi
 fi
+echo
 
-echo "PaSSHport is now installed on your system."
-
-echo '##############################################################'
-echo '# You can test that passhportd is running by running :'
-echo '# curl -s --insecure https://localhost:5000'
-echo '# if it displays : '
-echo '# "passhportd is running, gratz!"'
-echo '# you successfuly installed PaSSHport. Well done !'
+echo -e "${BLUE}PaSSHport should be installed on your system.${NC}"
+echo 'We test it with this command: curl -s --insecure https://localhost:5000'
+echo -ne "${GREEN}"
+curl -s --insecure https://localhost:5000
 
 if [ ${INTERACTIVE} -eq 1 ]
 then
-	echo '# If you created your first user, you can connect to PaSSHport'
-	echo '# using "ssh -i the_key_you_used passhport@PASSHPORT_HOST"'
+	echo -e "${BLUE}If you created your first user, you can connect to PaSSHport${NC}"
+	echo -e "${BLUE}using 'ssh -i the_key_you_used passhport@PASSHPORT_HOST'${NC}"
 fi
-echo '##############################################################'
+
+echo 'Installation is now done.'
+}
+
+
+##### MAIN #####
+while getopts ":sbpe:" OPTION
+do
+	case ${OPTION} in
+		s) 
+			INTERACTIVE=0
+			;;
+		b) 
+			GITBRANCH=${OPTARG}
+			;;
+		p)
+			purge 
+			exit 0
+			;;
+		*) 
+			echo "Unknown option, exiting..."
+			exit 1
+			;;   # DEFAULT
+	esac
+done
+
+install
+
+
