@@ -98,7 +98,7 @@ echo
 echo -e "${BLUE}Create passhport user...${NC}"
 /usr/sbin/useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
 #in case the user exists but the homedir didn't... (happens if the purge is launched from a passhport ssh session)
-[ ! -e "/home/passhport/" ] && mkdir /home/passhport && chown passhport:passhport /home/passhport
+[ ! -e "/home/passhport/" ] && mkdir -p /home/passhport && chown passhport:passhport /home/passhport
 echo
 
 # Download passhport code
@@ -146,7 +146,7 @@ echo
 echo -e "${BLUE}Add passhport-admin in the pash and activate completion…${NC}"
 if [ ! -d "/etc/bash_completion.d/" ]
 then
-	mkdir "/etc/bash_completion.d/"
+	mkdir -p "/etc/bash_completion.d/"
 fi
 cp /home/passhport/passhport/tools/confs/passhport-admin.bash_completion /etc/bash_completion.d/passhport-admin
 . /etc/bash_completion.d/passhport-admin
@@ -155,7 +155,7 @@ echo
 
 # SSL Certificates time! 
 echo -e "${BLUE}Creating some http certificates for the passhportd service${NC}"
-${PASSHPORTDO} "mkdir /home/passhport/certs"
+${PASSHPORTDO} "mkdir -p /home/passhport/certs"
 ${PASSHPORTDO} "chmod 700 /home/passhport/certs"
 ${PASSHPORTDO} "openssl genrsa -out "/home/passhport/certs/key.pem" 4096"
 sed -i -e "s#^\(DNS.*\s*=\s*\)TO_CHANGE#\1`hostname -f`#g" /home/passhport/passhport/tools/confs/openssl-for-passhportd.cnf 
@@ -208,7 +208,7 @@ echo
 
 ################################################## INITIAL CONF ##################################################
 echo -e "${BLUE}Adding root@localhost target…${NC}"
-[ ! -d "/root/.ssh" ] && mkdir "/root/.ssh" && chmod 700 "/root/.ssh"
+[ ! -d "/root/.ssh" ] && mkdir -p "/root/.ssh" && chmod 700 "/root/.ssh"
 cat "/home/passhport/.ssh/id_ed25519.pub" >> "/root/.ssh/authorized_keys"
 ${PASSHPORTDO} 'passhport-admin target create root@localhost 127.0.0.1 --comment="Localhost target added during the PaSSHport installation process."'
 if [ ${INTERACTIVE} -eq 1 ]
@@ -258,7 +258,7 @@ echo 'Installation is now done.'
 
 
 ##### MAIN #####
-while getopts ":sbpe:" OPTION
+while getopts ":s:b:p" OPTION
 do
 	case ${OPTION} in
 		s) 
