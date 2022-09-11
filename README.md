@@ -21,7 +21,7 @@ Goals:
  * Provide a connexions history
  * Provide command and actions history (by users)
  
- Test the 5 minutes Debian installation :
+ Test the 5 minutes Debian 11 installation :
  ```
- bash <(curl -s https://raw.githubusercontent.com/librit/passhport/master/tools/passhport-install-script-debian.sh)
+ bash <(curl -s https://raw.githubusercontent.com/librit/passhport/master/tools/install/install_debian_11.sh)
  ```

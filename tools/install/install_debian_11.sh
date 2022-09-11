@@ -148,9 +148,9 @@ if [ ! -d "/etc/bash_completion.d/" ]
 then
 	mkdir "/etc/bash_completion.d/"
 fi
-cp /home/passhport/passhport/tools/passhport-admin.bash_completion /etc/bash_completion.d/passhport-admin
+cp /home/passhport/passhport/tools/confs/passhport-admin.bash_completion /etc/bash_completion.d/passhport-admin
 . /etc/bash_completion.d/passhport-admin
-ln -s /home/passhport/passhport/tools/passhport-admin.sh /usr/local/bin/passhport-admin
+ln -s /home/passhport/passhport/tools/bin/passhport-admin.sh /usr/local/bin/passhport-admin
 echo
 
 # SSL Certificates time! 
@@ -158,9 +158,9 @@ echo -e "${BLUE}Creating some http certificates for the passhportd service${NC}"
 ${PASSHPORTDO} "mkdir /home/passhport/certs"
 ${PASSHPORTDO} "chmod 700 /home/passhport/certs"
 ${PASSHPORTDO} "openssl genrsa -out "/home/passhport/certs/key.pem" 4096"
-sed -i -e "s#^\(DNS.*\s*=\s*\)TO_CHANGE#\1`hostname -f`#g" /home/passhport/passhport/tools/openssl-for-passhportd.cnf 
+sed -i -e "s#^\(DNS.*\s*=\s*\)TO_CHANGE#\1`hostname -f`#g" /home/passhport/passhport/tools/confs/openssl-for-passhportd.cnf 
 openssl req -new -key "/home/passhport/certs/key.pem" \
-	-config "/home/passhport/passhport/tools/openssl-for-passhportd.cnf" \
+	-config "/home/passhport/passhport/tools/confs/openssl-for-passhportd.cnf" \
 	-out "/home/passhport/certs/cert.pem" \
 	-subj "/C=FR/ST=Ile De France/L=Ivry sur Seine/O=LibrIT/OU=DSI/CN=passhport.librit.fr" \
 	-x509 \
