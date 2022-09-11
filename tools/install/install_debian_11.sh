@@ -191,7 +191,7 @@ echo "Listen 5000
     SSLCertificatekeyFile   /home/passhport/certs/key.pem
 
     WSGIDaemonProcess passhport user=passhport group=passhport threads=5  python-home=/home/passhport/passhport-run-env/
-    WSGIScriptAlias / /home/passhport/passhport/tools/passhportd.wsgi
+    WSGIScriptAlias / /home/passhport/passhport/tools/bin/passhportd.wsgi
     <Directory /home/passhport/ >
         WSGIProcessGroup passhport
         WSGIApplicationGroup %{GLOBAL}
