@@ -47,8 +47,7 @@ apt purge -f python3-pip python3-venv git openssl  libpython3-dev postgresql apa
 echo
 
 echo -e "${BLUE}Remove directories${NC}"
-rm -rf /etc/passhport/ /var/log/passhport/ /home/passhport /etc/bash_completion.d/passhport-admin
-rm -rf /usr/local/bin/passhport-admin
+rm -rf /etc/passhport/ /var/log/passhport/ /home/passhport /etc/bash_completion.d/passhport-admin /usr/local/bin/passhport-admin /var:lib/passhport
 
 echo -e "${BLUE}Remove user${NC}"
 userdel  passhport
@@ -116,6 +115,8 @@ echo -e "${BLUE}Create conf and log directories...${NC}"
 mkdir -p /var/log/passhport/
 chown passhport:passhport /var/log/passhport/
 mkdir -p /etc/passhport
+mkdir -p /var/lib/passhport/
+chown passhport:passhport /var/lib/passhport
 cp /home/passhport/passhport/passhportd/passhportd.ini /etc/passhport/.
 cp /home/passhport/passhport/passhport/passhport.ini /etc/passhport/.
 cp /home/passhport/passhport/passhport-admin/passhport-admin.ini /etc/passhport/.
@@ -199,6 +200,10 @@ echo "Listen 5000
         Require ip 127.0.0.1/8 ::1/128
     </Directory>
 </VirtualHost>" > /etc/apache2/sites-available/passhport.conf
+
+a2dissite 000-default
+a2enmod wsgi ssl
+a2ensite passhport
 
 systemctl restart apache2
 # Sleep 2 seconds so apache has enough time to start
