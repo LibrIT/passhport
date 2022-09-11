@@ -133,7 +133,7 @@ echo
 echo -e "${BLUE}Installing mandatory packages in a new python3 venv...${NC}"
 ${PASSHPORTDO} "python3 -m venv passhport-run-env"
 ${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/pip install -r /home/passhport/passhport/requirements.txt"
-${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/pip install psycopg2 psycopg2-binary flask_login flask_wtf request"
+${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/pip install psycopg2 psycopg2-binary flask_login flask_wtf requests"
 echo
 
 # Generate keys to be put on targes
