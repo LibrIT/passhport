@@ -90,7 +90,7 @@ done
 # Install dependances
 echo -e "${BLUE}Installing dependances via APT… ${NC}"
 apt update
-apt install -y python3-pip python3-venv git openssl  libpython3-dev postgresql apache2 libapache2-mod-wsgi-py3 libpq-dev
+apt install -y python3-pip python3-venv git openssl  libpython3-dev postgresql apache2 libapache2-mod-wsgi-py3 libpq-dev flask_login flask_wtf request
 echo
 
 # Passhport user creation
@@ -204,12 +204,43 @@ echo "Listen 5000
 a2dissite 000-default
 a2enmod wsgi ssl
 a2ensite passhport
+echo
 
+
+################################################## PASSHWEB ##################################################
+# Note that to perform a standalone passhweb installation you can work with this part... 
+# but you'll have to install some pip dependancies before
+echo -e "${BLUE}Install PaSSHWeb interface...${NC}"
+sed -e 's/^DEBUG\s*=.*/DEBUG = false/g' '/home/passhport/passhport/passhweb/passhweb.ini' > '/etc/passhport/passhweb.ini'
+
+echo "<VirtualHost *:443>
+	servername	passhweb
+
+    SSLEngine               on
+    SSLCertificateFile      /home/passhport/certs/cert.pem
+    SSLCertificatekeyFile   /home/passhport/certs/key.pem
+
+	WSGIDaemonProcess passhweb user=passhport group=passhport threads=5 python-home=/home/passhport/passhport-run-env/
+	WSGIScriptAlias / /home/passhport/passhport/tools/bin/passhweb.wsgi
+
+	<Directory /home/passhport>
+		        WSGIProcessGroup passhweb
+		        WSGIApplicationGroup %{GLOBAL}
+				Require all granted
+		        Order deny,allow
+		        Allow from all
+	</Directory>
+
+	LogLevel warn
+	CustomLog /var/log/apache2/passhweb-access.log combined
+	ErrorLog /var/log/apache2/passhweb-error.log
+</VirtualHost>" > /etc/apache2/sites-available/passhweb.conf
+
+a2ensite passhweb
 systemctl restart apache2
 # Sleep 2 seconds so apache has enough time to start
 sleep 2
 echo
-
 
 ################################################## INITIAL CONF ##################################################
 echo -e "${BLUE}Adding root@localhost target…${NC}"
