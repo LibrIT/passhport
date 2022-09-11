@@ -90,7 +90,7 @@ done
 # Install dependances
 echo -e "${BLUE}Installing dependances via APT… ${NC}"
 apt update
-apt install -y python3-pip python3-venv git openssl  libpython3-dev postgresql apache2 libapache2-mod-wsgi-py3 libpq-dev flask_login flask_wtf request
+apt install -y python3-pip python3-venv git openssl  libpython3-dev postgresql apache2 libapache2-mod-wsgi-py3 libpq-dev 
 echo
 
 # Passhport user creation
@@ -133,7 +133,7 @@ echo
 echo -e "${BLUE}Installing mandatory packages in a new python3 venv...${NC}"
 ${PASSHPORTDO} "python3 -m venv passhport-run-env"
 ${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/pip install -r /home/passhport/passhport/requirements.txt"
-${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/pip install psycopg2 psycopg2-binary"
+${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/pip install psycopg2 psycopg2-binary flask_login flask_wtf request"
 echo
 
 # Generate keys to be put on targes
