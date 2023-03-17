@@ -1,4 +1,5 @@
 # -*-coding:Utf-8 -*-
+import urllib
 from flask import request
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
@@ -50,7 +51,8 @@ def targetgroup_show(name):
     # Check for required fields
     if not name:
         return utils.response("ERROR: The name is required ", 417)
-
+    
+    name = urllib.parse.quote(name)
     targetgroup_data = targetgroup.Targetgroup.query.filter_by(
         name=name).first()
 
@@ -177,11 +179,12 @@ def targetgroup_delete(name):
         return utils.response("ERROR: The name is required ", 417)
 
     # Check if the name exists
+    name = urllib.parse.quote(name)
     query = db.session.query(targetgroup.Targetgroup.name)\
         .filter_by(name=name).first()
 
     if query is None:
-        return utils.response('ERROR: No targetgroup with the name "' + \
+        return utils.response('aERROR: No targetgroup with the name "' + \
                               name + '" in the database.', 417)
 
     tg = db.session.query(
