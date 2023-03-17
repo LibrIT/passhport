@@ -184,7 +184,7 @@ def targetgroup_delete(name):
         .filter_by(name=name).first()
 
     if query is None:
-        return utils.response('aERROR: No targetgroup with the name "' + \
+        return utils.response('ERROR: No targetgroup with the name "' + \
                               name + '" in the database.', 417)
 
     tg = db.session.query(
