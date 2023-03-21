@@ -133,7 +133,7 @@ def usergroup_create():
 
 @app.route("/usergroup/edit", methods=["POST"])
 def usergroup_edit():
-    """Edit a user in the database"""
+    """Edit a usergroup in the database"""
     # Only POST data are handled
     if request.method != "POST":
         return utils.response("ERROR: POST method is required ", 405)
@@ -156,7 +156,7 @@ def usergroup_edit():
                               '" in the database.', 417)
 
     to_update = db.session.query(
-        usergroup.Usergroup.name).filter_by(
+        usergroup.Usergroup).filter_by(
         name=name)
 
     # Let's modify only relevent fields
