@@ -750,6 +750,7 @@ def getpassword(targetname, number = 20):
     # Response for datatable
     output = '[\n'
     tlen = len(t.passentries)
+    start = tlen - number
     # We decrypt only 20 first passwords to avoid long waits
     for i in range(start, start + number):
         if i > tlen:
