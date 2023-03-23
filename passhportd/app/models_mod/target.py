@@ -189,9 +189,10 @@ class Target(db.Model):
         if len(self.logentries) < 1:
             return "{}"
 
-        for i in range(0, 500):
-            if i >= len(self.logentries):
-                i = 500
+        start = len(self.logentries) - 500
+        for i in range(start, start + 500):
+            if i > len(self.logentries):
+                i = start + 500
             else:
                 output = output + '"' + str(i) + '": ' + \
                          self.logentries[i].simplejson() + ",\n"
