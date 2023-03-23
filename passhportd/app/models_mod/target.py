@@ -33,8 +33,10 @@ class Target(db.Model):
     members    = db.relationship("User", secondary="target_user")
     gmembers   = db.relationship("Usergroup", secondary="target_group")
     memberoftg = db.relationship("Targetgroup", secondary="tgroup_target")
-    logentries = db.relationship("Logentry", secondary="target_log")
-    passentries = db.relationship("Passentry", secondary="target_pass")
+    logentries = db.relationship("Logentry", secondary="target_log",
+                                 order_by="Logentry.id")
+    passentries = db.relationship("Passentry", secondary="target_pass",
+                                  order_by="Passentry.id")
     exttargetaccess = db.relationship("Exttargetaccess", 
                                       secondary="target_extaccess")
 
