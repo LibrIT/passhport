@@ -65,7 +65,7 @@ def check_list(api_resp):
     """Check if the list is really a list or None and do a proper json"""
     if api_resp:
         # passhportd return a json, that we eval in dict
-        return eval(str(api_resp).replace("\r",""))
+        return eval(str(api_resp).replace("\r","").replace("\\","\\\\"))
     else:
         return None
 
