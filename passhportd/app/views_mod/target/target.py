@@ -749,12 +749,13 @@ def getpassword(targetname, number = 20):
 
     # Response for datatable
     output = '[\n'
-    i = 1
     tlen = len(t.passentries)
     # We decrypt only 20 first passwords to avoid long waits
-    while i < tlen +1 and i < int(number)+1:
-        output = output + t.passentries[tlen-i].notargetjson() + ",\n"
-        i = i+1
+    for i in range(start, start + number):
+        if i > tlen:
+            break
+        else:
+            output = output + t.passentries[i].notargetjson() + ",\n"
 
     if output == '[\n':
         return utils.response('[]', 200)
