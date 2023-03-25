@@ -460,7 +460,7 @@ def user_edit():
 
     need_authorizedkey_update = False
     form = request.form
-    usertoupdate = db.session.query(user.User.name).filter_by(
+    usertoupdate = db.session.query(user.User).filter_by(
                                                      name=form["name"])
     legacysshkey = db.session.query(user.User.sshkey).filter_by(
                                             name=form["name"]).first()[0]

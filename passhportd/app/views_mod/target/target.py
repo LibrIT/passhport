@@ -314,7 +314,7 @@ def target_edit():
         return utils.response('ERROR: No target with the name "' + name + \
                               '" in the database.', 417)
 
-    to_update = db.session.query(target.Target.name).filter_by(name=name)
+    to_update = db.session.query(target.Target).filter_by(name=name)
 
     # Let's modify only relevent fields
     if new_login:
