@@ -195,18 +195,18 @@ def usergroup_delete(name):
 
     # Check if the name exists
     name = urllib.parse.quote(name)
-    query = db.session.query(
-                usergroup.Usergroup).filter(
-                usergroup.Usergroup.name == name)
+    query = db.session.query(usergroup.Usergroup.name)\
+        .filter_by(name=name).first()
 
     if query is None:
         return utils.response('ERROR: No usergroup with the name "' + name + \
                               '" in the database.', 417)
-    
-    #Normaly there will be only one element with that name
-    ug = query[0]
-    ug.prepare_delete()
-    query.delete()
+ 
+    ug = db.session.query(
+                usergroup.Usergroup).filter(
+                usergroup.Usergroup.name == name)
+    ug[0].prepare_delete()
+    ug.delete()
 
     try:
         db.session.commit()
