@@ -201,7 +201,8 @@ def usergroup_delete(name):
     if query is None:
         return utils.response('ERROR: No usergroup with the name "' + name + \
                               '" in the database.', 417)
- 
+
+    #Normaly there will be only one element with that name
     ug = db.session.query(
                 usergroup.Usergroup).filter(
                 usergroup.Usergroup.name == name)
