@@ -753,7 +753,7 @@ def getpassword(targetname, number = 20):
     start = tlen - number
     # We decrypt only 20 first passwords to avoid long waits
     for i in range(start, start + number):
-        if i > tlen:
+        if abs(i) > tlen:
             break
         else:
             output = output + t.passentries[i].notargetjson() + ",\n"
