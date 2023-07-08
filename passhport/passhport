@@ -8,7 +8,7 @@ from builtins import input
 from datetime import datetime
 from tabulate import tabulate
 
-import os, sys, locale, requests, random, crypt, re, configparser, signal
+import os, sys, locale, requests, random, legacycrypt, re, configparser, signal
 import uuid, readline, glob
 
 from connections_utils import ssh
