@@ -6,4 +6,4 @@ RUN apt update
 COPY tools/install/install_debian_12.sh /tmp/install_debian_12.sh
 
 # start
-RUN bash -xv /tmp/install_debian_12.sh -s
+RUN bash -xv /tmp/install_debian_12.sh -sd
