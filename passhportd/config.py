@@ -21,6 +21,7 @@ SQLALCHEMY_DATABASE_URI         = conf.get("Database", \
                                     "SQLALCHEMY_DATABASE_URI")
 SQLALCHEMY_MIGRATE_REPO         = conf.get("Database", \
                                     "SQLALCHEMY_MIGRATE_REPO")
+SQLALCHEMY_ENGINE_OPTIONS       = conf["SQLALCHEMY_ENGINE_OPTIONS"]
 """ SALT for password storage """
 SALT            = conf.get("Database", "SALT")
 
