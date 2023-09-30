@@ -1,0 +1,6 @@
+Port 2222
+
+HostKey /home/passhport/.sshd/ssh_host_dsa_key
+HostKey /home/passhport/.sshd/ssh_host_rsa_key
+HostKey /home/passhport/.sshd/ssh_host_ecdsa_key
+HostKey /home/passhport/.sshd/ssh_host_ed25519_key
