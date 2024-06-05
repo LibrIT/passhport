@@ -1,5 +1,5 @@
 # -*-coding:Utf-8 -*-
-import random, crypt, os, config
+import random, os, config
 from datetime import datetime, timedelta, date
 from app import app, db
 from app.models_mod import targetgroup, passentry
