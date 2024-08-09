@@ -737,7 +737,7 @@ def extcloseaccess(pid, extaccess):
 
 @app.route("/target/getpassword/<targetname>/<number>")
 @app.route("/target/getpassword/<targetname>")
-def getpassword(targetname, number = 20):
+def getpassword(targetname, number = '20'):
     """Get stored passwords associated to a target, used on automatic 
     root password change by passhport script"""
     
@@ -747,16 +747,18 @@ def getpassword(targetname, number = 20):
         return utils.response('ERROR: No target with the name "' + \
                                targetname + '" in the database.', 417)
 
+    # Format the maximum password to decrypt number
+    if not number.isdigit():
+        number = 20
+    number = int(number)
+
     # Response for datatable
     output = '[\n'
-    tlen = len(t.passentries)
-    start = tlen - number
-    # We decrypt only 20 first passwords to avoid long waits
-    for i in range(start, start + number):
-        if abs(i) > tlen:
-            break
-        else:
-            output = output + t.passentries[i].notargetjson() + ",\n"
+    # Number of password in databse
+    tlen = min(len(t.passentries),number)
+ 
+    for i in range(0,tlen):
+        output = output + t.passentries[-i].notargetjson() + ",\n"
 
     if output == '[\n':
         return utils.response('[]', 200)
