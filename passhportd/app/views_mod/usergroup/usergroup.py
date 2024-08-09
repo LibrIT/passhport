@@ -51,7 +51,7 @@ def usergroup_show(name):
     if not name:
         return utils.response("ERROR: The name is required ", 417)
 
-    name = urllib.parse.quote(name)
+    
     usergroup_data = usergroup.Usergroup.query.filter_by(name=name).first()
 
     if usergroup_data is None:
@@ -194,7 +194,7 @@ def usergroup_delete(name):
         return utils.response("ERROR: The name is required ", 417)
 
     # Check if the name exists
-    name = urllib.parse.quote(name)
+    
     query = db.session.query(usergroup.Usergroup.name)\
         .filter_by(name=name).first()
 

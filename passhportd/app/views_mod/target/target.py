@@ -122,7 +122,6 @@ def target_show(name):
     if not name:
         return utils.response("ERROR: The name is required ", 417)
 
-    name = urllib.parse.quote(name)
     target_data = target.Target.query.filter_by(name=name).first()
 
     if target_data is None:
