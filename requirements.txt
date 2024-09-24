@@ -38,4 +38,4 @@ tabulate==0.8.10
 Tempita==0.5.2
 urllib3==1.26.12
 Werkzeug==2.2.3
-zipp==3.8.1
+zipp==3.19.1
