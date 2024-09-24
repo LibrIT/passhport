@@ -32,7 +32,7 @@ requests==2.32.2
 six==1.16.0
 SQLAlchemy==1.4.41
 sqlalchemy-migrate==0.13.0
-sqlparse==0.4.4
+sqlparse==0.5.0
 sshpubkeys==3.3.1
 tabulate==0.8.10
 Tempita==0.5.2
