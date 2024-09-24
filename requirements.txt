@@ -37,5 +37,5 @@ sshpubkeys==3.3.1
 tabulate==0.8.10
 Tempita==0.5.2
 urllib3==1.26.19
-Werkzeug==2.2.3
+Werkzeug==3.0.3
 zipp==3.8.1
