@@ -10,14 +10,14 @@ From target to local :
 
 .. code-block:: none
 
-   $ scp passhport@my-passhport-server:TARGET_NAME//etc/fstab /tmp/.
+   $ scp -O passhport@my-passhport-server:TARGET_NAME//etc/fstab /tmp/.
 
 
 From local to target : 
 
 .. code-block:: none
 
-   $ scp /etc/passwd passhport@my-passhport-server:TARGET_NAME//tmp/.
+   $ scp -O /etc/passwd passhport@my-passhport-server:TARGET_NAME//tmp/.
 
 
 For Windows, you have to consider using "pscp" command. You can find it here: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
