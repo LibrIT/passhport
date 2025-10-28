@@ -4,7 +4,9 @@ scp through PaSSHport
 Using CLI
 ------------
 
-To use SCP throug PaSSHport, use one of the following syntax...
+**Linux**
+
+To use SCP throug PaSSHport, use one of the following syntax :
 
 From target to local : 
 
@@ -19,6 +21,10 @@ From local to target :
 
    $ scp -O /etc/passwd passhport@my-passhport-server:TARGET_NAME//tmp/.
 
+NB : the *-O* option is mandatory since ~2021 to force scp to use the legacy *SCP* protocol, instead of *sftp*.
+
+
+**Windows**
 
 For Windows, you have to consider using "pscp" command. You can find it here: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
 Be aware that you will need a private key file in "ppk" format. You can use puttygen to generate one or convert your current private key.
