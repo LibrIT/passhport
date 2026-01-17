@@ -162,7 +162,7 @@ def post(url, data):
         if r.status_code == requests.codes.ok:
             # Copy sshkey on new targets
             AUTO_DEPLOY_SSHKEY = False
-            if re.findall("\/target\/create", url) and AUTO_DEPLOY_SSHKEY:
+            if re.findall(r"\/target\/create", url) and AUTO_DEPLOY_SSHKEY:
                 print("Trying to deploy sshkey")
             return 0
         #TODO first connection to a target to deploy a key

@@ -1,9 +1,12 @@
-FROM debian:12
+FROM debian:13
 # Update the repos
 RUN apt update
 
 # Get the corresponding installation file
-COPY tools/install/install_debian_12.sh /tmp/install_debian_12.sh
+COPY . /tmp/passhport
 
-# start
-RUN bash -xv /tmp/install_debian_12.sh -sd
+# Proceed with installation
+RUN bash -xv /tmp/passhport/tools/install/install_debian_13.sh -sd
+RUN rm -rf /tmp/passhport
+
+VOLUME passhport-certs logs
