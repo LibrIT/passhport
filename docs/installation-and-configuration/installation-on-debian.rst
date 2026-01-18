@@ -1,17 +1,17 @@
-Installation on Debian 8, 9 or 10
+Installation on Debian 12
 =================================
 
 The followings shows you how to install and run PaSSHport on Debian 8 (Jessie), 9 (Stretch) or 10 (Buster). We start from a minimal installation of Debian (available `here <http://www.debian.org>`__), **with openssh-server and curl** packages installed.
 
 The easy, automated way
 -----------------------
-You can review the installation script `here <https://raw.githubusercontent.com/LibrIT/passhport/master/tools/passhport-install-script-debian.sh>`__.
+You can review the installation script `here <https://raw.githubusercontent.com/LibrIT/passhport/master/tools/install/install_debian_12.sh>`__.
 
 You can run it directly from command line ( please ensure that curl is installed : ``apt install curl`` ):
 
 .. code-block:: none
 
-  root@debian:~# bash <(curl -s https://raw.githubusercontent.com/librit/passhport/master/tools/passhport-install-script-debian.sh)
+  root@debian:~#  bash <(curl -s https://raw.githubusercontent.com/librit/passhport/master/tools/install/install_debian_12.sh)
 
 Once finished, you can go to the `Getting Started <../getting-started.html>`_ chapter.
 
