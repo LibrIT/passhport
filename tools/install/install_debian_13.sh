@@ -358,7 +358,6 @@ install()
     install_bash_completion
     generate_ssl_certs
     configure_postgresql
-    initial_configuration
   fi
 
   # Configure apache
