@@ -136,7 +136,7 @@ def user_show(name):
     if not name:
         return utils.response("ERROR: The name is required ", 417)
 
-    name = urllib.parse.quote(name)
+    name = urllib.parse.unquote(name)
     user_data = user.User.query.filter_by(name=name).first()
 
     if user_data is None:
