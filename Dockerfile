@@ -8,5 +8,3 @@ COPY . /tmp/passhport
 # Proceed with installation
 RUN bash -xv /tmp/passhport/tools/install/install_debian_13.sh -sd
 RUN rm -rf /tmp/passhport
-
-VOLUME passhport-certs logs

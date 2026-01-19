@@ -103,12 +103,12 @@ bootstrap_config()
   cp /home/passhport/passhport/passhport/passhport.ini /etc/passhport/.
   cp /home/passhport/passhport/passhport-admin/passhport-admin.ini /etc/passhport/.
   cp /home/passhport/passhport/passhportd/passhportd.ini /etc/passhport/.
-  sed -i -e 's#SQLALCHEMY_DATABASE_DIR\s*=.*#SQLALCHEMY_DATABASE_DIR        = /var/lib/passhport/#' /etc/passhport/passhportd.ini
-  sed -i -e 's#LISTENING_IP\s*=.*#LISTENING_IP = 0.0.0.0#' /etc/passhport/passhportd.ini
-  sed -i -e 's#SQLALCHEMY_MIGRATE_REPO\s*=.*#SQLALCHEMY_MIGRATE_REPO        = /var/lib/passhport/db_repository#' /etc/passhport/passhportd.ini
-  sed -i -e "s#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = postgresql://passhport:${POSTGRESPASS}@localhost/passhport#" /etc/passhport/passhportd.ini
-  sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport-admin.ini
-  sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport.ini
+  #sed -i -e 's#SQLALCHEMY_DATABASE_DIR\s*=.*#SQLALCHEMY_DATABASE_DIR        = /var/lib/passhport/#' /etc/passhport/passhportd.ini
+  #sed -i -e 's#LISTENING_IP\s*=.*#LISTENING_IP = 0.0.0.0#' /etc/passhport/passhportd.ini
+  #sed -i -e 's#SQLALCHEMY_MIGRATE_REPO\s*=.*#SQLALCHEMY_MIGRATE_REPO        = /var/lib/passhport/db_repository#' /etc/passhport/passhportd.ini
+  #sed -i -e "s#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = postgresql://passhport:${POSTGRESPASS}@localhost/passhport#" /etc/passhport/passhportd.ini
+  #sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport-admin.ini
+  #sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport.ini
   echo
 }
 

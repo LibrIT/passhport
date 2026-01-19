@@ -29,16 +29,37 @@ class User(db.Model):
 
 
     # Relations (in targetgroups)
-    targets      = db.relationship("Target", secondary="target_user")
-    usergroups   = db.relationship("Usergroup", secondary="group_user")
-    targetgroups = db.relationship("Targetgroup", secondary="tgroup_user")
-    logentries   = db.relationship("Logentry", secondary="user_log", order_by="Logentry.connectiondate")
+    targets = db.relationship(
+        "Target",
+        secondary="target_user",
+        back_populates="members")
+    usergroups = db.relationship(
+        "Usergroup",
+        secondary="group_user",
+        back_populates="members")
+    targetgroups = db.relationship(
+        "Targetgroup",
+        secondary="tgroup_user",
+        back_populates="members")
+    logentries = db.relationship(
+        "Logentry",
+        secondary="user_log",
+        back_populates="user",
+        order_by="Logentry.connectiondate")
     # Admins - can admin usergroups and targetgroups (add and remove users)
-    adminoftg = db.relationship("Targetgroup", secondary="tg_admins")
-    adminofug = db.relationship("Usergroup", secondary="ug_admins")
+    adminoftg = db.relationship(
+        "Targetgroup",
+        secondary="tg_admins",
+        back_populates="tgadmins")
+    adminofug = db.relationship(
+        "Usergroup",
+        secondary="ug_admins",
+        back_populates="ugadmins")
     # Connections demands
-    exttargetaccess = db.relationship("Exttargetaccess", 
-                                      secondary="user_extaccess")
+    exttargetaccess = db.relationship(
+        "Exttargetaccess",
+        secondary="user_extaccess",
+        back_populates="user")
 
 
     def __repr__(self):
@@ -247,4 +268,3 @@ class User(db.Model):
             return("Wrong ssh key format - " + str(uuid.uuid4()))
         # We remove the "SHA256:" header and we add "=" at the end
         return key.hash_sha256()[7:] + "="
-
