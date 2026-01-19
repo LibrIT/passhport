@@ -74,6 +74,8 @@ create_passhport_user()
   /usr/sbin/useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
   #in case the user exists but the homedir didn't... (happens if the purge is launched from a passhport ssh session)
   [ ! -e "/home/passhport/" ] && mkdir -p /home/passhport && chown passhport:passhport /home/passhport
+  # Needed for Apache WSGI
+  chmod o+rx /home/passhport/
   echo
 }
 
@@ -177,7 +179,7 @@ configure_apache_for_passhportd()
 {
   echo -e "${BLUE}Create apache2 configuration for passhport and restart apache2...${NC}"
   echo "Listen 5000
-  <VirtualHost *:5000>
+<VirtualHost *:5000>
   ServerName passhport
 
   SSLEngine               on
@@ -187,12 +189,12 @@ configure_apache_for_passhportd()
   WSGIDaemonProcess passhport user=passhport group=passhport threads=5  python-home=/home/passhport/passhport-run-env/
   WSGIScriptAlias / /home/passhport/passhport/tools/bin/passhportd.wsgi
   <Directory /home/passhport/ >
-  WSGIProcessGroup passhport
-  WSGIApplicationGroup %{GLOBAL}
-  # passhportd don't provides authentication, please filter by IP
-  Require ip 127.0.0.1/8 ::1/128
+    WSGIProcessGroup passhport
+    WSGIApplicationGroup %{GLOBAL}
+    # passhportd don't provides authentication, please filter by IP
+    Require ip 127.0.0.1/8 ::1/128
   </Directory>
-  </VirtualHost>" > /etc/apache2/sites-available/passhport.conf
+</VirtualHost>" > /etc/apache2/sites-available/passhport.conf
 
   a2dissite 000-default
   a2enmod wsgi ssl
@@ -218,18 +220,18 @@ configure_apache_for_passhweb()
   WSGIDaemonProcess passhweb user=passhport group=passhport threads=5 python-home=/home/passhport/passhport-run-env/
   WSGIScriptAlias / /home/passhport/passhport/tools/bin/passhweb.wsgi
 
-  <Directory /home/passhport>
+<Directory /home/passhport>
   WSGIProcessGroup passhweb
   WSGIApplicationGroup %{GLOBAL}
   Require all granted
   Order deny,allow
   Allow from all
-  </Directory>
+</Directory>
 
   LogLevel warn
   CustomLog /var/log/apache2/passhweb-access.log combined
   ErrorLog /var/log/apache2/passhweb-error.log
-  </VirtualHost>" > /etc/apache2/sites-available/passhweb.conf
+</VirtualHost>" > /etc/apache2/sites-available/passhweb.conf
 
   a2ensite passhweb
 
