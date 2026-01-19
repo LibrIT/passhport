@@ -80,7 +80,7 @@ create_passhport_user()
 download_sources()
 {
   # Download passhport code
-  echo -e "${BLUE}Cloning passhport git from github...${NC}"
+  echo -e "${BLUE}Cloning passhport git from github from branch ${GITBRANCH:-master}...${NC}"
   if [ ! -z "${GITBRANCH}" ]
   then
     ${PASSHPORTDO} "git clone --single-branch --branch ${GITBRANCH} https://github.com/LibrIT/passhport.git"
@@ -374,6 +374,7 @@ install()
 
 
 ##### MAIN #####
+DOCKER_INSTALL=0
 while getopts "sdb:p" OPTION
 do
   case ${OPTION} in
