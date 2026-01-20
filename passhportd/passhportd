@@ -21,6 +21,7 @@ else:
                   " 127.0.0.1.")
         app.run(debug=True)
     else:
-        SSL_CONTEXT  = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        SSL_CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        SSL_CONTEXT.minimum_version = ssl.TLSVersion.TLSv1_2
         SSL_CONTEXT.load_cert_chain(SSL_CERTIFICAT, SSL_KEY)
         app.run(debug=True,host = HOST, ssl_context = SSL_CONTEXT)

@@ -28,9 +28,18 @@ class Targetgroup(db.Model):
     comment = db.Column(db.String(500), index=True, unique=False)
 
     # Relations
-    members = db.relationship("User", secondary="tgroup_user")
-    tmembers = db.relationship("Target", secondary="tgroup_target")
-    gmembers = db.relationship("Usergroup", secondary="tgroup_group")
+    members = db.relationship(
+        "User",
+        secondary="tgroup_user",
+        back_populates="targetgroups")
+    tmembers = db.relationship(
+        "Target",
+        secondary="tgroup_target",
+        back_populates="memberoftg")
+    gmembers = db.relationship(
+        "Usergroup",
+        secondary="tgroup_group",
+        back_populates="tgmembers")
     tgmembers = db.relationship(
         "Targetgroup",
         secondary=tgroup_of_tgroup,
@@ -38,7 +47,10 @@ class Targetgroup(db.Model):
         secondaryjoin=id == tgroup_of_tgroup.c.subtargetgroup_id,
         backref="containedin")
     # Admins - can admin usergroups and targetgroups (add and remove users)
-    tgadmins = db.relationship("User", secondary="tg_admins")
+    tgadmins = db.relationship(
+        "User",
+        secondary="tg_admins",
+        back_populates="adminoftg")
 
 
     def __repr__(self):
