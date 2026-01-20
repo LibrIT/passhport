@@ -122,7 +122,7 @@ def target_show(name):
     if not name:
         return utils.response("ERROR: The name is required ", 417)
 
-    name = urllib.parse.quote(name)
+    name = urllib.parse.unquote(name)
     target_data = target.Target.query.filter_by(name=name).first()
 
     if target_data is None:
@@ -374,7 +374,7 @@ def target_delete(name):
         return utils.response("ERROR: The name is required ", 417)
 
     # Check if the name exists
-    name = urllib.parse.quote(name)
+    name = urllib.parse.unquote(name)
     query = db.session.query(target.Target.name)\
         .filter_by(name=name).first()
 
@@ -741,7 +741,7 @@ def getpassword(targetname, number = '20'):
     """Get stored passwords associated to a target, used on automatic 
     root password change by passhport script"""
     
-    targetname = urllib.parse.quote(targetname)
+    targetname = urllib.parse.unquote(targetname)
     t = target.Target.query.filter_by(name=targetname).first()
     if t is None:
         return utils.response('ERROR: No target with the name "' + \

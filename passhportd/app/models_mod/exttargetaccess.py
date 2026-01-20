@@ -14,8 +14,14 @@ class Exttargetaccess(db.Model):
     proxy_port= db.Column(db.Integer, index=True)
 
     # Relations
-    target = db.relationship("Target", secondary="target_extaccess")
-    user   = db.relationship("User", secondary="user_extaccess")
+    target = db.relationship(
+        "Target",
+        secondary="target_extaccess",
+        back_populates="exttargetaccess")
+    user = db.relationship(
+        "User",
+        secondary="user_extaccess",
+        back_populates="exttargetaccess")
 
     def __repr__(self):
         """Return main data as a string"""

@@ -16,7 +16,10 @@ class Passentry(db.Model):
     salt           = db.Column(db.LargeBinary(500), index=False)
 
     # Relations
-    target = db.relationship("Target", secondary="target_pass")
+    target = db.relationship(
+        "Target",
+        secondary="target_pass",
+        back_populates="passentries")
 
 
     def __init__(self, connectiondate, password):
@@ -66,5 +69,4 @@ class Passentry(db.Model):
                 backend = default_backend())
         key = base64.urlsafe_b64encode(kdf.derive(config.SALT.encode()))
         return Fernet(key)
-
 

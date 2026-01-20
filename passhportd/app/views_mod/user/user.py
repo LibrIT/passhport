@@ -136,7 +136,7 @@ def user_show(name):
     if not name:
         return utils.response("ERROR: The name is required ", 417)
 
-    name = urllib.parse.quote(name)
+    name = urllib.parse.unquote(name)
     user_data = user.User.query.filter_by(name=name).first()
 
     if user_data is None:
@@ -184,7 +184,7 @@ def naturalkeys(text):
     """ stackoverflow how-to-correctly-sort-a-string-with-a-number-inside
         and http://nedbatchelder.com/blog/200712/human_sorting.html 
         basically sort a text list taking care of numbers """
-    return [ atoi(c) for c in re.split('(\d+)', text) ]
+    return [atoi(c) for c in re.split(r'(\d+)', text)]
 
 
 def uaccessible_targets(name, withid = True, returnlist = False):
