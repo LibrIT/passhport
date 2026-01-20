@@ -12,3 +12,4 @@ This chapter describes the installation on different distro, and the main config
    apache-wsgi-for-production
    renew-certificate
    make-passhport-more-transparent-for-user
+   toggle-group-administrator
