@@ -1,5 +1,5 @@
 # -*-coding:Utf-8 -*-
-import random, crypt, os, config
+import random, os, config
 from datetime import datetime, timedelta, date
 from app import app, db
 from app.models_mod import targetgroup, passentry
@@ -33,8 +33,10 @@ class Target(db.Model):
     members    = db.relationship("User", secondary="target_user")
     gmembers   = db.relationship("Usergroup", secondary="target_group")
     memberoftg = db.relationship("Targetgroup", secondary="tgroup_target")
-    logentries = db.relationship("Logentry", secondary="target_log")
-    passentries = db.relationship("Passentry", secondary="target_pass")
+    logentries = db.relationship("Logentry", secondary="target_log",
+                                 order_by="Logentry.id")
+    passentries = db.relationship("Passentry", secondary="target_pass",
+                                  order_by="Passentry.id")
     exttargetaccess = db.relationship("Exttargetaccess", 
                                       secondary="target_extaccess")
 
@@ -189,9 +191,10 @@ class Target(db.Model):
         if len(self.logentries) < 1:
             return "{}"
 
-        for i in range(0, 500):
-            if i >= len(self.logentries):
-                i = 500
+        start = len(self.logentries) - 500
+        for i in range(start, start + 500):
+            if i > len(self.logentries):
+                i = start + 500
             else:
                 output = output + '"' + str(i) + '": ' + \
                          self.logentries[i].simplejson() + ",\n"

@@ -8,12 +8,11 @@ from builtins import input
 from datetime import datetime
 from tabulate import tabulate
 
-import os, sys, locale, requests, random, crypt, re, configparser, signal
+import os, sys, locale, requests, random, re, configparser, signal
 import uuid, readline, glob
 
 from connections_utils import ssh
 from connections_utils import scp
-from connections_utils import password
 from ui_utils import completer
 
 
@@ -170,7 +169,7 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
             cert = SSL_CERTIFICAT
         # Standard SSH connection
         ssh.connect(target, filelog, login, port, sshoptions, pid,
-                    url_passhport, cert, SSH_SCRIPT, username, originalcmd)
+                    url_passhport, cert, SSH_SCRIPT, username, targetname, originalcmd)
 
     return True
 
@@ -362,6 +361,7 @@ if __name__ == '__main__':
         sys.exit("No such user in PaSSHport database.\n" +
                  "tip: it can be a SSL certificate misconfiguration.")
     originalcmd = os.environ.get('SSH_ORIGINAL_COMMAND')
+    passhport_target = os.environ.get('PASSHPORT_TARGET')
     choice = 0
  
     # If the user can't access any target
@@ -372,11 +372,21 @@ if __name__ == '__main__':
     indexed_target_list = build_targets_list(target_list)
 
     # Check if it's interactive ssh or another type of connection:
-    if originalcmd:
+    if originalcmd or passhport_target:
+        # Check if the target if given through the PASSHPORT_TARGET
+        # environment variable
+
+        if originalcmd:
+            targetcmd = originalcmd
+        else:
+            targetcmd = ""
+        if passhport_target:
+            targetcmd = passhport_target + " " + targetcmd
+        
         # In case the SSH_ORIGINAL_COMMAND is set,
         # it should be scp/rsync (according to sshd manpage)
         # After testing, it can be ssh with a direct command too...
-        direct_connection(username, url_passhport, target_list, originalcmd)
+        direct_connection(username, url_passhport, target_list, targetcmd)
 
     else:
         # We handle the interactive ssh connection

@@ -1,0 +1,30 @@
+<div class="card">
+    <div class="card-header with-border text-center">
+        <h3 class=card-title">Configuration</h3>
+    </div>
+    <div class="card-body">
+        <p class="text-center">Welcome to the PaSSHport configuration page.</br></p>
+        <p class="text-center"></br><br>
+        To use passhport, you need to set the url of the service, for example, www.passhport.company.tld, </br>
+        then add some SSL certificates for this domain name, </br>
+        and  finaly you need a SSH keys pair for passhport: the public key has to be deployed on every targets.</p>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
+            {% include "boxes/config_url_form_boxpart.html" %}
+            {% include "boxes/config_certs_form_boxpart.html" %}
+            {% include "boxes/config_sshkeys_form_boxpart.html" %}
+            {% include "boxes/warning_config_message.html" %}
+            <br>
+            {% if superadmin %}
+                <div class="col-xs-offset-5 col-xs-2 lbtn-bot15">
+                    <button type="submit" class="btn btn-block btn-primary">I've read the warning :</br>Apply and restart</button>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+</div>

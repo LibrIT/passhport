@@ -1,0 +1,14 @@
+{% extends "skels/with_sidebar.html" %}
+
+
+{% block headtitle %}
+    {% import 'html_elements/headers.html' as header %}
+    {{ header.header('Error', '500') }}
+{% endblock %}
+
+
+{% block body %}
+    {% include 'html_elements/500.html' %}
+{% endblock %}
+
+

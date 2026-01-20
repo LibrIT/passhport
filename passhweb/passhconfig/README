@@ -1,0 +1,1 @@
+This directory is used by passhweb to store sensible data like SSL certificates and passhport ssh keys during the configuration. Please leave it empty.

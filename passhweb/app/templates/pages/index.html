@@ -1,0 +1,41 @@
+{% extends "skels/with_sidebar.html" %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="/static/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block links %}
+    {{ links.sidebarlinks('/index', superadmin, managesomething, player) }}
+{% endblock links %}
+
+
+{% block headtitle %} 
+    {% if "passhadmin" != userid %}
+        {{ header.header("Dashboard" | title, "Open access to databases") }}
+    {% else %}
+        {{ header.header("Dashboard" | title, "Administration panel") }}
+    {% endif %}
+{% endblock %}
+
+
+{% block body %}
+<section class="content">
+    <div class="container-fluid">
+        {% if "passhadmin" != userid %}
+            {% include "boxes/welcome_message.html" %}
+            {% include "boxes/accessible_database_list.html" %}
+        {% else %}
+            {% include "boxes/welcome_message_passhmin.html" %}
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+
+{% block script %}
+    {% if "passhadmin" != userid %}
+        {% include "scripts/lists_common.html" %}
+        {% include "scripts/accessible_database_list.html" %}
+    {% endif %}
+{% endblock %}

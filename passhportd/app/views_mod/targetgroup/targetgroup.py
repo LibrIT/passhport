@@ -1,9 +1,5 @@
 # -*-coding:Utf-8 -*-
-
-# Compatibility 2.7-3.4
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
+import urllib
 from flask import request
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
@@ -55,7 +51,8 @@ def targetgroup_show(name):
     # Check for required fields
     if not name:
         return utils.response("ERROR: The name is required ", 417)
-
+    
+    name = urllib.parse.quote(name)
     targetgroup_data = targetgroup.Targetgroup.query.filter_by(
         name=name).first()
 
@@ -182,6 +179,7 @@ def targetgroup_delete(name):
         return utils.response("ERROR: The name is required ", 417)
 
     # Check if the name exists
+    name = urllib.parse.quote(name)
     query = db.session.query(targetgroup.Targetgroup.name)\
         .filter_by(name=name).first()
 

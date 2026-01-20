@@ -1,0 +1,46 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="login-card">
+            <div class="login-logo ">
+                <p>Pa<b>SSH</b>port</br></br></p>
+            </div>
+        </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category,message in messages %}
+                        {% if category != "message" %}    
+                            <div class="alert alert-{{category}} alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                                {{message}}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        <div class="card">
+            <div class="card-body">
+                <p class="login-box-msg mb-3">
+                                Log in to start your session
+                </p>
+                <form method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-envelope"></i></span></div>
+                        {{ form.email(size=80, class_="form-control", placeholder="Email") }}
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-lock"></i></span></div>
+                        {{ form.password(size=80, class_="form-control", type="password", placeholder="Password") }}
+                    </div>
+                    <div class="card-footer bg-white">
+                        <div class="col text-center">
+                            <button type="submit" class="btn btn-primary float-right">Sign In</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

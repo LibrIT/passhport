@@ -1,9 +1,4 @@
 # -*-coding:Utf-8 -*-
-
-# Compatibility 2.7-3.4
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from app import db, models_mod
 from app.models_mod import target,targetgroup
 
@@ -358,7 +353,6 @@ class Usergroup(db.Model):
                                          checked_usergroups, mode="obj"):
                     if target not in accessible_targets:
                         if mode == "string":
-                            print(target)
                             accessible_targets.append(target.name)
                         else:
                             accessible_targets.append(target)

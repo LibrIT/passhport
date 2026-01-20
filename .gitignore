@@ -1,4 +1,7 @@
 __pycache__
 passhportd/config.pyc
-*.pyc
+*.py[cod]
+*$py.class
 *~
+output-qemu
+packer_cache

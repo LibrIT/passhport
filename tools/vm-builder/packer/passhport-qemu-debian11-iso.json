@@ -1,0 +1,87 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+        "<esc><wait>",
+        "install ",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed-debian11.cfg ",
+        "debian-installer=en_US.UTF-8 ",
+        "auto ",
+        "locale=en_US.UTF-8 ",
+        "kbd-chooser/method=us ",
+        "keyboard-configuration/xkb-keymap=us ",
+        "fb=false ",
+        "hostname=passhport ",
+        "domain=passhport.org ",
+        "debconf/frontend=noninteractive ",
+        "console-setup/ask_detect=false ",
+        "console-keymaps-at/keymap=fr ",
+        "grub-installer/bootdev=/dev/sda ",
+        "net.ifnames=0 ",
+        "<enter><wait>"
+      ],
+      "boot_wait": "1s",
+      "headless": "true",
+      "http_directory": "http",
+      "iso_checksum": "file:https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/SHA256SUMS",
+      "iso_url": "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.2.0-amd64-netinst.iso",
+      "memory": "1024",
+      "shutdown_command": "echo 'passhport' | sudo -S shutdown -P now",
+      "ssh_password": "passhport",
+      "ssh_timeout": "10000s",
+      "ssh_username": "librit",
+      "type": "qemu"
+    }
+  ],
+  "min_packer_version": "1.3.3",
+  "provisioners": [
+    {
+      "destination": "/tmp/passhport-install-script-debian.sh",
+      "source": "../../passhport-install-script-debian.sh",
+      "type": "file"
+    },
+    {
+      "destination": "/tmp/disable-net-interface-naming.sh",
+      "source": "debian-provisionning/disable-net-interface-naming.sh",
+      "type": "file"
+    },
+    {
+      "destination": "/tmp/passhport-install-postgresql-backend-debian.sh",
+      "source": "../../passhport-install-postgresql-backend-debian.sh",
+      "type": "file"
+    },
+    {
+      "destination": "/tmp/passhport-install-apache2-frontend-debian.sh",
+      "source": "../../passhport-install-apache2-frontend-debian.sh",
+      "type": "file"
+    },
+    {
+      "destination": "/tmp/passhweb-install-script-debian.sh",
+      "source": "../../passhweb-install-script-debian.sh",
+      "type": "file"
+    },
+    {
+      "destination": "/tmp/passhweb-config-vm.sh",
+      "source": "../../passhweb-config-vm.sh",
+      "type": "file"
+    },
+    {
+      "inline": [
+        "chmod u+x /tmp/passhport-install-script-debian.sh",
+        "echo 'passhport' | sudo -S /tmp/passhport-install-script-debian.sh -s -b passhweb-release",
+        "chmod u+x /tmp/disable-net-interface-naming.sh",
+        "echo 'passhport' | sudo -S /tmp/disable-net-interface-naming.sh",
+        "chmod +x /tmp/passhport-install-postgresql-backend-debian.sh",
+        "echo 'passhport' | sudo -S /tmp/passhport-install-postgresql-backend-debian.sh",
+        "chmod +x /tmp/passhport-install-apache2-frontend-debian.sh",
+        "echo 'passhport' | sudo -S /tmp/passhport-install-apache2-frontend-debian.sh",
+        "chmod +x /tmp/passhweb-install-script-debian.sh",
+        "echo 'passhport' | sudo -S /tmp/passhweb-install-script-debian.sh",
+        "chmod +x /tmp/passhweb-config-vm.sh",
+        "echo 'passhport' | sudo -S /tmp/passhweb-config-vm.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {}
+}

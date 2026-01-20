@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="card col-sm-12">
+    	<div class="card-header">
+    	    <h3 class="card-title">Live SSH sessions</h3>
+        </div>
+	    <div class="card-body">
+    	    <table id="sshsessions" class="ltable table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Duration</th>
+                        <th>E-mail</th>
+                        <th>Target</th>
+                        <th>PID</th>
+                        {% if superadmin %}
+                            <th name="remove" class="nosort"></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <!-- Data loaded via javascript -->
+                </tbody-->
+                <tfoot>
+                    <tr>
+                        <th>Duration</th>
+                        <th>E-mail</th>
+                        <th>Target</th>
+                        <th>PID</th>
+                        {% if superadmin %}
+                            <th name="remove" class="nosort"></th>
+                        {% endif %}
+                    </tr>
+                </tfoot>
+        	</table>
+    	</div>
+    </div>
+    {% if DBP %}
+    <div class="card col-sm-12">
+    	<div class="card-header">
+    	    <h3 class="card-title">Live databases sessions</h3>
+        </div>
+	    <div class="card-body">
+            <table id="dbsessions" class="ltable table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Duration</th>
+                        <th>E-mail</th>
+                        <th>Target</th>
+                        <th>PID</th>
+                        {% if superadmin %}
+                        <th name="remove" class="nosort"></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <!-- Data loaded via javascript -->
+                </tbody-->
+                <tfoot>
+                    <tr>
+                        <th>Duration</th>
+                        <th>E-mail</th>
+                        <th>Target</th>
+                        <th>PID</th>
+                        {% if superadmin %}
+                        <th name="remove" class="nosort"></th>
+                        {% endif %}
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}

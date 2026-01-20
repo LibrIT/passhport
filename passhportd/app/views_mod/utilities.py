@@ -197,6 +197,8 @@ def is_number(s):
 # Notifications
 def send_email(msg, subject, recipient):
     """Simply send the email to recipient"""
+    if not config.NOTIF_LOG_TYPE == "email":
+        return False
     server = smtplib.SMTP(config.NOTIF_SMTP)
     from_mail = config.NOTIF_FROM
     app.logger.info("Notification sent to: " + recipient)

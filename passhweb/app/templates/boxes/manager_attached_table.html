@@ -1,0 +1,29 @@
+<div class="card">
+    <div class="card-header with-border text-center">
+        <h3 class="card-title">Attached managers</h3>
+    </div>
+    <div class="card-body">
+        <table id="attachedmanager" class="ltable table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>E-mail</th>
+                    <th>Comment</th>
+                    {% if superadmin %}
+                        <th name="remove" class="nosort"></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <!-- Data loaded via javascript -->
+            </tbody-->
+            <tfoot>
+                <tr>
+                    <th>E-mail</th>
+                    <th>Comment</th>
+                    {% if superadmin %}
+                        <th name="remove" class="nosort"></th>
+                    {% endif %}
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

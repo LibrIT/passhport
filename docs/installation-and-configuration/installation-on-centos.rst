@@ -31,7 +31,7 @@ Install python34-pip and other packages that we’ll need later for this tutoria
 
 .. code-block:: none
 
-  root@centos7:~# yum install python34-pip git openssl python34-devel gcc
+  root@centos7:~# yum install python34-pip git openssl python34-devel gcc libffi-devel
 
 Let’s update pip :
 
@@ -39,11 +39,11 @@ Let’s update pip :
 
   root@centos7:~# pip3 install -U pip
 
-Now, install virtual-env using pip :
+Now, install virtual-env and a mandatory lib using pip :
 
 .. code-block:: none
 
-  root@centos7:~# pip3 install virtualenv
+  root@centos7:~# pip3 install virtualenv pathlib2
 
 Next we will need to add a system user called « passhport », and switch to it :
 
@@ -59,14 +59,6 @@ We now need to create a virtual-env for passhport user :
 
   passhport@centos7:~$ virtualenv -p python3 passhport-run-env
 
-Now that we have our virtual-env, we install the python’s modules we’ll need for PaSSHport :
-
-.. code-block:: none
-
-  passhport@centos7:~$ /home/passhport/passhport-run-env/bin/pip install sqlalchemy-migrate flask-migrate requests docopt configparser tabulate flask-login ldap3 psutil cryptography
-
-Now, let’s start the real thing…
-
 Let’s get passhport sources from github :
 
 .. code-block:: none
@@ -79,6 +71,14 @@ Let’s get passhport sources from github :
   Réception d'objets: 100% (2713/2713), 482.76 KiB | 396.00 KiB/s, fait.
   Résolution des deltas: 100% (1633/1633), fait.
   passhport@centos7:~$
+
+Now that we have our virtual-env, we install the python’s modules we’ll need for PaSSHport :
+
+.. code-block:: none
+
+  passhport@centos7:~$ /home/passhport/passhport-run-env/bin/pip install -r /home/passhport/passhport/requirements.txt
+
+Now, let’s start the real thing…
 
 PaSSHport will need to write some logs, so, as root, we’ll create a directory in « /var/log », and give the ownership to the « passhport » user:
 

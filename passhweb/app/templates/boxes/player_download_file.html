@@ -1,0 +1,16 @@
+<div class="card">
+    <div class="card-header with-border text-center">
+        <h3 class="card-title">Download a file from a {{pagename}} player</h3>
+    </div>
+    <div class="card-body">
+        <div class="input-group input-group" data-toggle="tooltip" title="Enter a player hosntame or IP and the file absolute path">
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-link"></i></span></div>
+            <input class="form-control" id="inputplayer" name="Hostname" placeholder="eg: root@192.168.0.22 or user@hostname" size="5000" type="text" value="">
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-file"></i></span></div>
+            <input class="form-control" id="inputdownload" name="download" placeholder="eg: /var/log/syslog..." size="5000" type="text" value="">
+            <span class="input-group-btn">
+                <button id="downloadfile" type="submit" class="btn btn-primary btn-flat">Download</button>
+            </span>
+        </div>
+    </div>
+</div>

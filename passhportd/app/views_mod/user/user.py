@@ -3,9 +3,11 @@
 
 import os, sys, stat, re
 import config
+import urllib
 
 from io import open
 from ldap3 import Server, Connection, ALL
+from ldap3.utils.conv import escape_filter_chars
 from flask import request
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
@@ -27,7 +29,7 @@ def useruid(s, login):
 
     # Look for the user entry.
     if not c.search(config.LDAPBASE,
-                    "(" + config.LDAPFIELD + "=" + login + ")") :
+                    "(" + config.LDAPFIELD + "=" + escape_filter_chars(login) + ")") :
         app.logger.error("Error: Connection to the LDAP with service account failed")
     else:
         if len(c.entries) >= 1 :
@@ -48,12 +50,13 @@ def try_ldap_login(login, password):
     s = Server(config.LDAPURI, port=config.LDAPPORT,
                use_ssl=False, get_info=ALL)
     # 1. connection with service account to find the user uid
-    uid = useruid(s, login)
+    uid = useruid(s, escape_filter_chars(login))
    
     if uid: 
         # 2. Try to bind the user to the LDAP
         c = Connection(s, user = uid , password = password, auto_bind = True)
         c.open()
+        c.start_tls()
         c.bind()
         result =  c.result["description"] # "success" if bind is ok
         c.unbind()
@@ -80,6 +83,8 @@ def user_login():
     # Check for required fields
     if not login or not password:
         return utils.response("ERROR: The login and password are required ", 417)
+    elif login != escape_filter_chars(login):
+        return utils.response("ERROR: Bad input", 417)
 
     # Check data validity uppon LDAP/local/whatever...
     result = try_login(login, password)
@@ -131,6 +136,7 @@ def user_show(name):
     if not name:
         return utils.response("ERROR: The name is required ", 417)
 
+    name = urllib.parse.quote(name)
     user_data = user.User.query.filter_by(name=name).first()
 
     if user_data is None:
@@ -454,7 +460,7 @@ def user_edit():
 
     need_authorizedkey_update = False
     form = request.form
-    usertoupdate = db.session.query(user.User.name).filter_by(
+    usertoupdate = db.session.query(user.User).filter_by(
                                                      name=form["name"])
     legacysshkey = db.session.query(user.User.sshkey).filter_by(
                                             name=form["name"]).first()[0]
@@ -506,6 +512,7 @@ def user_delete(name):
         return utils.response("ERROR: The name is required ", 417)
 
     # Check if the name exists
+    name = urllib.parse.quote(name)
     query = db.session.query(user.User).filter_by(name=name).first()
 
     if query is None:

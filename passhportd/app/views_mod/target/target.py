@@ -1,4 +1,5 @@
 # -*-coding:Utf-8 -*-
+import urllib
 from flask import request
 from sqlalchemy import exc, and_
 from sqlalchemy.orm import sessionmaker
@@ -121,6 +122,7 @@ def target_show(name):
     if not name:
         return utils.response("ERROR: The name is required ", 417)
 
+    name = urllib.parse.quote(name)
     target_data = target.Target.query.filter_by(name=name).first()
 
     if target_data is None:
@@ -312,7 +314,7 @@ def target_edit():
         return utils.response('ERROR: No target with the name "' + name + \
                               '" in the database.', 417)
 
-    to_update = db.session.query(target.Target.name).filter_by(name=name)
+    to_update = db.session.query(target.Target).filter_by(name=name)
 
     # Let's modify only relevent fields
     if new_login:
@@ -372,6 +374,7 @@ def target_delete(name):
         return utils.response("ERROR: The name is required ", 417)
 
     # Check if the name exists
+    name = urllib.parse.quote(name)
     query = db.session.query(target.Target.name)\
         .filter_by(name=name).first()
 
@@ -734,26 +737,47 @@ def extcloseaccess(pid, extaccess):
 
 @app.route("/target/getpassword/<targetname>/<number>")
 @app.route("/target/getpassword/<targetname>")
-def getpassword(targetname, number = 20):
+def getpassword(targetname, number = '20'):
     """Get stored passwords associated to a target, used on automatic 
     root password change by passhport script"""
     
+    targetname = urllib.parse.quote(targetname)
     t = target.Target.query.filter_by(name=targetname).first()
     if t is None:
         return utils.response('ERROR: No target with the name "' + \
                                targetname + '" in the database.', 417)
 
+    # Format the maximum password to decrypt number
+    if not number.isdigit():
+        number = 20
+    number = int(number)
+
     # Response for datatable
     output = '[\n'
-    i = 1
-    tlen = len(t.passentries)
-    # We decrypt only 20 first passwords to avoid long waits
-    while i < tlen +1 and i < int(number)+1:
-        output = output + t.passentries[tlen-i].notargetjson() + ",\n"
-        i = i+1
+    # Number of password in databse
+    tlen = min(len(t.passentries),number)
+ 
+    for i in range(0,tlen):
+        output = output + t.passentries[-i].notargetjson() + ",\n"
 
     if output == '[\n':
         return utils.response('[]', 200)
     output = output[:-2] + '\n]'
 
     return utils.response(output, 200) 
+
+@app.route("/target/changepassword/<targetname>")
+def changetargetpassword(targetname):
+    """Change the password for the target if and only if the target
+    is defined with automatic root password change option"""
+    
+    t = target.Target.query.filter_by(name=targetname).first()
+    if t is None:
+        return utils.response('ERROR: No target with the name "' + \
+                               targetname + '" in the database.', 417)
+
+    t.changepass(format(datetime.now(), '%Y%m%dT%H%M'))
+
+    return utils.response("Automatic password change routine done on: " + \
+                               targetname, 200)
+    

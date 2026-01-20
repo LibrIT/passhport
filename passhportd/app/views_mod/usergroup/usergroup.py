@@ -1,9 +1,5 @@
 # -*-coding:Utf-8 -*-
-
-# Compatibility 2.7-3.4
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
+import urllib
 from flask import request
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
@@ -55,6 +51,7 @@ def usergroup_show(name):
     if not name:
         return utils.response("ERROR: The name is required ", 417)
 
+    name = urllib.parse.quote(name)
     usergroup_data = usergroup.Usergroup.query.filter_by(name=name).first()
 
     if usergroup_data is None:
@@ -136,7 +133,7 @@ def usergroup_create():
 
 @app.route("/usergroup/edit", methods=["POST"])
 def usergroup_edit():
-    """Edit a user in the database"""
+    """Edit a usergroup in the database"""
     # Only POST data are handled
     if request.method != "POST":
         return utils.response("ERROR: POST method is required ", 405)
@@ -159,7 +156,7 @@ def usergroup_edit():
                               '" in the database.', 417)
 
     to_update = db.session.query(
-        usergroup.Usergroup.name).filter_by(
+        usergroup.Usergroup).filter_by(
         name=name)
 
     # Let's modify only relevent fields
@@ -197,18 +194,20 @@ def usergroup_delete(name):
         return utils.response("ERROR: The name is required ", 417)
 
     # Check if the name exists
-    query = db.session.query(
-                usergroup.Usergroup).filter(
-                usergroup.Usergroup.name == name)
+    name = urllib.parse.quote(name)
+    query = db.session.query(usergroup.Usergroup.name)\
+        .filter_by(name=name).first()
 
     if query is None:
         return utils.response('ERROR: No usergroup with the name "' + name + \
                               '" in the database.', 417)
-    
+
     #Normaly there will be only one element with that name
-    ug = query[0]
-    ug.prepare_delete()
-    query.delete()
+    ug = db.session.query(
+                usergroup.Usergroup).filter(
+                usergroup.Usergroup.name == name)
+    ug[0].prepare_delete()
+    ug.delete()
 
     try:
         db.session.commit()
