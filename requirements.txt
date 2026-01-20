@@ -40,5 +40,5 @@ Tempita==0.5.2
 legacy-cgi==2.6.2
 urllib3==1.26.19
 wheel==0.38.4
-Werkzeug==2.2.3
+Werkzeug==3.1.5
 zipp==3.8.1
