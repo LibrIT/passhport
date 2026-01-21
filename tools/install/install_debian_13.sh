@@ -171,7 +171,7 @@ configure_postgresql()
   echo -e "${BLUE}Configure access to postgresql database and initialize it...${NC}"
   ${POSTGRESDO} "createuser -D -S -R passhport && createdb -O passhport 'passhport'"
   ${POSTGRESDO} "psql -U postgres -d passhport -c \"alter user passhport with password '${POSTGRESPASS}';\""
-  ${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/db_create.py"
+  ${PASSHPORTDO} "cd /home/passhport/passhport/passhportd && /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/db_create.py"
   echo
 }
 
