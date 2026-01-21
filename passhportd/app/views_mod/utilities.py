@@ -6,6 +6,7 @@ import stat
 import smtplib
 
 from io import open
+from datetime import datetime
 from sshpubkeys import SSHKey
 
 from app import app, db
@@ -191,6 +192,42 @@ def is_number(s):
     try:
         float(s)
         return True
+    except ValueError:
+        return False
+
+
+def parse_expiration(value):
+    """Parse a local datetime string with optional parts."""
+    if value is None:
+        return None
+    value = value.strip()
+    if not value:
+        return None
+    if value.lower() in ["none", "null", "unlimited"]:
+        return None
+
+    if "T" in value:
+        date_part, time_part = value.split("T", 1)
+    else:
+        date_part, time_part = value, ""
+
+    date_fields = date_part.split("-")
+    if len(date_fields) > 3 or len(date_fields) < 1:
+        return False
+
+    try:
+        year = int(date_fields[0])
+        month = int(date_fields[1]) if len(date_fields) >= 2 and date_fields[1] else 1
+        day = int(date_fields[2]) if len(date_fields) >= 3 and date_fields[2] else 1
+        hour = minute = second = 0
+        if time_part:
+            time_fields = time_part.split(":")
+            if len(time_fields) > 3:
+                return False
+            hour = int(time_fields[0]) if len(time_fields) >= 1 and time_fields[0] else 0
+            minute = int(time_fields[1]) if len(time_fields) >= 2 and time_fields[1] else 0
+            second = int(time_fields[2]) if len(time_fields) >= 3 and time_fields[2] else 0
+        return datetime(year, month, day, hour, minute, second)
     except ValueError:
         return False
 

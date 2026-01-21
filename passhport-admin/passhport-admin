@@ -27,9 +27,9 @@ Usage:
 [--newcomment=<comment>] [--newsshoptions=<sshoptions>] [--newport=<port>] \
 [--sessiondur=<sessiondur>]) ]
     passhport-admin target (adduser | rmuser) \
-[(<username> <targetname>)]
+[(<username> <targetname>) [--expires-at=<expiresat>]]
     passhport-admin target (addusergroup | rmusergroup) \
-[(<usergroupname> <targetname>)]
+[(<usergroupname> <targetname>) [--expires-at=<expiresat>]]
     passhport-admin target delete [([-f | --force] <name>)]
     passhport-admin usergroup list
     passhport-admin usergroup search [<pattern>]
@@ -49,11 +49,11 @@ Usage:
     passhport-admin targetgroup edit [(<name> [--newname=<name>] \
 [--newcomment=<comment>])]
     passhport-admin targetgroup (adduser | rmuser) \
-[(<username> <targetgroupname>)]
+[(<username> <targetgroupname>) [--expires-at=<expiresat>]]
     passhport-admin targetgroup (addtarget | rmtarget) \
 [(<targetname> <targetgroupname>)]
     passhport-admin targetgroup (addusergroup | rmusergroup) \
-[(<usergroupname> <targetgroupname>)]
+[(<usergroupname> <targetgroupname>) [--expires-at=<expiresat>]]
     passhport-admin targetgroup (addtargetgroup | rmtargetgroup) \
 [(<subtargetgroupname> <targetgroupname>)]
     passhport-admin targetgroup delete [([-f | --force] <name>)]
@@ -96,6 +96,8 @@ of the target.
     --newport=<port>                Set the new port used \
     --newsessiondur=<sessiondur>    Set the new session duration in minutes for \
 when supported.
+    --expires-at=<expiresat>        Set access expiration (local time, \
+YYYY-mm-ddTHH:MM:SS or partial).
 
 with the target.
 """

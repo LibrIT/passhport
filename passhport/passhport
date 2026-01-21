@@ -112,6 +112,14 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
     target     = target_found[2]
     login      = get(url_passhport + "target" + "/login/" + \
                  targetname)
+    expires_at = get(url_passhport + "user/access_expiration/" + \
+                 username + "/" + targetname)
+    if isinstance(expires_at, str):
+        expires_at = expires_at.strip()
+    if expires_at == 1 or str(expires_at).startswith("ERROR"):
+        expires_at = ""
+    if expires_at == "unlimited":
+        expires_at = ""
     # If target login is set at $email => 
     # we user login=username (without @...)
     if login == "$email":
@@ -169,7 +177,8 @@ def checkandconnect(indexed_target_list, choice, username, originalcmd,
             cert = SSL_CERTIFICAT
         # Standard SSH connection
         ssh.connect(target, filelog, login, port, sshoptions, pid,
-                    url_passhport, cert, SSH_SCRIPT, username, targetname, originalcmd)
+                    url_passhport, cert, SSH_SCRIPT, username, targetname,
+                    originalcmd, expires_at)
 
     return True
 
@@ -370,6 +379,15 @@ if __name__ == '__main__':
 
     #Construct the indexted targets list
     indexed_target_list = build_targets_list(target_list)
+
+    # Notify the user if the previous session ended by expiration.
+    expired_notice = "/tmp/passhport-expired-" + username
+    if os.path.isfile(expired_notice):
+        with open(expired_notice, "r") as f:
+            message = f.read().strip()
+            if message:
+                print(message)
+        os.remove(expired_notice)
 
     # Check if it's interactive ssh or another type of connection:
     if originalcmd or passhport_target:

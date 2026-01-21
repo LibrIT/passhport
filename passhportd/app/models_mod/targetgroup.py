@@ -1,5 +1,7 @@
 # -*-coding:Utf-8 -*-
 from app import db, models_mod
+from app.models import TGroup_User, Tgroup_Group
+from app.models_mod import user, usergroup
 
 # Table to handle the self-referencing many-to-many relationship
 # for the Targetgroup class:
@@ -60,11 +62,11 @@ class Targetgroup(db.Model):
         output.append("Name: {}".format(self.name))
         output.append("Comment: {}".format(self.comment))
         output.append("User list: " + \
-                      " ".join(self.username_list()))
+                      " ".join(self.username_list_with_expiration()))
         output.append("Target list: " + \
                       " ".join(self.targetname_list()))
         output.append("Usergroup list: " + \
-                      " ".join(self.usergroupname_list()))
+                      " ".join(self.usergroupname_list_with_expiration()))
         output.append("Targetgroup list: " + \
                       " ".join(self.targetgroupname_list()))
 
@@ -161,6 +163,24 @@ class Targetgroup(db.Model):
             usernames.append(user.show_name())
 
         return usernames
+
+
+    def username_list_with_expiration(self):
+        """Return direct users with expiration when set"""
+        entries = []
+        assoc = db.session.query(TGroup_User).filter(
+            TGroup_User.targetgroup_id == self.id).all()
+        for row in assoc:
+            user_obj = db.session.query(user.User).filter(
+                user.User.id == row.user_id).first()
+            if not user_obj:
+                continue
+            if row.expires_at:
+                expires_at = row.expires_at.strftime("%Y-%m-%dT%H:%M:%S")
+                entries.append(user_obj.show_name() + " (" + expires_at + ")")
+            else:
+                entries.append(user_obj.show_name())
+        return entries
 
 
     def all_username_list(self, parsed_usergroups = None):
@@ -352,6 +372,24 @@ class Targetgroup(db.Model):
             usergroupnames.append(usergroup.show_name())
 
         return usergroupnames
+
+
+    def usergroupname_list_with_expiration(self):
+        """Return direct usergroups with expiration when set"""
+        entries = []
+        assoc = db.session.query(Tgroup_Group).filter(
+            Tgroup_Group.targetgroup_id == self.id).all()
+        for row in assoc:
+            ug = db.session.query(usergroup.Usergroup).filter(
+                usergroup.Usergroup.id == row.group_id).first()
+            if not ug:
+                continue
+            if row.expires_at:
+                expires_at = row.expires_at.strftime("%Y-%m-%dT%H:%M:%S")
+                entries.append(ug.show_name() + " (" + expires_at + ")")
+            else:
+                entries.append(ug.show_name())
+        return entries
 
 
     def usergroup_list(self):

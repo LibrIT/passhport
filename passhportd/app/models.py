@@ -84,6 +84,7 @@ class Target_User(db.Model):
         db.Integer,
         db.ForeignKey("user.id"),
         primary_key=True)
+    expires_at = db.Column(db.DateTime, index=True, nullable=True)
 
 
 class Tg_admins(db.Model):
@@ -136,6 +137,7 @@ class Target_Group(db.Model):
         db.Integer,
         db.ForeignKey("usergroup.id"),
         primary_key=True)
+    expires_at = db.Column(db.DateTime, index=True, nullable=True)
 
 
 class TGroup_User(db.Model):
@@ -149,6 +151,7 @@ class TGroup_User(db.Model):
         db.Integer,
         db.ForeignKey("user.id"),
         primary_key=True)
+    expires_at = db.Column(db.DateTime, index=True, nullable=True)
 
 
 class TGroup_Target(db.Model):
@@ -175,3 +178,4 @@ class Tgroup_Group(db.Model):
         db.Integer,
         db.ForeignKey("usergroup.id"),
         primary_key=True)
+    expires_at = db.Column(db.DateTime, index=True, nullable=True)

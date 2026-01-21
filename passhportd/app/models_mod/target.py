@@ -2,7 +2,8 @@
 import random, os, config
 from datetime import datetime, timedelta, date
 from app import app, db
-from app.models_mod import targetgroup, passentry
+from app.models_mod import targetgroup, passentry, user, usergroup
+from app.models import Target_User, Target_Group
 from flask import jsonify
 from subprocess import Popen, PIPE
 
@@ -74,8 +75,10 @@ class Target(db.Model):
             output.append("Session duration: {}".format(str(timedelta(
                         minutes= self.show_sessionduration()))[:-6] + "h"))
         output.append("Comment: {}".format(self.comment))
-        output.append("Attached users: " + " ".join(self.username_list()))
-        output.append("Usergroup list: " + " ".join(self.usergroupname_list()))
+        output.append("Attached users: " + \
+                      " ".join(self.username_list_with_expiration()))
+        output.append("Usergroup list: " + \
+                      " ".join(self.usergroupname_list_with_expiration()))
 
         output.append("Users who can access this target: " + \
                       " ".join(self.list_all_usernames()))
@@ -269,6 +272,24 @@ class Target(db.Model):
             usernames.append(user.show_name())
 
         return usernames
+
+
+    def username_list_with_expiration(self):
+        """Return direct users with expiration when set"""
+        entries = []
+        assoc = db.session.query(Target_User).filter(
+            Target_User.target_id == self.id).all()
+        for row in assoc:
+            user_obj = db.session.query(user.User).filter(
+                user.User.id == row.user_id).first()
+            if not user_obj:
+                continue
+            if row.expires_at:
+                expires_at = row.expires_at.strftime("%Y-%m-%dT%H:%M:%S")
+                entries.append(user_obj.show_name() + " (" + expires_at + ")")
+            else:
+                entries.append(user_obj.show_name())
+        return entries
     
 
     def username_list_json(self):
@@ -342,6 +363,24 @@ class Target(db.Model):
             usergroupnames.append(usergroup.show_name())
 
         return usergroupnames
+
+
+    def usergroupname_list_with_expiration(self):
+        """Return direct usergroups with expiration when set"""
+        entries = []
+        assoc = db.session.query(Target_Group).filter(
+            Target_Group.target_id == self.id).all()
+        for row in assoc:
+            ug = db.session.query(usergroup.Usergroup).filter(
+                usergroup.Usergroup.id == row.group_id).first()
+            if not ug:
+                continue
+            if row.expires_at:
+                expires_at = row.expires_at.strftime("%Y-%m-%dT%H:%M:%S")
+                entries.append(ug.show_name() + " (" + expires_at + ")")
+            else:
+                entries.append(ug.show_name())
+        return entries
 
 
     def usergroupname_list_json(self):

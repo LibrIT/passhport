@@ -5,6 +5,7 @@ from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 from app import app, db
 from app.models_mod import user, target, usergroup, targetgroup
+from app.models import TGroup_User, Tgroup_Group
 from . import api
 
 from .. import utilities as utils
@@ -229,8 +230,21 @@ def targetgroup_adduser():
         return utils.response('ERROR: no targetgroup "' + targetgroupname + \
                               '" in the database ', 417)
 
-    # Now we can add the user
-    tg.adduser(u)
+    expires_raw = request.form.get("expires_at")
+    expires_at = utils.parse_expiration(expires_raw)
+    if expires_at is False:
+        return utils.response('ERROR: Bad expiration date format', 417)
+
+    # Add or update the relation with an optional expiration.
+    assoc = db.session.query(TGroup_User).filter_by(
+        user_id=u.id, targetgroup_id=tg.id).first()
+    if assoc:
+        if "expires_at" in request.form:
+            assoc.expires_at = expires_at
+    else:
+        assoc = TGroup_User(user_id=u.id, targetgroup_id=tg.id,
+                            expires_at=expires_at)
+        db.session.add(assoc)
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
@@ -411,8 +425,21 @@ def targetgroup_addusergroup():
         return utils.response('ERROR: no targetgroup "' + targetgroupname + \
                               '" in the database ', 417)
 
-    # Now we can add the usergroup
-    tg.addusergroup(ug)
+    expires_raw = request.form.get("expires_at")
+    expires_at = utils.parse_expiration(expires_raw)
+    if expires_at is False:
+        return utils.response('ERROR: Bad expiration date format', 417)
+
+    # Add or update the relation with an optional expiration.
+    assoc = db.session.query(Tgroup_Group).filter_by(
+        group_id=ug.id, targetgroup_id=tg.id).first()
+    if assoc:
+        if "expires_at" in request.form:
+            assoc.expires_at = expires_at
+    else:
+        assoc = Tgroup_Group(group_id=ug.id, targetgroup_id=tg.id,
+                             expires_at=expires_at)
+        db.session.add(assoc)
     try:
         db.session.commit()
     except exc.SQLAlchemyError as e:
