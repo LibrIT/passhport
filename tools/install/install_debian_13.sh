@@ -76,6 +76,8 @@ create_passhport_user()
   [ ! -e "/home/passhport/" ] && mkdir -p /home/passhport && chown passhport:passhport /home/passhport
   # Needed for Apache WSGI
   chmod o+rx /home/passhport/
+  # Needed for authorized keys
+  ${PASSHPORTDO} 'mkdir ~/.ssh && chmod 700 ~/.ssh'
   echo
 }
 
