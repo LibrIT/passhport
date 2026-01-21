@@ -70,11 +70,11 @@ def run_migrations_online():
                                 poolclass=pool.NullPool)
 
     connection = engine.connect()
-    context.configure(connection=connection,
-                      target_metadata=target_metadata,
-                      process_revision_directives=process_revision_directives,
-                      compare_type=True,
-                      **current_app.extensions['migrate'].configure_args)
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        process_revision_directives=process_revision_directives,
+        **current_app.extensions['migrate'].configure_args)
 
     try:
         with context.begin_transaction():

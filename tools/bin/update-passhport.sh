@@ -65,7 +65,7 @@ then
        exit 1
 fi
 
-"${PASSHPORT_RUN_ENV_PIP_BIN}" install sqlalchemy-migrate flask-migrate requests docopt configparser tabulate flask-login ldap3 psutil
+"${PASSHPORT_RUN_ENV_PIP_BIN}" install flask-migrate requests docopt configparser tabulate flask-login ldap3 psutil
 
 cd "${PASSHPORT_DIR}"
 git pull origin master || exit 1
