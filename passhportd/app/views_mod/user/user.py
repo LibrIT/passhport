@@ -1,7 +1,7 @@
 # -*- coding:Utf-8 -*-
 
 
-import os, sys, stat, re
+import os, sys, stat, re, bcrypt
 import config
 import urllib
 
@@ -63,9 +63,30 @@ def try_ldap_login(login, password):
 
     return result
 
+def try_htaccess_login(login, password):
+    """ Compare logins with the file in parameters """
+    # read and parse file
+    result = "Wrong login/password"
+    try:
+        with open(config.HTACCESSFILE, 'r') as file:
+            for line in file:
+                stored_login, stored_hash = line.strip().split(':')
+                if stored_login == login:
+                    # Compare password
+                    if bcrypt.checkpw(password.encode('utf-8'), stored_hash.encode('utf-8')):
+                        result = "success"
+    except FileNotFoundError:
+        result = "HTACCESS file not found"
+    except Exception as e:
+        result = f"An error occurred: {str(e)}"
+    return result
 
-def try_login(login, password, method="LDAP"):
-    if method == "LDAP":
+
+def try_login(login, password):
+    # If a global metho exists, we use it else, LDAP
+    if not config.HTACCESSFILE == "None" :
+        return try_htaccess_login(login, password)
+    else:
         return try_ldap_login(login, password)
 
 
@@ -184,7 +205,7 @@ def naturalkeys(text):
     """ stackoverflow how-to-correctly-sort-a-string-with-a-number-inside
         and http://nedbatchelder.com/blog/200712/human_sorting.html 
         basically sort a text list taking care of numbers """
-    return [atoi(c) for c in re.split(r'(\d+)', text)]
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]
 
 
 def uaccessible_targets(name, withid = True, returnlist = False):
