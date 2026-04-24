@@ -60,9 +60,9 @@ install_packages()
   apt update
   if [ ${DOCKER_INSTALL} -ne 1 ]
   then
-    apt install -y python3-pip python3-venv git openssl libpython3-dev postgresql apache2 libapache2-mod-wsgi-py3 libpq-dev
+    apt install -y build-essential libffi-dev pkg-config python3-pip python3-venv git openssl libpython3-dev postgresql apache2 libapache2-mod-wsgi-py3 libpq-dev
   else
-    apt install -y python3-pip python3-venv git openssl libpython3-dev apache2 libapache2-mod-wsgi-py3 libpq-dev
+    apt install -y build-essential libffi-dev pkg-config python3-pip python3-venv git openssl libpython3-dev apache2 libapache2-mod-wsgi-py3 libpq-dev
   fi
   echo
 }
@@ -74,13 +74,17 @@ create_passhport_user()
   /usr/sbin/useradd --home-dir /home/passhport --shell /bin/bash --create-home passhport
   #in case the user exists but the homedir didn't... (happens if the purge is launched from a passhport ssh session)
   [ ! -e "/home/passhport/" ] && mkdir -p /home/passhport && chown passhport:passhport /home/passhport
+  # Needed for Apache WSGI
+  chmod o+rx /home/passhport/
+  # Needed for authorized keys
+  ${PASSHPORTDO} 'mkdir ~/.ssh && chmod 700 ~/.ssh'
   echo
 }
 
 download_sources()
 {
   # Download passhport code
-  echo -e "${BLUE}Cloning passhport git from github...${NC}"
+  echo -e "${BLUE}Cloning passhport git from github from branch ${GITBRANCH:-master}...${NC}"
   if [ ! -z "${GITBRANCH}" ]
   then
     ${PASSHPORTDO} "git clone --single-branch --branch ${GITBRANCH} https://github.com/LibrIT/passhport.git"
@@ -90,7 +94,7 @@ download_sources()
   echo
 }
 
-initial_config()
+bootstrap_config()
 {
   # Configure initial system and create env
   echo -e "${BLUE}Create conf and log directories...${NC}"
@@ -103,12 +107,12 @@ initial_config()
   cp /home/passhport/passhport/passhport/passhport.ini /etc/passhport/.
   cp /home/passhport/passhport/passhport-admin/passhport-admin.ini /etc/passhport/.
   cp /home/passhport/passhport/passhportd/passhportd.ini /etc/passhport/.
-  sed -i -e 's#SQLALCHEMY_DATABASE_DIR\s*=.*#SQLALCHEMY_DATABASE_DIR        = /var/lib/passhport/#' /etc/passhport/passhportd.ini
-  sed -i -e 's#LISTENING_IP\s*=.*#LISTENING_IP = 0.0.0.0#' /etc/passhport/passhportd.ini
-  sed -i -e 's#SQLALCHEMY_MIGRATE_REPO\s*=.*#SQLALCHEMY_MIGRATE_REPO        = /var/lib/passhport/db_repository#' /etc/passhport/passhportd.ini
-  sed -i -e "s#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = postgresql://passhport:${POSTGRESPASS}@localhost/passhport#" /etc/passhport/passhportd.ini
-  sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport-admin.ini
-  sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport.ini
+  #sed -i -e 's#SQLALCHEMY_DATABASE_DIR\s*=.*#SQLALCHEMY_DATABASE_DIR        = /var/lib/passhport/#' /etc/passhport/passhportd.ini
+  #sed -i -e 's#LISTENING_IP\s*=.*#LISTENING_IP = 0.0.0.0#' /etc/passhport/passhportd.ini
+  #sed -i -e 's#SQLALCHEMY_MIGRATE_REPO\s*=.*#SQLALCHEMY_MIGRATE_REPO        = /var/lib/passhport/db_repository#' /etc/passhport/passhportd.ini
+  #sed -i -e "s#SQLALCHEMY_DATABASE_URI\s*=.*#SQLALCHEMY_DATABASE_URI        = postgresql://passhport:${POSTGRESPASS}@localhost/passhport#" /etc/passhport/passhportd.ini
+  #sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport-admin.ini
+  #sed -i -e "s#PASSHPORTD_HOSTNAME\s*=.*#PASSHPORTD_HOSTNAME = localhost#" /etc/passhport/passhport.ini
   echo
 }
 
@@ -118,7 +122,6 @@ create_python_venv()
   echo -e "${BLUE}Installing mandatory packages in a new python3 venv...${NC}"
   ${PASSHPORTDO} "python3 -m venv passhport-run-env"
   ${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/pip install -r /home/passhport/passhport/requirements.txt"
-  ${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/pip install psycopg2 psycopg2-binary flask_login flask_wtf requests"
   echo
 }
 
@@ -142,7 +145,6 @@ install_bash_completion()
   fi
   cp /home/passhport/passhport/tools/confs/passhport-admin.bash_completion /etc/bash_completion.d/passhport-admin
   . /etc/bash_completion.d/passhport-admin
-  ln -s /home/passhport/passhport/tools/bin/passhport-admin.sh /usr/local/bin/passhport-admin
   echo
 }
 
@@ -171,7 +173,7 @@ configure_postgresql()
   echo -e "${BLUE}Configure access to postgresql database and initialize it...${NC}"
   ${POSTGRESDO} "createuser -D -S -R passhport && createdb -O passhport 'passhport'"
   ${POSTGRESDO} "psql -U postgres -d passhport -c \"alter user passhport with password '${POSTGRESPASS}';\""
-  ${PASSHPORTDO} "/home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/db_create.py"
+  ${PASSHPORTDO} "cd /home/passhport/passhport/passhportd && /home/passhport/passhport-run-env/bin/python /home/passhport/passhport/passhportd/db_create.py"
   echo
 }
 
@@ -179,7 +181,7 @@ configure_apache_for_passhportd()
 {
   echo -e "${BLUE}Create apache2 configuration for passhport and restart apache2...${NC}"
   echo "Listen 5000
-  <VirtualHost *:5000>
+<VirtualHost *:5000>
   ServerName passhport
 
   SSLEngine               on
@@ -189,12 +191,12 @@ configure_apache_for_passhportd()
   WSGIDaemonProcess passhport user=passhport group=passhport threads=5  python-home=/home/passhport/passhport-run-env/
   WSGIScriptAlias / /home/passhport/passhport/tools/bin/passhportd.wsgi
   <Directory /home/passhport/ >
-  WSGIProcessGroup passhport
-  WSGIApplicationGroup %{GLOBAL}
-  # passhportd don't provides authentication, please filter by IP
-  Require ip 127.0.0.1/8 ::1/128
+    WSGIProcessGroup passhport
+    WSGIApplicationGroup %{GLOBAL}
+    # passhportd don't provides authentication, please filter by IP
+    Require ip 127.0.0.1/8 ::1/128
   </Directory>
-  </VirtualHost>" > /etc/apache2/sites-available/passhport.conf
+</VirtualHost>" > /etc/apache2/sites-available/passhport.conf
 
   a2dissite 000-default
   a2enmod wsgi ssl
@@ -220,18 +222,18 @@ configure_apache_for_passhweb()
   WSGIDaemonProcess passhweb user=passhport group=passhport threads=5 python-home=/home/passhport/passhport-run-env/
   WSGIScriptAlias / /home/passhport/passhport/tools/bin/passhweb.wsgi
 
-  <Directory /home/passhport>
+<Directory /home/passhport>
   WSGIProcessGroup passhweb
   WSGIApplicationGroup %{GLOBAL}
   Require all granted
   Order deny,allow
   Allow from all
-  </Directory>
+</Directory>
 
   LogLevel warn
   CustomLog /var/log/apache2/passhweb-access.log combined
   ErrorLog /var/log/apache2/passhweb-error.log
-  </VirtualHost>" > /etc/apache2/sites-available/passhweb.conf
+</VirtualHost>" > /etc/apache2/sites-available/passhweb.conf
 
   a2ensite passhweb
 
@@ -331,17 +333,23 @@ install()
   # We create the passhport user
   create_passhport_user
 
-  # Unless we're building a docker image, we'll need to download the sources
-  if [ ${DOCKER_INSTALL} -ne 1 ]
+  # If we're building a docker image we directly copy passhport files,
+  # otherwise we'll need to download the sources
+  if [ ${DOCKER_INSTALL} -eq 1 ]
   then
+    ${PASSHPORTDO} "cp -r /tmp/passhport /home/passhport/."
+  else
     download_sources
   fi
 
   # Configure the initial system
-  initial_config
+  bootstrap_config
 
   # Creating Python virtual-env
   create_python_venv
+
+  # Link passhport-admin into system
+  ln -s /home/passhport/passhport/tools/bin/passhport-admin.sh /usr/local/bin/passhport-admin
 
   # Unless we're building a docker image, we'll need to
   # - generate SSH keys (to be put later into all targets)
@@ -354,7 +362,6 @@ install()
     install_bash_completion
     generate_ssl_certs
     configure_postgresql
-    initial_configuration
   fi
 
   # Configure apache
@@ -370,6 +377,7 @@ install()
 
 
 ##### MAIN #####
+DOCKER_INSTALL=0
 while getopts "sdb:p" OPTION
 do
   case ${OPTION} in
@@ -394,5 +402,4 @@ do
 done
 
 install
-
 

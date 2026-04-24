@@ -30,9 +30,18 @@ class Usergroup(db.Model):
     comment = db.Column(db.String(500), index=True, unique=False)
 
     # Relations
-    members = db.relationship("User", secondary="group_user")
-    targets = db.relationship("Target", secondary="target_group")
-    tgmembers = db.relationship("Targetgroup", secondary="tgroup_group")
+    members = db.relationship(
+        "User",
+        secondary="group_user",
+        back_populates="usergroups")
+    targets = db.relationship(
+        "Target",
+        secondary="target_group",
+        back_populates="gmembers")
+    tgmembers = db.relationship(
+        "Targetgroup",
+        secondary="tgroup_group",
+        back_populates="gmembers")
     gmembers = db.relationship(
         "Usergroup",
         secondary=group_of_group,
@@ -40,7 +49,10 @@ class Usergroup(db.Model):
         secondaryjoin=id == group_of_group.c.subgroup_id,
         backref="containedin")
     # Admins
-    ugadmins = db.relationship("User", secondary="ug_admins")
+    ugadmins = db.relationship(
+        "User",
+        secondary="ug_admins",
+        back_populates="adminofug")
 
     def __repr__(self):
         """Return main data of the usergroup as a string"""

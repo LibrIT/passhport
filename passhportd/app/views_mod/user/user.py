@@ -157,7 +157,7 @@ def user_show(name):
     if not name:
         return utils.response("ERROR: The name is required ", 417)
 
-    name = urllib.parse.quote(name)
+    name = urllib.parse.unquote(name)
     user_data = user.User.query.filter_by(name=name).first()
 
     if user_data is None:
@@ -533,7 +533,7 @@ def user_delete(name):
         return utils.response("ERROR: The name is required ", 417)
 
     # Check if the name exists
-    name = urllib.parse.quote(name)
+    name = urllib.parse.unquote(name)
     query = db.session.query(user.User).filter_by(name=name).first()
 
     if query is None:

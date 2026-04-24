@@ -14,8 +14,14 @@ class Logentry(db.Model):
     logfilename    = db.Column(db.String(200), nullable=False)
 
     # Relations
-    target = db.relationship("Target", secondary="target_log")
-    user   = db.relationship("User", secondary="user_log")
+    target = db.relationship(
+        "Target",
+        secondary="target_log",
+        back_populates="logentries")
+    user = db.relationship(
+        "User",
+        secondary="user_log",
+        back_populates="logentries")
 
     def __repr__(self):
         """Return main data of the Log entry as a string"""
@@ -102,4 +108,3 @@ class Logentry(db.Model):
         if not self.endsessiondate:
             return "20180609T000000"
         return self.endsessiondate
-

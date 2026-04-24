@@ -30,15 +30,32 @@ class Target(db.Model):
 
 
     # Relations
-    members    = db.relationship("User", secondary="target_user")
-    gmembers   = db.relationship("Usergroup", secondary="target_group")
-    memberoftg = db.relationship("Targetgroup", secondary="tgroup_target")
-    logentries = db.relationship("Logentry", secondary="target_log",
-                                 order_by="Logentry.id")
-    passentries = db.relationship("Passentry", secondary="target_pass",
-                                  order_by="Passentry.id")
-    exttargetaccess = db.relationship("Exttargetaccess", 
-                                      secondary="target_extaccess")
+    members = db.relationship(
+        "User",
+        secondary="target_user",
+        back_populates="targets")
+    gmembers = db.relationship(
+        "Usergroup",
+        secondary="target_group",
+        back_populates="targets")
+    memberoftg = db.relationship(
+        "Targetgroup",
+        secondary="tgroup_target",
+        back_populates="tmembers")
+    logentries = db.relationship(
+        "Logentry",
+        secondary="target_log",
+        back_populates="target",
+        order_by="Logentry.id")
+    passentries = db.relationship(
+        "Passentry",
+        secondary="target_pass",
+        back_populates="target",
+        order_by="Passentry.id")
+    exttargetaccess = db.relationship(
+        "Exttargetaccess",
+        secondary="target_extaccess",
+        back_populates="target")
 
 
     def __repr__(self):
