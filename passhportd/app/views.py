@@ -230,10 +230,10 @@ def currecntsshconnectionskillbiglog():
                 try:
                     logsize = os.path.getsize(entry.logfilepath + entry.logfilename)
                 except:
-                    logsize = 0
-                    print("Error getting info on this file" + entry.logfilename)
+                    logsize = -1
+                    print("Warning: File not found:" + entry.logfilename)
 
-                if logsize > maxsize:
+                if logsize > maxsize or logsize == -1 :
                     sshdisconnect(entry.pid)
                     killedpid = str(entry.pid) + " " + killedpid
 

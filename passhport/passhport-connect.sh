@@ -14,7 +14,7 @@ USERNAME="$8"
 TARGETNAME="$9"
 EXPIRES_AT="${10}"
 export EXPIRES_AT
-OPTIONS=""
+OPTIONS="-C -o ControlMaster=auto -o ControlPersist=60s -o ControlPath=/tmp/socket-%u-to-%r@%h:%p"
 KEEPCONNECT="$(grep '^KEEPCONNECT[[:space:]]=[[:space:]]True$' /etc/passhport/passhport.ini | wc -l)"
 PASSHHOMEDIR="/home/passhport"
 PYTHONBIN="${PASSHHOMEDIR}/passhport-run-env/bin/python3"
