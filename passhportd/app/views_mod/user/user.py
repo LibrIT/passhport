@@ -221,7 +221,8 @@ def uaccessible_targets(name, withid = True, returnlist = False):
         return utils.response('ERROR: No user with the name "' + name + \
                               '" in the database.', 417)
 
-    target_list = user_data.accessible_target_list()
+    access_map = user_data.accessible_target_map()
+    target_list = [entry["target"] for entry in access_map.values()]
     formatted_target_list = []
 
     for each_target in target_list:
@@ -233,6 +234,10 @@ def uaccessible_targets(name, withid = True, returnlist = False):
             data = data + each_target.show_name() + " " + \
                    each_target.show_hostname() + " " + \
                    each_target.show_comment()
+            expires_at = access_map.get(each_target.id, {}).get("expires_at")
+            if expires_at:
+                data = data + " [expires " + \
+                       expires_at.strftime("%Y-%m-%dT%H:%M:%S") + "]"
             formatted_target_list.append(data)
     if returnlist:
         return [target.show_name() for target in target_list 
@@ -241,6 +246,29 @@ def uaccessible_targets(name, withid = True, returnlist = False):
         # We need to be sorted by target ID. Not so easy cause ID are strings
         formatted_target_list.sort(key=naturalkeys) #naturalkey is a method right above
     return utils.response("\n".join(formatted_target_list), 200)
+
+
+@app.route("/user/access_expiration/<username>/<targetname>")
+def user_access_expiration(username, targetname):
+    """Return the effective expiration for this user/target access"""
+    # Check for required fields
+    if not username or not targetname:
+        return utils.response("ERROR: Username or targetname is missing ", 417)
+
+    user_data = user.User.query.filter_by(name=username).first()
+    if user_data is None:
+        return utils.response('ERROR: No user with the name "' + \
+                              username + '" in the database.', 417)
+
+    access_map = user_data.accessible_target_map()
+    for entry in access_map.values():
+        if entry["target"].show_name() == targetname:
+            if entry["expires_at"] is None:
+                return utils.response("unlimited", 200)
+            return utils.response(
+                entry["expires_at"].strftime("%Y-%m-%dT%H:%M:%S"), 200)
+
+    return utils.response("ERROR: No access to target", 417)
 
 
 @app.route("/user/accessible_targets/<name>")

@@ -9,14 +9,15 @@ from __future__ import unicode_literals
 import os, requests, shlex, sys
 
 def connect(target, filelog, login, port, sshoptions, pid, url_passhport, 
-            cert, ssh_script, username, targetname, originalcmd):
+            cert, ssh_script, username, targetname, originalcmd, expires_at):
     """ Simply launch the ssh connection or execute the ssh command"""
     if not originalcmd:
         # We replace this process by the connexion to free some memory
         os.execl("/bin/bash", " ",
                  ssh_script,
                  filelog, str(port), login, target, str(pid),
-                 url_passhport, cert, username, targetname, sshoptions)
+                 url_passhport, cert, username, targetname, expires_at,
+                 sshoptions)
 
     else:
         ssh_args = [

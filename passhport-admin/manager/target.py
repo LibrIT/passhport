@@ -230,15 +230,20 @@ def prompt_adduser():
     """Prompt user to obtain data to add a user"""
     username = input("Username: ")
     targetname = input("Targetname: ")
+    expires_at = input("Expiration (YYYY-mm-ddTHH:MM:SS, optional): ")
 
     return {"<username>": username,
-            "<targetname>": targetname}
+            "<targetname>": targetname,
+            "--expires-at": expires_at}
 
 
 def adduser(param):
     """Format param to add a user"""
-    return {"username": param["<username>"],
+    data = {"username": param["<username>"],
             "targetname": param["<targetname>"]}
+    if "--expires-at" in param and param["--expires-at"]:
+        data["expires_at"] = param["--expires-at"]
+    return data
 
 
 def prompt_rmuser():
@@ -260,15 +265,20 @@ def prompt_addusergroup():
     """Prompt user to obtain data to add a usergroup"""
     usergroupname = input("Usergroupname: ")
     targetname = input("Targetname: ")
+    expires_at = input("Expiration (YYYY-mm-ddTHH:MM:SS, optional): ")
 
     return {"<usergroupname>": usergroupname,
-            "<targetname>": targetname}
+            "<targetname>": targetname,
+            "--expires-at": expires_at}
 
 
 def addusergroup(param):
     """Format param to add a usergroup"""
-    return {"usergroupname": param["<usergroupname>"],
+    data = {"usergroupname": param["<usergroupname>"],
             "targetname": param["<targetname>"]}
+    if "--expires-at" in param and param["--expires-at"]:
+        data["expires_at"] = param["--expires-at"]
+    return data
 
 
 def prompt_rmusergroup():

@@ -12,6 +12,7 @@ from app import db
 from app.models_mod import target
 from app.models_mod import usergroup
 from app.models_mod import targetgroup
+from app.models import Target_User, Target_Group, TGroup_User, Tgroup_Group
    
 class User(db.Model):
     """User defines information for every adminsys using passhport"""
@@ -143,43 +144,98 @@ class User(db.Model):
 
     def accessible_target_list(self, style="object"):
         """Return targets accessible to the users (as object or names list)"""
-        targets = []
-        output = "Accessible directly: "
+        access_map = self.accessible_target_map()
+        targets = [entry["target"] for entry in access_map.values()]
 
-        # 1. list all the directly attached targets
-        for target in self.targets:
-            targets.append(target)
-            output = output + target.show_name() + " ; "
-        
-        output = output + "\nAccessible through usergroups: "
-        # 2. list all the targets accessible through usergroup
-        for usergroup in self.usergroups:
-            output = output + "\n" + usergroup.show_name() + ": "
-            for target in usergroup.accessible_target_list(mode="obj"):
-                output = output + target.show_name() + " ; "
-                if target not in targets:
-                    targets.append(target)
-
-        output = output + "\nAccessible through targetgroups: "
-        # 3. list all the targets accessible through targetgroup
-        for targetgroup in self.targetgroups:
-            output = output + "\n" + targetgroup.show_name() + ": "
-            for target in targetgroup.accessible_target_list():
-                output = output + target.show_name() + " ; "
-                if target not in targets:
-                    targets.append(target)
-
-
-        # return target objects or names depending of style
+        # Format depending on the requested style.
         if style == "names":
             targetnames = []
-            for target in targets:
-                targetnames.append(target.show_name())
-            targets = sorted(targetnames)
-        elif style == "details":
-            targets = output
-        
+            for t in targets:
+                targetnames.append(t.show_name())
+            return sorted(targetnames)
+        if style == "details":
+            lines = []
+            for entry in sorted(access_map.values(),
+                                key=lambda e: e["target"].show_name()):
+                # Show the effective expiration when applicable.
+                expires_at = entry["expires_at"]
+                if expires_at:
+                    expires_at = expires_at.strftime("%Y-%m-%dT%H:%M:%S")
+                    lines.append(entry["target"].show_name() + \
+                                 " (expires at " + expires_at + ")")
+                else:
+                    lines.append(entry["target"].show_name())
+            return "\n".join(lines)
+
         return targets
+
+
+    def accessible_target_map(self):
+        """Return a map of accessible targets with effective expirations."""
+        now = datetime.now()
+        access_map = {}
+
+        def merge_access(target_obj, expires_at):
+            # Merge multiple access paths: keep the latest expiration,
+            # and treat any "no expiration" as unlimited.
+            current = access_map.get(target_obj.id)
+            if current is None:
+                access_map[target_obj.id] = {
+                    "target": target_obj,
+                    "expires_at": expires_at
+                }
+                return
+            if current["expires_at"] is None:
+                return
+            if expires_at is None:
+                current["expires_at"] = None
+                return
+            if expires_at > current["expires_at"]:
+                current["expires_at"] = expires_at
+
+        # Direct access: user -> target.
+        direct_query = db.session.query(Target_User, target.Target).join(
+            target.Target, Target_User.target_id == target.Target.id
+        ).filter(Target_User.user_id == self.id)
+        for entry, t in direct_query:
+            if entry.expires_at and entry.expires_at < now:
+                continue
+            merge_access(t, entry.expires_at)
+
+        # Access via usergroups: usergroup -> target.
+        for ug in self.usergroups:
+            group_query = db.session.query(Target_Group, target.Target).join(
+                target.Target, Target_Group.target_id == target.Target.id
+            ).filter(Target_Group.group_id == ug.id)
+            for entry, t in group_query:
+                if entry.expires_at and entry.expires_at < now:
+                    continue
+                merge_access(t, entry.expires_at)
+
+        # Access via targetgroups directly attached to the user.
+        tg_query = db.session.query(TGroup_User, targetgroup.Targetgroup).join(
+            targetgroup.Targetgroup,
+            TGroup_User.targetgroup_id == targetgroup.Targetgroup.id
+        ).filter(TGroup_User.user_id == self.id)
+        for entry, tg in tg_query:
+            if entry.expires_at and entry.expires_at < now:
+                continue
+            for t in tg.accessible_target_list():
+                merge_access(t, entry.expires_at)
+
+        # Access via usergroups that grant targetgroups.
+        for ug in self.usergroups:
+            tgg_query = db.session.query(Tgroup_Group, targetgroup.Targetgroup).join(
+                targetgroup.Targetgroup,
+                Tgroup_Group.targetgroup_id == targetgroup.Targetgroup.id
+            ).filter(Tgroup_Group.group_id == ug.id)
+            for entry, tg in tgg_query:
+                if entry.expires_at and entry.expires_at < now:
+                    continue
+                for t in tg.accessible_target_list():
+                    merge_access(t, entry.expires_at)
+
+        return access_map
 
 
     def direct_targets(self):
