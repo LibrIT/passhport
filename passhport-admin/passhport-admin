@@ -93,7 +93,7 @@ when supported.
     --newlogin=<login>              Set the new login of the target.
     --newsshoptions=<sshoptions>    Set the new SSH options \
 of the target.
-    --newport=<port>                Set the new port used \
+    --newport=<port>                Set the new port used
     --newsessiondur=<sessiondur>    Set the new session duration in minutes for \
 when supported.
     --expires-at=<expiresat>        Set access expiration (local time, \
