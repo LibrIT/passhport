@@ -17,7 +17,7 @@ importlib-metadata==4.12.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
 ldap3==2.9.1
-Mako==1.3.11
+Mako==1.3.12
 MarkupSafe==2.1.1
 pbr==5.10.0
 psutil==5.9.2
