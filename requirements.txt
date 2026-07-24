@@ -29,7 +29,7 @@ python-editor==1.0.4
 flask_login==0.6.3
 flask_wtf==1.2.2
 requests==2.32.5
-setuptools==80.9.0
+setuptools==83.0.0
 six==1.16.0
 SQLAlchemy==2.0.45
 sqlparse==0.5.5
