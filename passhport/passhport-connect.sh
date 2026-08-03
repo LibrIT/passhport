@@ -29,7 +29,7 @@ trap "echo 'You are not allowed to stop disconnection. Consider Ctrl-D.'" SIGHUP
 i=0
 for option in ${OPTION}
 do
-    if [ "$i" -lt "10" ]
+    if [ "$i" -lt "9" ]
     then
         i=$(($i +1))
     else
